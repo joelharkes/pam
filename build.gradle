@@ -14,6 +14,13 @@ repositories {
 loom {
 	splitEnvironmentSourceSets()
 
+	runs {
+		client {
+			// Fixed dev name, so the player (and their progress in the test world) is the same every launch
+			programArgs "--username", "Player502"
+		}
+	}
+
 	mods {
 		"progressive_adventure" {
 			sourceSet sourceSets.main

@@ -42,6 +42,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `./gradlew build`: compile + jar in `build/libs/`
 - `./gradlew runClient`: dev client · `./gradlew runServer --args="--nogui"`: dev server
   (run dir `run/`, `run/eula.txt` already accepted)
+- The dev client logs in with a fixed name (`--username Player502` in `build.gradle`). Without it
+  Loom picks a random `PlayerNNN` each launch = new UUID = a fresh player with no progress.
 - Look up vanilla signatures with javap against
   `~/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/minecraft-common-deobf/26.2/minecraft-common-deobf-26.2.jar`
   (client-only classes: `minecraft-clientonly-deobf`). Vanilla advancement/lang JSON can
