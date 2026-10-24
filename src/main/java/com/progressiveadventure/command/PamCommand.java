@@ -1,6 +1,7 @@
 package com.progressiveadventure.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.progressiveadventure.bestiary.Bestiary;
@@ -12,11 +13,13 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -33,7 +36,24 @@ public final class PamCommand {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands.literal("pam")
 				.executes(PamCommand::showStats)
-				.then(Commands.literal("bestiary").executes(PamCommand::showBestiary)));
+				.then(Commands.literal("bestiary").executes(PamCommand::showBestiary))
+				// Test helper for ops: elites are rare, so spawn one on demand
+				.then(Commands.literal("elite").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.argument("mob", StringArgumentType.word())
+								.suggests((context, builder) -> SharedSuggestionProvider.suggest(
+										PamConfig.get().eliteMobs.stream().map(id -> Identifier.parse(id).getPath()), builder))
+								.executes(PamCommand::spawnElite))));
+	}
+
+	private static int spawnElite(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		ServerPlayer player = context.getSource().getPlayerOrException();
+		Identifier id = Identifier.tryParse(StringArgumentType.getString(context, "mob"));
+		if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id)
+				|| !Elites.spawnTestElite(player, BuiltInRegistries.ENTITY_TYPE.getValue(id))) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.elite.unknown"));
+			return 0;
+		}
+		return 1;
 	}
 
 	private static int showStats(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

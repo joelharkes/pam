@@ -241,5 +241,9 @@
   "mob_group.progressive_adventure.endermen": "Endermen",
   "mob_group.progressive_adventure.slimes": "Slimes",
   "mob_group.progressive_adventure.witches": "Witches",
-  "mob_group.progressive_adventure.patrols": "Pillager patrols"
+  "mob_group.progressive_adventure.patrols": "Pillager patrols",
+  "advancements.progressive_adventure.hunter.elite.title": "Elite Slayer",
+  "advancements.progressive_adventure.hunter.elite.description": "Defeat a Tough monster\nReward: +½ heart",
+  "entity.progressive_adventure.elite": "Tough %s",
+  "command.progressive_adventure.elite.unknown": "Unknown mob, or it can't be an elite"
 }

@@ -4,7 +4,7 @@
 
 **Built so far (2026-10-24):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
 Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen) and pillar 5
-mob unlocks. Not built: elites, Combat/Archery/Fishing skills, Well Fed. See the roadmap.
+mob unlocks + elites. Not built: elite traits, Combat/Archery/Fishing skills, Well Fed. See the roadmap.
 
 ## Vision
 
@@ -273,22 +273,44 @@ reaches vanilla danger fairly quickly.
 Elites (v0.3b) start per mob type a few ranks after that type unlocks; numbers to be set
 after the v0.3a playtest.
 
-#### Elite mobs
+#### Mobs get stronger: gear and elites (v0.3b, built)
 
-- Most mobs stay normal, so most of the time you feel strong.
-- Occasionally a mob spawns as an **elite**: armor, an enchanted weapon, a bit more
-  health.
-- Elites are **easy to recognise** (name tag like "Armored Zombie", subtle particles)
-  so it's exciting, not unfair.
-- **Rewards:** much more XP and a high chance to drop their armor/weapon
-  (vanilla is only ~8.5%).
-- **Per mob type, the chance builds up with Rank:** starts at ~1% when that type's
-  elites unlock, +0.5% per rank, capped at ~8%.
-- **Elites get better too:** early elite zombies have leather/chain armor and a
-  plain sword; at higher ranks they get iron, then diamond and enchantments. Better
-  elites = better drops.
-- Creepers have no elite version (an "elite creeper" just means a bigger surprise
-  explosion, which isn't fun).
+Every natural Overworld hostile spawn uses the lowest Adventure Rank of nearby players.
+
+**Normal mobs:** zombies and skeletons (and their variants) get a growing chance of 1–2
+extra armor pieces, on top of vanilla's own: 0% at Rank 10 → 25% at Rank 100. Material
+leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla drop chances.
+
+**Elites ("Tough Zombie"):**
+- Mob types: zombies, husks, zombie villagers, drowned, skeletons, strays, bogged,
+  parched, spiders, cave spiders, endermen, slimes. No creepers, witches or pillagers.
+- Start 5 ranks after the type unlocks (zombies at Rank 5, skeletons 10, creepers never,
+  spiders 25, ...): 2% of that type's spawns, +0.1% per rank, max 10%.
+- 20% bigger (vanilla `scale` attribute), +50% health, +25% damage, named (name shows
+  when you look at it). They despawn like normal mobs.
+- Zombie/skeleton types wear a full armor set + weapon from the tier their rank reached:
+
+| Rank | Elite gear |
+|------|------------|
+| 0    | leather, stone sword |
+| 15   | chainmail, iron sword |
+| 30   | iron, enchanted (level 8) |
+| 60   | diamond, enchanted (level 15) |
+| 100  | diamond, enchanted (level 30) |
+
+**Elite rewards** (scale with the rank the elite spawned at):
+- Gear always drops, but only for player kills and with random wear (vanilla rule for
+  drop chance 1.0).
+- XP ×3 → ×6 at Rank 100 (vanilla XP rules: player kills only).
+- Bestiary: an elite kill counts as 3 kills.
+- Bonus loot, player kills only: emerald 10% (1) → 50% (1–3) at Rank 100; enchanted book
+  from Rank 40, 5% (level 5) → 25% (level 30); golden apple from Rank 80, 3% → 8%.
+  Elites are only 2–10% of spawns, so this stays hard to farm, especially early.
+- Milestone "Elite Slayer": defeat an elite, ½ heart.
+- Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
+
+**Next (v0.3c): traits** for high-rank elites (Rank 100+), one random trait shown in the
+name: Swift, Frost (arrows slow you), Blazing (sets you on fire), Leaping, Summoner.
 
 #### Multiplayer
 
@@ -426,7 +448,8 @@ To brainstorm later:
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a
   related skill.
 - **Mob discovery:** first kill of a new mob type gives a big XP burst and a toast.
-- **Treasure maps from elites:** elites sometimes drop a map to buried loot.
+- **Mobs drop exploration helpers** (user idea, parked): e.g. elites sometimes drop a
+  treasure map, explorer map or compass-like hint that leads somewhere new.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
 
 ---
@@ -490,6 +513,10 @@ To brainstorm later:
 - 2026-10-24: Mob unlocks (v0.3a): Rank 5 skeletons, 12 creepers, 20 spiders + drowned,
   30 endermen, 40 slimes, 50 witches + patrols. Locked mobs are skipped (fewer hostile
   mobs early, animals untouched), replacement chance configurable. Elites after a playtest.
+- 2026-10-24: Elites (v0.3b): normal mobs slowly wear more gear; rare elites (2→10%) are
+  bigger/tougher/named with gear that improves with Rank. Gear, XP (×3→×6) and bonus loot
+  (emeralds, books from 40, golden apples from 80) scale with Rank, player kills only, so
+  it's hard to farm early. Traits only at very high Rank, later (v0.3c).
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
@@ -509,6 +536,7 @@ To brainstorm later:
 - **v0.2.x:** Farming skill, farming perks, Farmer milestones, Defense perks, Fleet Foot tiers.
   *(Implemented, needs playtesting.)*
 - **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
-- **v0.3b:** elite mobs, after the v0.3a playtest.
+- **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
+- **v0.3c:** elite traits for high ranks.
 - **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

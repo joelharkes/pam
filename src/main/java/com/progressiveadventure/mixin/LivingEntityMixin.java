@@ -3,12 +3,14 @@ package com.progressiveadventure.mixin;
 import com.progressiveadventure.bestiary.Bestiary;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.world.Elites;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -36,6 +38,14 @@ public class LivingEntityMixin {
 	private void pam$ironStomach(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
 		if ((Object) this instanceof Player player && effect.is(MobEffects.HUNGER) && Perks.has(player, Perks.IRON_STOMACH)) {
 			cir.setReturnValue(false);
+		}
+	}
+
+	@Inject(method = "getExperienceReward", at = @At("RETURN"), cancellable = true)
+	private void pam$eliteXp(ServerLevel level, Entity killer, CallbackInfoReturnable<Integer> cir) {
+		double multiplier = Elites.xpMultiplier((LivingEntity) (Object) this);
+		if (multiplier != 1) {
+			cir.setReturnValue((int) Math.round(cir.getReturnValueI() * multiplier));
 		}
 	}
 }

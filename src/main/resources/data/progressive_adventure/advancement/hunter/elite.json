@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/mob_types_5",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_sword"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.elite.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.elite.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

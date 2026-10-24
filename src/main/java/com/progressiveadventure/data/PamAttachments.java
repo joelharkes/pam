@@ -34,6 +34,10 @@ public final class PamAttachments {
 					.persistent(Codec.LONG.listOf().xmap(Set::copyOf, List::copyOf))
 					.initializer(Set::of));
 
+	/** On elite mobs: the Adventure Rank they spawned at (decides their XP and loot). */
+	public static final AttachmentType<Integer> ELITE_RANK = AttachmentRegistry.create(
+			ProgressiveAdventure.id("elite_rank"), builder -> builder.persistent(Codec.INT));
+
 	private PamAttachments() {
 	}
 

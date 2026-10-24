@@ -41,6 +41,7 @@ public final class Milestones {
 	public static final Milestone MOB_TYPES_30 = pam("hunter/mob_types_30", 2, 0);
 	public static final Milestone ELDER_GUARDIAN = pam("hunter/elder_guardian", 4, 0);
 	public static final Milestone WITHER = pam("hunter/wither", 4, 0);
+	public static final Milestone ELITE = pam("hunter/elite", 1, 0);
 
 	public static final Milestone DIAMOND_TOOLS = pam("crafter/diamond_tools", 1, 0);
 
@@ -70,7 +71,7 @@ public final class Milestones {
 			FIRST_FOOD, FOODS_3, FOODS_8, FOODS_15, FOODS_25,
 			CROPS_3, CROPS_10, BREED_5,
 			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE,
-			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER,
+			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, ELITE,
 			DIAMOND_TOOLS), VANILLA.stream()).toList();
 
 	private static final Map<Identifier, Milestone> BY_ID = ALL.stream().collect(Collectors.toMap(Milestone::id, Function.identity()));

@@ -94,7 +94,60 @@ public class PamConfig {
 	public double lockedMobReplacementChance = 0.0;
 	public int mobUnlockPlayerRadius = 128;
 
+	// Elites and mob gear (Overworld natural spawns, by the lowest Adventure Rank among nearby players)
+	public boolean elitesEnabled = true;
+	public List<String> eliteMobs = List.of("minecraft:zombie", "minecraft:husk", "minecraft:zombie_villager", "minecraft:drowned",
+			"minecraft:skeleton", "minecraft:stray", "minecraft:bogged", "minecraft:parched",
+			"minecraft:spider", "minecraft:cave_spider", "minecraft:enderman", "minecraft:slime");
+	// Elites of a mob type start this many ranks after the type unlocks, then get more common
+	public int eliteRankDelay = 5;
+	public double eliteChanceStart = 0.02;
+	public double eliteChancePerRank = 0.001;
+	public double eliteChanceMax = 0.10;
+	public double eliteHealthBonus = 0.5;
+	public double eliteDamageBonus = 0.25;
+	public double eliteScaleBonus = 0.2;
+	// Elites always wear a full set from the highest tier their rank reached
+	public List<GearTier> eliteGearTiers = List.of(
+			new GearTier(0, "leather", "minecraft:stone_sword", 0),
+			new GearTier(15, "chainmail", "minecraft:iron_sword", 0),
+			new GearTier(30, "iron", "minecraft:iron_sword", 8),
+			new GearTier(60, "diamond", "minecraft:diamond_sword", 15),
+			new GearTier(100, "diamond", "minecraft:diamond_sword", 30));
+	// Normal zombies/skeletons: chance of 1-2 extra armor pieces, on top of vanilla's own
+	public Ramp mobGearChance = new Ramp(10, 0.0, 100, 0.25);
+	public List<GearTier> normalGearTiers = List.of(
+			new GearTier(0, "leather", null, 0),
+			new GearTier(30, "chainmail", null, 0),
+			new GearTier(60, "iron", null, 0));
+	public Ramp eliteXpMultiplier = new Ramp(0, 3.0, 100, 6.0);
+	public int eliteBestiaryKills = 3;
+	// Bonus loot, only when a player kills the elite
+	public Ramp eliteEmeraldChance = new Ramp(0, 0.10, 100, 0.5);
+	public Ramp eliteEmeraldMaxCount = new Ramp(0, 1, 100, 3);
+	public Ramp eliteBookChance = new Ramp(40, 0.05, 100, 0.25);
+	public Ramp eliteBookLevel = new Ramp(40, 5, 100, 30);
+	public Ramp eliteGoldenAppleChance = new Ramp(80, 0.03, 100, 0.08);
+
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
+	}
+
+	/** Armor material (e.g. "iron" for iron_helmet), optional weapon id for zombies, enchanting level (0 = none). */
+	public record GearTier(int rank, String armor, String weapon, int enchantLevel) {
+	}
+
+	/** A value that grows linearly from fromRank to toRank and stays at "to" after it; 0 below fromRank. */
+	public record Ramp(int fromRank, double from, int toRank, double to) {
+		public double at(int rank) {
+			if (rank < fromRank) {
+				return 0;
+			}
+			if (toRank <= fromRank) {
+				return to;
+			}
+			double t = Math.min(1, (rank - fromRank) / (double) (toRank - fromRank));
+			return from + (to - from) * t;
+		}
 	}
 
 	public record MobUnlock(String name, int rank, List<String> mobs) {

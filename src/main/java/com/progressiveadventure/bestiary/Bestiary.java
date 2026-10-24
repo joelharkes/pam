@@ -6,6 +6,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.world.Elites;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -46,7 +47,8 @@ public final class Bestiary {
 		String key = key(killed.getType());
 		PlayerProgress progress = PamAttachments.progress(player);
 		int before = progress.killsOf(key);
-		progress = progress.withKills(key, Perks.has(player, Perks.QUICK_STUDY) ? 2 : 1);
+		int kills = (Perks.has(player, Perks.QUICK_STUDY) ? 2 : 1) * (Elites.isElite(killed) ? PamConfig.get().eliteBestiaryKills : 1);
+		progress = progress.withKills(key, kills);
 		PamAttachments.setProgress(player, progress);
 
 		FamiliarityTier oldTier = tier(before);

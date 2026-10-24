@@ -15,7 +15,8 @@ This file only covers what those don't: where we are, what's pending, and how th
 | v0.2.x | Farming skill + 10 farming perks + 3 Farmer milestones, scrollable perk list | Built, server smoke-tested, **not playtested** |
 | v0.2.x | Ore Sense perk (client-side particle trail to nearest ore) | Playtested: works (took a moment to understand) |
 | v0.2.x | Deep Breath split into tiers I/II/III (~30/45/60s air) | Built, **not playtested** |
-| v0.3a | Mob unlocks by Adventure Rank (skeletons 5, creepers 12, ... all at 50), "Next" line on Character tab | Built, server smoke-tested, **not playtested** |
+| v0.3a | Mob unlocks by Adventure Rank (skeletons 5, creepers 12, ... all at 50), "Next" line on Character tab | Quick check OK (`/pam`), not tested in depth |
+| v0.3b | Normal mobs wear more gear with Rank, rare elites ("Tough Zombie"), elite XP/loot, Elite Slayer milestone, `/pam elite <mob>` | Built, server smoke-tested, **not playtested** |
 | v0.2.x | Defense category (Sturdy Armor, Blast/Arrow/Fire Guard, Tough Hide), Fleet Foot I/II/III | Built, server smoke-tested, **not playtested** |
 
 The working tree is clean; everything is committed on `main`.
@@ -33,6 +34,8 @@ The user said they'll report back; don't assume these work:
   mostly points at them. Options already offered: ignore coal/copper, prefer the most valuable
   ore in range, or add a tier II for rare ores. Interval (30 ticks), radius (12) and trail length
   are constants in `client/OreSense.java`.
+- **Elites:** `/pam elite zombie` etc. Size, name on hover, gear by rank, drops only on player
+  kill, XP, bonus loot, Elite Slayer milestone. Does normal-mob gear feel right?
 - **Mob unlocks:** does night 1 feel right (only zombies, fewer mobs)? Too empty → raise
   `lockedMobReplacementChance`. Unlock chat message and the "Next: ..." line on the Character tab.
 - **Defense perks:** do the reductions feel noticeable but not overpowered? Is 5/10 mob types
@@ -51,7 +54,8 @@ Restore them when the user confirms the perks work. Also update the DESIGN.md pe
 
 ## Open questions / next steps
 
-1. **Elites (v0.3b)**: after the user playtests v0.3a mob unlocks. Design in DESIGN.md pillar 5.
+1. **Elite traits (v0.3c)**: after the user playtests v0.3b elites. Design in DESIGN.md pillar 5.
+   Later (parked user idea): mobs dropping things that help exploring (maps etc.).
 2. **Balance** (needs playtesting): early milestones give hearts quickly; perk costs vs. point
    budget; XP curves.
 3. **Ideas parked in DESIGN.md:** more skills (Combat, Archery, Fishing), diet variety / Well Fed,

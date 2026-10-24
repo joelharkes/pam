@@ -17,8 +17,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   and Fleet Foot I/II/III implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
 - Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy):
   Ore Sense (Mining 40), Replant (Farming 5), Harvester (Farming 20).
-- **v0.3a mob unlocks** (Overworld hostile mobs gated on Adventure Rank) implemented, not yet
-  playtested. v0.3b elites come after that playtest.
+- **v0.3a mob unlocks** (Overworld hostile mobs gated on Adventure Rank) implemented, quick check
+  OK (`/pam`). **v0.3b** mob gear + elites implemented, not yet playtested. Next: v0.3c elite traits.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.
@@ -86,16 +86,17 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   xp, extra harvests, Replant/Harvester/Rancher), `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier
 - `world/MobUnlocks`: which hostile mobs may spawn naturally at a rank (lowest rank of nearby players),
-  unlock messages, "next unlock" for the snapshot
+  unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
+  (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`; server validates in `PamNetworking`
-- `command/PamCommand`: `/pam`, `/pam bestiary`
+- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob>` (ops, spawns a test elite)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook),
-  NaturalSpawner (mob unlocks, after vanilla picks the mob type), PatrolSpawner (patrol unlock)
+  NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)

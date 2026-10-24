@@ -11,6 +11,7 @@ import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
 
 import net.fabricmc.api.ModInitializer;
@@ -50,6 +51,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			} else if (source.getEntity() instanceof ServerPlayer player) {
 				Bestiary.onKill(player, entity);
 			}
+			Elites.onDeath(entity, source);
 		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
