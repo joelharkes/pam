@@ -1,0 +1,36 @@
+{
+  "parent": "progressive_adventure:hunter/mob_types_15",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "minecraft:wither"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:nether_star"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.wither.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.wither.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

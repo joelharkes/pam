@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_15",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:filled_map"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.biomes_30.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.biomes_30.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

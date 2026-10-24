@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:apple"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.gourmet.first_food.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.gourmet.first_food.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

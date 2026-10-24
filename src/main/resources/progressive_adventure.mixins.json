@@ -3,6 +3,12 @@
 	"package": "com.progressiveadventure.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"BlockItemMixin",
+		"ConsumeItemTriggerMixin",
+		"FoodDataMixin",
+		"LivingEntityMixin",
+		"PlayerAdvancementsMixin",
+		"PlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

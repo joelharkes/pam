@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:leather_boots"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.biomes_5.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.biomes_5.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

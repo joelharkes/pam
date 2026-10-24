@@ -101,7 +101,9 @@ Draft list (★ = good early milestone for a first session):
 | Explorer | Find a Nether fortress / bastion              | ½ heart    |
 | Explorer | Enter the End                                 | 1 heart    |
 | Explorer | Find an End city                              | 1 heart    |
-| Gourmet  | ★ Eat 5 different foods                       | stomach    |
+| Gourmet  | ★ Eat your first food                         | stomach    |
+| Gourmet  | ★ Eat 3 different foods                       | stomach    |
+| Gourmet  | Eat 8 different foods                         | stomach    |
 | Gourmet  | Eat 15 different foods                        | stomach    |
 | Gourmet  | Eat 25 different foods                        | 1 heart    |
 | Gourmet  | Bake a cake / cook a suspicious stew          | stomach    |
@@ -135,6 +137,18 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
   saturation. You have to think about food.
 - **Stomach upgrades** (from Gourmet/Farmer milestones) step this down, ending
   *better* than vanilla: slower drain, more saturation, cheaper sprinting.
+  The first two come fast (first food, 3 different foods) so progress is felt in
+  the first session:
+
+| Stomach level | Hunger drain | Food saturation | Reached by (typical)     |
+|---------------|--------------|-----------------|--------------------------|
+| 0             | ×1.5         | ×0.6            | start                    |
+| 1             | ×1.35        | ×0.7            | first food               |
+| 2             | ×1.2         | ×0.8            | 3 different foods        |
+| 3             | ×1.0         | ×1.0 (vanilla)  | 8 different foods        |
+| 4             | ×0.9         | ×1.1            | 15 different foods       |
+| 5             | ×0.8         | ×1.2            | cake / stew, farming     |
+| 6             | ×0.7         | ×1.3            |                          |
 - **Diet variety bonus (idea):** eating a varied diet gives a temporary "Well Fed"
   buff (slower hunger drain, small regen). Eating the same food over and over gives
   less. This teaches kids to farm several crops and fits the Gourmet milestones.
@@ -317,8 +331,9 @@ To brainstorm later:
 
 ## Roadmap (draft, still brainstorming)
 
-- **v0.1 (MVP):** setup, 5 starting hearts, first ~10 milestones granting hearts,
-  Mining skill, Bestiary damage bonus, config.
+- **v0.1 (MVP):** setup, 5 starting hearts, 25 milestones granting hearts/stomach,
+  metabolism, Mining/Woodcutting/Digging skills, Bestiary damage modifier, config,
+  `/pam` and `/pam bestiary` commands. *(Implemented, needs playtesting.)*
 - **v0.2:** metabolism + stomach upgrades, Rank-based mob spawning.
 - **v0.3:** elite mobs, skills/bestiary screen.
 - **v0.4:** more skills + perks, diet variety, exploration extras.

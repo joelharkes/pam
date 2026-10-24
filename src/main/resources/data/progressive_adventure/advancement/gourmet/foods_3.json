@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:gourmet/first_food",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:bread"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_3.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_3.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

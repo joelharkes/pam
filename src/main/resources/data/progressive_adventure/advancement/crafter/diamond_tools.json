@@ -1,0 +1,32 @@
+{
+  "parent": "progressive_adventure:crafter/iron_tools",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:diamond_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_pickaxe"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.crafter.diamond_tools.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.crafter.diamond_tools.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:gourmet/foods_15",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_carrot"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_25.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_25.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

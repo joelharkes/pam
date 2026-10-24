@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:villager_trade"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:emerald"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.social.trade.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.social.trade.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

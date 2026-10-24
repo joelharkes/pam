@@ -1,0 +1,28 @@
+{
+  "parent": "progressive_adventure:explorer/find_village",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "minecraft:the_nether"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:obsidian"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.enter_nether.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.enter_nether.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

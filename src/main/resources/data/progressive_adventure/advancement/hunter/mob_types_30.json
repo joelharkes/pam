@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/mob_types_15",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_sword"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.mob_types_30.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.mob_types_30.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

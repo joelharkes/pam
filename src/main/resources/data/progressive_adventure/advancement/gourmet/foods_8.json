@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:gourmet/foods_3",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:cooked_beef"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_8.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.gourmet.foods_8.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

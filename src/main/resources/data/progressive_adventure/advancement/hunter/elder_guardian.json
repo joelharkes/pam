@@ -1,0 +1,36 @@
+{
+  "parent": "progressive_adventure:hunter/mob_types_15",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "minecraft:elder_guardian"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:prismarine_shard"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.elder_guardian.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.elder_guardian.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

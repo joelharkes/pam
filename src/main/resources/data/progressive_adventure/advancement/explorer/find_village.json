@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_5",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "#minecraft:village"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:bell"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.find_village.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.find_village.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:crafter/enchant",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:brewed_potion"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:potion"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.crafter.brew.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.crafter.brew.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

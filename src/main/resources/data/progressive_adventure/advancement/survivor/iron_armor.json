@@ -1,0 +1,41 @@
+{
+  "parent": "progressive_adventure:survivor/sleep_in_bed",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:iron_helmet"
+          },
+          {
+            "items": "minecraft:iron_chestplate"
+          },
+          {
+            "items": "minecraft:iron_leggings"
+          },
+          {
+            "items": "minecraft:iron_boots"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_chestplate"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.survivor.iron_armor.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.survivor.iron_armor.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}
