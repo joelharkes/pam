@@ -13,6 +13,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
   and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
   implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
+- **Ore Sense** perk (client-side, `client/OreSense.java`) has its Mining 40 requirement removed
+  for testing: restore it in `Perks.java` (TODO there) once the user is happy with it.
 - Open question for v0.3: gate mob unlocks on Adventure Rank (milestone count) or on earned
   milestone hearts. Rank climbs fast early (~rank 8 on day 2); Claude recommended hearts,
   user hasn't decided yet.

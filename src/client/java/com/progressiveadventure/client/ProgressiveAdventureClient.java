@@ -21,6 +21,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 				"key.progressive_adventure.open_screen", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_K, CATEGORY));
 
 		ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
+			OreSense.tick(minecraft);
 			while (openScreen.consumeClick()) {
 				if (minecraft.player != null && minecraft.gui.screen() == null) {
 					minecraft.gui.setScreen(new AdventureScreen());

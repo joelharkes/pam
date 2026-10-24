@@ -29,6 +29,8 @@ public final class Perks {
 	public static final Perk STURDY_PICKAXE_3 = register("sturdy_pickaxe_3", PerkCategory.MINING, Items.DIAMOND_PICKAXE, 3, new SkillLevel(Skill.MINING, 30), "sturdy_pickaxe_2");
 	public static final Perk PROSPECTOR_1 = register("prospector_1", PerkCategory.MINING, Items.RAW_IRON, 2, new SkillLevel(Skill.MINING, 10), null);
 	public static final Perk PROSPECTOR_2 = register("prospector_2", PerkCategory.MINING, Items.DIAMOND, 3, new SkillLevel(Skill.MINING, 25), "prospector_1");
+	// TODO: restore new SkillLevel(Skill.MINING, 40) after playtesting (unlocked for testing)
+	public static final Perk ORE_SENSE = register("ore_sense", PerkCategory.MINING, Items.SPYGLASS, 4, Requirement.NONE, null);
 
 	public static final Perk STURDY_AXE_1 = register("sturdy_axe_1", PerkCategory.WOODCUTTING, Items.STONE_AXE, 1, new SkillLevel(Skill.WOODCUTTING, 5), null);
 	public static final Perk STURDY_AXE_2 = register("sturdy_axe_2", PerkCategory.WOODCUTTING, Items.IRON_AXE, 2, new SkillLevel(Skill.WOODCUTTING, 15), "sturdy_axe_1");

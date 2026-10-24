@@ -334,6 +334,7 @@ mobs to elites.
 | Mining      | Sturdy Pickaxe III  | 30% chance                                          | Mining 30, perk II  | 3    |
 | Mining      | Prospector I        | 10% chance of double ore drops                      | Mining 10           | 2    |
 | Mining      | Prospector II       | 20% chance                                          | Mining 25, perk I   | 3    |
+| Mining      | Ore Sense           | Holding a pickaxe: particle trail points at the nearest ore within 12 blocks, coloured by ore type, bigger when closer | Mining 40 (unlocked for testing) | 4 |
 | Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
 | Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 15      | 3    |
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
@@ -457,6 +458,8 @@ To brainstorm later:
   separate Progress section + tooltips because rank looked skill-based.
 - 2026-10-24: Farming skill (v0.2.x): XP from grown crops + breeding (no separate
   Ranching skill), extra-harvest bonus, no start penalty, Replant is a perk.
+- 2026-10-24: Ore Sense perk: client-side particle trail toward nearest ore (12 blocks),
+  only with a pickaxe in hand. Requirement Mining 40, temporarily removed for testing.
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 

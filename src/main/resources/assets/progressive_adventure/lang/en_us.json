@@ -195,5 +195,7 @@
   "perk.progressive_adventure.rancher.description": "15% chance of twins when you breed animals.",
   "perk.progressive_adventure.green_thumb": "Green Thumb",
   "perk.progressive_adventure.green_thumb.description": "25% chance that bone meal isn't used up.",
-  "perk_category.progressive_adventure.farming": "Farming"
+  "perk_category.progressive_adventure.farming": "Farming",
+  "perk.progressive_adventure.ore_sense": "Ore Sense",
+  "perk.progressive_adventure.ore_sense.description": "While holding a pickaxe, sparkles point towards the nearest ore within 12 blocks. The colour shows the ore type, bigger sparkles mean it's closer."
 }
