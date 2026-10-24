@@ -13,7 +13,7 @@ This file only covers what those don't: where we are, what's pending, and how th
 | v0.1 (tag `v0.1.0`) | 5 starting hearts, milestones → hearts/stomach, metabolism, Mining/Woodcutting/Digging, bestiary damage modifier, `/pam` | Playtested, works well |
 | v0.2 | Perk points from all advancements, 24 perks, Adventure screen (K: Character/Perks/Bestiary), free respec | Playtested: GUI, perks and reset work. **Not tagged yet** (tagging `v0.2.0` was offered, no answer) |
 | v0.2.x | Farming skill + 10 farming perks + 3 Farmer milestones, scrollable perk list | Built, server smoke-tested, **not playtested** |
-| v0.2.x | Ore Sense perk (client-side particle trail to nearest ore) | Built, **not playtested** |
+| v0.2.x | Ore Sense perk (client-side particle trail to nearest ore) | Playtested: works (took a moment to understand) |
 | v0.2.x | Deep Breath split into tiers I/II/III (~30/45/60s air) | Built, **not playtested** |
 
 The working tree is clean; everything is committed on `main`.
@@ -25,6 +25,8 @@ The user said they'll report back; don't assume these work:
   Replant (one seed replanted, rest dropped), Harvester (3×3 when breaking *and* right-click
   with Replant), Light Step, sweet berry XP, breeding XP + Rancher twins, Green Thumb.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
+- **Replant and Ore Sense: confirmed working.** Keep Replant unlocked until Harvester's right-click
+  mode is tested (it needs Replant), then restore all three requirements.
 - **Ore Sense:** does it feel right? Expected complaint: coal/copper are so common the trail
   mostly points at them. Options already offered: ignore coal/copper, prefer the most valuable
   ore in range, or add a tier II for rare ores. Interval (30 ticks), radius (12) and trail length
@@ -51,7 +53,9 @@ Restore them when the user confirms the perks work. Also update the DESIGN.md pe
    budget; XP curves.
 3. **Ideas parked in DESIGN.md:** more skills (Combat, Archery, Fishing), diet variety / Well Fed,
    more milestones from the draft list, toasts instead of chat messages, exploration extras.
-4. **Known gap:** the client uses its own config for skill bonus and familiarity tier display, so
+4. **Parked by the user:** some PAM milestones duplicate a vanilla advancement, so two toasts pop
+   at once. Don't fix until the user brings it up again (see DESIGN.md open questions).
+5. **Known gap:** the client uses its own config for skill bonus and familiarity tier display, so
    a server with a changed config shows different numbers on the client.
 
 ## How the user works

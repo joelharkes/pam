@@ -469,6 +469,9 @@ To brainstorm later:
 
 - [ ] Perk balance: costs and point budget (playtest).
 - [ ] Balance: hearts per milestone, Rank thresholds, elite chances.
+- [ ] Double advancements (parked by user): some PAM milestones match a vanilla advancement
+  (same trigger), so two toasts pop at once. Fix later (e.g. drop the overlap, hide one toast,
+  or make the PAM milestone require something different).
 
 ## Roadmap
 
