@@ -117,8 +117,6 @@
   "perk.progressive_adventure.bonus_heart_3.description": "+1 more heart.",
   "perk.progressive_adventure.iron_stomach": "Iron Stomach",
   "perk.progressive_adventure.iron_stomach.description": "Immune to the Hunger effect from rotten flesh, raw chicken and husks.",
-  "perk.progressive_adventure.deep_breath": "Deep Breath",
-  "perk.progressive_adventure.deep_breath.description": "Hold your breath much longer underwater.",
   "perk.progressive_adventure.soft_landing": "Soft Landing",
   "perk.progressive_adventure.soft_landing.description": "Fall 3 more blocks before taking damage.",
   "perk.progressive_adventure.fleet_foot": "Fleet Foot",
@@ -197,5 +195,11 @@
   "perk.progressive_adventure.green_thumb.description": "25% chance that bone meal isn't used up.",
   "perk_category.progressive_adventure.farming": "Farming",
   "perk.progressive_adventure.ore_sense": "Ore Sense",
-  "perk.progressive_adventure.ore_sense.description": "While holding a pickaxe, sparkles point towards the nearest ore within 12 blocks. The colour shows the ore type, bigger sparkles mean it's closer."
+  "perk.progressive_adventure.ore_sense.description": "While holding a pickaxe, sparkles point towards the nearest ore within 12 blocks. The colour shows the ore type, bigger sparkles mean it's closer.",
+  "perk.progressive_adventure.deep_breath_1": "Deep Breath I",
+  "perk.progressive_adventure.deep_breath_1.description": "Hold your breath about twice as long underwater (~30s).",
+  "perk.progressive_adventure.deep_breath_2": "Deep Breath II",
+  "perk.progressive_adventure.deep_breath_2.description": "Hold your breath about three times as long (~45s).",
+  "perk.progressive_adventure.deep_breath_3": "Deep Breath III",
+  "perk.progressive_adventure.deep_breath_3.description": "Hold your breath about four times as long (~60s)."
 }

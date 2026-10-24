@@ -102,8 +102,9 @@ public final class Progression {
 		((FoodDataAccess) player.getFoodData()).pam$setMultipliers(hungerDrain,
 				(float) PamConfig.listValue(config.stomachSaturationMultipliers, status.stomach()));
 
-		applyPerkModifier(player, Perks.DEEP_BREATH, Attributes.OXYGEN_BONUS, DEEP_BREATH_MODIFIER,
-				config.deepBreathOxygenBonus, AttributeModifier.Operation.ADD_VALUE);
+		int deepBreath = Perks.tier(player, Perks.DEEP_BREATH_1, Perks.DEEP_BREATH_2, Perks.DEEP_BREATH_3);
+		applyModifier(player, deepBreath > 0, Attributes.OXYGEN_BONUS, DEEP_BREATH_MODIFIER,
+				deepBreath > 0 ? PamConfig.listValue(config.deepBreathOxygenBonuses, deepBreath - 1) : 0, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.SOFT_LANDING, Attributes.SAFE_FALL_DISTANCE, SOFT_LANDING_MODIFIER,
 				config.softLandingBlocks, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.FLEET_FOOT, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
@@ -115,8 +116,13 @@ public final class Progression {
 
 	private static void applyPerkModifier(ServerPlayer player, Perk perk, Holder<Attribute> attribute, Identifier id,
 			double amount, AttributeModifier.Operation operation) {
+		applyModifier(player, Perks.has(player, perk), attribute, id, amount, operation);
+	}
+
+	private static void applyModifier(ServerPlayer player, boolean active, Holder<Attribute> attribute, Identifier id,
+			double amount, AttributeModifier.Operation operation) {
 		AttributeInstance instance = player.getAttribute(attribute);
-		if (Perks.has(player, perk)) {
+		if (active) {
 			instance.addOrUpdateTransientModifier(new AttributeModifier(id, amount, operation));
 		} else {
 			instance.removeModifier(id);

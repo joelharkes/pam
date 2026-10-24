@@ -344,7 +344,7 @@ mobs to elites.
 | Combat      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
 | Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 3 / 8 / 15 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
-| Survival    | Deep Breath         | Hold your breath much longer underwater             | —                   | 1    |
+| Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 5 / Rank 10 | 1/2/3 |
 | Survival    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
 | Survival    | Fleet Foot          | +5% movement speed                                  | Rank 5              | 2    |
 
@@ -460,6 +460,8 @@ To brainstorm later:
   Ranching skill), extra-harvest bonus, no start penalty, Replant is a perk.
 - 2026-10-24: Ore Sense perk: client-side particle trail toward nearest ore (12 blocks),
   only with a pickaxe in hand. Requirement Mining 40, temporarily removed for testing.
+- 2026-10-24: Deep Breath split into 3 tiers. Replant/Harvester requirements temporarily
+  removed for testing.
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 

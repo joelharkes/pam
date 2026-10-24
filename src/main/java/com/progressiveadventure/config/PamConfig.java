@@ -67,7 +67,8 @@ public class PamConfig {
 	public double archaeologistChance = 0.03;
 	public float secondWindHealthThreshold = 6f;
 	public int secondWindCooldownSeconds = 120;
-	public double deepBreathOxygenBonus = 3.0;
+	// Oxygen bonus works like Respiration: each point adds ~15s of air
+	public List<Double> deepBreathOxygenBonuses = List.of(1.0, 2.0, 3.0);
 	public double softLandingBlocks = 3.0;
 	public double fleetFootSpeedBonus = 0.05;
 	public List<Double> bountifulHarvestChances = List.of(0.1, 0.2);

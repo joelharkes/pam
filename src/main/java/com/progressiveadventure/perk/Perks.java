@@ -43,13 +43,15 @@ public final class Perks {
 	public static final Perk ARCHAEOLOGIST = register("archaeologist", PerkCategory.DIGGING, Items.BRUSH, 2, new SkillLevel(Skill.DIGGING, 10), null);
 
 	public static final Perk LIGHT_STEP = register("light_step", PerkCategory.FARMING, Items.LEATHER_BOOTS, 1, Requirement.NONE, null);
-	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, new SkillLevel(Skill.FARMING, 5), null);
+	// TODO: restore new SkillLevel(Skill.FARMING, 5) after playtesting (unlocked for testing)
+	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, Requirement.NONE, null);
 	public static final Perk STURDY_HOE_1 = register("sturdy_hoe_1", PerkCategory.FARMING, Items.STONE_HOE, 1, new SkillLevel(Skill.FARMING, 5), null);
 	public static final Perk STURDY_HOE_2 = register("sturdy_hoe_2", PerkCategory.FARMING, Items.IRON_HOE, 2, new SkillLevel(Skill.FARMING, 15), "sturdy_hoe_1");
 	public static final Perk STURDY_HOE_3 = register("sturdy_hoe_3", PerkCategory.FARMING, Items.DIAMOND_HOE, 3, new SkillLevel(Skill.FARMING, 30), "sturdy_hoe_2");
 	public static final Perk BOUNTIFUL_HARVEST_1 = register("bountiful_harvest_1", PerkCategory.FARMING, Items.WHEAT, 2, new SkillLevel(Skill.FARMING, 10), null);
 	public static final Perk BOUNTIFUL_HARVEST_2 = register("bountiful_harvest_2", PerkCategory.FARMING, Items.HAY_BLOCK, 3, new SkillLevel(Skill.FARMING, 25), "bountiful_harvest_1");
-	public static final Perk HARVESTER = register("harvester", PerkCategory.FARMING, Items.GOLDEN_HOE, 3, new SkillLevel(Skill.FARMING, 20), null);
+	// TODO: restore new SkillLevel(Skill.FARMING, 20) after playtesting (unlocked for testing)
+	public static final Perk HARVESTER = register("harvester", PerkCategory.FARMING, Items.GOLDEN_HOE, 3, Requirement.NONE, null);
 	public static final Perk RANCHER = register("rancher", PerkCategory.FARMING, Items.LEAD, 2, new SkillLevel(Skill.FARMING, 10), null);
 	public static final Perk GREEN_THUMB = register("green_thumb", PerkCategory.FARMING, Items.BONE_MEAL, 2, new SkillLevel(Skill.FARMING, 15), null);
 
@@ -62,7 +64,9 @@ public final class Perks {
 	public static final Perk BONUS_HEART_2 = register("bonus_heart_2", PerkCategory.SURVIVAL, Items.GOLDEN_APPLE, 4, new Rank(8), "bonus_heart_1");
 	public static final Perk BONUS_HEART_3 = register("bonus_heart_3", PerkCategory.SURVIVAL, Items.ENCHANTED_GOLDEN_APPLE, 5, new Rank(15), "bonus_heart_2");
 	public static final Perk IRON_STOMACH = register("iron_stomach", PerkCategory.SURVIVAL, Items.ROTTEN_FLESH, 1, Requirement.NONE, null);
-	public static final Perk DEEP_BREATH = register("deep_breath", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 1, Requirement.NONE, null);
+	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SURVIVAL, Items.PUFFERFISH, 1, Requirement.NONE, null);
+	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(5), "deep_breath_1");
+	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(10), "deep_breath_2");
 	public static final Perk SOFT_LANDING = register("soft_landing", PerkCategory.SURVIVAL, Items.FEATHER, 2, Requirement.NONE, null);
 	public static final Perk FLEET_FOOT = register("fleet_foot", PerkCategory.SURVIVAL, Items.SUGAR, 2, new Rank(5), null);
 
