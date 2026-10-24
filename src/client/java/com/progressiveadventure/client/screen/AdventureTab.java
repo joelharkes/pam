@@ -13,4 +13,8 @@ interface AdventureTab {
 	default boolean mouseClicked(double mouseX, double mouseY) {
 		return false;
 	}
+
+	default boolean mouseScrolled(double mouseX, double mouseY, double scrollY) {
+		return false;
+	}
 }

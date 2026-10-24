@@ -100,8 +100,8 @@ class CharacterTab implements AdventureTab {
 		graphics.item(new ItemStack(category.icon), x, y);
 		Component name = Component.translatable("skill.progressive_adventure." + skill.id);
 		graphics.text(font, Component.translatable("screen.progressive_adventure.skill_level", name, level), x + 20, y, AdventureScreen.TEXT);
-		graphics.text(font, Component.translatable("screen.progressive_adventure.skill_speed", Skills.formatBonus(level)),
-				x + 150, y, Skills.speedBonus(level) < 0 ? AdventureScreen.TEXT_RED : AdventureScreen.TEXT_GREEN);
+		graphics.text(font, Skills.describeBonus(skill, level),
+				x + 150, y, Skills.bonus(skill, level) < 0 ? AdventureScreen.TEXT_RED : AdventureScreen.TEXT_GREEN);
 
 		int barX = x + 20;
 		int barY = y + 11;

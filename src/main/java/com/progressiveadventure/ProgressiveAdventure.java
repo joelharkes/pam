@@ -8,6 +8,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
 import com.progressiveadventure.perk.PerkEffects;
+import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
 
@@ -17,6 +18,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -53,11 +55,19 @@ public class ProgressiveAdventure implements ModInitializer {
 		});
 
 		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
-			if (!PlacedBlocks.remove(level, pos) && player instanceof ServerPlayer serverPlayer) {
+			if (!(player instanceof ServerPlayer serverPlayer)) {
+				return;
+			}
+			boolean placed = PlacedBlocks.remove(level, pos);
+			if (!placed) {
 				Skills.onBlockBroken(serverPlayer, state);
 				PerkEffects.onNaturalBlockBroken(serverPlayer, (ServerLevel) level, pos, state, blockEntity);
 			}
+			// Grown crops count even when planted by a player; Farming checks placement itself
+			Farming.onBlockBroken(serverPlayer, (ServerLevel) level, pos, state, blockEntity, placed);
 		});
+
+		UseBlockCallback.EVENT.register(Farming::onUseBlock);
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTickCount() % 20 == 0) {

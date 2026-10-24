@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:lead"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.farmer.breed_5.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.farmer.breed_5.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

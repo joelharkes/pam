@@ -18,16 +18,23 @@ import java.util.Set;
  * @param foodsEaten item ids of distinct foods eaten
  * @param biomes     ids of distinct biomes visited
  * @param perks      ids of owned perks
+ * @param crops      block ids of distinct crops harvested
+ * @param bred       entity type ids of distinct animals bred
  */
-public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> skillXp, Set<String> foodsEaten, Set<String> biomes, Set<String> perks) {
-	public static final PlayerProgress EMPTY = new PlayerProgress(Map.of(), Map.of(), Set.of(), Set.of(), Set.of());
+public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> skillXp, Set<String> foodsEaten, Set<String> biomes,
+		Set<String> perks, Set<String> crops, Set<String> bred) {
+	public static final PlayerProgress EMPTY = new PlayerProgress(Map.of(), Map.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
+
+	private static final Codec<Set<String>> STRING_SET = Codec.STRING.listOf().xmap(Set::copyOf, List::copyOf);
 
 	public static final Codec<PlayerProgress> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("kills", Map.of()).forGetter(PlayerProgress::kills),
 			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("skill_xp", Map.of()).forGetter(PlayerProgress::skillXp),
-			Codec.STRING.listOf().<Set<String>>xmap(Set::copyOf, List::copyOf).optionalFieldOf("foods_eaten", Set.of()).forGetter(PlayerProgress::foodsEaten),
-			Codec.STRING.listOf().<Set<String>>xmap(Set::copyOf, List::copyOf).optionalFieldOf("biomes", Set.of()).forGetter(PlayerProgress::biomes),
-			Codec.STRING.listOf().<Set<String>>xmap(Set::copyOf, List::copyOf).optionalFieldOf("perks", Set.of()).forGetter(PlayerProgress::perks)
+			STRING_SET.optionalFieldOf("foods_eaten", Set.of()).forGetter(PlayerProgress::foodsEaten),
+			STRING_SET.optionalFieldOf("biomes", Set.of()).forGetter(PlayerProgress::biomes),
+			STRING_SET.optionalFieldOf("perks", Set.of()).forGetter(PlayerProgress::perks),
+			STRING_SET.optionalFieldOf("crops", Set.of()).forGetter(PlayerProgress::crops),
+			STRING_SET.optionalFieldOf("bred", Set.of()).forGetter(PlayerProgress::bred)
 	).apply(instance, PlayerProgress::new));
 
 	public int killsOf(String entityType) {
@@ -41,34 +48,42 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 	public PlayerProgress withKills(String entityType, int amount) {
 		Map<String, Integer> copy = new HashMap<>(kills);
 		copy.merge(entityType, amount, Integer::sum);
-		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks);
+		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks, crops, bred);
 	}
 
 	public PlayerProgress withSkillXp(String skill, int amount) {
 		Map<String, Integer> copy = new HashMap<>(skillXp);
 		copy.merge(skill, amount, Integer::sum);
-		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks);
+		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks, crops, bred);
 	}
 
 	public PlayerProgress withFood(String item) {
-		Set<String> copy = new HashSet<>(foodsEaten);
-		copy.add(item);
-		return new PlayerProgress(kills, skillXp, Set.copyOf(copy), biomes, perks);
+		return new PlayerProgress(kills, skillXp, add(foodsEaten, item), biomes, perks, crops, bred);
 	}
 
 	public PlayerProgress withBiome(String biome) {
-		Set<String> copy = new HashSet<>(biomes);
-		copy.add(biome);
-		return new PlayerProgress(kills, skillXp, foodsEaten, Set.copyOf(copy), perks);
+		return new PlayerProgress(kills, skillXp, foodsEaten, add(biomes, biome), perks, crops, bred);
 	}
 
 	public PlayerProgress withPerk(String perk) {
-		Set<String> copy = new HashSet<>(perks);
-		copy.add(perk);
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.copyOf(copy));
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, add(perks, perk), crops, bred);
 	}
 
 	public PlayerProgress withoutPerks() {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of());
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of(), crops, bred);
+	}
+
+	public PlayerProgress withCrop(String crop) {
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, add(crops, crop), bred);
+	}
+
+	public PlayerProgress withBred(String entityType) {
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, add(bred, entityType));
+	}
+
+	private static Set<String> add(Set<String> set, String value) {
+		Set<String> copy = new HashSet<>(set);
+		copy.add(value);
+		return Set.copyOf(copy);
 	}
 }

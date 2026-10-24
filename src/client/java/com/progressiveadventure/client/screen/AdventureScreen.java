@@ -22,7 +22,7 @@ public class AdventureScreen extends Screen {
 	static final int TEXT_PURPLE = 0xFFFF55FF;
 
 	private static final int PANEL_WIDTH = 330;
-	private static final int PANEL_HEIGHT = 220;
+	private static final int PANEL_HEIGHT = 250;
 	private static final int TAB_BAR_HEIGHT = 26;
 
 	private static final List<Component> TAB_TITLES = List.of(
@@ -106,6 +106,11 @@ public class AdventureScreen extends Screen {
 			return true;
 		}
 		return event.button() == 0 && tabs.get(selectedTab).mouseClicked(event.x(), event.y());
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+		return tabs.get(selectedTab).mouseScrolled(mouseX, mouseY, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
 
 	@Override

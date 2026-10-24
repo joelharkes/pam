@@ -54,6 +54,8 @@ public final class PerkEffects {
 			tier = Perks.tier(player, Perks.STURDY_AXE_1, Perks.STURDY_AXE_2, Perks.STURDY_AXE_3);
 		} else if (stack.is(ItemTags.SHOVELS)) {
 			tier = Perks.tier(player, Perks.STURDY_SHOVEL_1, Perks.STURDY_SHOVEL_2, Perks.STURDY_SHOVEL_3);
+		} else if (stack.is(ItemTags.HOES)) {
+			tier = Perks.tier(player, Perks.STURDY_HOE_1, Perks.STURDY_HOE_2, Perks.STURDY_HOE_3);
 		} else if (stack.is(ItemTags.SWORDS)) {
 			tier = Perks.tier(player, Perks.STURDY_WEAPON_1, Perks.STURDY_WEAPON_2);
 		} else {

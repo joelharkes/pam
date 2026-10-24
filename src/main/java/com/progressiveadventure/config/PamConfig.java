@@ -38,6 +38,11 @@ public class PamConfig {
 	public double speedBonusCurve = 15.0;
 	public int oreXp = 3;
 
+	// Farming: extra harvest chance uses the same curve as speedBonusCurve, but starts at 0
+	public double farmingMaxHarvestBonus = 0.5;
+	public int melonPumpkinXp = 2;
+	public int breedingXp = 5;
+
 	// Bestiary: damage modifier per kill threshold, sorted by kills
 	public List<FamiliarityTier> familiarityTiers = List.of(
 			new FamiliarityTier(0, -0.15, "unknown"),
@@ -65,6 +70,9 @@ public class PamConfig {
 	public double deepBreathOxygenBonus = 3.0;
 	public double softLandingBlocks = 3.0;
 	public double fleetFootSpeedBonus = 0.05;
+	public List<Double> bountifulHarvestChances = List.of(0.1, 0.2);
+	public double rancherTwinChance = 0.15;
+	public double greenThumbChance = 0.25;
 
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}

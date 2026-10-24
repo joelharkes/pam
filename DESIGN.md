@@ -177,11 +177,44 @@ level 4 (~64 blocks) and cap near +60%.
 | Digging     | Shovel blocks                 | Break speed                                | Easy        |
 | Combat      | Melee damage dealt            | Attack speed/damage                        | Easy        |
 | Archery     | Bow/crossbow hits             | Arrow damage, draw speed                   | Medium      |
-| Farming     | Harvesting grown crops        | Extra yield                                | Medium      |
+| Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Medium      |
 | Fishing     | Catching fish                 | Faster bites, better loot                  | Medium      |
 
 - No skill XP from blocks the player placed (stops place/break loops).
 - **Perks** at certain levels are the exciting part. Percentages alone feel flat.
+
+### 3b. Farming skill
+
+**XP sources:**
+
+| Action | XP |
+|---|---|
+| Harvesting a fully grown crop (wheat, carrots, potatoes, beetroot, torchflower, nether wart, cocoa) | 1 |
+| Harvesting melons and pumpkins (grown from stems, never player-placed) | 2 |
+| Sugar cane, cactus, bamboo (only grown parts; the planted block is marked as placed) | 1 |
+| Picking sweet berries (right-click) | 1 |
+| Breeding animals (both players get XP if two players fed the parents) | 5 |
+
+- No XP for planting or tilling (spammable), unripe crops, or automatic farms
+  (only blocks a player breaks count). Bone meal grinding is accepted: it costs bones.
+- **Passive bonus:** chance of +1 extra crop, 0% → ~50% with the usual diminishing curve.
+- **No start penalty** (unlike Mining/bestiary): food is already harder early, a second
+  penalty on food would be harsh for kids.
+
+**Farming perks:**
+
+| Perk | Effect | Requires | Cost |
+|---|---|---|---|
+| Light Step | You no longer trample farmland | — | 1 |
+| Replant | Right-click a grown crop to harvest and replant it | Farming 5 | 2 |
+| Sturdy Hoe I/II/III | 10/20/30% chance hoes use no durability | Farming 5/15/30 | 1/2/3 |
+| Bountiful Harvest I/II | 10%/20% chance of double crop drops | Farming 10/25 | 2/3 |
+| Harvester | Harvesting with a hoe also harvests grown crops in a 3×3 area | Farming 20 | 3 |
+| Rancher | 15% chance of twins when breeding | Farming 10 | 2 |
+| Green Thumb | 25% chance bone meal isn't used up | Farming 15 | 2 |
+
+**Farmer milestones:** harvest 3 different crops (stomach), harvest 10 different crops
+(½ heart), breed 5 different kinds of animals (½ heart).
 
 ### 4. Bestiary: mob familiarity
 
@@ -422,6 +455,8 @@ To brainstorm later:
   unlocking moves to v0.3.
 - 2026-10-24: v0.2 playtested: GUI, perks and perk reset work. Character tab got a
   separate Progress section + tooltips because rank looked skill-based.
+- 2026-10-24: Farming skill (v0.2.x): XP from grown crops + breeding (no separate
+  Ranching skill), extra-harvest bonus, no start penalty, Replant is a perk.
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 
@@ -437,6 +472,7 @@ To brainstorm later:
   damage modifier, config, `/pam` commands. Playtested: works well.
 - **v0.2:** perk points + perk list above, Adventure screen (character, perks,
   bestiary tabs), keybind. *(Implemented, needs playtesting.)*
-- **v0.3:** Rank-based mob unlocking, elite mobs.
+- **v0.2.x:** Farming skill, farming perks, Farmer milestones. *(Implemented, needs playtesting.)*
+- **v0.3:** Rank-based mob unlocking, elite mobs (postponed by user for now).
 - **v0.4:** more skills (Combat, Archery, Farming, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

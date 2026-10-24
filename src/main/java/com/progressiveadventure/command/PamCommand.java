@@ -55,7 +55,7 @@ public final class PamCommand {
 			int level = Skills.level(xp);
 			send(player, Component.translatable("command.progressive_adventure.skill",
 					Component.translatable("skill.progressive_adventure." + skill.id), level,
-					xp, Skills.xpForLevel(level + 1), Skills.formatBonus(level)));
+					xp, Skills.xpForLevel(level + 1), Skills.describeBonus(skill, level)));
 		}
 		send(player, Component.translatable("command.progressive_adventure.explore",
 				progress.foodsEaten().size(), progress.biomes().size(), progress.kills().size()));

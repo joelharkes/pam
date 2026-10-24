@@ -23,28 +23,38 @@ public final class Skills {
 		return (int) Math.floor(Math.sqrt(xp / PamConfig.get().xpPerLevelFactor));
 	}
 
+	public static int level(Player player, Skill skill) {
+		return level(PamAttachments.progress(player).xpOf(skill.id));
+	}
+
 	public static int xpForLevel(int level) {
 		return (int) Math.ceil(level * level * PamConfig.get().xpPerLevelFactor);
 	}
 
 	/**
-	 * Fraction added to break speed, e.g. 0.25 = 25% faster. Starts below vanilla at minSpeedBonus, rises fast
-	 * early and flattens towards maxSpeedBonus.
+	 * The skill's bonus as a fraction. Tool skills: break speed, starting below vanilla at minSpeedBonus and
+	 * flattening towards maxSpeedBonus. Farming: extra harvest chance, starting at 0 (no early penalty on food).
 	 */
-	public static double speedBonus(int level) {
+	public static double bonus(Skill skill, int level) {
 		PamConfig config = PamConfig.get();
-		return config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * (1 - Math.exp(-level / config.speedBonusCurve));
+		double curve = 1 - Math.exp(-level / config.speedBonusCurve);
+		if (!skill.isToolSkill()) {
+			return config.farmingMaxHarvestBonus * curve;
+		}
+		return config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * curve;
 	}
 
-	public static String formatBonus(int level) {
-		long percent = Math.round(speedBonus(level) * 100);
-		return (percent >= 0 ? "+" : "") + percent + "%";
+	/** E.g. "+19% speed" or "+12% extra harvest". */
+	public static Component describeBonus(Skill skill, int level) {
+		long percent = Math.round(bonus(skill, level) * 100);
+		String formatted = (percent >= 0 ? "+" : "") + percent + "%";
+		return Component.translatable("skill_bonus.progressive_adventure." + (skill.isToolSkill() ? "speed" : "harvest"), formatted);
 	}
 
-	/** The skill that applies when breaking this block with this tool, or null. */
+	/** The tool skill that applies when breaking this block with this tool, or null. */
 	public static Skill skillFor(ItemStack tool, BlockState state) {
 		for (Skill skill : Skill.values()) {
-			if (tool.is(skill.tools) && state.is(skill.blocks)) {
+			if (skill.isToolSkill() && tool.is(skill.tools) && state.is(skill.blocks)) {
 				return skill;
 			}
 		}
@@ -57,15 +67,17 @@ public final class Skills {
 		if (skill == null) {
 			return 1f;
 		}
-		return 1f + (float) speedBonus(level(PamAttachments.progress(player).xpOf(skill.id)));
+		return 1f + (float) bonus(skill, level(player, skill));
 	}
 
 	public static void onBlockBroken(ServerPlayer player, BlockState state) {
 		Skill skill = skillFor(player.getMainHandItem(), state);
-		if (skill == null) {
-			return;
+		if (skill != null) {
+			addXp(player, skill, state.is(ConventionalBlockTags.ORES) ? PamConfig.get().oreXp : 1);
 		}
-		int xp = state.is(ConventionalBlockTags.ORES) ? PamConfig.get().oreXp : 1;
+	}
+
+	public static void addXp(ServerPlayer player, Skill skill, int xp) {
 		PlayerProgress progress = PamAttachments.progress(player);
 		int levelBefore = level(progress.xpOf(skill.id));
 		progress = progress.withSkillXp(skill.id, xp);
@@ -75,7 +87,7 @@ public final class Skills {
 		if (levelAfter > levelBefore) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.skill_level_up",
 					Component.translatable("skill.progressive_adventure." + skill.id), levelAfter,
-					formatBonus(levelAfter)).withStyle(ChatFormatting.GREEN));
+					describeBonus(skill, levelAfter)).withStyle(ChatFormatting.GREEN));
 			player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5f, 1.5f);
 		}
 	}

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:farmer/crops_3",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:hay_block"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.farmer.crops_10.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.farmer.crops_10.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

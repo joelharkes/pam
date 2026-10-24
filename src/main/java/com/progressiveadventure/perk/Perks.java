@@ -40,6 +40,17 @@ public final class Perks {
 	public static final Perk STURDY_SHOVEL_3 = register("sturdy_shovel_3", PerkCategory.DIGGING, Items.DIAMOND_SHOVEL, 3, new SkillLevel(Skill.DIGGING, 30), "sturdy_shovel_2");
 	public static final Perk ARCHAEOLOGIST = register("archaeologist", PerkCategory.DIGGING, Items.BRUSH, 2, new SkillLevel(Skill.DIGGING, 10), null);
 
+	public static final Perk LIGHT_STEP = register("light_step", PerkCategory.FARMING, Items.LEATHER_BOOTS, 1, Requirement.NONE, null);
+	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, new SkillLevel(Skill.FARMING, 5), null);
+	public static final Perk STURDY_HOE_1 = register("sturdy_hoe_1", PerkCategory.FARMING, Items.STONE_HOE, 1, new SkillLevel(Skill.FARMING, 5), null);
+	public static final Perk STURDY_HOE_2 = register("sturdy_hoe_2", PerkCategory.FARMING, Items.IRON_HOE, 2, new SkillLevel(Skill.FARMING, 15), "sturdy_hoe_1");
+	public static final Perk STURDY_HOE_3 = register("sturdy_hoe_3", PerkCategory.FARMING, Items.DIAMOND_HOE, 3, new SkillLevel(Skill.FARMING, 30), "sturdy_hoe_2");
+	public static final Perk BOUNTIFUL_HARVEST_1 = register("bountiful_harvest_1", PerkCategory.FARMING, Items.WHEAT, 2, new SkillLevel(Skill.FARMING, 10), null);
+	public static final Perk BOUNTIFUL_HARVEST_2 = register("bountiful_harvest_2", PerkCategory.FARMING, Items.HAY_BLOCK, 3, new SkillLevel(Skill.FARMING, 25), "bountiful_harvest_1");
+	public static final Perk HARVESTER = register("harvester", PerkCategory.FARMING, Items.GOLDEN_HOE, 3, new SkillLevel(Skill.FARMING, 20), null);
+	public static final Perk RANCHER = register("rancher", PerkCategory.FARMING, Items.LEAD, 2, new SkillLevel(Skill.FARMING, 10), null);
+	public static final Perk GREEN_THUMB = register("green_thumb", PerkCategory.FARMING, Items.BONE_MEAL, 2, new SkillLevel(Skill.FARMING, 15), null);
+
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
 	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.COMBAT, Items.WRITABLE_BOOK, 2, new MobTypes(5), null);

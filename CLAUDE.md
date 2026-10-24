@@ -11,7 +11,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 - Feature ideas, design decisions and open questions: [DESIGN.md](DESIGN.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
-  and playtested, not tagged yet. Next: **v0.3** mob unlocking + elite mobs.
+  and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
+  implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
 - Open question for v0.3: gate mob unlocks on Adventure Rank (milestone count) or on earned
   milestone hearts. Rank climbs fast early (~rank 8 on day 2); Claude recommended hearts,
   user hasn't decided yet.
@@ -72,7 +73,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
-- `skill/`: tool skills (break speed), `PlacedBlocks` anti-cheese
+- `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
+  xp, extra harvests, Replant/Harvester/Rancher), `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber, archaeologist, second wind); attribute perks are applied in `Progression`
@@ -80,10 +82,11 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `command/PamCommand`: `/pam`, `/pam bestiary`
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
-  ItemStack (Sturdy durability perks)
+  ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
+  MixinExtras `@WrapMethod`), Animal (breeding hook)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `screen/AdventureScreen` with
-  `CharacterTab`, `PerksTab`, `BestiaryTab` (custom-drawn, simple Button tabs)
+  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).
@@ -104,5 +107,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   strengths live in config (server-only). Known gap: the client reads its own config for skill
   speed and familiarity tiers, so a server with changed values can show different numbers.
 - Client reads attachments with `getAttachedOrElse` (never create attachments client-side).
+- Register attachments with `AttachmentRegistry.create(id, builder -> ...)` (`builder()` is deprecated).
+- Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
+  and bamboo only when not player-placed.
 - All balance numbers live in config, not hard-coded. Use tabs, match the template style.
 - Git identity is set repo-locally (no global git config on this machine).

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:wheat"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.farmer.crops_3.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.farmer.crops_3.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

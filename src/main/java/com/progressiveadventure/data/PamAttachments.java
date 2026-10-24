@@ -15,24 +15,24 @@ import java.util.Set;
 
 public final class PamAttachments {
 	/** Synced to the owning player only: the client needs skill levels to predict block breaking speed. */
-	public static final AttachmentType<PlayerProgress> PLAYER_PROGRESS = AttachmentRegistry.<PlayerProgress>builder()
-			.persistent(PlayerProgress.CODEC)
-			.copyOnDeath()
-			.initializer(() -> PlayerProgress.EMPTY)
-			.syncWith(ByteBufCodecs.fromCodecWithRegistries(PlayerProgress.CODEC), AttachmentSyncPredicate.targetOnly())
-			.buildAndRegister(ProgressiveAdventure.id("player_progress"));
+	public static final AttachmentType<PlayerProgress> PLAYER_PROGRESS = AttachmentRegistry.create(
+			ProgressiveAdventure.id("player_progress"), builder -> builder
+					.persistent(PlayerProgress.CODEC)
+					.copyOnDeath()
+					.initializer(() -> PlayerProgress.EMPTY)
+					.syncWith(ByteBufCodecs.fromCodecWithRegistries(PlayerProgress.CODEC), AttachmentSyncPredicate.targetOnly()));
 
 	/** Server-derived numbers the client can't compute itself (it doesn't know all advancements or the server config). */
-	public static final AttachmentType<ProgressionSnapshot> PROGRESSION = AttachmentRegistry.<ProgressionSnapshot>builder()
-			.initializer(() -> ProgressionSnapshot.EMPTY)
-			.syncWith(ByteBufCodecs.fromCodecWithRegistries(ProgressionSnapshot.CODEC), AttachmentSyncPredicate.targetOnly())
-			.buildAndRegister(ProgressiveAdventure.id("progression"));
+	public static final AttachmentType<ProgressionSnapshot> PROGRESSION = AttachmentRegistry.create(
+			ProgressiveAdventure.id("progression"), builder -> builder
+					.initializer(() -> ProgressionSnapshot.EMPTY)
+					.syncWith(ByteBufCodecs.fromCodecWithRegistries(ProgressionSnapshot.CODEC), AttachmentSyncPredicate.targetOnly()));
 
 	/** Per chunk: packed positions of blocks placed by players, which give no skill xp when broken. */
-	public static final AttachmentType<Set<Long>> PLACED_BLOCKS = AttachmentRegistry.<Set<Long>>builder()
-			.persistent(Codec.LONG.listOf().xmap(Set::copyOf, List::copyOf))
-			.initializer(Set::of)
-			.buildAndRegister(ProgressiveAdventure.id("placed_blocks"));
+	public static final AttachmentType<Set<Long>> PLACED_BLOCKS = AttachmentRegistry.create(
+			ProgressiveAdventure.id("placed_blocks"), builder -> builder
+					.persistent(Codec.LONG.listOf().xmap(Set::copyOf, List::copyOf))
+					.initializer(Set::of));
 
 	private PamAttachments() {
 	}

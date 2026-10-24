@@ -24,6 +24,10 @@ public final class Milestones {
 	public static final Milestone FOODS_15 = new Milestone("gourmet/foods_15", 0, 1);
 	public static final Milestone FOODS_25 = new Milestone("gourmet/foods_25", 2, 0);
 
+	public static final Milestone CROPS_3 = new Milestone("farmer/crops_3", 0, 1);
+	public static final Milestone CROPS_10 = new Milestone("farmer/crops_10", 1, 0);
+	public static final Milestone BREED_5 = new Milestone("farmer/breed_5", 1, 0);
+
 	public static final Milestone BIOMES_5 = new Milestone("explorer/biomes_5", 1, 0);
 	public static final Milestone BIOMES_15 = new Milestone("explorer/biomes_15", 1, 0);
 	public static final Milestone BIOMES_30 = new Milestone("explorer/biomes_30", 2, 0);
@@ -48,6 +52,7 @@ public final class Milestones {
 	public static final List<Milestone> ALL = List.of(
 			FIRST_NIGHT, SLEEP_IN_BED, IRON_ARMOR,
 			FIRST_FOOD, FOODS_3, FOODS_8, FOODS_15, FOODS_25,
+			CROPS_3, CROPS_10, BREED_5,
 			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, ENTER_NETHER, ENTER_END,
 			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, DRAGON,
 			IRON_TOOLS, DIAMOND_TOOLS, ENCHANT, BREW,
@@ -59,6 +64,9 @@ public final class Milestones {
 	public static final List<Threshold> FOOD_THRESHOLDS = List.of(
 			new Threshold(1, FIRST_FOOD), new Threshold(3, FOODS_3), new Threshold(8, FOODS_8),
 			new Threshold(15, FOODS_15), new Threshold(25, FOODS_25));
+	public static final List<Threshold> CROP_THRESHOLDS = List.of(
+			new Threshold(3, CROPS_3), new Threshold(10, CROPS_10));
+	public static final List<Threshold> BREED_THRESHOLDS = List.of(new Threshold(5, BREED_5));
 	public static final List<Threshold> BIOME_THRESHOLDS = List.of(
 			new Threshold(5, BIOMES_5), new Threshold(15, BIOMES_15), new Threshold(30, BIOMES_30));
 	public static final List<Threshold> MOB_TYPE_THRESHOLDS = List.of(
