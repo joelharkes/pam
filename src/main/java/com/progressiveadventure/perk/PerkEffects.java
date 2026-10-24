@@ -9,9 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,10 +61,32 @@ public final class PerkEffects {
 			tier = Perks.tier(player, Perks.STURDY_HOE_1, Perks.STURDY_HOE_2, Perks.STURDY_HOE_3);
 		} else if (stack.is(ItemTags.SWORDS)) {
 			tier = Perks.tier(player, Perks.STURDY_WEAPON_1, Perks.STURDY_WEAPON_2);
+		} else if (stack.is(ItemTags.HEAD_ARMOR) || stack.is(ItemTags.CHEST_ARMOR) || stack.is(ItemTags.LEG_ARMOR) || stack.is(ItemTags.FOOT_ARMOR)) {
+			tier = Perks.tier(player, Perks.STURDY_ARMOR_1, Perks.STURDY_ARMOR_2, Perks.STURDY_ARMOR_3);
 		} else {
 			return 0;
 		}
 		return tier == 0 ? 0 : PamConfig.listValue(PamConfig.get().sturdyChances, tier - 1);
+	}
+
+	/** Damage multiplier for damage the player takes, from Defense perks. Only the first matching guard counts. */
+	public static float damageTakenMultiplier(ServerPlayer player, DamageSource source) {
+		PamConfig config = PamConfig.get();
+		int tier;
+		List<Double> reductions = config.guardDamageReductions;
+		if (source.is(DamageTypeTags.IS_EXPLOSION)) {
+			tier = Perks.tier(player, Perks.BLAST_GUARD_1, Perks.BLAST_GUARD_2);
+		} else if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+			tier = Perks.tier(player, Perks.ARROW_GUARD_1, Perks.ARROW_GUARD_2);
+		} else if (source.is(DamageTypeTags.IS_FIRE)) {
+			tier = Perks.tier(player, Perks.FIRE_GUARD_1, Perks.FIRE_GUARD_2);
+		} else if (source.getDirectEntity() instanceof Mob) {
+			tier = Perks.tier(player, Perks.TOUGH_HIDE_1, Perks.TOUGH_HIDE_2);
+			reductions = config.toughHideDamageReductions;
+		} else {
+			return 1f;
+		}
+		return tier == 0 ? 1f : (float) (1 - PamConfig.listValue(reductions, tier - 1));
 	}
 
 	/** Called after a player breaks a block that they didn't place themselves. */

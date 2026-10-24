@@ -107,8 +107,9 @@ public final class Progression {
 				deepBreath > 0 ? PamConfig.listValue(config.deepBreathOxygenBonuses, deepBreath - 1) : 0, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.SOFT_LANDING, Attributes.SAFE_FALL_DISTANCE, SOFT_LANDING_MODIFIER,
 				config.softLandingBlocks, AttributeModifier.Operation.ADD_VALUE);
-		applyPerkModifier(player, Perks.FLEET_FOOT, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
-				config.fleetFootSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+		int fleetFoot = Perks.tier(player, Perks.FLEET_FOOT_1, Perks.FLEET_FOOT_2, Perks.FLEET_FOOT_3);
+		applyModifier(player, fleetFoot > 0, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
+				fleetFoot > 0 ? PamConfig.listValue(config.fleetFootSpeedBonuses, fleetFoot - 1) : 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
 		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(), Milestones.ALL.size(),
 				maxHealth(player, status), config.maxHearts, status.stomach(), hungerDrain, perkPointsEarned(player)));

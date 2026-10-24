@@ -1,6 +1,7 @@
 package com.progressiveadventure.mixin;
 
 import com.progressiveadventure.bestiary.Bestiary;
+import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
 
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +25,9 @@ public class LivingEntityMixin {
 		LivingEntity self = (LivingEntity) (Object) this;
 		if (source.getEntity() instanceof ServerPlayer player && !(self instanceof Player)) {
 			return amount * Bestiary.damageMultiplier(player, self);
+		}
+		if (self instanceof ServerPlayer player) {
+			return amount * PerkEffects.damageTakenMultiplier(player, source);
 		}
 		return amount;
 	}

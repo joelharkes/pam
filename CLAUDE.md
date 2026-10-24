@@ -13,7 +13,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Current state, pending playtests and next steps for a new session: [HANDOFF.md](HANDOFF.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
   and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
-  implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
+  implemented, not yet playtested. **Defense perks** (armor durability + per-damage-type guards)
+  and Fleet Foot I/II/III implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
 - Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy):
   Ore Sense (Mining 40), Replant (Farming 5), Harvester (Farming 20).
 - Open question for v0.3: gate mob unlocks on Adventure Rank (milestone count) or on earned
@@ -80,7 +81,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   xp, extra harvests, Replant/Harvester/Rancher), `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
-  durability, prospector, timber, archaeologist, second wind); attribute perks are applied in `Progression`
+  durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`; server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach),

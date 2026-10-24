@@ -342,11 +342,16 @@ mobs to elites.
 | Combat      | Sturdy Weapon I/II  | 10%/20% chance swords use no durability             | 5 / 15 mob types defeated | 1/2 |
 | Combat      | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
 | Combat      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Defense     | Sturdy Armor I/II/III | 10/20/30% chance armor uses no durability       | 5 / 10 / 15 mob types defeated | 1/2/3 |
+| Defense     | Blast Guard I/II    | 15% / 30% less damage from explosions               | 5 / 10 mob types    | 2/3  |
+| Defense     | Arrow Guard I/II    | 15% / 30% less damage from projectiles              | 5 / 10 mob types    | 2/3  |
+| Defense     | Fire Guard I/II     | 15% / 30% less damage from fire, lava, burning      | 5 / 10 mob types    | 2/3  |
+| Defense     | Tough Hide I/II     | 10% / 20% less damage from mob hits (melee)         | 5 / 10 mob types    | 2/3  |
 | Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 3 / 8 / 15 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
 | Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 5 / Rank 10 | 1/2/3 |
 | Survival    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
-| Survival    | Fleet Foot          | +5% movement speed                                  | Rank 5              | 2    |
+| Survival    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 5 / 10 / 15    | 2/3/4|
 
 Implementation notes:
 - Durability: one hook where items lose durability; chance by tool type.
@@ -354,6 +359,9 @@ Implementation notes:
   the ore block itself (Silk Touch).
 - Timber: breaks connected logs (max 64), each log uses durability and gives skill xp.
   Player-placed logs are never felled, so houses are safe.
+- Defense guards: multiply incoming damage before armor (stacks with Protection
+  enchantments). Only the first matching type counts: explosion, projectile, fire, then
+  hits whose direct source is a mob. Uses vanilla damage type tags, so modded damage works.
 - Deep Breath / Soft Landing / Fleet Foot / Bonus Hearts: vanilla attributes.
 - Later ideas: Well Fed (diet variety), extra crop yield (Farming skill), faster bow
   draw (Archery), auto-smelt, night vision underground.
@@ -464,6 +472,10 @@ To brainstorm later:
   only with a pickaxe in hand. Requirement Mining 40, temporarily removed for testing.
 - 2026-10-24: Deep Breath split into 3 tiers. Replant/Harvester requirements temporarily
   removed for testing.
+- 2026-10-24: Defense perks are specific (explosion, projectile, fire, mob hits), no general
+  damage reduction: a general one would make the others pointless, and Bonus Hearts already
+  act as general protection. Gated on mob types defeated (5 / 10), kept easy.
+- 2026-10-24: Fleet Foot split into 3 tiers (+5% each, Rank 5/10/15).
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 
@@ -482,7 +494,8 @@ To brainstorm later:
   damage modifier, config, `/pam` commands. Playtested: works well.
 - **v0.2:** perk points + perk list above, Adventure screen (character, perks,
   bestiary tabs), keybind. *(Implemented, needs playtesting.)*
-- **v0.2.x:** Farming skill, farming perks, Farmer milestones. *(Implemented, needs playtesting.)*
+- **v0.2.x:** Farming skill, farming perks, Farmer milestones, Defense perks, Fleet Foot tiers.
+  *(Implemented, needs playtesting.)*
 - **v0.3:** Rank-based mob unlocking, elite mobs (postponed by user for now).
 - **v0.4:** more skills (Combat, Archery, Farming, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

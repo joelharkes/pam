@@ -70,7 +70,10 @@ public class PamConfig {
 	// Oxygen bonus works like Respiration: each point adds ~15s of air
 	public List<Double> deepBreathOxygenBonuses = List.of(1.0, 2.0, 3.0);
 	public double softLandingBlocks = 3.0;
-	public double fleetFootSpeedBonus = 0.05;
+	public List<Double> fleetFootSpeedBonuses = List.of(0.05, 0.10, 0.15);
+	// Defense perks: share of damage taken away, by tier
+	public List<Double> guardDamageReductions = List.of(0.15, 0.30);
+	public List<Double> toughHideDamageReductions = List.of(0.10, 0.20);
 	public List<Double> bountifulHarvestChances = List.of(0.1, 0.2);
 	public double rancherTwinChance = 0.15;
 	public double greenThumbChance = 0.25;
