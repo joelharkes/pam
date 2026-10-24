@@ -50,6 +50,22 @@ public class PamConfig {
 			new FamiliarityTier(100, 0.50, "master"),
 			new FamiliarityTier(250, 0.55, "master"));
 
+	// Perks: points per completed advancement by frame
+	public int perkPointsTask = 1;
+	public int perkPointsGoal = 2;
+	public int perkPointsChallenge = 3;
+
+	// Perk effects. Index = perk tier - 1.
+	public List<Double> sturdyChances = List.of(0.1, 0.2, 0.3);
+	public List<Double> prospectorChances = List.of(0.1, 0.2);
+	public int timberMaxLogs = 64;
+	public double archaeologistChance = 0.03;
+	public float secondWindHealthThreshold = 6f;
+	public int secondWindCooldownSeconds = 120;
+	public double deepBreathOxygenBonus = 3.0;
+	public double softLandingBlocks = 3.0;
+	public double fleetFootSpeedBonus = 0.05;
+
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}
 

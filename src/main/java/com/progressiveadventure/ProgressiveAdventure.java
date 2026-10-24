@@ -6,6 +6,8 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
+import com.progressiveadventure.network.PamNetworking;
+import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
 
@@ -17,6 +19,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ public class ProgressiveAdventure implements ModInitializer {
 	public void onInitialize() {
 		PamConfig.load();
 		PamAttachments.init();
+		PamNetworking.init();
 
 		ServerPlayerEvents.JOIN.register(Progression::apply);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
@@ -42,9 +46,16 @@ public class ProgressiveAdventure implements ModInitializer {
 			}
 		});
 
+		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
+			if (entity instanceof ServerPlayer player) {
+				PerkEffects.onDamaged(player);
+			}
+		});
+
 		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
 			if (!PlacedBlocks.remove(level, pos) && player instanceof ServerPlayer serverPlayer) {
 				Skills.onBlockBroken(serverPlayer, state);
+				PerkEffects.onNaturalBlockBroken(serverPlayer, (ServerLevel) level, pos, state, blockEntity);
 			}
 		});
 

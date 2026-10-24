@@ -22,6 +22,11 @@ public final class PlacedBlocks {
 		}
 	}
 
+	public static boolean isPlaced(Level level, BlockPos pos) {
+		Set<Long> placed = level.getChunkAt(pos).getAttached(PamAttachments.PLACED_BLOCKS);
+		return placed != null && placed.contains(pos.asLong());
+	}
+
 	/** Forgets the block and returns whether it was player-placed. */
 	public static boolean remove(Level level, BlockPos pos) {
 		LevelChunk chunk = level.getChunkAt(pos);

@@ -6,6 +6,7 @@
 		"BlockItemMixin",
 		"ConsumeItemTriggerMixin",
 		"FoodDataMixin",
+		"ItemStackMixin",
 		"LivingEntityMixin",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin"

@@ -434,7 +434,7 @@ To brainstorm later:
   granting hearts/stomach, metabolism, Mining/Woodcutting/Digging skills, bestiary
   damage modifier, config, `/pam` commands. Playtested: works well.
 - **v0.2:** perk points + perk list above, Adventure screen (character, perks,
-  bestiary tabs), keybind.
+  bestiary tabs), keybind. *(Implemented, needs playtesting.)*
 - **v0.3:** Rank-based mob unlocking, elite mobs.
 - **v0.4:** more skills (Combat, Archery, Farming, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

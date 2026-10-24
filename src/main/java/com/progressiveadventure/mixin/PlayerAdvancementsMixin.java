@@ -1,10 +1,9 @@
 package com.progressiveadventure.mixin;
 
-import com.progressiveadventure.milestone.Milestone;
-import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.milestone.Progression;
 
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -20,16 +19,13 @@ public abstract class PlayerAdvancementsMixin {
 	private ServerPlayer player;
 
 	@Shadow
-	public abstract net.minecraft.advancements.AdvancementProgress getOrStartProgress(AdvancementHolder holder);
+	public abstract AdvancementProgress getOrStartProgress(AdvancementHolder holder);
 
 	@Inject(method = "award", at = @At("RETURN"))
 	private void pam$onAward(AdvancementHolder holder, String criterion, CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ()) {
-			return;
-		}
-		Milestone milestone = Milestones.byId(holder.id());
-		if (milestone != null && getOrStartProgress(holder).isDone()) {
-			Progression.onMilestoneCompleted(player, milestone);
+		// Recipe unlocks are advancements too; they give no points but are cheap to skip
+		if (cir.getReturnValueZ() && holder.value().display().isPresent() && getOrStartProgress(holder).isDone()) {
+			Progression.onAdvancementCompleted(player, holder);
 		}
 	}
 }

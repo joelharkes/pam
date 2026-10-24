@@ -22,6 +22,12 @@ public final class PamAttachments {
 			.syncWith(ByteBufCodecs.fromCodecWithRegistries(PlayerProgress.CODEC), AttachmentSyncPredicate.targetOnly())
 			.buildAndRegister(ProgressiveAdventure.id("player_progress"));
 
+	/** Server-derived numbers the client can't compute itself (it doesn't know all advancements or the server config). */
+	public static final AttachmentType<ProgressionSnapshot> PROGRESSION = AttachmentRegistry.<ProgressionSnapshot>builder()
+			.initializer(() -> ProgressionSnapshot.EMPTY)
+			.syncWith(ByteBufCodecs.fromCodecWithRegistries(ProgressionSnapshot.CODEC), AttachmentSyncPredicate.targetOnly())
+			.buildAndRegister(ProgressiveAdventure.id("progression"));
+
 	/** Per chunk: packed positions of blocks placed by players, which give no skill xp when broken. */
 	public static final AttachmentType<Set<Long>> PLACED_BLOCKS = AttachmentRegistry.<Set<Long>>builder()
 			.persistent(Codec.LONG.listOf().xmap(Set::copyOf, List::copyOf))
@@ -32,11 +38,15 @@ public final class PamAttachments {
 	}
 
 	public static PlayerProgress progress(Player player) {
-		return player.getAttachedOrCreate(PLAYER_PROGRESS);
+		return player.getAttachedOrElse(PLAYER_PROGRESS, PlayerProgress.EMPTY);
 	}
 
 	public static void setProgress(Player player, PlayerProgress progress) {
 		player.setAttached(PLAYER_PROGRESS, progress);
+	}
+
+	public static ProgressionSnapshot snapshot(Player player) {
+		return player.getAttachedOrElse(PROGRESSION, ProgressionSnapshot.EMPTY);
 	}
 
 	public static void init() {

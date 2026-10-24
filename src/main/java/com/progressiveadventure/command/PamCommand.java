@@ -10,6 +10,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.milestone.Progression;
+import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 
@@ -44,7 +45,9 @@ public final class PamCommand {
 		send(player, Component.translatable("command.progressive_adventure.header").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
 		send(player, Component.translatable("command.progressive_adventure.rank", status.rank(), Milestones.ALL.size()));
 		send(player, Component.translatable("command.progressive_adventure.hearts",
-				Progression.formatHearts(Progression.maxHealth(status)), config.maxHearts));
+				Progression.formatHearts(Progression.maxHealth(player, status)), config.maxHearts));
+		send(player, Component.translatable("command.progressive_adventure.perk_points",
+				Perks.pointsAvailable(progress, PamAttachments.snapshot(player)), progress.perks().size()));
 		send(player, Component.translatable("command.progressive_adventure.stomach", status.stomach(),
 				Math.round(PamConfig.listValue(config.stomachExhaustionMultipliers, status.stomach()) * 100)));
 		for (Skill skill : Skill.values()) {

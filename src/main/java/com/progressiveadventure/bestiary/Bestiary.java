@@ -5,6 +5,7 @@ import com.progressiveadventure.config.PamConfig.FamiliarityTier;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Milestones;
+import com.progressiveadventure.perk.Perks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,11 +46,11 @@ public final class Bestiary {
 		String key = key(killed.getType());
 		PlayerProgress progress = PamAttachments.progress(player);
 		int before = progress.killsOf(key);
-		progress = progress.withKill(key);
+		progress = progress.withKills(key, Perks.has(player, Perks.QUICK_STUDY) ? 2 : 1);
 		PamAttachments.setProgress(player, progress);
 
 		FamiliarityTier oldTier = tier(before);
-		FamiliarityTier newTier = tier(before + 1);
+		FamiliarityTier newTier = tier(progress.killsOf(key));
 		Component mobName = killed.getType().getDescription();
 		if (before == 0) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.bestiary_new", mobName)
