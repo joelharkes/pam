@@ -357,6 +357,8 @@ Implementation notes:
 - Deep Breath / Soft Landing / Fleet Foot / Bonus Hearts: vanilla attributes.
 - Later ideas: Well Fed (diet variety), extra crop yield (Farming skill), faster bow
   draw (Archery), auto-smelt, night vision underground.
+- Parked: Ore Sense II (also points at rare ores, or prefers the most valuable ore in range;
+  nearby coal/copper currently hide rarer ores further away).
 
 ---
 
