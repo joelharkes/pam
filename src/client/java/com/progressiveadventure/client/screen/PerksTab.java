@@ -16,15 +16,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/** Categories on the left, the selected category's perks on the right (scrollable). Click a perk to buy it. */
+/**
+ * Categories on the left, the selected category's perks on the right (scrollable). Click a perk to buy it.
+ * Rows stay short (an icon or the cost); the details, including what blocks a perk, are in the row tooltip.
+ */
 class PerksTab implements AdventureTab {
+	private static final Identifier LOCK = Identifier.withDefaultNamespace("container/cartography_table/locked");
+	private static final Identifier CHECKMARK = Identifier.withDefaultNamespace("icon/checkmark");
 	private static final int HEADER_HEIGHT = 22;
 	private static final int CATEGORY_WIDTH = 96;
 	private static final int ROW_HEIGHT = 22;
@@ -41,20 +48,10 @@ class PerksTab implements AdventureTab {
 
 	@Override
 	public void init(AdventureScreen screen, int left, int top, int width, int height) {
-		screen.addTabWidget(Button.builder(Component.translatable("screen.progressive_adventure.reset_perks"), b -> confirmReset(screen))
+		screen.addTabWidget(Button.builder(Component.translatable("screen.progressive_adventure.reset_perks"), b -> ClientPlayNetworking.send(new ResetPerksPayload()))
 				.bounds(left + width - 90, top, 90, 18)
+				.tooltip(Tooltip.create(Component.translatable("screen.progressive_adventure.reset_perks.tooltip")))
 				.build());
-	}
-
-	private static void confirmReset(AdventureScreen screen) {
-		Minecraft minecraft = Minecraft.getInstance();
-		minecraft.gui.setScreen(new ConfirmScreen(confirmed -> {
-			if (confirmed) {
-				ClientPlayNetworking.send(new ResetPerksPayload());
-			}
-			minecraft.gui.setScreen(screen);
-		}, Component.translatable("screen.progressive_adventure.reset_perks.title"),
-				Component.translatable("screen.progressive_adventure.reset_perks.message")));
 	}
 
 	@Override
@@ -109,17 +106,19 @@ class PerksTab implements AdventureTab {
 					: status == Perks.Status.BUYABLE || status == Perks.Status.TOO_EXPENSIVE ? AdventureScreen.TEXT : AdventureScreen.TEXT_DIM;
 			graphics.text(font, perk.name(), listLeft + 22, y + 6, nameColor);
 
-			Component statusText = statusText(perk, status);
-			int statusColor = switch (status) {
-				case OWNED -> AdventureScreen.TEXT_GREEN;
-				case BUYABLE -> AdventureScreen.TEXT_GOLD;
-				case TOO_EXPENSIVE -> AdventureScreen.TEXT_RED;
-				default -> AdventureScreen.TEXT_DIM;
-			};
-			graphics.text(font, statusText, listLeft + listWidth - 4 - font.width(statusText), y + 6, statusColor);
+			int right = listLeft + listWidth - 4;
+			switch (status) {
+				case OWNED -> graphics.blitSprite(RenderPipelines.GUI_TEXTURED, CHECKMARK, right - 9, y + 6, 9, 8);
+				case LOCKED, NEEDS_PREREQUISITE -> graphics.blitSprite(RenderPipelines.GUI_TEXTURED, LOCK, right - 10, y + 3, 10, 14);
+				case BUYABLE, TOO_EXPENSIVE -> {
+					Component cost = Component.translatable("screen.progressive_adventure.perk.points", perk.cost());
+					graphics.text(font, cost, right - font.width(cost), y + 6,
+							status == Perks.Status.BUYABLE ? AdventureScreen.TEXT_GOLD : AdventureScreen.TEXT_RED);
+				}
+			}
 
 			if (hovered) {
-				graphics.setComponentTooltipForNextFrame(font, tooltip(perk, status), mouseX, mouseY);
+				graphics.setComponentTooltipForNextFrame(font, tooltip(perk, status, progress, snapshot), mouseX, mouseY);
 			}
 		}
 		graphics.disableScissor();
@@ -146,25 +145,26 @@ class PerksTab implements AdventureTab {
 		return true;
 	}
 
-	private static Component statusText(Perk perk, Perks.Status status) {
-		return switch (status) {
-			case OWNED -> Component.translatable("screen.progressive_adventure.perk.owned");
-			case BUYABLE -> Component.translatable("screen.progressive_adventure.perk.buy", perk.cost());
-			case TOO_EXPENSIVE -> Component.translatable("screen.progressive_adventure.perk.cost", perk.cost());
-			case LOCKED -> perk.requirement().describe();
-			case NEEDS_PREREQUISITE -> Component.translatable("screen.progressive_adventure.perk.needs", Perks.byId(perk.prerequisite()).name());
-		};
-	}
-
-	private static List<Component> tooltip(Perk perk, Perks.Status status) {
+	private static List<Component> tooltip(Perk perk, Perks.Status status, PlayerProgress progress, ProgressionSnapshot snapshot) {
 		List<Component> lines = new ArrayList<>();
 		lines.add(perk.name().copy().withStyle(ChatFormatting.GOLD));
 		lines.add(perk.description().copy().withStyle(ChatFormatting.GRAY));
-		lines.add(Component.translatable("screen.progressive_adventure.perk.cost", perk.cost()).withStyle(ChatFormatting.LIGHT_PURPLE));
-		if (status == Perks.Status.LOCKED) {
-			lines.add(Component.translatable("screen.progressive_adventure.perk.requires", perk.requirement().describe()).withStyle(ChatFormatting.RED));
-		} else if (status == Perks.Status.BUYABLE) {
-			lines.add(Component.translatable("screen.progressive_adventure.perk.click_to_buy").withStyle(ChatFormatting.YELLOW));
+		switch (status) {
+			case OWNED -> lines.add(Component.translatable("screen.progressive_adventure.perk.owned").withStyle(ChatFormatting.GREEN));
+			case BUYABLE -> lines.add(Component.translatable("screen.progressive_adventure.perk.click_to_buy", perk.cost()).withStyle(ChatFormatting.YELLOW));
+			case TOO_EXPENSIVE -> lines.add(Component.translatable("screen.progressive_adventure.perk.too_expensive", perk.cost()).withStyle(ChatFormatting.RED));
+			case LOCKED, NEEDS_PREREQUISITE -> {
+				// List everything still missing, not just the first blocker
+				if (perk.prerequisite() != null && !progress.perks().contains(perk.prerequisite())) {
+					lines.add(Component.translatable("screen.progressive_adventure.perk.requires",
+							Perks.byId(perk.prerequisite()).name()).withStyle(ChatFormatting.RED));
+				}
+				if (!perk.requirement().isMet(progress, snapshot)) {
+					lines.add(Component.translatable("screen.progressive_adventure.perk.requires",
+							perk.requirement().describe()).withStyle(ChatFormatting.RED));
+				}
+				lines.add(Component.translatable("screen.progressive_adventure.perk.cost", perk.cost()).withStyle(ChatFormatting.DARK_GRAY));
+			}
 		}
 		return lines;
 	}

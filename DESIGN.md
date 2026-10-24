@@ -365,21 +365,21 @@ Keep it simple and close to vanilla.
   vanilla's tab bar so it looks like the world-creation screen. Three tabs:
 
 #### Character tab
-- Adventure Rank (completed / total milestones), hearts (current max / cap, as heart
-  icons), stomach level and hunger drain %.
+- Adventure Rank, hearts (current max / cap, as heart icons), stomach level. Milestone
+  count and hunger drain % are in hover tooltips.
 - One row per skill: tool icon, name, level, xp progress bar to next level, current
-  speed bonus, and the next perk it unlocks.
+  speed bonus.
 
 #### Perks tab
 ```
 ┌──────────────────────────────────────────────────────┐
 │ Perk points: 7                       [Reset perks]   │
 │ ┌──────────┐ ┌────────────────────────────────────┐  │
-│ │ Mining   │ │ ⛏ Sturdy Pickaxe I     ✔ owned      │  │
-│ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II    2 pts  [Buy] │  │
-│ │ Digging  │ │ ⛏ Sturdy Pickaxe III   🔒 Mining 30 │  │
-│ │ Farming  │ │ 💎 Prospector I        2 pts  [Buy] │  │
-│ │ Combat   │ │ 💎 Prospector II       🔒 Mining 25 │  │
+│ │ Mining   │ │ ⛏ Sturdy Pickaxe I               ✔ │  │
+│ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II          2 pts │  │
+│ │ Digging  │ │ ⛏ Sturdy Pickaxe III            🔒 │  │
+│ │ Farming  │ │ 💎 Prospector I              2 pts │  │
+│ │ Combat   │ │ 💎 Prospector II                🔒 │  │
 │ │ Defense  │ │                                    │  │
 │ │ Survival │ │                                    │  │
 │ └──────────┘ └────────────────────────────────────┘  │
@@ -387,8 +387,10 @@ Keep it simple and close to vanilla.
 ```
 - Categories on the left, perks of the selected category on the right (scrolls when a
   category has more perks than fit). Hover a perk for its full description.
-- States: owned (green ✔), buyable (Buy button), too expensive (cost in red), locked
-  (🔒 + requirement).
+- States: owned (✔), buyable (cost in gold, click the row), too expensive (cost in red),
+  locked (🔒). What blocks a locked perk is only in the row tooltip: one hover per row,
+  no separate hover on the lock icon.
+- Reset perks has no confirmation (it's free); the button tooltip says so.
 
 #### Bestiary tab
 - Grid of spawn-egg icons for every mob with a spawn egg, hostile mobs first, with
@@ -466,6 +468,9 @@ To brainstorm later:
 - 2026-10-24: Fleet Foot split into 3 tiers (+5% each, Rank 5/10/15).
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
+- 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
+  and blockers live in the single row tooltip. Next-perk line removed from skills, rank
+  and stomach details moved to tooltips, perk reset without confirmation.
 
 ## Open questions
 

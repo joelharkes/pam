@@ -4,10 +4,8 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.data.ProgressionSnapshot;
 import com.progressiveadventure.milestone.Progression;
-import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.PerkCategory;
 import com.progressiveadventure.perk.Perks;
-import com.progressiveadventure.perk.Requirement;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 
@@ -42,11 +40,12 @@ class CharacterTab implements AdventureTab {
 		graphics.text(font, Component.translatable("screen.progressive_adventure.progress"), left, y, AdventureScreen.TEXT_GOLD);
 
 		y += 12;
-		Component rank = Component.translatable("screen.progressive_adventure.rank", snapshot.rank(), snapshot.rank(), snapshot.milestones());
+		Component rank = Component.translatable("screen.progressive_adventure.rank", snapshot.rank());
 		graphics.text(font, rank, left, y, AdventureScreen.TEXT_AQUA);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(rank), 10)) {
 			graphics.setComponentTooltipForNextFrame(font, List.of(
-					Component.translatable("screen.progressive_adventure.rank.tooltip.1"),
+					Component.translatable("screen.progressive_adventure.rank.tooltip.milestones", snapshot.rank(), snapshot.milestones()),
+					Component.translatable("screen.progressive_adventure.rank.tooltip.1").withStyle(ChatFormatting.GRAY),
 					Component.translatable("screen.progressive_adventure.rank.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
 		}
 
@@ -66,15 +65,20 @@ class CharacterTab implements AdventureTab {
 
 		y += snapshot.maxHalfHearts() > 20 ? 24 : 14;
 		graphics.item(new ItemStack(Items.BREAD), left, y - 4);
-		graphics.text(font, Component.translatable("screen.progressive_adventure.stomach", snapshot.stomach(),
-				Math.round(snapshot.hungerDrain() * 100)), left + 20, y, AdventureScreen.TEXT);
+		Component stomach = Component.translatable("screen.progressive_adventure.stomach", snapshot.stomach());
+		graphics.text(font, stomach, left + 20, y, AdventureScreen.TEXT);
+		if (PerksTab.isInside(mouseX, mouseY, left, y - 4, 20 + font.width(stomach), 16)) {
+			graphics.setComponentTooltipForNextFrame(font, List.of(
+					Component.translatable("screen.progressive_adventure.stomach.tooltip", Math.round(snapshot.hungerDrain() * 100))),
+					mouseX, mouseY);
+		}
 
 		y += 18;
 		graphics.text(font, Component.translatable("screen.progressive_adventure.skills"), left, y, AdventureScreen.TEXT_GOLD);
 		y += 12;
 		for (Skill skill : Skill.values()) {
 			drawSkill(graphics, font, progress, skill, left, y, width);
-			y += 28;
+			y += 20;
 		}
 	}
 
@@ -110,23 +114,5 @@ class CharacterTab implements AdventureTab {
 		graphics.fill(barX, barY, barX + barWidth, barY + 4, 0xFF2A2A2A);
 		graphics.fill(barX, barY, barX + Math.round(barWidth * fraction), barY + 4, 0xFF55CC55);
 		graphics.text(font, (xp - levelStart) + " / " + (levelEnd - levelStart), barX + barWidth + 6, barY - 2, AdventureScreen.TEXT_DIM);
-
-		Perk next = nextPerk(skill, level);
-		if (next != null) {
-			graphics.text(font, Component.translatable("screen.progressive_adventure.next_perk", next.name(),
-					((Requirement.SkillLevel) next.requirement()).level()), x + 20, y + 18, AdventureScreen.TEXT_DIM);
-		}
-	}
-
-	/** The perk with the lowest skill requirement above the current level. */
-	private static Perk nextPerk(Skill skill, int level) {
-		Perk best = null;
-		for (Perk perk : Perks.inCategory(PerkCategory.valueOf(skill.name()))) {
-			if (perk.requirement() instanceof Requirement.SkillLevel req && req.skill() == skill && req.level() > level
-					&& (best == null || req.level() < ((Requirement.SkillLevel) best.requirement()).level())) {
-				best = perk;
-			}
-		}
-		return best;
 	}
 }
