@@ -33,16 +33,23 @@ This mod makes the **player character and the world** progress together:
 
 ---
 
-## Core idea: one progression track
-
-Everything hangs off **milestones**:
+## Core idea: two progression tracks
 
 ```
-complete milestones ──► earn hearts / stomach upgrades
-          │
-          └──► milestone count = Adventure Rank ──► unlocks new mob types,
-                                                    rare elite mobs, better loot
+GUARANTEED TRACK (survival, automatic)
+  PAM milestones ──► hearts + stomach upgrades
+        │
+        └──► milestone count = Adventure Rank ──► mob unlocks, elites, loot
+
+CHOOSABLE TRACK (play style, player picks)
+  ANY advancement (vanilla + PAM) ──► perk points ──► spend on perks
+  skill levels / bestiary ─────────► unlock which perks you may buy
 ```
+
+- **Guaranteed track:** survival stats (hearts, hunger) always grow, so the world
+  (driven by Rank) can never outgrow the player. Works without opening any menu.
+- **Choosable track:** extras on top. Two players in the same world can grow
+  differently. See pillar 6.
 
 - Easy to understand: "I need 3 more milestones for Rank 2."
 - Kids can see exactly what to do next.
@@ -261,22 +268,106 @@ kid-friendly around them.
 Feasibility: **medium.** Hook into natural spawning to cancel locked mobs or upgrade
 mobs to elites.
 
+### 6. Perks: choosable upgrades
+
+#### Perk points
+
+- **Every advancement** with a visible entry gives perk points, vanilla and PAM:
+  **task = 1, goal = 2, challenge = 3** (vanilla's own frame types, so hard
+  advancements are worth more).
+- Not counted: tab roots ("Minecraft", "Nether", ...) and recipe unlocks (they have
+  no display).
+- Points are **derived**, never stored: `available = earned − cost of owned perks`.
+  Old worlds get points for advancements they already have, which is fine.
+- Rough budget: vanilla has ~125 advancements (~190 points), PAM adds ~40. Buying
+  every perk costs ~75 points, so early on you choose, late game you can have most.
+
+#### Rules
+
+- A perk has a **cost**, an optional **requirement** (skill level, mob types
+  defeated or Adventure Rank) and an optional **prerequisite perk** (tier II needs I).
+- Requirements are shown on locked perks so kids know what to do ("Reach Mining 15").
+- **Free respec:** a "Reset perks" button refunds everything (with a confirm). No
+  penalty, fits the family rule.
+- Owned perks stay owned even if a config change lowers your points.
+- Server validates every purchase (no cheating from a modified client).
+
+#### Perk list (v0.2)
+
+| Category    | Perk                | Effect                                              | Requires            | Cost |
+|-------------|---------------------|-----------------------------------------------------|---------------------|------|
+| Mining      | Sturdy Pickaxe I    | 10% chance pickaxes use no durability               | Mining 5            | 1    |
+| Mining      | Sturdy Pickaxe II   | 20% chance (replaces I)                             | Mining 15, perk I   | 2    |
+| Mining      | Sturdy Pickaxe III  | 30% chance                                          | Mining 30, perk II  | 3    |
+| Mining      | Prospector I        | 10% chance of double ore drops                      | Mining 10           | 2    |
+| Mining      | Prospector II       | 20% chance                                          | Mining 25, perk I   | 3    |
+| Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
+| Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 15      | 3    |
+| Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
+| Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
+| Combat      | Sturdy Weapon I/II  | 10%/20% chance swords use no durability             | 5 / 15 mob types defeated | 1/2 |
+| Combat      | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
+| Combat      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 3 / 8 / 15 | 3/4/5|
+| Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
+| Survival    | Deep Breath         | Hold your breath much longer underwater             | —                   | 1    |
+| Survival    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
+| Survival    | Fleet Foot          | +5% movement speed                                  | Rank 5              | 2    |
+
+Implementation notes:
+- Durability: one hook where items lose durability; chance by tool type.
+- Prospector: re-drops the block's loot (respects Fortune). Skipped when the drop is
+  the ore block itself (Silk Touch).
+- Timber: breaks connected logs (max 64), each log uses durability and gives skill xp.
+  Player-placed logs are never felled, so houses are safe.
+- Deep Breath / Soft Landing / Fleet Foot / Bonus Hearts: vanilla attributes.
+- Later ideas: Well Fed (diet variety), extra crop yield (Farming skill), faster bow
+  draw (Archery), auto-smelt, night vision underground.
+
 ---
 
 ## UI
 
-Keep it simple and close to vanilla:
+Keep it simple and close to vanilla.
 
 - **Milestones:** our own "Adventure" tab in the vanilla advancement screen.
-  No custom UI needed.
-- **Skills & Bestiary:** one custom screen with two tabs, opened by a keybind (and
-  maybe a small button in the inventory). Styled like the advancement window
-  (same frame/background), so it feels vanilla.
-  - *Skills tab:* each skill with level, progress bar, current bonus, next perk.
-  - *Bestiary tab:* grid of mob icons. Undiscovered mobs show as "?". Click for
-    kills, damage bonus and (later) drops.
-- **Toasts** for level-ups, new bestiary entries and Rank-ups.
-- Show Adventure Rank and hearts progress on the Skills tab.
+- **Adventure screen:** one window opened with **K** (rebindable in Controls), using
+  vanilla's tab bar so it looks like the world-creation screen. Three tabs:
+
+#### Character tab
+- Adventure Rank (completed / total milestones), hearts (current max / cap, as heart
+  icons), stomach level and hunger drain %.
+- One row per skill: tool icon, name, level, xp progress bar to next level, current
+  speed bonus, and the next perk it unlocks.
+
+#### Perks tab
+```
+┌──────────────────────────────────────────────────────┐
+│ Perk points: 7                       [Reset perks]   │
+│ ┌──────────┐ ┌────────────────────────────────────┐  │
+│ │ Mining   │ │ ⛏ Sturdy Pickaxe I     ✔ owned      │  │
+│ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II    2 pts  [Buy] │  │
+│ │ Digging  │ │ ⛏ Sturdy Pickaxe III   🔒 Mining 30 │  │
+│ │ Combat   │ │ 💎 Prospector I        2 pts  [Buy] │  │
+│ │ Survival │ │ 💎 Prospector II       🔒 Mining 25 │  │
+│ └──────────┘ └────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘
+```
+- Categories on the left, perks of the selected category on the right (fits without
+  scrolling). Hover a perk for its full description.
+- States: owned (green ✔), buyable (Buy button), too expensive (cost in red), locked
+  (🔒 + requirement).
+
+#### Bestiary tab
+- Grid of spawn-egg icons for every mob with a spawn egg, hostile mobs first, with
+  pages. "Discovered 12 / 80" at the top.
+- Undiscovered mobs show a dark "?" tile ("Defeat one to discover").
+- Hover: name, kills, familiarity label, damage modifier, kills needed for next tier.
+- Tile border colour by tier (grey → white → green → gold for Master).
+
+- **Toasts** for level-ups, new bestiary entries and Rank-ups (later; chat/action
+  bar messages for now).
+- `/pam` and `/pam bestiary` stay as text fallbacks.
 
 ---
 
@@ -315,7 +406,9 @@ To brainstorm later:
 - 2026-10-24: Keep the hunger bar size. Progress via metabolism (drain/saturation).
 - 2026-10-24: Adventure Rank (milestone count) gates mob unlocks and elite chance.
 - 2026-10-24: Elites are rare, recognisable and drop their gear.
-- 2026-10-24: Structure mobs always spawn.
+- 2026-10-24: Structure mobs always spawn. Nether/End keep vanilla spawns for now
+  (changing them is a later idea).
+- 2026-10-24: Mod ID `progressive_adventure`.
 - 2026-10-24: UI: milestones in the advancement screen; skills + bestiary in one
   tabbed screen.
 - 2026-10-24: Target Minecraft 26.2 on Fabric.
@@ -323,20 +416,25 @@ To brainstorm later:
   accepted; it hasn't been updated in years).
 - 2026-10-24: Unknown mobs take less damage (−15%) until you've killed a few.
 - 2026-10-24: Tool skills start at −20% break speed (after first playtest: levelling felt rewarding).
+- 2026-10-24: Two tracks: hearts/stomach stay automatic (milestones); every
+  advancement gives perk points for choosable perks. Skills gate perks. Free respec.
+- 2026-10-24: v0.2 = perks + Adventure screen (character, perks, bestiary); mob
+  unlocking moves to v0.3.
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 
 ## Open questions
 
-- [ ] Mod ID: `pam` or something more unique like `progressive_adventure`?
-- [ ] Nether/End: keep vanilla spawns?
+- [ ] Perk balance: costs and point budget (playtest).
 - [ ] Balance: hearts per milestone, Rank thresholds, elite chances.
 
-## Roadmap (draft, still brainstorming)
+## Roadmap
 
-- **v0.1 (MVP):** setup, 5 starting hearts, 25 milestones granting hearts/stomach,
-  metabolism, Mining/Woodcutting/Digging skills, Bestiary damage modifier, config,
-  `/pam` and `/pam bestiary` commands. *(Implemented, needs playtesting.)*
-- **v0.2:** metabolism + stomach upgrades, Rank-based mob spawning.
-- **v0.3:** elite mobs, skills/bestiary screen.
-- **v0.4:** more skills + perks, diet variety, exploration extras.
+- **v0.1 (tag `v0.1.0`, first test version):** 5 starting hearts, 25 milestones
+  granting hearts/stomach, metabolism, Mining/Woodcutting/Digging skills, bestiary
+  damage modifier, config, `/pam` commands. Playtested: works well.
+- **v0.2:** perk points + perk list above, Adventure screen (character, perks,
+  bestiary tabs), keybind.
+- **v0.3:** Rank-based mob unlocking, elite mobs.
+- **v0.4:** more skills (Combat, Archery, Farming, Fishing) + their perks, diet
+  variety, more milestones, exploration extras.
