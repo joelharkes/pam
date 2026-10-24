@@ -10,6 +10,7 @@ Minecraft Java that makes the game more progressive: the player starts weaker (f
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
 - Feature ideas, design decisions and open questions: [DESIGN.md](DESIGN.md)
+- Current state, pending playtests and next steps for a new session: [HANDOFF.md](HANDOFF.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
   and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
   implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
