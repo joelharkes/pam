@@ -30,8 +30,10 @@ public class PamConfig {
 	public List<Double> stomachExhaustionMultipliers = List.of(1.5, 1.35, 1.2, 1.0, 0.9, 0.8, 0.7);
 	public List<Double> stomachSaturationMultipliers = List.of(0.6, 0.7, 0.8, 1.0, 1.1, 1.2, 1.3);
 
-	// Proficiency: level = floor(sqrt(xp / xpPerLevelFactor)); speed bonus = maxSpeedBonus * (1 - e^(-level / speedBonusCurve))
+	// Proficiency: level = floor(sqrt(xp / xpPerLevelFactor));
+	// speed bonus = minSpeedBonus + (maxSpeedBonus - minSpeedBonus) * (1 - e^(-level / speedBonusCurve))
 	public double xpPerLevelFactor = 4.0;
+	public double minSpeedBonus = -0.2;
 	public double maxSpeedBonus = 0.6;
 	public double speedBonusCurve = 15.0;
 	public int oreXp = 3;

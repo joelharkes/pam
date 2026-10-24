@@ -160,6 +160,8 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
 
 Use-based skills that level up with use. Gains follow a **diminishing curve**: the
 first levels come quickly and feel great, later levels are slow and small.
+Like the bestiary, skills **start below vanilla (−20% speed)**, reach vanilla around
+level 4 (~64 blocks) and cap near +60%.
 
 | Skill       | Trained by                    | Bonus                                      | Feasibility |
 |-------------|-------------------------------|--------------------------------------------|-------------|
@@ -320,6 +322,7 @@ To brainstorm later:
 - 2026-10-24: Name: "PAM: Progressive Adventure Mod" (Pam's HarvestCraft clash
   accepted; it hasn't been updated in years).
 - 2026-10-24: Unknown mobs take less damage (−15%) until you've killed a few.
+- 2026-10-24: Tool skills start at −20% break speed (after first playtest: levelling felt rewarding).
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 

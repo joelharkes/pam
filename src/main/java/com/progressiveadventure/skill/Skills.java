@@ -27,10 +27,18 @@ public final class Skills {
 		return (int) Math.ceil(level * level * PamConfig.get().xpPerLevelFactor);
 	}
 
-	/** Fraction added to break speed, e.g. 0.25 = 25% faster. Fast early, flattening towards maxSpeedBonus. */
+	/**
+	 * Fraction added to break speed, e.g. 0.25 = 25% faster. Starts below vanilla at minSpeedBonus, rises fast
+	 * early and flattens towards maxSpeedBonus.
+	 */
 	public static double speedBonus(int level) {
 		PamConfig config = PamConfig.get();
-		return config.maxSpeedBonus * (1 - Math.exp(-level / config.speedBonusCurve));
+		return config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * (1 - Math.exp(-level / config.speedBonusCurve));
+	}
+
+	public static String formatBonus(int level) {
+		long percent = Math.round(speedBonus(level) * 100);
+		return (percent >= 0 ? "+" : "") + percent + "%";
 	}
 
 	/** The skill that applies when breaking this block with this tool, or null. */
@@ -67,7 +75,7 @@ public final class Skills {
 		if (levelAfter > levelBefore) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.skill_level_up",
 					Component.translatable("skill.progressive_adventure." + skill.id), levelAfter,
-					Math.round(speedBonus(levelAfter) * 100)).withStyle(ChatFormatting.GREEN));
+					formatBonus(levelAfter)).withStyle(ChatFormatting.GREEN));
 			player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5f, 1.5f);
 		}
 	}
