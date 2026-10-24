@@ -54,7 +54,7 @@ Restore them when the user confirms the perks work. Also update the DESIGN.md pe
    budget; XP curves.
 3. **Ideas parked in DESIGN.md:** more skills (Combat, Archery, Fishing), diet variety / Well Fed,
    more milestones from the draft list, toasts instead of chat messages, exploration extras.
-5. **Known gap:** the client uses its own config for skill bonus and familiarity tier display, so
+4. **Known gap:** the client uses its own config for skill bonus and familiarity tier display, so
    a server with a changed config shows different numbers on the client.
 
 ## How the user works
