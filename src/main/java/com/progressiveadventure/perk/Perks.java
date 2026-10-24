@@ -72,17 +72,17 @@ public final class Perks {
 	public static final Perk TOUGH_HIDE_1 = register("tough_hide_1", PerkCategory.DEFENSE, Items.LEATHER, 2, new MobTypes(5), null);
 	public static final Perk TOUGH_HIDE_2 = register("tough_hide_2", PerkCategory.DEFENSE, Items.ARMADILLO_SCUTE, 3, new MobTypes(10), "tough_hide_1");
 
-	public static final Perk BONUS_HEART_1 = register("bonus_heart_1", PerkCategory.SURVIVAL, Items.APPLE, 3, new Rank(3), null);
-	public static final Perk BONUS_HEART_2 = register("bonus_heart_2", PerkCategory.SURVIVAL, Items.GOLDEN_APPLE, 4, new Rank(8), "bonus_heart_1");
-	public static final Perk BONUS_HEART_3 = register("bonus_heart_3", PerkCategory.SURVIVAL, Items.ENCHANTED_GOLDEN_APPLE, 5, new Rank(15), "bonus_heart_2");
+	public static final Perk BONUS_HEART_1 = register("bonus_heart_1", PerkCategory.SURVIVAL, Items.APPLE, 3, new Rank(5), null);
+	public static final Perk BONUS_HEART_2 = register("bonus_heart_2", PerkCategory.SURVIVAL, Items.GOLDEN_APPLE, 4, new Rank(20), "bonus_heart_1");
+	public static final Perk BONUS_HEART_3 = register("bonus_heart_3", PerkCategory.SURVIVAL, Items.ENCHANTED_GOLDEN_APPLE, 5, new Rank(40), "bonus_heart_2");
 	public static final Perk IRON_STOMACH = register("iron_stomach", PerkCategory.SURVIVAL, Items.ROTTEN_FLESH, 1, Requirement.NONE, null);
 	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SURVIVAL, Items.PUFFERFISH, 1, Requirement.NONE, null);
-	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(5), "deep_breath_1");
-	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(10), "deep_breath_2");
+	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
+	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
 	public static final Perk SOFT_LANDING = register("soft_landing", PerkCategory.SURVIVAL, Items.FEATHER, 2, Requirement.NONE, null);
-	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.SURVIVAL, Items.SUGAR, 2, new Rank(5), null);
-	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.SURVIVAL, Items.RABBIT_FOOT, 3, new Rank(10), "fleet_foot_1");
-	public static final Perk FLEET_FOOT_3 = register("fleet_foot_3", PerkCategory.SURVIVAL, Items.DIAMOND_BOOTS, 4, new Rank(15), "fleet_foot_2");
+	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.SURVIVAL, Items.SUGAR, 2, new Rank(10), null);
+	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.SURVIVAL, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
+	public static final Perk FLEET_FOOT_3 = register("fleet_foot_3", PerkCategory.SURVIVAL, Items.DIAMOND_BOOTS, 4, new Rank(40), "fleet_foot_2");
 
 	public enum Status {
 		OWNED, BUYABLE, TOO_EXPENSIVE, LOCKED, NEEDS_PREREQUISITE
@@ -127,7 +127,7 @@ public final class Perks {
 	}
 
 	public static int pointsAvailable(PlayerProgress progress, ProgressionSnapshot snapshot) {
-		return snapshot.perkPointsEarned() - pointsSpent(progress);
+		return snapshot.rank() - pointsSpent(progress);
 	}
 
 	public static Status status(Perk perk, PlayerProgress progress, ProgressionSnapshot snapshot) {

@@ -43,7 +43,7 @@ public final class PamCommand {
 		PamConfig config = PamConfig.get();
 
 		send(player, Component.translatable("command.progressive_adventure.header").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-		send(player, Component.translatable("command.progressive_adventure.rank", status.rank(), Milestones.ALL.size()));
+		send(player, Component.translatable("command.progressive_adventure.rank", status.rank()));
 		send(player, Component.translatable("command.progressive_adventure.hearts",
 				Progression.formatHearts(Progression.maxHealth(player, status)), config.maxHearts));
 		send(player, Component.translatable("command.progressive_adventure.perk_points",

@@ -1,5 +1,5 @@
 {
-  "parent": "progressive_adventure:crafter/iron_tools",
+  "parent": "progressive_adventure:root",
   "criteria": {
     "c": {
       "trigger": "minecraft:inventory_changed",

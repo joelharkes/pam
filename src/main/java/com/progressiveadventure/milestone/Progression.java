@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 /**
- * Derives hearts, stomach level, Adventure Rank and perk points from completed advancements and applies them
+ * Derives hearts, stomach level and Adventure Rank (= perk points earned) from completed advancements and applies them
  * (plus attribute-based perks) to the player. Everything is recomputed from advancement progress, so rewards
  * can never be granted twice and balance changes apply to existing players.
  */
@@ -31,6 +31,7 @@ public final class Progression {
 	private static final Identifier SOFT_LANDING_MODIFIER = ProgressiveAdventure.id("perk_soft_landing");
 	private static final Identifier FLEET_FOOT_MODIFIER = ProgressiveAdventure.id("perk_fleet_foot");
 
+	/** @param rank Adventure Rank = perk points earned from all advancements */
 	public record Status(int rank, int halfHearts, int stomach) {
 	}
 
@@ -38,17 +39,15 @@ public final class Progression {
 	}
 
 	public static Status status(ServerPlayer player) {
-		int rank = 0;
 		int halfHearts = 0;
 		int stomach = 0;
 		for (Milestone milestone : Milestones.ALL) {
 			if (Milestones.isDone(player, milestone)) {
-				rank++;
 				halfHearts += milestone.halfHearts();
 				stomach += milestone.stomach();
 			}
 		}
-		return new Status(rank, halfHearts, stomach);
+		return new Status(perkPointsEarned(player), halfHearts, stomach);
 	}
 
 	/** Max health in half hearts: milestone hearts (capped) plus bonus heart perks (uncapped). */
@@ -111,8 +110,8 @@ public final class Progression {
 		applyModifier(player, fleetFoot > 0, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
 				fleetFoot > 0 ? PamConfig.listValue(config.fleetFootSpeedBonuses, fleetFoot - 1) : 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
-		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(), Milestones.ALL.size(),
-				maxHealth(player, status), config.maxHearts, status.stomach(), hungerDrain, perkPointsEarned(player)));
+		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(),
+				maxHealth(player, status), config.maxHearts, status.stomach(), hungerDrain));
 	}
 
 	private static void applyPerkModifier(ServerPlayer player, Perk perk, Holder<Attribute> attribute, Identifier id,
@@ -133,9 +132,10 @@ public final class Progression {
 	/** Called for every completed advancement, vanilla or ours. */
 	public static void onAdvancementCompleted(ServerPlayer player, AdvancementHolder holder) {
 		apply(player);
+		Status status = status(player);
 		int points = perkPoints(holder);
 		if (points > 0) {
-			player.sendSystemMessage(Component.translatable("message.progressive_adventure.perk_points", points)
+			player.sendSystemMessage(Component.translatable("message.progressive_adventure.perk_points", points, status.rank())
 					.withStyle(ChatFormatting.LIGHT_PURPLE));
 		}
 
@@ -143,7 +143,6 @@ public final class Progression {
 		if (milestone == null) {
 			return;
 		}
-		Status status = status(player);
 		if (milestone.halfHearts() > 0) {
 			player.sendSystemMessage(Component.translatable("message.progressive_adventure.hearts_gained",
 					formatHearts(milestone.halfHearts()), formatHearts(maxHealth(player, status))).withStyle(ChatFormatting.RED));
@@ -152,8 +151,6 @@ public final class Progression {
 			player.sendSystemMessage(Component.translatable("message.progressive_adventure.stomach_upgraded",
 					status.stomach()).withStyle(ChatFormatting.GOLD));
 		}
-		player.sendSystemMessage(Component.translatable("message.progressive_adventure.rank",
-				status.rank()).withStyle(ChatFormatting.AQUA));
 	}
 
 	public static String formatHearts(int halfHearts) {

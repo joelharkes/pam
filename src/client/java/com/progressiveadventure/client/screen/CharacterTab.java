@@ -44,8 +44,7 @@ class CharacterTab implements AdventureTab {
 		graphics.text(font, rank, left, y, AdventureScreen.TEXT_AQUA);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(rank), 10)) {
 			graphics.setComponentTooltipForNextFrame(font, List.of(
-					Component.translatable("screen.progressive_adventure.rank.tooltip.milestones", snapshot.rank(), snapshot.milestones()),
-					Component.translatable("screen.progressive_adventure.rank.tooltip.1").withStyle(ChatFormatting.GRAY),
+					Component.translatable("screen.progressive_adventure.rank.tooltip.1"),
 					Component.translatable("screen.progressive_adventure.rank.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
 		}
 
@@ -78,7 +77,7 @@ class CharacterTab implements AdventureTab {
 		y += 12;
 		for (Skill skill : Skill.values()) {
 			drawSkill(graphics, font, progress, skill, left, y, width);
-			y += 20;
+			y += 26;
 		}
 	}
 

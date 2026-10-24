@@ -1,5 +1,5 @@
 {
-  "parent": "progressive_adventure:survivor/sleep_in_bed",
+  "parent": "progressive_adventure:survivor/first_night",
   "criteria": {
     "c": {
       "trigger": "minecraft:inventory_changed",
