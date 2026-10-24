@@ -25,3 +25,10 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Java crash/profiling logs
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
+*.launch
