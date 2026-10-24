@@ -2,7 +2,7 @@ package com.progressiveadventure.world;
 
 import com.progressiveadventure.ProgressiveAdventure;
 import com.progressiveadventure.config.PamConfig;
-import com.progressiveadventure.config.PamConfig.GearTier;
+import com.progressiveadventure.config.PamConfig.GearWeights;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Milestones;
 
@@ -39,7 +39,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -92,7 +94,7 @@ public final class Elites {
 			}
 		}
 		if (wearsGear(mob) && random.nextDouble() < config.mobGearChance.at(rank)) {
-			addNormalGear(mob, tierFor(config.normalGearTiers, rank), random);
+			addNormalGear(mob, (int) (rank * config.normalGearRankFactor), random);
 		}
 	}
 
@@ -117,18 +119,36 @@ public final class Elites {
 		return mob instanceof Zombie || mob instanceof AbstractSkeleton;
 	}
 
-	private static GearTier tierFor(List<GearTier> tiers, int rank) {
-		GearTier result = tiers.getFirst();
-		for (GearTier tier : tiers) {
-			if (rank >= tier.rank()) {
-				result = tier;
+	/** Rolls an armor material; the weights of the two rows around the rank are blended. */
+	private static String rollMaterial(int rank, RandomSource random) {
+		List<GearWeights> rows = PamConfig.get().gearMaterialWeights;
+		GearWeights below = rows.getFirst();
+		GearWeights above = rows.getLast();
+		for (GearWeights row : rows) {
+			if (row.rank() <= rank) {
+				below = row;
+			} else {
+				above = row;
+				break;
 			}
 		}
-		return result;
+		double t = above.rank() > below.rank() ? Math.clamp((rank - below.rank()) / (double) (above.rank() - below.rank()), 0, 1) : 0;
+		Map<String, Double> weights = new LinkedHashMap<>();
+		below.weights().forEach((material, weight) -> weights.merge(material, weight * (1 - t), Double::sum));
+		above.weights().forEach((material, weight) -> weights.merge(material, weight * t, Double::sum));
+
+		double roll = random.nextDouble() * weights.values().stream().mapToDouble(Double::doubleValue).sum();
+		for (Map.Entry<String, Double> entry : weights.entrySet()) {
+			roll -= entry.getValue();
+			if (roll < 0) {
+				return entry.getKey();
+			}
+		}
+		return weights.keySet().iterator().next();
 	}
 
 	/** One or two armor pieces in empty slots; vanilla drop chances, so this gear rarely drops. */
-	private static void addNormalGear(Mob mob, GearTier tier, RandomSource random) {
+	private static void addNormalGear(Mob mob, int gearRank, RandomSource random) {
 		List<Integer> empty = new ArrayList<>();
 		for (int i = 0; i < ARMOR_SLOTS.length; i++) {
 			if (mob.getItemBySlot(ARMOR_SLOTS[i]).isEmpty()) {
@@ -138,7 +158,7 @@ public final class Elites {
 		int pieces = 1 + random.nextInt(2);
 		for (int n = 0; n < pieces && !empty.isEmpty(); n++) {
 			int i = empty.remove(random.nextInt(empty.size()));
-			mob.setItemSlot(ARMOR_SLOTS[i], armorPiece(tier.armor(), i));
+			mob.setItemSlot(ARMOR_SLOTS[i], armorPiece(rollMaterial(gearRank, random), i));
 		}
 	}
 
@@ -168,15 +188,24 @@ public final class Elites {
 		if (!wearsGear(mob)) {
 			return;
 		}
-		GearTier tier = tierFor(config.eliteGearTiers, rank);
+		List<Integer> slots = new ArrayList<>();
 		for (int i = 0; i < ARMOR_SLOTS.length; i++) {
-			mob.setItemSlot(ARMOR_SLOTS[i], enchant(level, armorPiece(tier.armor(), i), tier.enchantLevel(), random));
+			if (random.nextDouble() < config.eliteArmorPieceChance.at(rank)) {
+				slots.add(i);
+			}
+		}
+		if (slots.isEmpty()) {
+			slots.add(random.nextInt(ARMOR_SLOTS.length));
+		}
+		for (int i : slots) {
+			mob.setItemSlot(ARMOR_SLOTS[i], maybeEnchant(level, armorPiece(rollMaterial(rank, random), i), rank, random));
 		}
 		ItemStack weapon = mob.getMainHandItem();
-		if (mob instanceof Zombie && weapon.isEmpty() && tier.weapon() != null) {
-			weapon = new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(tier.weapon())));
+		String sword = config.weaponByMaterial.get(rollMaterial(rank, random));
+		if (mob instanceof Zombie && weapon.isEmpty() && sword != null) {
+			weapon = new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(sword)));
 		}
-		mob.setItemSlot(EquipmentSlot.MAINHAND, enchant(level, weapon, tier.enchantLevel(), random));
+		mob.setItemSlot(EquipmentSlot.MAINHAND, maybeEnchant(level, weapon, rank, random));
 		// 1.0 = always drops, but only for player kills and with random wear (vanilla rules below 1.0)
 		for (EquipmentSlot slot : ARMOR_SLOTS) {
 			mob.setDropChance(slot, 1.0f);
@@ -193,6 +222,14 @@ public final class Elites {
 
 	private static ItemStack armorPiece(String material, int index) {
 		return new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(material + "_" + ARMOR_PIECES[index])));
+	}
+
+	private static ItemStack maybeEnchant(ServerLevel level, ItemStack stack, int rank, RandomSource random) {
+		PamConfig config = PamConfig.get();
+		if (random.nextDouble() >= config.eliteEnchantChance.at(rank)) {
+			return stack;
+		}
+		return enchant(level, stack, (int) Math.round(config.eliteEnchantLevel.at(rank)), random);
 	}
 
 	private static ItemStack enchant(ServerLevel level, ItemStack stack, int enchantLevel, RandomSource random) {

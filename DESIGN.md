@@ -288,15 +288,24 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
   spiders 25, ...): 2% of that type's spawns, +0.1% per rank, max 10%.
 - 20% bigger (vanilla `scale` attribute), +50% health, +25% damage, named (name shows
   when you look at it). They despawn like normal mobs.
-- Zombie/skeleton types wear a full armor set + weapon from the tier their rank reached:
+- Zombie/skeleton types get gear that builds up gradually and randomly: every armor slot
+  is rolled on its own (35% → 95% at Rank 160, at least 1 piece), and every piece and the
+  weapon roll their own material. Odds per piece (blended smoothly between rows):
 
-| Rank | Elite gear |
-|------|------------|
-| 0    | leather, stone sword |
-| 15   | chainmail, iron sword |
-| 30   | iron, enchanted (level 8) |
-| 60   | diamond, enchanted (level 15) |
-| 100  | diamond, enchanted (level 30) |
+| Rank | Leather | Chain | Iron | Diamond |
+|------|---------|-------|------|---------|
+| 0    | 90%     | 10%   |      |         |
+| 15   | 70%     | 30%   |      |         |
+| 30   | 36%     | 55%   | 9%   |         |
+| 60   | 18%     | 55%   | 27%  |         |
+| 90   |         | 36%   | 55%  | 9%      |
+| 120  |         | 9%    | 55%  | 36%     |
+| 160+ |         |       | 10%  | 90%     |
+
+  Result (simulated): Rank 18 avg 1.8 pieces, full set 3%; Rank 60 full set 11%; Rank 100
+  full set 28%; Rank 160 full set 81%, full diamond 54%, often still 1–2 iron pieces.
+  Enchant chance per item 10% (Rank 30) → 80% (Rank 150), level 5 → 30. Normal mobs roll
+  materials like an elite at half their rank.
 
 **Elite rewards** (scale with the rank the elite spawned at):
 - Gear always drops, but only for player kills and with random wear (vanilla rule for
@@ -529,6 +538,8 @@ To brainstorm later:
   it's hard to farm early. Traits only at very high Rank, later (v0.3c).
 - 2026-10-24: Elite traits (v0.3c): Swift, Frost, Blazing, Leaping, Summoner, from Rank 100
   (25% → 75%), ×1.5 bonus loot. Exploration-helper drops stay parked.
+- 2026-10-24: Elite gear is rolled per piece (count, material, enchant) with odds that shift
+  slowly with Rank, instead of fixed full sets per tier (full chainmail at Rank 18 felt too much).
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.

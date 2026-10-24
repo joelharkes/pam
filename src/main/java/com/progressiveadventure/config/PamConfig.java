@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 /**
  * All balance numbers. Loaded from config/progressive_adventure.json; missing fields keep their defaults.
@@ -107,19 +108,27 @@ public class PamConfig {
 	public double eliteHealthBonus = 0.5;
 	public double eliteDamageBonus = 0.25;
 	public double eliteScaleBonus = 0.2;
-	// Elites always wear a full set from the highest tier their rank reached
-	public List<GearTier> eliteGearTiers = List.of(
-			new GearTier(0, "leather", "minecraft:stone_sword", 0),
-			new GearTier(15, "chainmail", "minecraft:iron_sword", 0),
-			new GearTier(30, "iron", "minecraft:iron_sword", 8),
-			new GearTier(60, "diamond", "minecraft:diamond_sword", 15),
-			new GearTier(100, "diamond", "minecraft:diamond_sword", 30));
-	// Normal zombies/skeletons: chance of 1-2 extra armor pieces, on top of vanilla's own
+	// Elite gear: every armor slot is rolled on its own (at least 1 piece), and every piece and the weapon roll
+	// their own material. Material odds are weights per rank; between two rows they shift smoothly.
+	public Ramp eliteArmorPieceChance = new Ramp(0, 0.35, 160, 0.95);
+	public List<GearWeights> gearMaterialWeights = List.of(
+			new GearWeights(0, Map.of("leather", 9.0, "chainmail", 1.0)),
+			new GearWeights(15, Map.of("leather", 7.0, "chainmail", 3.0)),
+			new GearWeights(30, Map.of("leather", 4.0, "chainmail", 6.0, "iron", 1.0)),
+			new GearWeights(60, Map.of("leather", 2.0, "chainmail", 6.0, "iron", 3.0)),
+			new GearWeights(90, Map.of("chainmail", 4.0, "iron", 6.0, "diamond", 1.0)),
+			new GearWeights(120, Map.of("chainmail", 1.0, "iron", 6.0, "diamond", 4.0)),
+			new GearWeights(160, Map.of("iron", 1.0, "diamond", 9.0)));
+	// Sword for elite zombies, by the material rolled for it
+	public Map<String, String> weaponByMaterial = Map.of(
+			"leather", "minecraft:stone_sword", "chainmail", "minecraft:stone_sword",
+			"iron", "minecraft:iron_sword", "diamond", "minecraft:diamond_sword");
+	public Ramp eliteEnchantChance = new Ramp(30, 0.1, 150, 0.8);
+	public Ramp eliteEnchantLevel = new Ramp(30, 5, 150, 30);
+	// Normal zombies/skeletons: chance of 1-2 extra armor pieces, on top of vanilla's own. Their material is
+	// rolled like an elite's at rank * normalGearRankFactor, so they stay behind the elites.
 	public Ramp mobGearChance = new Ramp(10, 0.0, 100, 0.25);
-	public List<GearTier> normalGearTiers = List.of(
-			new GearTier(0, "leather", null, 0),
-			new GearTier(30, "chainmail", null, 0),
-			new GearTier(60, "iron", null, 0));
+	public double normalGearRankFactor = 0.5;
 	public Ramp eliteXpMultiplier = new Ramp(0, 3.0, 100, 6.0);
 	public int eliteBestiaryKills = 3;
 	// Bonus loot, only when a player kills the elite
@@ -139,8 +148,8 @@ public class PamConfig {
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}
 
-	/** Armor material (e.g. "iron" for iron_helmet), optional weapon id for zombies, enchanting level (0 = none). */
-	public record GearTier(int rank, String armor, String weapon, int enchantLevel) {
+	/** Armor material weights (e.g. "iron" for iron_helmet) at a rank. */
+	public record GearWeights(int rank, Map<String, Double> weights) {
 	}
 
 	/** A value that grows linearly from fromRank to toRank and stays at "to" after it; 0 below fromRank. */
