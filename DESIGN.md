@@ -162,19 +162,28 @@ first levels come quickly and feel great, later levels are slow and small.
 
 ### 4. Bestiary: mob familiarity
 
-Each mob type you defeat builds familiarity, which gives bonus damage against that
-type. Gains are big early and flatten out:
+Each mob type you defeat builds familiarity, which changes how much damage you deal
+to that type. **Unknown mobs are a bit tougher than in vanilla**, you break even
+after a few kills, and then gains are big early and flatten out:
 
-| Kills | Damage bonus | Extra (ideas)                  |
-|-------|--------------|--------------------------------|
-| 1     | +5%          | Mob appears in your bestiary   |
-| 5     | +10%         | See its health bar             |
-| 15    | +20%         |                                |
-| 30    | +30%         | See its drops in the bestiary  |
-| 60    | +40%         |                                |
-| 100   | +50%         | "Mastered" badge               |
-| 250   | +55%         | (cap)                          |
+| Kills | Damage modifier | Label      | Extra (ideas)                  |
+|-------|-----------------|------------|--------------------------------|
+| 0     | −15%            | Unknown    | Shows as "?" in the bestiary   |
+| 1     | −10%            | Unfamiliar | Mob appears in your bestiary   |
+| 3     | −5%             | Unfamiliar |                                |
+| 5     | ±0% (vanilla)   | Known      | See its health bar             |
+| 15    | +10%            | Familiar   |                                |
+| 30    | +20%            | Familiar   | See its drops in the bestiary  |
+| 60    | +35%            | Expert     |                                |
+| 100   | +50%            | Master     | "Mastered" badge               |
+| 250   | +55%            | Master     | (cap)                          |
 
+- Example: a zombie (20 HP) vs. a wooden sword (4 damage) takes 5 hits in vanilla
+  and 6 hits at −15%. Noticeable, not brutal.
+- The label is visible (bestiary, maybe on hover/health bar) so a penalty never
+  feels like a bug: "I don't know this mob yet."
+- The −15% stacks with the other early-game penalties (5 hearts, faster hunger).
+  This is OK because early ranks only spawn zombies. Watch in playtests.
 - At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
 - Kills by AFK farms count for less or not at all.
 - We keep our own kill counter (not vanilla `Stats.KILLED`) so old worlds don't get
@@ -184,24 +193,48 @@ type. Gains are big early and flatten out:
 
 #### Mob unlocks by Rank
 
-- **Rank 0:** only zombies, skeletons, creepers (and passive mobs).
-- Higher ranks unlock more: spiders → endermen/witches → phantoms, etc.
-  (Exact order still to decide.)
+Overworld hostile mobs unlock one at a time, and each type gets elites a couple of
+ranks after it first appears. Hearts assume ~0.6 heart per milestone on average.
+
+| Rank | ~Hearts | New mobs                                  | Elites start            |
+|------|---------|-------------------------------------------|-------------------------|
+| 0    | 5       | Zombies (incl. husks, zombie villagers)   |                         |
+| 2    | 6       | Skeletons (incl. strays)                  | Elite zombies           |
+| 5    | 8       | Creepers                                  | Elite skeletons         |
+| 7    | 9       | Spiders, drowned                          |                         |
+| 9    | 10      | Endermen                                  | Elite spiders           |
+| 11   | 11      | Slimes                                    | Elite drowned           |
+| 13   | 12      | Witches, pillager patrols                 |                         |
+| 15   | 14      | (phantoms already follow vanilla sleep rules) | Elite endermen?     |
+
+- Biome variants follow their parent (husk = zombie, stray = skeleton, bogged =
+  skeleton).
+- **Creepers and health:** a point-blank creeper can kill even a vanilla 10-heart
+  player without armor. Rank 5 (~8 hearts) plus a bit of armor should survive one.
+  Options if playtests show otherwise: require the "iron armor" milestone before
+  creepers unlock, or soften creeper damage for low-rank players.
 - **Structure mobs always spawn** (blazes in fortresses, guardians in monuments,
-  spawners, pillager outposts...). You chose to go there.
+  spawners, pillager outposts, cave spiders, silverfish...). You chose to go there.
+- **Nether and End** (proposal): vanilla spawns. Entering them is your own choice and
+  already a milestone.
 - Mobs from other mods are allowed by default.
 
 #### Elite mobs
 
 - Most mobs stay normal, so most of the time you feel strong.
-- Rarely, a mob spawns as an **elite**: armor, an enchanted weapon, a bit more health.
+- Occasionally a mob spawns as an **elite**: armor, an enchanted weapon, a bit more
+  health.
 - Elites are **easy to recognise** (name tag like "Armored Zombie", subtle particles)
   so it's exciting, not unfair.
 - **Rewards:** much more XP and a high chance to drop their armor/weapon
   (vanilla is only ~8.5%).
-- **Chance scales with Rank but stays rare and is capped** (e.g. 0% at Rank 0–1,
-  growing to max ~5–8% of spawns).
-- Later: elite tiers (bronze/silver/gold) with better loot at higher ranks.
+- **Per mob type, the chance builds up with Rank:** starts at ~1% when that type's
+  elites unlock, +0.5% per rank, capped at ~8%.
+- **Elites get better too:** early elite zombies have leather/chain armor and a
+  plain sword; at higher ranks they get iron, then diamond and enchantments. Better
+  elites = better drops.
+- Creepers have no elite version (an "elite creeper" just means a bigger surprise
+  explosion, which isn't fun).
 
 #### Multiplayer
 
@@ -270,12 +303,16 @@ To brainstorm later:
 - 2026-10-24: UI: milestones in the advancement screen; skills + bestiary in one
   tabbed screen.
 - 2026-10-24: Target Minecraft 26.2 on Fabric.
+- 2026-10-24: Name: "PAM: Progressive Adventure Mod" (Pam's HarvestCraft clash
+  accepted; it hasn't been updated in years).
+- 2026-10-24: Unknown mobs take less damage (−15%) until you've killed a few.
+- 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
+  endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 
 ## Open questions
 
-- [ ] Final name: "PAM: Progressive Adventure Mod". Possible clash with the well-known
-      "Pam's HarvestCraft" mods.
-- [ ] Mob unlock order per Rank.
+- [ ] Mod ID: `pam` or something more unique like `progressive_adventure`?
+- [ ] Nether/End: keep vanilla spawns?
 - [ ] Balance: hearts per milestone, Rank thresholds, elite chances.
 
 ## Roadmap (draft, still brainstorming)
