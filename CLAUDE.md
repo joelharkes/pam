@@ -18,7 +18,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy):
   Ore Sense (Mining 40), Replant (Farming 5), Harvester (Farming 20).
 - **v0.3a mob unlocks** (Overworld hostile mobs gated on Adventure Rank) implemented, quick check
-  OK (`/pam`). **v0.3b** mob gear + elites implemented, not yet playtested. Next: v0.3c elite traits.
+  OK (`/pam`). **v0.3b** mob gear + elites and **v0.3c** elite traits implemented, not yet playtested.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.
@@ -87,11 +87,12 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier
 - `world/MobUnlocks`: which hostile mobs may spawn naturally at a rank (lowest rank of nearby players),
   unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
-  (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone
+  (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone; `world/EliteTrait`: traits
+  (persistent `ELITE_TRAIT`; Leaping goal re-added on every entity load since goals aren't saved)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`; server validates in `PamNetworking`
-- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob>` (ops, spawns a test elite)
+- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,

@@ -38,6 +38,14 @@ public final class PamAttachments {
 	public static final AttachmentType<Integer> ELITE_RANK = AttachmentRegistry.create(
 			ProgressiveAdventure.id("elite_rank"), builder -> builder.persistent(Codec.INT));
 
+	/** On elites with a trait: the trait id. */
+	public static final AttachmentType<String> ELITE_TRAIT = AttachmentRegistry.create(
+			ProgressiveAdventure.id("elite_trait"), builder -> builder.persistent(Codec.STRING));
+
+	/** On Summoner elites that already called their helpers. */
+	public static final AttachmentType<Boolean> ELITE_SUMMONED = AttachmentRegistry.create(
+			ProgressiveAdventure.id("elite_summoned"), builder -> builder.persistent(Codec.BOOL));
+
 	private PamAttachments() {
 	}
 

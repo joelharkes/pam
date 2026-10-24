@@ -4,7 +4,7 @@
 
 **Built so far (2026-10-24):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
 Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen) and pillar 5
-mob unlocks + elites. Not built: elite traits, Combat/Archery/Fishing skills, Well Fed. See the roadmap.
+mob unlocks, elites and elite traits. Not built: Combat/Archery/Fishing skills, Well Fed. See the roadmap.
 
 ## Vision
 
@@ -309,8 +309,18 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
 - Milestone "Elite Slayer": defeat an elite, ½ heart.
 - Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
 
-**Next (v0.3c): traits** for high-rank elites (Rank 100+), one random trait shown in the
-name: Swift, Frost (arrows slow you), Blazing (sets you on fire), Leaping, Summoner.
+**Traits (v0.3c, built):** from Rank 100, an elite has a 25% → 75% (Rank 160) chance of one
+random trait, shown in its name instead of "Tough":
+
+| Trait    | Effect |
+|----------|--------|
+| Swift    | +30% movement speed |
+| Frost    | its hits and arrows give Slowness II for 3s |
+| Blazing  | its hits and arrows set you on fire for 4s |
+| Leaping  | leaps at you like a spider (not skeletons/slimes) |
+| Summoner | the first time a player hits it, calls 2 normal helpers of its kind |
+
+Trait elites have ×1.5 bonus loot chances. Test: `/pam elite <mob> [trait]`.
 
 #### Multiplayer
 
@@ -517,6 +527,8 @@ To brainstorm later:
   bigger/tougher/named with gear that improves with Rank. Gear, XP (×3→×6) and bonus loot
   (emeralds, books from 40, golden apples from 80) scale with Rank, player kills only, so
   it's hard to farm early. Traits only at very high Rank, later (v0.3c).
+- 2026-10-24: Elite traits (v0.3c): Swift, Frost, Blazing, Leaping, Summoner, from Rank 100
+  (25% → 75%), ×1.5 bonus loot. Exploration-helper drops stay parked.
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
@@ -537,6 +549,6 @@ To brainstorm later:
   *(Implemented, needs playtesting.)*
 - **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
 - **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
-- **v0.3c:** elite traits for high ranks.
+- **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)*
 - **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

@@ -13,6 +13,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.EliteTrait;
 import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
 
@@ -25,6 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -42,14 +44,19 @@ public final class PamCommand {
 						.then(Commands.argument("mob", StringArgumentType.word())
 								.suggests((context, builder) -> SharedSuggestionProvider.suggest(
 										PamConfig.get().eliteMobs.stream().map(id -> Identifier.parse(id).getPath()), builder))
-								.executes(PamCommand::spawnElite))));
+								.executes(context -> spawnElite(context, null))
+								.then(Commands.argument("trait", StringArgumentType.word())
+										.suggests((context, builder) -> SharedSuggestionProvider.suggest(
+												Arrays.stream(EliteTrait.values()).map(trait -> trait.id), builder))
+										.executes(context -> spawnElite(context, StringArgumentType.getString(context, "trait")))))));
 	}
 
-	private static int spawnElite(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+	private static int spawnElite(CommandContext<CommandSourceStack> context, String traitId) throws CommandSyntaxException {
 		ServerPlayer player = context.getSource().getPlayerOrException();
 		Identifier id = Identifier.tryParse(StringArgumentType.getString(context, "mob"));
-		if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id)
-				|| !Elites.spawnTestElite(player, BuiltInRegistries.ENTITY_TYPE.getValue(id))) {
+		EliteTrait trait = traitId == null ? null : EliteTrait.byId(traitId);
+		if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id) || (traitId != null && trait == null)
+				|| !Elites.spawnTestElite(player, BuiltInRegistries.ENTITY_TYPE.getValue(id), trait)) {
 			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.elite.unknown"));
 			return 0;
 		}

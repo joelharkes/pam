@@ -128,6 +128,13 @@ public class PamConfig {
 	public Ramp eliteBookChance = new Ramp(40, 0.05, 100, 0.25);
 	public Ramp eliteBookLevel = new Ramp(40, 5, 100, 30);
 	public Ramp eliteGoldenAppleChance = new Ramp(80, 0.03, 100, 0.08);
+	// Traits for high-rank elites: Swift, Frost, Blazing, Leaping, Summoner
+	public Ramp eliteTraitChance = new Ramp(100, 0.25, 160, 0.75);
+	public double traitLootMultiplier = 1.5;
+	public double swiftSpeedBonus = 0.3;
+	public int frostSlownessSeconds = 3;
+	public float blazingFireSeconds = 4f;
+	public int summonerHelpers = 2;
 
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}

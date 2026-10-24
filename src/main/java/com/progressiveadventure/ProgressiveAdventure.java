@@ -18,6 +18,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -58,7 +59,9 @@ public class ProgressiveAdventure implements ModInitializer {
 			if (entity instanceof ServerPlayer player) {
 				PerkEffects.onDamaged(player);
 			}
+			Elites.onDamage(entity, source, damageTaken);
 		});
+		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> Elites.onLoad(entity));
 
 		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
 			if (!(player instanceof ServerPlayer serverPlayer)) {

@@ -245,5 +245,10 @@
   "advancements.progressive_adventure.hunter.elite.title": "Elite Slayer",
   "advancements.progressive_adventure.hunter.elite.description": "Defeat a Tough monster\nReward: +½ heart",
   "entity.progressive_adventure.elite": "Tough %s",
-  "command.progressive_adventure.elite.unknown": "Unknown mob, or it can't be an elite"
+  "command.progressive_adventure.elite.unknown": "Unknown mob or trait, or this mob can't have it",
+  "entity.progressive_adventure.elite.swift": "Swift %s",
+  "entity.progressive_adventure.elite.frost": "Frost %s",
+  "entity.progressive_adventure.elite.blazing": "Blazing %s",
+  "entity.progressive_adventure.elite.leaping": "Leaping %s",
+  "entity.progressive_adventure.elite.summoner": "Summoner %s"
 }
