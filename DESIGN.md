@@ -2,6 +2,10 @@
 
 > Living document: ideas, decisions and open questions.
 
+**Built so far (2026-10-24):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
+Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen). Not built:
+pillar 5 (mob unlocks, elites), Combat/Archery/Fishing skills, Well Fed. See the roadmap.
+
 ## Vision
 
 Vanilla Minecraft front-loads your power: you spawn with full health and hunger, and
@@ -87,53 +91,34 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Draft list (★ = good early milestone for a first session):
+Implemented (28 milestones, "Adventure" advancement tab). Rewards are in half hearts:
 
-| Category | Milestone                                     | Reward     |
-|----------|-----------------------------------------------|------------|
-| Survivor | ★ Survive your first night                    | ½ heart    |
-| Survivor | ★ Sleep in a bed                              | ½ heart    |
-| Survivor | Wear a full set of iron armor                 | ½ heart    |
-| Survivor | Raise your shield to block an attack          | ½ heart    |
-| Explorer | ★ Visit 5 different biomes                    | ½ heart    |
-| Explorer | Visit 15 different biomes                     | 1 heart    |
-| Explorer | Visit 30 different biomes                     | 1 heart    |
-| Explorer | ★ Find a village                              | ½ heart    |
-| Explorer | Find a desert or jungle temple                | ½ heart    |
-| Explorer | Find a shipwreck or ocean ruin                | ½ heart    |
-| Explorer | Go deep: reach Y=0 / find a lush or deep dark cave | ½ heart |
-| Explorer | Climb a mountain peak                         | ½ heart    |
-| Explorer | Use a map to find buried treasure             | 1 heart    |
-| Explorer | Enter the Nether                              | 1 heart    |
-| Explorer | Find a Nether fortress / bastion              | ½ heart    |
-| Explorer | Enter the End                                 | 1 heart    |
-| Explorer | Find an End city                              | 1 heart    |
-| Gourmet  | ★ Eat your first food                         | stomach    |
-| Gourmet  | ★ Eat 3 different foods                       | stomach    |
-| Gourmet  | Eat 8 different foods                         | stomach    |
-| Gourmet  | Eat 15 different foods                        | stomach    |
-| Gourmet  | Eat 25 different foods                        | 1 heart    |
-| Gourmet  | Bake a cake / cook a suspicious stew          | stomach    |
-| Farmer   | ★ Harvest 3 different crops                   | stomach    |
-| Farmer   | Breed 5 different kinds of animals            | ½ heart    |
-| Farmer   | Tame a wolf, cat or horse                     | ½ heart    |
-| Hunter   | ★ Defeat 5 different mob types                | ½ heart    |
-| Hunter   | Defeat 15 different mob types                 | 1 heart    |
-| Hunter   | Defeat 30 different mob types                 | 1 heart    |
-| Hunter   | Defeat an elite mob (see pillar 5)            | ½ heart    |
-| Hunter   | Defeat the Elder Guardian                     | 2 hearts   |
-| Hunter   | Defeat the Wither                             | 2 hearts   |
-| Hunter   | Defeat the Ender Dragon                       | 2 hearts   |
-| Crafter  | ★ Craft iron tools                            | ½ heart    |
-| Crafter  | Craft diamond tools                           | ½ heart    |
-| Crafter  | Enchant an item                               | ½ heart    |
-| Crafter  | Brew a potion                                 | ½ heart    |
-| Social   | Trade with a villager                         | ½ heart    |
-| Social   | Trade with 5 different villager professions   | ½ heart    |
-| Angler   | Catch a fish / catch a treasure item          | ½ heart    |
+| Category | Milestone                                  | Reward         |
+|----------|--------------------------------------------|----------------|
+| Survivor | Survive your first night                   | ½ heart        |
+| Survivor | Sleep in a bed                             | ½ heart        |
+| Survivor | Wear a full set of iron armor              | ½ heart        |
+| Gourmet  | Eat your first food / 3 / 8 / 15 foods     | stomach each   |
+| Gourmet  | Eat 25 different foods                     | 1 heart        |
+| Farmer   | Harvest 3 different crops                  | stomach        |
+| Farmer   | Harvest 10 different crops                 | ½ heart        |
+| Farmer   | Breed 5 different kinds of animals         | ½ heart        |
+| Explorer | Visit 5 / 15 / 30 biomes                   | ½ / ½ / 1 heart|
+| Explorer | Find a village                             | ½ heart        |
+| Explorer | Enter the Nether / the End                 | 1 heart each   |
+| Hunter   | Defeat 5 / 15 / 30 different mob types     | ½ / ½ / 1 heart|
+| Hunter   | Defeat the Elder Guardian / Wither / Ender Dragon | 2 hearts each |
+| Crafter  | Craft iron tools / diamond tools           | ½ heart each   |
+| Crafter  | Enchant an item / brew a potion            | ½ heart each   |
+| Social   | Trade with a villager                      | ½ heart        |
 
-Numbers still need balancing. Roughly: ~10 hearts to earn in total, so finishing most
-milestones takes you from 5 to ~15+ hearts.
+Totals: 18½ hearts to earn (start 5, cap 20, so the cap is reached before everything
+is done) and 5 stomach levels. Boss hearts are 6 of those 18½.
+
+Milestone ideas not built yet: raise a shield, desert/jungle temple, shipwreck or ocean
+ruin, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, fortress /
+bastion, End city, cake or suspicious stew, tame a wolf/cat/horse, defeat an elite,
+5 villager professions, catch a fish / treasure.
 
 ### 2. Metabolism: hunger annoying early, easy later
 
@@ -154,9 +139,10 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
 | 2             | ×1.2         | ×0.8            | 3 different foods        |
 | 3             | ×1.0         | ×1.0 (vanilla)  | 8 different foods        |
 | 4             | ×0.9         | ×1.1            | 15 different foods       |
-| 5             | ×0.8         | ×1.2            | cake / stew, farming     |
-| 6             | ×0.7         | ×1.3            |                          |
-- **Diet variety bonus (idea):** eating a varied diet gives a temporary "Well Fed"
+| 5             | ×0.8         | ×1.2            | 3 different crops        |
+| 6             | ×0.7         | ×1.3            | (no milestone yet)       |
+- Stomach levels can come in any order; the table shows a typical one.
+- **Diet variety bonus (idea, not built):** eating a varied diet gives a temporary "Well Fed"
   buff (slower hunger drain, small regen). Eating the same food over and over gives
   less. This teaches kids to farm several crops and fits the Gourmet milestones.
 - Feasibility: **medium.** Small mixin on exhaustion/food values. No HUD changes
@@ -170,15 +156,15 @@ first levels come quickly and feel great, later levels are slow and small.
 Like the bestiary, skills **start below vanilla (−20% speed)**, reach vanilla around
 level 4 (~64 blocks) and cap near +60%.
 
-| Skill       | Trained by                    | Bonus                                      | Feasibility |
+| Skill       | Trained by                    | Bonus                                      | Status      |
 |-------------|-------------------------------|--------------------------------------------|-------------|
-| Mining      | Pickaxe blocks                | Break speed (+ perk: chance of extra ore)  | Easy (attribute) |
-| Woodcutting | Axe blocks                    | Break speed (+ perk: fell small trees)     | Easy        |
-| Digging     | Shovel blocks                 | Break speed                                | Easy        |
-| Combat      | Melee damage dealt            | Attack speed/damage                        | Easy        |
-| Archery     | Bow/crossbow hits             | Arrow damage, draw speed                   | Medium      |
-| Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Medium      |
-| Fishing     | Catching fish                 | Faster bites, better loot                  | Medium      |
+| Mining      | Pickaxe blocks                | Break speed (+ perk: chance of extra ore)  | Built |
+| Woodcutting | Axe blocks                    | Break speed (+ perk: fell small trees)     | Built |
+| Digging     | Shovel blocks                 | Break speed                                | Built |
+| Combat      | Melee damage dealt            | Attack speed/damage                        | Idea |
+| Archery     | Bow/crossbow hits             | Arrow damage, draw speed                   | Idea |
+| Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Built (3b) |
+| Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
 
 - No skill XP from blocks the player placed (stops place/break loops).
 - **Perks** at certain levels are the exciting part. Percentages alone feel flat.
@@ -206,10 +192,10 @@ level 4 (~64 blocks) and cap near +60%.
 | Perk | Effect | Requires | Cost |
 |---|---|---|---|
 | Light Step | You no longer trample farmland | — | 1 |
-| Replant | Right-click a grown crop to harvest and replant it | Farming 5 | 2 |
+| Replant | Right-click a grown crop to harvest and replant it | Farming 5 (unlocked for testing) | 2 |
 | Sturdy Hoe I/II/III | 10/20/30% chance hoes use no durability | Farming 5/15/30 | 1/2/3 |
 | Bountiful Harvest I/II | 10%/20% chance of double crop drops | Farming 10/25 | 2/3 |
-| Harvester | Harvesting with a hoe also harvests grown crops in a 3×3 area | Farming 20 | 3 |
+| Harvester | Breaking or Replanting a grown crop with a hoe also does the grown crops in a 3×3 area | Farming 20 (unlocked for testing) | 3 |
 | Rancher | 15% chance of twins when breeding | Farming 10 | 2 |
 | Green Thumb | 25% chance bone meal isn't used up | Farming 15 | 2 |
 
@@ -325,7 +311,7 @@ mobs to elites.
 - Owned perks stay owned even if a config change lowers your points.
 - Server validates every purchase (no cheating from a modified client).
 
-#### Perk list (v0.2)
+#### Perk list
 
 | Category    | Perk                | Effect                                              | Requires            | Cost |
 |-------------|---------------------|-----------------------------------------------------|---------------------|------|
@@ -392,13 +378,15 @@ Keep it simple and close to vanilla.
 │ │ Mining   │ │ ⛏ Sturdy Pickaxe I     ✔ owned      │  │
 │ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II    2 pts  [Buy] │  │
 │ │ Digging  │ │ ⛏ Sturdy Pickaxe III   🔒 Mining 30 │  │
-│ │ Combat   │ │ 💎 Prospector I        2 pts  [Buy] │  │
-│ │ Survival │ │ 💎 Prospector II       🔒 Mining 25 │  │
+│ │ Farming  │ │ 💎 Prospector I        2 pts  [Buy] │  │
+│ │ Combat   │ │ 💎 Prospector II       🔒 Mining 25 │  │
+│ │ Defense  │ │                                    │  │
+│ │ Survival │ │                                    │  │
 │ └──────────┘ └────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────┘
 ```
-- Categories on the left, perks of the selected category on the right (fits without
-  scrolling). Hover a perk for its full description.
+- Categories on the left, perks of the selected category on the right (scrolls when a
+  category has more perks than fit). Hover a perk for its full description.
 - States: owned (green ✔), buyable (Buy button), too expensive (cost in red), locked
   (🔒 + requirement).
 
@@ -493,9 +481,9 @@ To brainstorm later:
   granting hearts/stomach, metabolism, Mining/Woodcutting/Digging skills, bestiary
   damage modifier, config, `/pam` commands. Playtested: works well.
 - **v0.2:** perk points + perk list above, Adventure screen (character, perks,
-  bestiary tabs), keybind. *(Implemented, needs playtesting.)*
+  bestiary tabs), keybind. Playtested: works (not tagged yet).
 - **v0.2.x:** Farming skill, farming perks, Farmer milestones, Defense perks, Fleet Foot tiers.
   *(Implemented, needs playtesting.)*
 - **v0.3:** Rank-based mob unlocking, elite mobs (postponed by user for now).
-- **v0.4:** more skills (Combat, Archery, Farming, Fishing) + their perks, diet
+- **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
   variety, more milestones, exploration extras.
