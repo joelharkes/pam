@@ -10,7 +10,11 @@ Minecraft Java that makes the game more progressive: the player starts weaker (f
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
 - Feature ideas, design decisions and open questions: [DESIGN.md](DESIGN.md)
-- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented and playtested.
+- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
+  and playtested, not tagged yet. Next: **v0.3** mob unlocking + elite mobs.
+- Open question for v0.3: gate mob unlocks on Adventure Rank (milestone count) or on earned
+  milestone hearts. Rank climbs fast early (~rank 8 on day 2); Claude recommended hearts,
+  user hasn't decided yet.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.
@@ -38,6 +42,26 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (client-only classes: `minecraft-clientonly-deobf`). Vanilla advancement/lang JSON can
   be unzipped from the same jar as format references.
 - No `curl` on this machine; use `python3 -I` + urllib for HTTP.
+- Server smoke test after mixin changes: start `runServer` in the background, wait for
+  `Done (` in the log, check for ERROR/Mixin lines, then stop it. Mixin targets that
+  don't match crash at startup (`defaultRequire: 1`).
+
+## Workflow
+
+- The user playtests in the client (`./gradlew runClient`); Claude can't see the game window,
+  so report what was verified (compile, server start) vs. what still needs a playtest.
+- Discuss and challenge design ideas before building; record every decision in the
+  DESIGN.md decisions log and keep its roadmap current.
+- Commit per feature/change. Tag playtested versions (`v0.1.0` = first test version).
+
+## Adding things
+
+- **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under
+  `data/progressive_adventure/advancement/<category>/`, and title + description (ending in
+  "Reward: ...") in `lang/en_us.json`. Code-driven ones use the `granted` impossible criterion.
+- **Perk:** register in `Perks.java`, add name + description to the lang file, implement the
+  effect in `PerkEffects` (behaviour) or `Progression.apply` (attribute modifier).
+- **Text:** all player-facing text goes through `lang/en_us.json` (edit by hand).
 
 ## Code layout (`src/main/java/com/progressiveadventure/`)
 
