@@ -48,16 +48,12 @@ Restore them when the user confirms the perks work. Also update the DESIGN.md pe
 
 ## Open questions / next steps
 
-1. **Mob unlocking + elites (v0.3)** is designed in DESIGN.md pillar 5 but **postponed by the
-   user**. Unresolved: gate unlocks on Adventure Rank (milestone count, climbs fast: ~rank 8 on
-   day 2) or on earned milestone hearts (Claude's recommendation; matches "creepers once you can
-   survive one"). Ask before building.
+1. **Mob unlocking + elites (v0.3)**: next up. Gate = Adventure Rank (perk points earned, decided).
+   Thresholds in DESIGN.md pillar 5 are still in the old scale and must be redone.
 2. **Balance** (needs playtesting): early milestones give hearts quickly; perk costs vs. point
    budget; XP curves.
 3. **Ideas parked in DESIGN.md:** more skills (Combat, Archery, Fishing), diet variety / Well Fed,
    more milestones from the draft list, toasts instead of chat messages, exploration extras.
-4. **Parked by the user:** some PAM milestones duplicate a vanilla advancement, so two toasts pop
-   at once. Don't fix until the user brings it up again (see DESIGN.md open questions).
 5. **Known gap:** the client uses its own config for skill bonus and familiarity tier display, so
    a server with a changed config shows different numbers on the client.
 

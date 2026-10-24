@@ -17,17 +17,18 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   and Fleet Foot I/II/III implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
 - Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy):
   Ore Sense (Mining 40), Replant (Farming 5), Harvester (Farming 20).
-- Open question for v0.3: gate mob unlocks on Adventure Rank (milestone count) or on earned
-  milestone hearts. Rank climbs fast early (~rank 8 on day 2); Claude recommended hearts,
-  user hasn't decided yet.
+- v0.3 (mob unlocks) will be gated on Adventure Rank (= perk points earned); thresholds still
+  to be set in the new scale.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.
   The mod is required on both client and server.
-- Core model, two tracks: (1) PAM milestones (custom advancements) grant hearts/stomach;
-  milestone count = "Adventure Rank", which will gate mob spawns and elites (v0.3).
-  (2) every advancement (vanilla + PAM) gives perk points (task/goal/challenge = 1/2/3)
-  to spend on choosable perks; skills/rank/mob types gate which perks can be bought.
+- Core model: every advancement (vanilla + PAM) gives task/goal/challenge = 1/2/3
+  **Adventure Rank**; Rank = perk points earned (available = rank − cost of owned perks).
+  Rank will gate mob spawns and elites (v0.3). **Milestones** = advancements with a
+  heart/stomach reward: PAM ones (Adventure tab) plus a list of vanilla ones in
+  `Milestones.VANILLA`. Never add a PAM milestone that duplicates a vanilla advancement
+  (double toast); put the reward on the vanilla one instead.
 
 ## Stack
 
@@ -66,6 +67,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under
   `data/progressive_adventure/advancement/<category>/`, and title + description (ending in
   "Reward: ...") in `lang/en_us.json`. Code-driven ones use the `granted` impossible criterion.
+  **Vanilla reward:** add to `Milestones.VANILLA` and override the vanilla description key
+  (`advancements.<tab>.<name>.description`) in our lang file with the vanilla text + "\nReward: ...".
 - **Perk:** register in `Perks.java`, add name + description to the lang file, implement the
   effect in `PerkEffects` (behaviour) or `Progression.apply` (attribute modifier).
 - **Text:** all player-facing text goes through `lang/en_us.json` (edit by hand).

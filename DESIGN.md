@@ -37,34 +37,31 @@ This mod makes the **player character and the world** progress together:
 
 ---
 
-## Core idea: two progression tracks
+## Core idea: one source, two rewards
 
 ```
-GUARANTEED TRACK (survival, automatic)
-  PAM milestones ──► hearts + stomach upgrades
-        │
-        └──► milestone count = Adventure Rank ──► mob unlocks, elites, loot
-
-CHOOSABLE TRACK (play style, player picks)
-  ANY advancement (vanilla + PAM) ──► perk points ──► spend on perks
-  skill levels / bestiary ─────────► unlock which perks you may buy
+ANY advancement (vanilla + PAM)
+  ├──► +1/2/3 Adventure Rank (task/goal/challenge) ──► mob unlocks, elites (v0.3)
+  │         └── every rank is also a perk point ──► spend on perks
+  └──► some of them (milestones) also give hearts or a stomach upgrade
+skill levels / mob types / rank ──► unlock which perks you may buy
 ```
 
-- **Guaranteed track:** survival stats (hearts, hunger) always grow, so the world
-  (driven by Rank) can never outgrow the player. Works without opening any menu.
-- **Choosable track:** extras on top. Two players in the same world can grow
-  differently. See pillar 6.
-
-- Easy to understand: "I need 3 more milestones for Rank 2."
-- Kids can see exactly what to do next.
-- One number (Rank) drives the world's difficulty, so it's simple to balance.
-- Because danger grows **only** by completing milestones, and each milestone also
-  makes you stronger (hearts), the player always gets a power boost alongside the
-  harder world.
+- **Adventure Rank = perk points earned** (about 217 in total). Spending or resetting
+  perks never changes it, so buying a perk never makes the world harder and a reset
+  can't make it easier.
+- **Milestones** are advancements with a heart/stomach reward: our own (Adventure tab)
+  for things vanilla doesn't have, plus a list of vanilla advancements. No achievement
+  exists twice, so only one toast pops.
+- Hearts/stomach always grow automatically; perks are the choosable extras on top, so
+  two players in the same world can grow differently. See pillar 6.
+- One number (Rank) drives the world's difficulty, and every rank also gives a perk
+  point, so the player gets stronger with every step the world takes.
 
 ### Milestones are vanilla advancements
 
-Milestones are **custom advancements** in their own "Adventure" tab:
+Milestones are advancements: our own in the "Adventure" tab, or vanilla ones with a
+reward added (their description is overridden in our lang file to show "Reward: ..."):
 
 - The advancement screen, toasts and chat announcements come for free.
 - Mostly data-driven (JSON), so adding a milestone is cheap.
@@ -91,12 +88,11 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Implemented (28 milestones, "Adventure" advancement tab). Rewards are in half hearts:
+Implemented: 20 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
 
-| Category | Milestone                                  | Reward         |
+| Category | Milestone (PAM tab)                        | Reward         |
 |----------|--------------------------------------------|----------------|
 | Survivor | Survive your first night                   | ½ heart        |
-| Survivor | Sleep in a bed                             | ½ heart        |
 | Survivor | Wear a full set of iron armor              | ½ heart        |
 | Gourmet  | Eat your first food / 3 / 8 / 15 foods     | stomach each   |
 | Gourmet  | Eat 25 different foods                     | 1 heart        |
@@ -105,20 +101,25 @@ Implemented (28 milestones, "Adventure" advancement tab). Rewards are in half he
 | Farmer   | Breed 5 different kinds of animals         | ½ heart        |
 | Explorer | Visit 5 / 15 / 30 biomes                   | ½ / ½ / 1 heart|
 | Explorer | Find a village                             | ½ heart        |
-| Explorer | Enter the Nether / the End                 | 1 heart each   |
 | Hunter   | Defeat 5 / 15 / 30 different mob types     | ½ / ½ / 1 heart|
-| Hunter   | Defeat the Elder Guardian / Wither / Ender Dragon | 2 hearts each |
-| Crafter  | Craft iron tools / diamond tools           | ½ heart each   |
-| Crafter  | Enchant an item / brew a potion            | ½ heart each   |
-| Social   | Trade with a villager                      | ½ heart        |
+| Hunter   | Defeat the Elder Guardian / the Wither     | 2 hearts each  |
+| Crafter  | Get a diamond pickaxe                      | ½ heart        |
 
-Totals: 18½ hearts to earn (start 5, cap 20, so the cap is reached before everything
-is done) and 5 stomach levels. Boss hearts are 6 of those 18½.
+| Vanilla advancement                         | Reward   |
+|---------------------------------------------|----------|
+| Sweet Dreams, What a Deal!, Isn't It Iron Pick, Diamonds!, Not Today Thank You, Enchanter, Best Friends Forever, Fishy Business, Local Brewery, A Terrible Fortress, Those Were the Days | ½ heart each |
+| We Need to Go Deeper, The End?, Zombie Doctor, Hero of the Village, The City at the End of the Game | 1 heart each |
+| Free the End                                | 2 hearts |
+| A Balanced Diet                             | stomach  |
+
+Totals: 24½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
+the cap) and 6 stomach levels. 20 is our config cap, not a vanilla limit (vanilla
+max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
 Milestone ideas not built yet: raise a shield, desert/jungle temple, shipwreck or ocean
-ruin, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, fortress /
-bastion, End city, cake or suspicious stew, tame a wolf/cat/horse, defeat an elite,
-5 villager professions, catch a fish / treasure.
+ruin, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or
+suspicious stew, defeat an elite, 5 villager professions. More advancements may be
+added later to give more Rank/points.
 
 ### 2. Metabolism: hunger annoying early, easy later
 
@@ -140,7 +141,7 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
 | 3             | ×1.0         | ×1.0 (vanilla)  | 8 different foods        |
 | 4             | ×0.9         | ×1.1            | 15 different foods       |
 | 5             | ×0.8         | ×1.2            | 3 different crops        |
-| 6             | ×0.7         | ×1.3            | (no milestone yet)       |
+| 6             | ×0.7         | ×1.3            | A Balanced Diet          |
 - Stomach levels can come in any order; the table shows a typical one.
 - **Diet variety bonus (idea, not built):** eating a varied diet gives a temporary "Well Fed"
   buff (slower hunger drain, small regen). Eating the same food over and over gives
@@ -235,8 +236,11 @@ after a few kills, and then gains are big early and flatten out:
 
 #### Mob unlocks by Rank
 
+> Note: the Rank numbers below are from the old model (Rank = milestone count) and
+> must be redone in the new Rank (points earned, ~217 total, ~10 after a first day).
+
 Overworld hostile mobs unlock one at a time, and each type gets elites a couple of
-ranks after it first appears. Hearts assume ~0.6 heart per milestone on average.
+ranks after it first appears.
 
 | Rank | ~Hearts | New mobs                                  | Elites start            |
 |------|---------|-------------------------------------------|-------------------------|
@@ -333,11 +337,11 @@ mobs to elites.
 | Defense     | Arrow Guard I/II    | 15% / 30% less damage from projectiles              | 5 / 10 mob types    | 2/3  |
 | Defense     | Fire Guard I/II     | 15% / 30% less damage from fire, lava, burning      | 5 / 10 mob types    | 2/3  |
 | Defense     | Tough Hide I/II     | 10% / 20% less damage from mob hits (melee)         | 5 / 10 mob types    | 2/3  |
-| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 3 / 8 / 15 | 3/4/5|
+| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 20 / 40 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
-| Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 5 / Rank 10 | 1/2/3 |
+| Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
 | Survival    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
-| Survival    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 5 / 10 / 15    | 2/3/4|
+| Survival    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 
 Implementation notes:
 - Durability: one hook where items lose durability; chance by tool type.
@@ -438,7 +442,7 @@ To brainstorm later:
 - 2026-10-24: Bonuses use diminishing returns. Late-game player is stronger than vanilla.
 - 2026-10-24: Hearts come from explicit milestones (custom advancements).
 - 2026-10-24: Keep the hunger bar size. Progress via metabolism (drain/saturation).
-- 2026-10-24: Adventure Rank (milestone count) gates mob unlocks and elite chance.
+- 2026-10-24: Adventure Rank gates mob unlocks and elite chance (Rank redefined later the same day, see below).
 - 2026-10-24: Elites are rare, recognisable and drop their gear.
 - 2026-10-24: Structure mobs always spawn. Nether/End keep vanilla spawns for now
   (changing them is a later idea).
@@ -468,6 +472,13 @@ To brainstorm later:
 - 2026-10-24: Fleet Foot split into 3 tiers (+5% each, Rank 5/10/15).
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
+- 2026-10-24: **One progression model.** Adventure Rank = perk points earned from all
+  advancements (not perks owned: buying shouldn't make the world harder, reset shouldn't
+  make it easier). Rewards can sit on vanilla advancements; the 8 PAM milestones that
+  duplicated vanilla (bed, trade, iron pickaxe, enchant, brew, Nether, End, dragon) were
+  removed, so no double toasts. 10 more vanilla advancements got rewards. Rank-gated perks
+  rescaled (Bonus Heart 5/20/40, Deep Breath 10/25, Fleet Foot 10/25/40). The name stays
+  "Rank" (not "level": clashes with XP and skill levels).
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
@@ -476,9 +487,6 @@ To brainstorm later:
 
 - [ ] Perk balance: costs and point budget (playtest).
 - [ ] Balance: hearts per milestone, Rank thresholds, elite chances.
-- [ ] Double advancements (parked by user): some PAM milestones match a vanilla advancement
-  (same trigger), so two toasts pop at once. Fix later (e.g. drop the overlap, hide one toast,
-  or make the PAM milestone require something different).
 
 ## Roadmap
 

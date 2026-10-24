@@ -8,7 +8,6 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.config.PamConfig.FamiliarityTier;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
-import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
