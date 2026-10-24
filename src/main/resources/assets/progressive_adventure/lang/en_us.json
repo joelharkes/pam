@@ -139,7 +139,7 @@
   "screen.progressive_adventure.tab.character": "Character",
   "screen.progressive_adventure.tab.perks": "Perks",
   "screen.progressive_adventure.tab.bestiary": "Bestiary",
-  "screen.progressive_adventure.rank": "Adventure Rank %s / %s",
+  "screen.progressive_adventure.rank": "Adventure Rank %s  (%s of %s milestones done)",
   "screen.progressive_adventure.perk_points": "Perk points: %s",
   "screen.progressive_adventure.hearts": "Max health: %s / %s",
   "screen.progressive_adventure.stomach": "Stomach level %s (hunger drain %s%%)",
@@ -161,5 +161,10 @@
   "screen.progressive_adventure.bestiary.undiscovered": "Defeat one to discover it",
   "screen.progressive_adventure.bestiary.kills": "Kills: %s",
   "screen.progressive_adventure.bestiary.familiarity": "%s (%s damage)",
-  "screen.progressive_adventure.bestiary.next_tier": "%s more kills for %s damage"
+  "screen.progressive_adventure.bestiary.next_tier": "%s more kills for %s damage",
+  "screen.progressive_adventure.progress": "Progress",
+  "screen.progressive_adventure.rank.tooltip.1": "Your rank goes up by 1 for every milestone you complete.",
+  "screen.progressive_adventure.rank.tooltip.2": "Find the milestones in the Advancements screen, in the Progressive Adventure tab.",
+  "screen.progressive_adventure.perk_points.tooltip.1": "Every advancement you complete gives perk points.",
+  "screen.progressive_adventure.perk_points.tooltip.2": "Normal: 1, goal: 2, challenge: 3. Spend them in the Perks tab."
 }

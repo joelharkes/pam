@@ -420,6 +420,8 @@ To brainstorm later:
   advancement gives perk points for choosable perks. Skills gate perks. Free respec.
 - 2026-10-24: v0.2 = perks + Adventure screen (character, perks, bestiary); mob
   unlocking moves to v0.3.
+- 2026-10-24: v0.2 playtested: GUI, perks and perk reset work. Character tab got a
+  separate Progress section + tooltips because rank looked skill-based.
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
   endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
 

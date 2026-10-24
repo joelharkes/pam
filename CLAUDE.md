@@ -10,7 +10,7 @@ Minecraft Java that makes the game more progressive: the player starts weaker (f
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
 - Feature ideas, design decisions and open questions: [DESIGN.md](DESIGN.md)
-- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented, not yet playtested.
+- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented and playtested.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.

@@ -11,6 +11,7 @@ import com.progressiveadventure.perk.Requirement;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -20,6 +21,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+
+import java.util.List;
 
 /** Rank, hearts, stomach, perk points and one row per skill. */
 class CharacterTab implements AdventureTab {
@@ -36,9 +39,25 @@ class CharacterTab implements AdventureTab {
 		ProgressionSnapshot snapshot = PamAttachments.snapshot(player);
 
 		int y = top + 2;
-		graphics.text(font, Component.translatable("screen.progressive_adventure.rank", snapshot.rank(), snapshot.milestones()), left, y, AdventureScreen.TEXT_AQUA);
-		graphics.text(font, Component.translatable("screen.progressive_adventure.perk_points",
-				Perks.pointsAvailable(progress, snapshot)), left + width / 2, y, AdventureScreen.TEXT_PURPLE);
+		graphics.text(font, Component.translatable("screen.progressive_adventure.progress"), left, y, AdventureScreen.TEXT_GOLD);
+
+		y += 12;
+		Component rank = Component.translatable("screen.progressive_adventure.rank", snapshot.rank(), snapshot.rank(), snapshot.milestones());
+		graphics.text(font, rank, left, y, AdventureScreen.TEXT_AQUA);
+		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(rank), 10)) {
+			graphics.setComponentTooltipForNextFrame(font, List.of(
+					Component.translatable("screen.progressive_adventure.rank.tooltip.1"),
+					Component.translatable("screen.progressive_adventure.rank.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
+		}
+
+		y += 12;
+		Component points = Component.translatable("screen.progressive_adventure.perk_points", Perks.pointsAvailable(progress, snapshot));
+		graphics.text(font, points, left, y, AdventureScreen.TEXT_PURPLE);
+		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(points), 10)) {
+			graphics.setComponentTooltipForNextFrame(font, List.of(
+					Component.translatable("screen.progressive_adventure.perk_points.tooltip.1"),
+					Component.translatable("screen.progressive_adventure.perk_points.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
+		}
 
 		y += 14;
 		graphics.text(font, Component.translatable("screen.progressive_adventure.hearts",
@@ -55,7 +74,7 @@ class CharacterTab implements AdventureTab {
 		y += 12;
 		for (Skill skill : Skill.values()) {
 			drawSkill(graphics, font, progress, skill, left, y, width);
-			y += 30;
+			y += 28;
 		}
 	}
 
