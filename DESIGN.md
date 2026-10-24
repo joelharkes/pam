@@ -3,8 +3,8 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-24):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen). Not built:
-pillar 5 (mob unlocks, elites), Combat/Archery/Fishing skills, Well Fed. See the roadmap.
+Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen) and pillar 5
+mob unlocks. Not built: elites, Combat/Archery/Fishing skills, Well Fed. See the roadmap.
 
 ## Vision
 
@@ -234,36 +234,44 @@ after a few kills, and then gains are big early and flatten out:
 
 ### 5. World progression: mob unlocks and elite mobs
 
-#### Mob unlocks by Rank
+#### Mob unlocks by Rank (v0.3a, built)
 
-> Note: the Rank numbers below are from the old model (Rank = milestone count) and
-> must be redone in the new Rank (points earned, ~217 total, ~10 after a first day).
+Overworld hostile mobs unlock one group at a time as Adventure Rank (points earned,
+~217 total, ~10 after a first session) goes up. Rank 20 is expected while still in the
+Overworld (a few in-game days); everything is unlocked by Rank 50, so the world
+reaches vanilla danger fairly quickly.
 
-Overworld hostile mobs unlock one at a time, and each type gets elites a couple of
-ranks after it first appears.
+| Rank | New mobs                                         | Share of vanilla hostile spawns (roughly) |
+|------|--------------------------------------------------|------------------------|
+| 0    | Zombies (incl. husks, zombie villagers)          | ~⅙                     |
+| 5    | Skeletons (incl. strays, bogged, parched)        | ~⅓                     |
+| 12   | Creepers                                         | ~½                     |
+| 20   | Spiders (incl. cave spiders), drowned            | ~⅔                     |
+| 30   | Endermen                                         |                        |
+| 40   | Slimes (incl. sulfur cubes)                      |                        |
+| 50   | Witches, pillager patrols                        | vanilla                |
 
-| Rank | ~Hearts | New mobs                                  | Elites start            |
-|------|---------|-------------------------------------------|-------------------------|
-| 0    | 5       | Zombies (incl. husks, zombie villagers)   |                         |
-| 2    | 6       | Skeletons (incl. strays)                  | Elite zombies           |
-| 5    | 8       | Creepers                                  | Elite skeletons         |
-| 7    | 9       | Spiders, drowned                          |                         |
-| 9    | 10      | Endermen                                  | Elite spiders           |
-| 11   | 11      | Slimes                                    | Elite drowned           |
-| 13   | 12      | Witches, pillager patrols                 |                         |
-| 15   | 14      | (phantoms already follow vanilla sleep rules) | Elite endermen?     |
-
-- Biome variants follow their parent (husk = zombie, stray = skeleton, bogged =
-  skeleton).
+- **Fewer mobs, not other mobs:** when vanilla picks a locked mob for a natural spawn,
+  that spawn group is skipped. Night 1 has about vanilla's number of zombies and
+  nothing else. Config `lockedMobReplacementChance` (default 0) can instead replace a
+  locked mob with an unlocked one from the same biome, if nights feel too empty.
+- **Only hostile mobs:** animals spawn in their own category with their own cap and are
+  never touched.
+- **Multiplayer:** the lowest rank among non-spectator players within 128 blocks of the
+  spawn counts, so the world stays kid-friendly around a kid.
+- **Visible:** chat message when a group unlocks ("New danger: Creepers can now
+  appear!"), "Next: Creepers at Rank 12" on the Character tab (sent by the server, so
+  it's correct even with a changed server config), and in `/pam`.
+- **Untouched:** structure spawn lists (witch huts, outposts, monuments, fortresses),
+  spawners, trial chambers, raids, spawn eggs, the Nether and End, phantoms, and mobs
+  from other mods unless added to the config list.
+- Groups, ranks and mob ids are all in the config (`mobUnlocks`), plus an on/off switch.
 - **Creepers and health:** a point-blank creeper can kill even a vanilla 10-heart
-  player without armor. Rank 5 (~8 hearts) plus a bit of armor should survive one.
-  Options if playtests show otherwise: require the "iron armor" milestone before
-  creepers unlock, or soften creeper damage for low-rank players.
-- **Structure mobs always spawn** (blazes in fortresses, guardians in monuments,
-  spawners, pillager outposts, cave spiders, silverfish...). You chose to go there.
-- **Nether and End** (proposal): vanilla spawns. Entering them is your own choice and
-  already a milestone.
-- Mobs from other mods are allowed by default.
+  player without armor. By Rank 12 players usually have a few extra hearts and some
+  armor, and Blast Guard exists. Watch in playtests.
+
+Elites (v0.3b) start per mob type a few ranks after that type unlocks; numbers to be set
+after the v0.3a playtest.
 
 #### Elite mobs
 
@@ -479,6 +487,9 @@ To brainstorm later:
   removed, so no double toasts. 10 more vanilla advancements got rewards. Rank-gated perks
   rescaled (Bonus Heart 5/20/40, Deep Breath 10/25, Fleet Foot 10/25/40). The name stays
   "Rank" (not "level": clashes with XP and skill levels).
+- 2026-10-24: Mob unlocks (v0.3a): Rank 5 skeletons, 12 creepers, 20 spiders + drowned,
+  30 endermen, 40 slimes, 50 witches + patrols. Locked mobs are skipped (fewer hostile
+  mobs early, animals untouched), replacement chance configurable. Elites after a playtest.
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
@@ -497,6 +508,7 @@ To brainstorm later:
   bestiary tabs), keybind. Playtested: works (not tagged yet).
 - **v0.2.x:** Farming skill, farming perks, Farmer milestones, Defense perks, Fleet Foot tiers.
   *(Implemented, needs playtesting.)*
-- **v0.3:** Rank-based mob unlocking, elite mobs (postponed by user for now).
+- **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
+- **v0.3b:** elite mobs, after the v0.3a playtest.
 - **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

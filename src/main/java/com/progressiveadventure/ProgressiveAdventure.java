@@ -11,11 +11,13 @@ import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.MobUnlocks;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -37,6 +39,8 @@ public class ProgressiveAdventure implements ModInitializer {
 		PamAttachments.init();
 		PamNetworking.init();
 
+		// After all mods registered their mobs, so modded ids in the config are known
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> MobUnlocks.validateConfig());
 		ServerPlayerEvents.JOIN.register(Progression::apply);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
 

@@ -228,5 +228,18 @@
   "advancements.nether.find_fortress.description": "Break your way into a Nether Fortress\nReward: +½ heart",
   "advancements.nether.find_bastion.description": "Enter a Bastion Remnant\nReward: +½ heart",
   "advancements.end.find_end_city.description": "Go on in, what could happen?\nReward: +1 heart",
-  "advancements.end.kill_dragon.description": "Good luck\nReward: +2 hearts"
+  "advancements.end.kill_dragon.description": "Good luck\nReward: +2 hearts",
+  "message.progressive_adventure.mob_unlocked": "⚠ New danger: %s can now appear in the world!",
+  "screen.progressive_adventure.next_mobs": "Next: %s at Rank %s",
+  "screen.progressive_adventure.next_mobs.tooltip.1": "More kinds of monsters appear as your Adventure Rank goes up.",
+  "screen.progressive_adventure.next_mobs.tooltip.2": "When you play near others, the lowest rank nearby counts.",
+  "command.progressive_adventure.next_mobs": "Next monsters: %s at Rank %s",
+  "mob_group.progressive_adventure.skeletons": "Skeletons",
+  "mob_group.progressive_adventure.creepers": "Creepers",
+  "mob_group.progressive_adventure.spiders": "Spiders",
+  "mob_group.progressive_adventure.drowned": "Drowned",
+  "mob_group.progressive_adventure.endermen": "Endermen",
+  "mob_group.progressive_adventure.slimes": "Slimes",
+  "mob_group.progressive_adventure.witches": "Witches",
+  "mob_group.progressive_adventure.patrols": "Pillager patrols"
 }

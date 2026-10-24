@@ -78,7 +78,26 @@ public class PamConfig {
 	public double rancherTwinChance = 0.15;
 	public double greenThumbChance = 0.25;
 
+	// Mob unlocks: an Overworld hostile mob in this list only spawns naturally once the lowest Adventure Rank
+	// among players within mobUnlockPlayerRadius reaches its rank. Unlisted mobs (zombies, other mods) always spawn.
+	public boolean mobUnlocksEnabled = true;
+	public List<MobUnlock> mobUnlocks = List.of(
+			new MobUnlock("skeletons", 5, List.of("minecraft:skeleton", "minecraft:stray", "minecraft:bogged", "minecraft:parched")),
+			new MobUnlock("creepers", 12, List.of("minecraft:creeper")),
+			new MobUnlock("spiders", 20, List.of("minecraft:spider", "minecraft:cave_spider")),
+			new MobUnlock("drowned", 20, List.of("minecraft:drowned")),
+			new MobUnlock("endermen", 30, List.of("minecraft:enderman")),
+			new MobUnlock("slimes", 40, List.of("minecraft:slime", "minecraft:sulfur_cube")),
+			new MobUnlock("witches", 50, List.of("minecraft:witch")),
+			new MobUnlock("patrols", 50, List.of("minecraft:pillager")));
+	// Chance that a locked mob is replaced by an unlocked one instead of not spawning (0 = fewer mobs early)
+	public double lockedMobReplacementChance = 0.0;
+	public int mobUnlockPlayerRadius = 128;
+
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
+	}
+
+	public record MobUnlock(String name, int rank, List<String> mobs) {
 	}
 
 	public static PamConfig get() {

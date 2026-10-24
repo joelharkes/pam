@@ -15,6 +15,7 @@ This file only covers what those don't: where we are, what's pending, and how th
 | v0.2.x | Farming skill + 10 farming perks + 3 Farmer milestones, scrollable perk list | Built, server smoke-tested, **not playtested** |
 | v0.2.x | Ore Sense perk (client-side particle trail to nearest ore) | Playtested: works (took a moment to understand) |
 | v0.2.x | Deep Breath split into tiers I/II/III (~30/45/60s air) | Built, **not playtested** |
+| v0.3a | Mob unlocks by Adventure Rank (skeletons 5, creepers 12, ... all at 50), "Next" line on Character tab | Built, server smoke-tested, **not playtested** |
 | v0.2.x | Defense category (Sturdy Armor, Blast/Arrow/Fire Guard, Tough Hide), Fleet Foot I/II/III | Built, server smoke-tested, **not playtested** |
 
 The working tree is clean; everything is committed on `main`.
@@ -32,6 +33,8 @@ The user said they'll report back; don't assume these work:
   mostly points at them. Options already offered: ignore coal/copper, prefer the most valuable
   ore in range, or add a tier II for rare ores. Interval (30 ticks), radius (12) and trail length
   are constants in `client/OreSense.java`.
+- **Mob unlocks:** does night 1 feel right (only zombies, fewer mobs)? Too empty → raise
+  `lockedMobReplacementChance`. Unlock chat message and the "Next: ..." line on the Character tab.
 - **Defense perks:** do the reductions feel noticeable but not overpowered? Is 5/10 mob types
   the right gate? Fleet Foot: old `fleet_foot` owners lost it (point refunded).
 - **Deep Breath tiers:** players who owned the old `deep_breath` perk lost it (point refunded).
@@ -48,8 +51,7 @@ Restore them when the user confirms the perks work. Also update the DESIGN.md pe
 
 ## Open questions / next steps
 
-1. **Mob unlocking + elites (v0.3)**: next up. Gate = Adventure Rank (perk points earned, decided).
-   Thresholds in DESIGN.md pillar 5 are still in the old scale and must be redone.
+1. **Elites (v0.3b)**: after the user playtests v0.3a mob unlocks. Design in DESIGN.md pillar 5.
 2. **Balance** (needs playtesting): early milestones give hearts quickly; perk costs vs. point
    budget; XP curves.
 3. **Ideas parked in DESIGN.md:** more skills (Combat, Archery, Fishing), diet variety / Well Fed,

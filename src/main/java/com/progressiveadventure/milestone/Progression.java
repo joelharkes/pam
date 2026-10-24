@@ -7,6 +7,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.ProgressionSnapshot;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.world.MobUnlocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.AdvancementHolder;
@@ -19,6 +20,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+
+import java.util.Optional;
 
 /**
  * Derives hearts, stomach level and Adventure Rank (= perk points earned) from completed advancements and applies them
@@ -110,8 +113,10 @@ public final class Progression {
 		applyModifier(player, fleetFoot > 0, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
 				fleetFoot > 0 ? PamConfig.listValue(config.fleetFootSpeedBonuses, fleetFoot - 1) : 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
+		Optional<PamConfig.MobUnlock> nextMobs = MobUnlocks.next(status.rank());
 		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(),
-				maxHealth(player, status), config.maxHearts, status.stomach(), hungerDrain));
+				maxHealth(player, status), config.maxHearts, status.stomach(), hungerDrain,
+				nextMobs.map(PamConfig.MobUnlock::name).orElse(""), nextMobs.map(PamConfig.MobUnlock::rank).orElse(0)));
 	}
 
 	private static void applyPerkModifier(ServerPlayer player, Perk perk, Holder<Attribute> attribute, Identifier id,
@@ -131,6 +136,7 @@ public final class Progression {
 
 	/** Called for every completed advancement, vanilla or ours. */
 	public static void onAdvancementCompleted(ServerPlayer player, AdvancementHolder holder) {
+		int oldRank = PamAttachments.snapshot(player).rank();
 		apply(player);
 		Status status = status(player);
 		int points = perkPoints(holder);
@@ -138,6 +144,7 @@ public final class Progression {
 			player.sendSystemMessage(Component.translatable("message.progressive_adventure.perk_points", points, status.rank())
 					.withStyle(ChatFormatting.LIGHT_PURPLE));
 		}
+		MobUnlocks.announce(player, oldRank, status.rank());
 
 		Milestone milestone = Milestones.byId(holder.id());
 		if (milestone == null) {

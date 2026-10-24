@@ -12,6 +12,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.MobUnlocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,6 +44,8 @@ public final class PamCommand {
 
 		send(player, Component.translatable("command.progressive_adventure.header").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
 		send(player, Component.translatable("command.progressive_adventure.rank", status.rank()));
+		MobUnlocks.next(status.rank()).ifPresent(next -> send(player, Component.translatable("command.progressive_adventure.next_mobs",
+				MobUnlocks.groupName(next.name()), next.rank())));
 		send(player, Component.translatable("command.progressive_adventure.hearts",
 				Progression.formatHearts(Progression.maxHealth(player, status)), config.maxHearts));
 		send(player, Component.translatable("command.progressive_adventure.perk_points",

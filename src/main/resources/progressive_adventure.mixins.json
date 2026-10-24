@@ -11,6 +11,8 @@
 		"FoodDataMixin",
 		"ItemStackMixin",
 		"LivingEntityMixin",
+		"NaturalSpawnerMixin",
+		"PatrolSpawnerMixin",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin"
 	],

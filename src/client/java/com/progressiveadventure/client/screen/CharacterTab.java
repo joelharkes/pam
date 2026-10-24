@@ -8,6 +8,7 @@ import com.progressiveadventure.perk.PerkCategory;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.world.MobUnlocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -46,6 +47,17 @@ class CharacterTab implements AdventureTab {
 			graphics.setComponentTooltipForNextFrame(font, List.of(
 					Component.translatable("screen.progressive_adventure.rank.tooltip.1"),
 					Component.translatable("screen.progressive_adventure.rank.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
+		}
+		if (!snapshot.nextMobGroup().isEmpty()) {
+			Component nextMobs = Component.translatable("screen.progressive_adventure.next_mobs",
+					MobUnlocks.groupName(snapshot.nextMobGroup()), snapshot.nextMobRank());
+			int nextX = left + width - font.width(nextMobs);
+			graphics.text(font, nextMobs, nextX, y, AdventureScreen.TEXT_RED);
+			if (PerksTab.isInside(mouseX, mouseY, nextX, y - 1, font.width(nextMobs), 10)) {
+				graphics.setComponentTooltipForNextFrame(font, List.of(
+						Component.translatable("screen.progressive_adventure.next_mobs.tooltip.1"),
+						Component.translatable("screen.progressive_adventure.next_mobs.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
+			}
 		}
 
 		y += 12;
