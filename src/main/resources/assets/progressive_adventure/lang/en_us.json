@@ -294,6 +294,8 @@
   "advancements.progressive_adventure.hunter.elite.description": "Defeat a Tough monster\nReward: +½ heart",
   "entity.progressive_adventure.elite": "Tough %s",
   "command.progressive_adventure.elite.unknown": "Unknown mob or trait, or this mob can't have it",
+  "command.progressive_adventure.skill_set": "Set %s's %s to level %s",
+  "command.progressive_adventure.skill_set.unknown": "Unknown skill: %s",
   "entity.progressive_adventure.elite.swift": "Swift %s",
   "entity.progressive_adventure.elite.frost": "Frost %s",
   "entity.progressive_adventure.elite.blazing": "Blazing %s",

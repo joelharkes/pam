@@ -99,7 +99,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (Shadow Step visibility/escape, server side of Double Jump and Mantle)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`;
   server validates in `PamNetworking`
-- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite)
+- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
+  `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,

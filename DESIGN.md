@@ -602,6 +602,7 @@ To brainstorm later:
   stay owned. New: Spring Step, Step Up, Sure Feet, Sneaky Feet, Shadow Step I/II, Mantle, Double
   Jump, Swimmer I/II, Diver, Long Arms (Survival), Steady Stance (Defense). No double jump with an
   elytra equipped (jump in the air starts gliding). Category rows are 19px so 10 fit.
+- 2026-10-25: Spring Step clearing fences (and animal pens) is fine.
 
 ## Playtest checklist
 
@@ -610,13 +611,13 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Farming:** XP pace (30 wheat = level 2; Replant at level 5 = 100 harvests), Light Step,
   sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer
   give Woodcutting XP (fixed, check it).
-- **Archery (3c):** XP pace, draw speed feel (does the pull animation match?), each perk.
+- **Archery (3c):** test the perks with `/pam skill archery 40` (ops). XP pace, draw speed feel (does the pull animation match?), each perk.
   Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Ricochet:
   does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
   tab: 5 skill rows only just fit with two rows of hearts.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
 - **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
-  perk noticeable? Spring Step over fences (pens!) OK? Double Jump: feels instant, no rubber-band
+  perk noticeable? Double Jump: feels instant, no rubber-band
   on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall
   (jump just before landing): fun or too strong? Mantle: triggers on 2-block walls, not on fences,
   not on every hop up a block, smooth on a server? Shadow Step I: sneak past mobs closer than

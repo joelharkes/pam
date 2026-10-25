@@ -1,6 +1,7 @@
 package com.progressiveadventure.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -21,6 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -48,7 +50,32 @@ public final class PamCommand {
 								.then(Commands.argument("trait", StringArgumentType.word())
 										.suggests((context, builder) -> SharedSuggestionProvider.suggest(
 												Arrays.stream(EliteTrait.values()).map(trait -> trait.id), builder))
-										.executes(context -> spawnElite(context, StringArgumentType.getString(context, "trait")))))));
+										.executes(context -> spawnElite(context, StringArgumentType.getString(context, "trait"))))))
+				// Test helper for ops: set a skill level to try perks without levelling
+				.then(Commands.literal("skill").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.argument("skill", StringArgumentType.word())
+								.suggests((context, builder) -> SharedSuggestionProvider.suggest(
+										Arrays.stream(Skill.values()).map(skill -> skill.id), builder))
+								.then(Commands.argument("level", IntegerArgumentType.integer(0, 100))
+										.executes(context -> setSkill(context, context.getSource().getPlayerOrException()))
+										.then(Commands.argument("player", EntityArgument.player())
+												.executes(context -> setSkill(context, EntityArgument.getPlayer(context, "player"))))))));
+	}
+
+	private static int setSkill(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+		String id = StringArgumentType.getString(context, "skill");
+		Skill skill = Arrays.stream(Skill.values()).filter(s -> s.id.equals(id)).findFirst().orElse(null);
+		if (skill == null) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.skill_set.unknown", id));
+			return 0;
+		}
+		int level = IntegerArgumentType.getInteger(context, "level");
+		// Via addXp, so raising a level shows the usual level-up message
+		Skills.addXp(target, skill, Skills.xpForLevel(level) - PamAttachments.progress(target).xpOf(skill.id));
+		Component name = Component.translatable("skill.progressive_adventure." + skill.id);
+		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.skill_set",
+				target.getDisplayName(), name, level), true);
+		return 1;
 	}
 
 	private static int spawnElite(CommandContext<CommandSourceStack> context, String traitId) throws CommandSyntaxException {
