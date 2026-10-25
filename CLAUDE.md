@@ -9,8 +9,10 @@ stack, commands, conventions or key decisions change.
 Minecraft Java that makes the game more progressive: the player starts weaker (fewer
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
-- Feature ideas, design decisions, open questions, roadmap and the **playtest checklist**
-  (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
+- Design of what's built, decisions log, open questions, roadmap and the **playtest checklist**
+  (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md). **All not-built ideas
+  live in its single "Ideas" section**: add new ones there (not in the pillars), and move an idea's text
+  into its pillar when it gets built.
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
 - Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md)
 - Status: **0.4.0 released** (tag `v0.4.0`, Modrinth Alpha, first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,

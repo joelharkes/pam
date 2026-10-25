@@ -1,11 +1,12 @@
 # PAM: Progressive Adventure Mod — Design
 
-> Living document: ideas, decisions and open questions.
+> Living document: how the mod works and why, decisions, ideas and open questions.
+> The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
-**Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming/Archery skills, bestiary, 87 perks in 10 categories, Adventure screen) and pillar 5
-mob unlocks, elites and elite traits, pillar 7 waypoints (shards, stones, travel). Not built: Combat/Fishing skills, Well Fed.
-Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
+**Status (2026-10-25):** 0.4.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
+Mining/Woodcutting/Digging/Farming/Archery skills, bestiary, mob unlocks, elites + traits, 87 perks in 10
+categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
+[playtest checklist](#playtest-checklist).
 
 ## Vision
 
@@ -42,7 +43,7 @@ This mod makes the **player character and the world** progress together:
 
 ```
 ANY advancement (vanilla + PAM)
-  ├──► +1/2/3 Adventure Rank (task/goal/challenge) ──► mob unlocks, elites (v0.3)
+  ├──► +1/2/3 Adventure Rank (task/goal/challenge) ──► mob unlocks, elites
   │         └── every rank is also a perk point ──► spend on perks
   └──► some of them (milestones) also give hearts or a stomach upgrade
 skill levels / mob types / rank ──► unlock which perks you may buy
@@ -66,8 +67,10 @@ reward added (their description is overridden in our lang file to show "Reward: 
 
 - The advancement screen, toasts and chat announcements come for free.
 - Mostly data-driven (JSON), so adding a milestone is cheap.
-- Rewards (hearts etc.) are granted when the advancement completes.
-- Some criteria need custom triggers (e.g. "visit 10 biomes", "walk 1 km").
+- Rewards are never stored: hearts and stomach are derived from completed advancements, so they can't
+  double-grant and balance changes reach existing players.
+- Counts the vanilla triggers can't express (foods, crops, biomes, mob types, waypoints) are granted from
+  code through a single `granted` impossible criterion.
 
 ---
 
@@ -78,7 +81,7 @@ reward added (their description is overridden in our lang file to show "Reward: 
 - Start with **5 hearts** (configurable). Cap around **15–20 hearts** in the late game.
 - Each milestone grants **half a heart, a full heart or a stomach upgrade**. Big ones
   (bosses) grant more.
-- Feasibility: **easy.** A permanent `max_health` attribute modifier.
+- A `max_health` attribute modifier (Bonus Heart perks add on top and ignore the cap).
 
 #### Milestone list
 
@@ -121,11 +124,6 @@ Totals: 26½ hearts to earn (start 5, cap 20: 15 to earn, so there are many rout
 the cap) and 7 stomach upgrades (levels 0–7). 20 is our config cap, not a vanilla limit (vanilla
 max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
-Milestone ideas not built yet: raise a shield, desert/jungle temple, shipwreck or ocean
-ruin, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or
-suspicious stew, 5 villager professions. More advancements may be
-added later to give more Rank/points.
-
 ### 2. Metabolism: hunger annoying early, easy later
 
 Keep the vanilla hunger bar size (20). Changing it is technically hard and breaks
@@ -151,12 +149,7 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
 
 - Stomach levels can come in any order; the table shows a typical one. The config lists need one entry per
   level (8 now); a missing entry reuses the last one, so a new stomach milestone needs a new entry too.
-- **Diet variety bonus (idea, not built):** eating a varied diet gives a temporary "Well Fed"
-  buff (slower hunger drain, small regen). Eating the same food over and over gives
-  less. This teaches kids to farm several crops and fits the Gourmet milestones.
-- Feasibility: **medium.** Small mixin on exhaustion/food values. No HUD changes
-  needed.
-- Optional later: show the stomach level as a small icon next to the hunger bar.
+- A mixin on `FoodData` scales exhaustion and saturation. No HUD changes.
 
 ### 3. Proficiency: get better by doing
 
@@ -165,24 +158,18 @@ first levels come quickly and feel great, later levels are slow and small.
 Like the bestiary, skills **start below vanilla (−20% speed)**, reach vanilla around
 level 4 (~64 blocks) and cap near +60%.
 
-| Skill       | Trained by                    | Bonus                                      | Status      |
-|-------------|-------------------------------|--------------------------------------------|-------------|
-| Mining      | Pickaxe blocks                | Break speed (+ perk: chance of extra ore)  | Built |
-| Woodcutting | Axe blocks                    | Break speed (+ perk: fell small trees)     | Built |
-| Digging     | Shovel blocks                 | Break speed                                | Built |
-| Combat      | Melee damage dealt            | Attack speed/damage                        | Idea |
-| Archery     | Arrow hits on mobs, kills     | Bow/crossbow draw speed (see 3c)           | Built (3c) |
-| Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Built (3b) |
-| Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
+| Skill       | Trained by                       | Passive bonus                    |
+|-------------|----------------------------------|----------------------------------|
+| Mining      | Pickaxe blocks (ores give 3 XP)  | Break speed                      |
+| Woodcutting | Axe blocks                       | Break speed                      |
+| Digging     | Shovel blocks                    | Break speed                      |
+| Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)    |
+| Archery     | Arrow hits on mobs, kills        | Bow/crossbow draw speed (see 3c) |
 
+- Level = floor(√(xp / 4)); bonus curve and numbers are in the config.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
-
-- **Combat skill (idea, 2026-10-25):** something per weapon type (swords, axes, maces, spears/tridents), either
-  one skill per weapon or one Combat skill with a perk branch per weapon. Things to keep in mind: the bestiary is
-  already the damage progression (same reason Archery has no damage perks), so the passive bonus should be
-  something else, like attack speed; and the Character tab is full at 5 skills, so any new skill needs a new layout.
-  One Combat skill with weapon perk branches needs only one more row.
+- The Character tab is full at 5 skills: a 6th skill needs a new layout.
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
@@ -249,34 +236,35 @@ Each mob type you defeat builds familiarity, which changes how much damage you d
 to that type. **Unknown mobs are a bit tougher than in vanilla**, you break even
 after a few kills, and then gains are big early and flatten out:
 
-| Kills | Damage modifier | Label      | Extra (ideas)                  |
-|-------|-----------------|------------|--------------------------------|
-| 0     | −15%            | Unknown    | Shows as "?" in the bestiary   |
-| 1     | −10%            | Unfamiliar | Mob appears in your bestiary   |
-| 3     | −5%             | Unfamiliar |                                |
-| 5     | ±0% (vanilla)   | Known      | See its health bar             |
-| 15    | +10%            | Familiar   |                                |
-| 30    | +20%            | Familiar   | See its drops in the bestiary  |
-| 60    | +35%            | Expert     |                                |
-| 100   | +50%            | Master     | "Mastered" badge               |
-| 250   | +55%            | Master     | (cap)                          |
+| Kills | Damage modifier | Label      |
+|-------|-----------------|------------|
+| 0     | −15%            | Unknown ("?" in the bestiary) |
+| 1     | −10%            | Unfamiliar (mob appears in the bestiary) |
+| 3     | −5%             | Unfamiliar |
+| 5     | ±0% (vanilla)   | Known      |
+| 15    | +10%            | Familiar   |
+| 30    | +20%            | Familiar   |
+| 60    | +35%            | Expert     |
+| 100   | +50%            | Master     |
+| 250   | +55%            | Master (cap) |
 
 - Example: a zombie (20 HP) vs. a wooden sword (4 damage) takes 5 hits in vanilla
   and 6 hits at −15%. Noticeable, not brutal.
-- The label is visible (bestiary, maybe on hover/health bar) so a penalty never
-  feels like a bug: "I don't know this mob yet."
+- The label is visible (Bestiary tab tooltip, `/pam bestiary`, action-bar message on a new entry and
+  on every new tier) so a penalty never feels like a bug: "I don't know this mob yet."
+- An elite kill counts as 3 kills; the Quick Study perk doubles kills.
 - The −15% stacks with the other early-game penalties (5 hearts, faster hunger).
   This is OK because early ranks only spawn zombies. Watch in playtests.
 - At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
 - Only kills credited to a player count (the player or their arrow dealt the killing blow), so fully
-  automatic farms give nothing. *Idea, not built:* AFK farms where the player still lands the hit
-  (kill chambers) count fully today; they could count for less.
+  automatic farms give nothing. AFK farms where the player still lands the hit (kill chambers)
+  count fully.
 - We keep our own kill counter (not vanilla `Stats.KILLED`) so old worlds don't get
   retroactive progress.
 
 ### 5. World progression: mob unlocks and elite mobs
 
-#### Mob unlocks by Rank (v0.3a, built)
+#### Mob unlocks by Rank (v0.3a)
 
 Overworld hostile mobs unlock one group at a time as Adventure Rank (points earned,
 ~217 total, ~10 after a first session) goes up. Rank 20 is expected while still in the
@@ -312,9 +300,10 @@ reaches vanilla danger fairly quickly.
   player without armor. By Rank 12 players usually have a few extra hearts and some
   armor, and Blast Guard exists. Watch in playtests.
 
-#### Mobs get stronger: gear and elites (v0.3b, built)
+#### Mobs get stronger: gear and elites (v0.3b)
 
-Every natural Overworld hostile spawn uses the lowest Adventure Rank of nearby players.
+Every natural Overworld hostile spawn uses the lowest Adventure Rank of nearby players (same rule as
+mob unlocks), so the world stays kid-friendly around a kid playing near a parent.
 
 **Normal mobs:** zombies and skeletons (and their variants) get a growing chance of 1–2
 extra armor pieces, on top of vanilla's own: 0% at Rank 10 → 25% at Rank 100. Material
@@ -327,6 +316,7 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
   spiders 25, ...): 2% of that type's spawns, +0.1% per rank, max 10%.
 - 20% bigger (vanilla `scale` attribute), +50% health, +25% damage, named (name shows
   when you look at it). They despawn like normal mobs.
+- Elite zombie types get a sword (stone / iron / diamond by rolled material).
 - Zombie/skeleton types get gear that builds up gradually and randomly: every armor slot
   is rolled on its own (35% → 95% at Rank 160, at least 1 piece), and every piece and the
   weapon roll their own material. Odds per piece (blended smoothly between rows):
@@ -354,10 +344,11 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
 - Bonus loot, player kills only: emerald 10% (1) → 50% (1–3) at Rank 100; enchanted book
   from Rank 40, 5% (level 5) → 25% (level 30); golden apple from Rank 80, 3% → 8%.
   Elites are only 2–10% of spawns, so this stays hard to farm, especially early.
+- Waypoint Shards (see pillar 7).
 - Milestone "Elite Slayer": defeat an elite, ½ heart.
 - Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
 
-**Traits (v0.3c, built):** from Rank 100, an elite has a 25% → 75% (Rank 160) chance of one
+**Traits (v0.3c):** from Rank 100, an elite has a 25% → 75% (Rank 160) chance of one
 random trait, shown in its name instead of "Tough":
 
 | Trait    | Effect |
@@ -368,20 +359,7 @@ random trait, shown in its name instead of "Tough":
 | Leaping  | leaps at you like a spider (not skeletons, slimes or spiders, which already leap) |
 | Summoner | the first time a player hits it, calls 2 normal helpers of its kind |
 
-Trait elites have ×1.5 bonus loot chances. Test: `/pam elite <mob> [trait]`.
-
-**Idea (2026-10-25): more elite weapons.** Elite zombies always get a sword now; they could also roll an axe (and
-maybe other weapons) by material. Note: a mob hitting with an axe disables your shield for a few seconds (vanilla),
-which can surprise kids, so axes maybe only from a higher rank. Maces are probably too strong.
-
-#### Multiplayer
-
-Spawns are decided by nearby players: when a mob spawns, use the rank of the
-**lowest-ranked player nearby**. When a kid plays near a parent, the world stays
-kid-friendly around them.
-
-Feasibility: **medium.** Hook into natural spawning to cancel locked mobs or upgrade
-mobs to elites.
+Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> [trait]`.
 
 ### 6. Perks: choosable upgrades
 
@@ -396,8 +374,8 @@ mobs to elites.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 24 add 42, so ~217 Rank in total. Buying all
   87 perks costs **206**, so early on you choose and owning (almost) everything is an endgame goal
-  that needs nearly every advancement. More advancements/milestones (more points) may come later;
-  players can suggest perks and milestones through the GitHub issue forms.
+  that needs nearly every advancement. Players can suggest perks and milestones through the GitHub
+  issue forms.
 
 #### Rules
 
@@ -484,7 +462,7 @@ Implementation notes:
 - Forester: only when the broken log is the bottom one (no log below) and the sapling can survive
   there. Single saplings for 2×2 trees (dark oak, big spruce/jungle) won't grow into the big tree.
 - Cat's Eyes: client mixin on the lightmap, raises the night-vision intensity it already uses.
-  Player-placed logs are never felled, so houses are safe.
+- Player-placed logs are never felled, so houses are safe.
 - Defense guards: multiply incoming damage before armor (stacks with Protection
   enchantments). Only the first matching type counts: explosion, projectile, fire, then
   hits whose direct source is a mob. Uses vanilla damage type tags, so modded damage works.
@@ -501,10 +479,6 @@ Implementation notes:
   (`jumpFromGround`, so Spring Step adds to it). Mantle: falling or near the top of a jump, pushing
   forward into a wall whose top is 0.6–1.9 blocks above the feet, with room to stand on it; never
   on fences/walls (collision taller than 1 block).
-- Later ideas: Night Owl (light/night vision underground), a trail home (bed/spawn), Wall
-  Slide, Lucky (fishing loot, with the Fishing skill), Fireproof Skin (overlaps Fire Guard). Animal
-  Friend can't be an attribute (tempt range belongs to the animal). Well Fed (diet variety), extra crop yield (Farming skill), faster bow
-  draw (Archery), auto-smelt, night vision underground.
 - No 3×3 mining for pickaxes (trivialises caving and building); Vein Miner instead.
 
 ---
@@ -527,7 +501,7 @@ places you've been.
 - **Tough:** blast-proof, pistons can't move it, only the owner or an op can break a
   turned-on stone.
 - **Travel:** right-click a stone → list of all other stones with cost, owner and distance.
-  Only from stone to stone (teleport from anywhere = maybe a later Pathfinder tier).
+  Only from stone to stone.
   2-second charge-up with particles; getting hurt or walking away cancels it (nothing paid).
 - **Cost in XP points, not levels**, so it doesn't feel harsh at level 30 vs level 3
   (30 points ≈ 2 levels at level 3, ¼ level at level 30): 15 + 10 per 1000 blocks, max 50.
@@ -556,10 +530,11 @@ Keep it simple and close to vanilla.
   vanilla's tab bar so it looks like the world-creation screen. Three tabs:
 
 #### Character tab
-- Adventure Rank, hearts (current max / cap, as heart icons), stomach level. Milestone
-  count and hunger drain % are in hover tooltips.
-- One row per skill: tool icon, name, level, xp progress bar to next level, current
-  speed bonus.
+- **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 12"), available perk
+  points, hearts (as heart icons) and stomach level. Details (what Rank is, hunger drain %) are in
+  hover tooltips.
+- **Skills:** one row per skill: tool icon, name, level, xp progress bar to next level, current
+  bonus. Full at 5 rows.
 
 #### Perks tab
 ```
@@ -570,12 +545,16 @@ Keep it simple and close to vanilla.
 │ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II          2 pts │  │
 │ │ Digging  │ │ ⛏ Sturdy Pickaxe III            🔒 │  │
 │ │ Farming  │ │ 💎 Prospector I              2 pts │  │
-│ │ Combat   │ │ 💎 Prospector II                🔒 │  │
+│ │ Archery  │ │ 💎 Prospector II                🔒 │  │
+│ │ Combat   │ │                                    │  │
 │ │ Defense  │ │                                    │  │
 │ │ Survival │ │                                    │  │
+│ │ Movement │ │                                    │  │
+│ │ Swimming │ │                                    │  │
 │ └──────────┘ └────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────┘
 ```
+- The category column holds 10 rows of 19px: an 11th category needs a new layout.
 - Categories on the left, perks of the selected category on the right (scrolls when a
   category has more perks than fit). Hover a perk for its full description.
 - States: owned (✔), buyable (cost in gold, click the row), too expensive (cost in red),
@@ -588,30 +567,78 @@ Keep it simple and close to vanilla.
   pages. "Discovered 12 / 80" at the top.
 - Undiscovered mobs show a dark "?" tile ("Defeat one to discover").
 - Hover: name, kills, familiarity label, damage modifier, kills needed for next tier.
-- Tile border colour by tier (grey → white → green → gold for Master).
+- Tile border colour by tier (dark grey for Unknown/Unfamiliar → light grey Known → green Familiar →
+  aqua Expert → gold Master).
 
-- **Toasts** for level-ups, new bestiary entries and Rank-ups (later; chat/action
-  bar messages for now).
-- `/pam` and `/pam bestiary` stay as text fallbacks.
+#### Messages
+- Chat: hearts gained, stomach upgrade, perk points / Rank gained, mob unlocks, waypoint actions.
+- Action bar: skill level-up, new bestiary entry and new familiarity tier, Shadow Step II escape,
+  Bird's Nest.
+- `/pam` and `/pam bestiary` are text fallbacks for the screen.
 
 ---
 
-## Future ideas: more reasons to explore
+## Ideas
 
-To brainstorm later:
+**The one place for everything not built yet.** When an idea comes up, add it here (with a date when
+it's new); when it gets built, move its description into the pillars above and log the decision.
+Players can suggest more through the GitHub issue forms.
 
-- **Heart containers in loot:** rare items in structure chests (dungeons, temples,
-  ancient cities) that grant a bonus heart. Rewards exploring structures.
-- **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a
-  related skill.
-- **Mob discovery:** first kill of a new mob type gives a big XP burst and a toast.
-- **Mobs drop exploration helpers** (user idea): became Waypoint Shards (see 7). Treasure
-  or explorer maps from elites are still an option.
+### New skills
+- **Combat skill (2026-10-25):** something per weapon type (swords, axes, maces, spears/tridents), either one
+  skill per weapon or one Combat skill with a perk branch per weapon. The bestiary is already the damage
+  progression (same reason Archery has no damage perks), so the passive bonus should be something else, like
+  attack speed. One Combat skill with weapon perk branches needs only one more row, but the Character tab is
+  full at 5 skills, so any new skill needs a new layout.
+- **Fishing skill:** trained by catching fish; faster bites, better loot. Perk idea: **Lucky** (fishing loot).
+
+### Milestones and Rank
+- More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
+  cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
+  has no advancement for it (if it does, put the reward on the vanilla one).
+- More advancements in general = more Rank and perk points (perks cost 206 of ~217 Rank today).
+
+### Food and hunger
+- **Well Fed (diet variety):** eating a varied diet gives a temporary buff (slower hunger drain, small regen);
+  eating the same food over and over gives less. Teaches kids to farm several crops, fits the Gourmet milestones.
+- Show the stomach level as a small icon next to the hunger bar.
+
+### Perks
+- A trail home (to bed/spawn), like the Sense perks.
+- Wall Slide.
+- Auto-smelt.
+- Fireproof Skin (overlaps Fire Guard, so maybe not).
+- Animal Friend: can't be an attribute (tempt range belongs to the animal), needs a mixin.
+
+### Bestiary
+- Unlocks per tier: see a mob's health bar (Known), its drops in the bestiary (Familiar 30), a "Mastered"
+  badge (Master).
+- AFK kill chambers (player lands the hit) count fully today; they could count for less.
+- First kill of a new mob type: a big XP burst and a toast (today: an action-bar message).
+
+### Mobs and elites
+- **More elite weapons (2026-10-25):** elite zombies always get a sword; they could also roll an axe (and maybe
+  other weapons) by material. A mob hitting with an axe disables your shield for a few seconds (vanilla), which
+  can surprise kids, so axes maybe only from a higher rank. Maces are probably too strong.
+- **Recycle elite gear (2026-10-25):** elites drop a lot of armor and weapons. Vanilla smelts iron, chainmail and
+  gold gear into a single nugget each, which feels poor for a whole piece; diamond and leather gear can't be
+  recycled at all. Idea: a grindstone/recycling station that returns part of the ingots or diamonds (more for less
+  worn gear), or salvaging into something useful.
+- Elites drop treasure or explorer maps (the other half of the "mobs drop exploration helpers" idea; the first
+  half became Waypoint Shards).
+- Mob unlocks / elites in the Nether and End (vanilla spawns there for now).
+
+### Waypoints
+- Teleport from anywhere (not only stone to stone), e.g. as a Pathfinder III tier.
+
+### Exploration
+- **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
+  bonus heart.
+- **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
-- **Recycle elite gear (2026-10-25):** elites drop a lot of armor and weapons. Vanilla already smelts iron,
-  chainmail and gold tools/armor into a single nugget each, which feels poor for a whole piece; diamond and
-  leather gear can't be recycled at all. Idea: a better yield, e.g. a grindstone/recycling station that returns part
-  of the ingots or diamonds (more for less worn gear), or salvaging into something useful.
+
+### UI
+- Toasts instead of chat/action-bar messages for level-ups, new bestiary entries and Rank-ups.
 
 ---
 
@@ -655,15 +682,15 @@ To brainstorm later:
 - 2026-10-24: Farming skill (v0.2.x): XP from grown crops + breeding (no separate
   Ranching skill), extra-harvest bonus, no start penalty, Replant is a perk.
 - 2026-10-24: Ore Sense perk: client-side particle trail toward nearest ore (12 blocks),
-  only with a pickaxe in hand. Requirement Mining 40, temporarily removed for testing.
-- 2026-10-24: Deep Breath split into 3 tiers. Replant/Harvester requirements temporarily
-  removed for testing.
+  only with a pickaxe in hand. Requirement Mining 40 (was briefly removed for testing, restored 2026-10-25).
+- 2026-10-24: Deep Breath split into 3 tiers. (Replant/Harvester requirements were briefly removed for
+  testing, restored 2026-10-25.)
 - 2026-10-24: Defense perks are specific (explosion, projectile, fire, mob hits), no general
   damage reduction: a general one would make the others pointless, and Bonus Hearts already
   act as general protection. Gated on mob types defeated (5 / 10), kept easy.
-- 2026-10-24: Fleet Foot split into 3 tiers (+5% each, Rank 5/10/15).
+- 2026-10-24: Fleet Foot split into 3 tiers (+5% each; ranks later rescaled to 10/25/40, see below).
 - 2026-10-24: Mob unlock order: zombies → skeletons → creepers → spiders →
-  endermen → slimes → witches. Elites per mob type, starting early (zombies at Rank 2).
+  endermen → slimes → witches. Elites per mob type (later set to 5 ranks after the type unlocks).
 - 2026-10-24: **One progression model.** Adventure Rank = perk points earned from all
   advancements (not perks owned: buying shouldn't make the world harder, reset shouldn't
   make it easier). Rewards can sit on vanilla advancements; the 8 PAM milestones that
@@ -746,6 +773,9 @@ To brainstorm later:
 - 2026-10-25: **0.4.0 released** (tag `v0.4.0`, Alpha) on Modrinth and as a GitHub release, with much of the
   playtest checklist still open. From now on players have real saves and configs: removing or renaming a perk,
   milestone or setting needs a migration or a CHANGELOG note.
+- 2026-10-25: **DESIGN.md cleanup:** all not-built ideas moved into one [Ideas](#ideas) section; the pillars only
+  describe what's built. Checked against the code; stale bits fixed (Perks tab mockup with 10 categories, bestiary
+  tier colours, which messages use the action bar, perk "later ideas" that were already built).
 
 ## Playtest checklist
 
@@ -822,15 +852,12 @@ override applied, typo warned).
   bestiary tabs), keybind. Playtested: works (not tagged yet).
 - **v0.2.x:** Farming skill, farming perks, Farmer milestones, Ore Sense, Deep Breath and Fleet
   Foot tiers, Defense perks.
-  *(Implemented, needs playtesting.)*
-- **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
-- **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
-- **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)* Then tag v0.3.
-- **v0.3.x:** Archery skill + perks. *(Implemented, needs playtesting.)*
-- **v0.3.x:** Movement and Swimming perk categories (Double Jump, Mantle, Shadow Step, ...).
-  *(Implemented, needs playtesting.)*
+- **v0.3a:** Rank-based mob unlocking. **v0.3b:** mob gear + elite mobs + elite loot.
+  **v0.3c:** elite traits for high ranks.
+- **v0.3.x:** Archery skill + perks; Movement and Swimming perk categories (Double Jump, Mantle,
+  Shadow Step, ...).
 - **v0.4a:** Waypoint Shards + Waypoint Stones, travel for XP, Pathfinder perk.
-  *(Implemented, needs playtesting.)*
-- **0.4.0 (tag `v0.4.0`):** first public release on Modrinth (Alpha), everything above.
-- **v0.4:** more skills (Combat, Fishing) + their perks, diet
-  variety, more milestones, exploration extras.
+- **0.4.0 (tag `v0.4.0`, 2026-10-25):** first public release on Modrinth (Alpha), everything above.
+  Not tagged separately: v0.2 and v0.3. What still needs a playtest is in the playtest checklist.
+- **Next:** work through the playtest checklist and Open questions (balance), then pick from
+  [Ideas](#ideas) (likely candidates: a Combat skill, Well Fed, more milestones).
