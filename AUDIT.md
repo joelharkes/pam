@@ -31,15 +31,21 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
 
 ## Smaller issues (to discuss)
 
-- [ ] **5.** Revoking an advancement (`/advancement revoke`) doesn't recompute hearts/Rank until the player relogs
+- [x] **5.** Revoking an advancement (`/advancement revoke`) doesn't recompute hearts/Rank until the player relogs
   (only `award` is hooked).
-- [ ] **6.** Replant / Harvester-replant change blocks directly: no break event, no spawn-protection check, so claim
+  FIXED: `revoke` is hooked too and recomputes right away (recipe unlocks skipped).
+- [x] **6.** Replant / Harvester-replant change blocks directly: no break event, no spawn-protection check, so claim
   mods may not see them.
-- [ ] **7.** Path Maker's 8 extra blocks use no durability (Excavator and Vein Miner do).
+  FIXED: `PerkEffects.mayChangeBlock` does vanilla's break checks (spawn protection, Adventure mode) for every
+  extra block of Replant, Harvester, Path Maker, Timber/Lumberjack, Vein Miner and Excavator. No break event is fired
+  for Replant (other mods could treat it as a real break), so claim mods only stop it via their right-click check.
+- [x] **7.** Path Maker's 8 extra blocks use no durability (Excavator and Vein Miner do).
+  FIXED: each extra block uses 1 durability (Sturdy Shovel applies); stops when the shovel breaks.
 - [ ] **8.** `mobUnlockPlayerRadius` below 128 lets mobs spawning further away skip the lock (no player "near").
   At least say so in the config comment.
 - [ ] **9.** `/pam bestiary` throws if the familiarity tiers in the config don't start at 0 kills.
-- [ ] **10.** Spiders can roll the Leaping trait, which they already have (a wasted trait).
+- [x] **10.** Spiders can roll the Leaping trait, which they already have (a wasted trait).
+  FIXED: spiders and cave spiders can't get Leaping.
 
 ## Docs out of date
 

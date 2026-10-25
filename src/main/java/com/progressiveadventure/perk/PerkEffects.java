@@ -91,6 +91,14 @@ public final class PerkEffects {
 		LEAF_BREAKS.clear();
 	}
 
+	/**
+	 * Whether a perk may change this extra block for the player: the vanilla checks a normal break or use goes
+	 * through (spawn protection, Adventure mode), which perks that change blocks directly would otherwise skip.
+	 */
+	public static boolean mayChangeBlock(ServerPlayer player, ServerLevel level, BlockPos pos) {
+		return level.mayInteract(player, pos) && !player.blockActionRestricted(level, pos, player.gameMode.getGameModeForPlayer());
+	}
+
 	/** Chance that this item takes no durability damage, from Sturdy perks. */
 	public static double durabilitySaveChance(ServerPlayer player, ItemStack stack) {
 		int tier;
@@ -296,7 +304,9 @@ public final class PerkEffects {
 				if (!player.getMainHandItem().is(ItemTags.PICKAXES)) {
 					break; // pickaxe broke
 				}
-				player.gameMode.destroyBlock(pos);
+				if (mayChangeBlock(player, level, pos)) {
+					player.gameMode.destroyBlock(pos);
+				}
 			}
 		} finally {
 			miningVein = false;
@@ -326,7 +336,7 @@ public final class PerkEffects {
 						case X -> center.offset(0, a, b);
 						case Z -> center.offset(a, b, 0);
 					};
-					if (canExcavate(level.getBlockState(pos)) && !PlacedBlocks.isPlaced(level, pos)) {
+					if (canExcavate(level.getBlockState(pos)) && !PlacedBlocks.isPlaced(level, pos) && mayChangeBlock(player, level, pos)) {
 						player.gameMode.destroyBlock(pos);
 					}
 				}
@@ -393,7 +403,7 @@ public final class PerkEffects {
 				if (!player.getMainHandItem().is(ItemTags.AXES)) {
 					break; // axe broke
 				}
-				if (!PlacedBlocks.isPlaced(level, log)) {
+				if (!PlacedBlocks.isPlaced(level, log) && mayChangeBlock(player, level, log)) {
 					player.gameMode.destroyBlock(log);
 				}
 			}

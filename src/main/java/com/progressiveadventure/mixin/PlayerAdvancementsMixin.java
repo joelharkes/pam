@@ -28,4 +28,12 @@ public abstract class PlayerAdvancementsMixin {
 			Progression.onAdvancementCompleted(player, holder);
 		}
 	}
+
+	/** /advancement revoke: hearts, stomach and Rank are derived, so recompute them right away instead of on the next login. */
+	@Inject(method = "revoke", at = @At("RETURN"))
+	private void pam$onRevoke(AdvancementHolder holder, String criterion, CallbackInfoReturnable<Boolean> cir) {
+		if (cir.getReturnValueZ() && holder.value().display().isPresent()) {
+			Progression.apply(player);
+		}
+	}
 }

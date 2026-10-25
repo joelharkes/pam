@@ -4,6 +4,7 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Milestones;
+import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
 
 import net.minecraft.core.BlockPos;
@@ -107,7 +108,7 @@ public final class Farming {
 			harvestingArea = true;
 			try {
 				for (BlockPos neighbor : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1))) {
-					if (!neighbor.equals(pos) && isGrownAgeCrop(level.getBlockState(neighbor))) {
+					if (!neighbor.equals(pos) && isGrownAgeCrop(level.getBlockState(neighbor)) && PerkEffects.mayChangeBlock(player, level, neighbor)) {
 						player.gameMode.destroyBlock(neighbor.immutable());
 					}
 				}
@@ -141,11 +142,15 @@ public final class Farming {
 		}
 		if (player instanceof ServerPlayer serverPlayer) {
 			ServerLevel serverLevel = (ServerLevel) level;
+			// Replant changes the block directly, so it does the protection checks a normal break would
+			if (!PerkEffects.mayChangeBlock(serverPlayer, serverLevel, pos)) {
+				return InteractionResult.PASS;
+			}
 			replant(serverPlayer, serverLevel, pos, state);
 			if (held.is(ItemTags.HOES) && Perks.has(player, Perks.HARVESTER)) {
 				for (BlockPos neighbor : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1))) {
 					BlockState neighborState = level.getBlockState(neighbor);
-					if (!neighbor.equals(pos) && isGrownAgeCrop(neighborState)) {
+					if (!neighbor.equals(pos) && isGrownAgeCrop(neighborState) && PerkEffects.mayChangeBlock(serverPlayer, serverLevel, neighbor)) {
 						replant(serverPlayer, serverLevel, neighbor.immutable(), neighborState);
 					}
 				}

@@ -360,7 +360,7 @@ random trait, shown in its name instead of "Tough":
 | Swift    | +30% movement speed |
 | Frost    | its hits and arrows give Slowness II for 3s |
 | Blazing  | its hits and arrows set you on fire for 4s |
-| Leaping  | leaps at you like a spider (not skeletons/slimes) |
+| Leaping  | leaps at you like a spider (not skeletons, slimes or spiders, which already leap) |
 | Summoner | the first time a player hits it, calls 2 normal helpers of its kind |
 
 Trait elites have ×1.5 bonus loot chances. Test: `/pam elite <mob> [trait]`.
@@ -423,7 +423,7 @@ mobs to elites.
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
 | Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
 | Digging     | Flint Finder        | 30% chance of an extra flint from natural gravel    | Digging 5           | 1    |
-| Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single) | Digging 5 | 1 |
+| Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single); each block uses durability | Digging 5 | 1 |
 | Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
 | Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
 | Combat      | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability        | 5 / 15 / 25 mob types defeated | 1/2/3 |
@@ -465,6 +465,9 @@ Implementation notes:
   or down), only shovel blocks without a block entity (so never suspicious sand/gravel).
 - Sense perks (`BlockSense`, client): one scanner that skips chunk sections whose palette can't
   contain the target, so a 24-block radius for rare blocks stays cheap.
+- Perks that change extra blocks (Timber, Lumberjack, Vein Miner, Excavator, Harvester, Replant, Path Maker)
+  skip blocks the player couldn't change by hand: spawn protection and Adventure mode, the same checks as a
+  normal break. Replant doesn't fire a break event, so claim mods only stop it if they block right-clicks.
 - Clear Cut: 10 ticks after felling (leaf distance spreads one block per tick), breaks the
   non-persistent leaves at decay distance 7 in the felled logs' box + 7. Only leaves that would
   decay anyway, so a neighbouring tree is never touched. Breaks 32 leaves per tick (no lag spike
@@ -772,6 +775,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   the first one still heals). Die and respawn: full health. More than 20 hearts (e.g. `/pam` + Bonus Hearts):
   hearts on the Character tab overlap neatly, nothing drawn over the stomach line. Second Wind works in a
   second world opened after using it in another.
+- **Audit fixes 2:** `/advancement revoke` takes hearts/Rank away right away. Replant, Harvester, Timber and
+  Path Maker don't change blocks inside spawn protection (test on the dev server as a non-op). Path Maker 3×3 uses
+  9 durability (less with Sturdy Shovel). `/pam elite spider leaping` is refused.
 - **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
   Orchard apples still drop.
 

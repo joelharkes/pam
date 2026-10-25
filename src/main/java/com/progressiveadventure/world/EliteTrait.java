@@ -3,6 +3,7 @@ package com.progressiveadventure.world;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.cubemob.Slime;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.monster.spider.Spider;
 
 /** Extra ability of a high-rank elite, shown in its name ("Frost Skeleton"). */
 public enum EliteTrait {
@@ -23,8 +24,8 @@ public enum EliteTrait {
 		return null;
 	}
 
-	/** Leaping only makes sense for melee mobs that don't jump around already. */
+	/** Leaping only makes sense for melee mobs that don't jump around already (spiders and cave spiders already leap). */
 	public boolean canHave(Mob mob) {
-		return this != LEAPING || !(mob instanceof AbstractSkeleton || mob instanceof Slime);
+		return this != LEAPING || !(mob instanceof AbstractSkeleton || mob instanceof Slime || mob instanceof Spider);
 	}
 }
