@@ -91,9 +91,36 @@ PAM is needed **on both the client and the server**.
 
 ## Config
 
-All balance numbers (starting hearts, hunger, skill speed, elite chances, waypoint costs, ...)
-live in `config/progressive_adventure.json`. It's created the first time you start the game
-or server.
+PAM works out of the box; you don't need to change anything. To change a setting (starting
+hearts, hunger, skill speed, elite chances, waypoint costs, ...):
+
+1. Look in `config/progressive_adventure.defaults.json` for every setting and its default.
+   This file is rewritten each time the game starts, so changing it does nothing.
+2. Copy only the settings you want to change into `config/progressive_adventure.json`, change
+   them there, and restart the game or server. For example:
+
+```json
+{
+  "startingHearts": 10,
+  "lockedMobReplacementChance": 0.3
+}
+```
+
+Everything you don't list follows the mod's defaults, so when an update rebalances something,
+you get the new numbers automatically. A list setting is replaced as a whole. On a server, or
+when you open a world to LAN, the settings of the server (the host) count.
+
+## Known limitations
+
+- **Removing PAM** from a world doesn't reset hearts: players keep the max health they had.
+- **Mob unlocks and elites** only change natural spawns in the Overworld. The Nether, the End,
+  spawners, structures (like witch huts) and raids stay vanilla.
+- **Land-claim mods:** perks that break blocks (Timber, Vein Miner, ...) follow the normal
+  breaking rules. Replant (right-click a grown crop) is only stopped by a claim mod that also
+  blocks right-clicking crops.
+- **Skill and bestiary settings:** if a server changes skill speed or bestiary settings, players
+  whose own config doesn't match may see different numbers on the Adventure screen, and mining
+  can feel slightly off. Give players the same settings, or leave these at their defaults.
 
 ## Commands
 

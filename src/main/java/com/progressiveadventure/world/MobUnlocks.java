@@ -37,6 +37,13 @@ import java.util.Optional;
  * (unless listed in the config) are left alone.
  */
 public final class MobUnlocks {
+	/**
+	 * Players within this distance of a spawn count. Fixed, not in the config: it matches vanilla's despawn distance
+	 * (mobs only spawn this close to a player), so a smaller value would let far spawns skip the lock (nobody "near")
+	 * and a bigger one would only let a far-away player keep the area easy.
+	 */
+	private static final double PLAYER_RADIUS = 128;
+
 	/** Rank needed per locked mob type, built from the config once mobs are registered (asked on every spawn attempt). */
 	private static Map<EntityType<?>, Integer> requiredRanks;
 
@@ -71,11 +78,11 @@ public final class MobUnlocks {
 
 	/** Lowest Adventure Rank among non-spectator players near the position, or MAX_VALUE if nobody is near. */
 	public static int lowestRankNear(ServerLevel level, BlockPos pos) {
-		double radius = PamConfig.get().mobUnlockPlayerRadius;
-		Vec3 center = Vec3.atCenterOf(pos);
+		// Measured like vanilla's spawn check, which needs a player this close, so every natural spawn has one
+		Vec3 spawnPoint = Vec3.atBottomCenterOf(pos);
 		int lowest = Integer.MAX_VALUE;
 		for (ServerPlayer player : level.players()) {
-			if (!player.isSpectator() && player.distanceToSqr(center) <= radius * radius) {
+			if (!player.isSpectator() && player.distanceToSqr(spawnPoint) <= PLAYER_RADIUS * PLAYER_RADIUS) {
 				lowest = Math.min(lowest, PamAttachments.snapshot(player).rank());
 			}
 		}

@@ -41,11 +41,20 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
   for Replant (other mods could treat it as a real break), so claim mods only stop it via their right-click check.
 - [x] **7.** Path Maker's 8 extra blocks use no durability (Excavator and Vein Miner do).
   FIXED: each extra block uses 1 durability (Sturdy Shovel applies); stops when the shovel breaks.
-- [ ] **8.** `mobUnlockPlayerRadius` below 128 lets mobs spawning further away skip the lock (no player "near").
+- [x] **8.** `mobUnlockPlayerRadius` below 128 lets mobs spawning further away skip the lock (no player "near").
   At least say so in the config comment.
+  FIXED: no longer a setting; fixed at 128 (vanilla's spawn distance) and measured from the same point as vanilla.
+- [x] **11.** (found while discussing 8) The config file had every setting written back on each start, so the
+  defaults of the first launch were frozen and rebalances never reached existing installs (singleplayer and LAN too).
+  FIXED: the file only holds overrides; `progressive_adventure.defaults.json` is a reference rewritten every start;
+  unknown keys give a warning. Existing (pre-release) config files deleted, so no migration.
 - [ ] **9.** `/pam bestiary` throws if the familiarity tiers in the config don't start at 0 kills.
 - [x] **10.** Spiders can roll the Leaping trait, which they already have (a wasted trait).
   FIXED: spiders and cave spiders can't get Leaping.
+
+## Known limitations
+
+Things that stay true are listed for players in README.md / docs/modrinth-description.md ("Known limitations").
 
 ## Docs out of date
 

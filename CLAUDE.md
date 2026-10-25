@@ -98,7 +98,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 ## Code layout (`src/main/java/com/progressiveadventure/`)
 
 - `ProgressiveAdventure`: entrypoint, registers all events
-- `config/PamConfig`: all balance numbers, Gson → `config/progressive_adventure.json`
+- `config/PamConfig`: all balance numbers (defaults in code). `config/progressive_adventure.json` holds only
+  overrides; `config/progressive_adventure.defaults.json` is a reference rewritten every start, never read
 - `data/PlayerProgress`: immutable per-player record (kills, skill xp, foods, biomes, owned perks)
 - `data/ProgressionSnapshot`: server-derived values synced for the UI (rank, hearts, stomach, perk points)
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
@@ -164,14 +165,20 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - **Milestone rewards live in `Milestones.java` and are repeated in the advancement
   description (lang file).** Change both together.
 - Perk costs/requirements live in `Perks.java` (client and server must agree); perk effect
-  strengths live in config (server-only). Known gap: the client reads its own config for skill
-  speed and familiarity tiers, so a server with changed values can show different numbers.
+  strengths live in config (server-only). Known gap (also in README's Known limitations): the client reads its own
+  config for skill speed and familiarity tiers, so a server with changed values can show different numbers.
 - Client reads attachments with `getAttachedOrElse` (never create attachments client-side).
 - Register attachments with `AttachmentRegistry.create(id, builder -> ...)` (`builder()` is deprecated).
 - `PlacedBlocks` only remembers logs, ores and melon/pumpkin/cane/cactus/bamboo (mutable set per chunk,
   max 10k, not synced). Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
   and bamboo only when not player-placed.
-- Changing a default in `PamConfig` doesn't reach existing config files (loading writes every field back),
-  so also update `run/config/progressive_adventure.json` and tell the user about other servers.
-- All balance numbers live in config, not hard-coded. Use tabs, match the template style.
+- The config file only holds overrides, so changing a default in `PamConfig` reaches everyone who didn't override
+  that setting (no config files to update). Renaming or removing a setting makes old overrides of it unknown: the
+  mod warns about unknown keys at startup, so mention renames in the CHANGELOG.
+- All balance numbers live in config, not hard-coded. Exception: values that must match vanilla to be correct
+  (e.g. the 128-block mob unlock radius = vanilla's spawn/despawn distance) are constants with a comment.
+  Use tabs, match the template style.
+- **Known limitations** (things players or server admins should know that stay true, like claim mods and Replant)
+  go in the "Known limitations" section of README.md and docs/modrinth-description.md. AUDIT.md is the log of
+  what an audit found and fixed.
 - Git identity is set repo-locally (no global git config on this machine).

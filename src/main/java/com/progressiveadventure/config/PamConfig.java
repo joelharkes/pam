@@ -2,6 +2,9 @@ package com.progressiveadventure.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.progressiveadventure.ProgressiveAdventure;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -9,17 +12,26 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * All balance numbers. Loaded from config/progressive_adventure.json; missing fields keep their defaults.
+ * All balance numbers. config/progressive_adventure.json only holds the settings someone changed (overrides); every
+ * other setting uses the default below, so balance changes in a mod update reach everyone who didn't change that
+ * setting. A list or record setting is replaced as a whole. config/progressive_adventure.defaults.json lists all
+ * settings with their defaults as a reference; it's rewritten on every start and never read.
  */
 public class PamConfig {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(ProgressiveAdventure.MOD_ID + ".json");
+	private static final Path DEFAULTS_PATH = FabricLoader.getInstance().getConfigDir().resolve(ProgressiveAdventure.MOD_ID + ".defaults.json");
 
 	private static PamConfig instance = new PamConfig();
 
@@ -134,7 +146,7 @@ public class PamConfig {
 	public double ricochetMinSpeed = 1.5;
 
 	// Mob unlocks: an Overworld hostile mob in this list only spawns naturally once the lowest Adventure Rank
-	// among players within mobUnlockPlayerRadius reaches its rank. Unlisted mobs (zombies, other mods) always spawn.
+	// among players within 128 blocks reaches its rank. Unlisted mobs (zombies, other mods) always spawn.
 	public boolean mobUnlocksEnabled = true;
 	public List<MobUnlock> mobUnlocks = List.of(
 			new MobUnlock("skeletons", 5, List.of("minecraft:skeleton", "minecraft:stray", "minecraft:bogged", "minecraft:parched")),
@@ -147,7 +159,6 @@ public class PamConfig {
 			new MobUnlock("patrols", 50, List.of("minecraft:pillager")));
 	// Chance that a locked mob is replaced by an unlocked one instead of not spawning (0 = fewer mobs early)
 	public double lockedMobReplacementChance = 0.0;
-	public int mobUnlockPlayerRadius = 128;
 
 	// Elites and mob gear (Overworld natural spawns, by the lowest Adventure Rank among nearby players)
 	public boolean elitesEnabled = true;
@@ -246,21 +257,49 @@ public class PamConfig {
 	}
 
 	public static void load() {
+		instance = new PamConfig();
 		if (Files.exists(PATH)) {
 			try (Reader reader = Files.newBufferedReader(PATH)) {
-				PamConfig loaded = GSON.fromJson(reader, PamConfig.class);
-				if (loaded != null) {
-					instance = loaded;
+				JsonElement json = JsonParser.parseReader(reader);
+				if (json.isJsonObject()) {
+					JsonObject overrides = json.getAsJsonObject();
+					checkKeys(overrides);
+					instance = GSON.fromJson(overrides, PamConfig.class);
 				}
 			} catch (IOException | RuntimeException e) {
 				ProgressiveAdventure.LOGGER.error("Failed to read {}, using defaults", PATH, e);
 			}
+		} else {
+			// Empty, so people find where overrides go; never filled in by the mod
+			write(PATH, new JsonObject());
 		}
-		// Write back so new options show up in existing config files
-		try (Writer writer = Files.newBufferedWriter(PATH)) {
-			GSON.toJson(instance, writer);
+		// Reference only, never read: rewritten every start so it always shows this version's defaults
+		write(DEFAULTS_PATH, GSON.toJsonTree(new PamConfig()));
+	}
+
+	/** Logs which settings are overridden, and warns about keys that aren't settings (typos, removed options). */
+	private static void checkKeys(JsonObject overrides) {
+		Set<String> known = Arrays.stream(PamConfig.class.getFields())
+				.filter(field -> !Modifier.isStatic(field.getModifiers()))
+				.map(Field::getName)
+				.collect(Collectors.toSet());
+		for (String key : overrides.keySet()) {
+			if (!known.contains(key)) {
+				ProgressiveAdventure.LOGGER.warn("Unknown setting '{}' in {} is ignored (see {} for all settings)", key, PATH.getFileName(),
+						DEFAULTS_PATH.getFileName());
+			}
+		}
+		List<String> used = overrides.keySet().stream().filter(known::contains).toList();
+		if (!used.isEmpty()) {
+			ProgressiveAdventure.LOGGER.info("Config overrides: {}", String.join(", ", used));
+		}
+	}
+
+	private static void write(Path path, JsonElement json) {
+		try (Writer writer = Files.newBufferedWriter(path)) {
+			GSON.toJson(json, writer);
 		} catch (IOException e) {
-			ProgressiveAdventure.LOGGER.error("Failed to write {}", PATH, e);
+			ProgressiveAdventure.LOGGER.error("Failed to write {}", path, e);
 		}
 	}
 

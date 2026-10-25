@@ -17,4 +17,5 @@ First version on Modrinth. Everything below is new.
   of nearby players).
 - **Mob gear and elites:** mobs get better gear with Rank; rare elite mobs with traits and better loot.
 - **Waypoints:** elites drop Waypoint Shards; craft and name Waypoint Stones and travel between them for XP.
-- Everything is configurable in `config/progressive_adventure.json`.
+- Settings can be changed in `config/progressive_adventure.json`; it only holds what you change, so updates
+  that rebalance PAM reach you automatically (see the README).

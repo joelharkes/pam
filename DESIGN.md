@@ -724,6 +724,12 @@ To brainstorm later:
   level 6, so an 8th level was added (×0.6 drain, ×1.4 saturation). Perk budget kept: all perks cost 206 of ~217
   Rank, so owning everything is an endgame goal; more advancements may come later, and players can suggest perks
   and milestones as GitHub issues. The `v0.2.0` tag question is dropped (0.4.0 is the first release).
+- 2026-10-25: **Config holds only overrides.** The mod used to write every setting back to the config file, which
+  froze the defaults of the first launch, so rebalances never reached existing players (also singleplayer/LAN).
+  Now the file only has what someone changed; `progressive_adventure.defaults.json` lists all settings as a
+  reference. Done before the first release, so no migration (old files deleted). The mob unlock radius is no
+  longer a setting: it's fixed at 128 = vanilla's spawn distance (smaller let far spawns skip the lock).
+  Known limitations for players/admins live in README.
 
 ## Playtest checklist
 
@@ -778,6 +784,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Audit fixes 2:** `/advancement revoke` takes hearts/Rank away right away. Replant, Harvester, Timber and
   Path Maker don't change blocks inside spawn protection (test on the dev server as a non-op). Path Maker 3×3 uses
   9 durability (less with Sturdy Shovel). `/pam elite spider leaping` is refused.
+- **Config overrides:** first start creates an empty `progressive_adventure.json` and a full
+  `progressive_adventure.defaults.json`; an override (e.g. `"startingHearts": 10`) works after a restart; a typo
+  gives a warning in the log.
 - **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
   Orchard apples still drop.
 
