@@ -65,9 +65,15 @@ public final class PerkEffects {
 			Blocks.ACACIA_LOG, Blocks.ACACIA_SAPLING, Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_SAPLING,
 			Blocks.CHERRY_LOG, Blocks.CHERRY_SAPLING, Blocks.MANGROVE_LOG, Blocks.MANGROVE_PROPAGULE,
 			Blocks.PALE_OAK_LOG, Blocks.PALE_OAK_SAPLING);
+	/** Clear Cut breaks this many leaves per tick, so a big canopy doesn't break (and spray particles) all in one tick. */
+	private static final int CLEAR_CUT_LEAVES_PER_TICK = 32;
 	private static final List<ClearCut> CLEAR_CUTS = new ArrayList<>();
+	private static final List<LeafBreak> LEAF_BREAKS = new ArrayList<>();
 
 	private record ClearCut(ServerLevel level, UUID player, BoundingBox box, long dueTick) {
+	}
+
+	private record LeafBreak(ServerLevel level, UUID player, Queue<BlockPos> leaves) {
 	}
 
 	/** Set while Timber, Vein Miner or Excavator break extra blocks, so those breaks don't trigger the perk again. */
@@ -183,27 +189,46 @@ public final class PerkEffects {
 		CLEAR_CUTS.add(new ClearCut(level, player.getUUID(), box, level.getGameTime() + CLEAR_CUT_DELAY_TICKS));
 	}
 
+	private static boolean isDecayingLeaves(BlockState state) {
+		return state.getBlock() instanceof LeavesBlock && !state.getValue(LeavesBlock.PERSISTENT)
+				&& state.getValue(LeavesBlock.DISTANCE) >= LeavesBlock.DECAY_DISTANCE;
+	}
+
 	public static void tick() {
+		// When due, find the leaves that lost their tree; they're broken a few per tick below
 		CLEAR_CUTS.removeIf(clearCut -> {
-			if (clearCut.level().getGameTime() < clearCut.dueTick()) {
+			ServerLevel level = clearCut.level();
+			if (level.getGameTime() < clearCut.dueTick()) {
 				return false;
 			}
-			ServerLevel level = clearCut.level();
-			ServerPlayer player = level.getServer().getPlayerList().getPlayer(clearCut.player());
-			boolean orchard = player != null && Perks.has(player, Perks.ORCHARD);
+			Queue<BlockPos> leaves = new ArrayDeque<>();
 			for (BlockPos pos : BlockPos.betweenClosed(clearCut.box().minX(), clearCut.box().minY(), clearCut.box().minZ(),
 					clearCut.box().maxX(), clearCut.box().maxY(), clearCut.box().maxZ())) {
-				BlockState state = level.getBlockState(pos);
-				if (state.getBlock() instanceof LeavesBlock && !state.getValue(LeavesBlock.PERSISTENT)
-						&& state.getValue(LeavesBlock.DISTANCE) >= LeavesBlock.DECAY_DISTANCE) {
-					BlockPos leaves = pos.immutable();
-					level.destroyBlock(leaves, true, player);
+				if (isDecayingLeaves(level.getBlockState(pos))) {
+					leaves.add(pos.immutable());
+				}
+			}
+			if (!leaves.isEmpty()) {
+				LEAF_BREAKS.add(new LeafBreak(level, clearCut.player(), leaves));
+			}
+			return true;
+		});
+
+		LEAF_BREAKS.removeIf(leafBreak -> {
+			ServerLevel level = leafBreak.level();
+			ServerPlayer player = level.getServer().getPlayerList().getPlayer(leafBreak.player());
+			boolean orchard = player != null && Perks.has(player, Perks.ORCHARD);
+			for (int i = 0; i < CLEAR_CUT_LEAVES_PER_TICK && !leafBreak.leaves().isEmpty(); i++) {
+				BlockPos pos = leafBreak.leaves().poll();
+				// Checked again: vanilla decay or a player may have broken it in the meantime
+				if (isDecayingLeaves(level.getBlockState(pos))) {
+					level.destroyBlock(pos, true, player);
 					if (orchard) {
-						orchard(level, leaves);
+						orchard(level, pos);
 					}
 				}
 			}
-			return true;
+			return leafBreak.leaves().isEmpty();
 		});
 	}
 

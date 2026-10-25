@@ -460,7 +460,8 @@ Implementation notes:
   contain the target, so a 24-block radius for rare blocks stays cheap.
 - Clear Cut: 10 ticks after felling (leaf distance spreads one block per tick), breaks the
   non-persistent leaves at decay distance 7 in the felled logs' box + 7. Only leaves that would
-  decay anyway, so a neighbouring tree is never touched.
+  decay anyway, so a neighbouring tree is never touched. Breaks 32 leaves per tick (no lag spike
+  or particle burst from a huge canopy).
 - Forester: only when the broken log is the bottom one (no log below) and the sapling can survive
   there. Single saplings for 2×2 trees (dark oak, big spruce/jungle) won't grow into the big tree.
 - Cat's Eyes: client mixin on the lightmap, raises the night-vision intensity it already uses.
@@ -695,6 +696,9 @@ To brainstorm later:
   whole record to the client. Now changes are collected and sent once at the end of the tick (also
   before a save or respawn, so nothing is lost on logout). The server still decides all XP, so this
   changes nothing for cheating.
+- 2026-10-25: **Clear Cut spread over ticks (performance):** 32 leaves per tick. Timber and Vein
+  Miner stay instant: spreading them would feel slower and needs handling for tool switches,
+  walking away and logging out, and their caps (64/16) keep them cheap enough.
 - 2026-10-25: **License: MIT** (was All-Rights-Reserved), ahead of a first Modrinth release, so
   people can fork and send PRs.
 - 2026-10-25: **First public release = 0.4.0, Alpha channel** on Modrinth. Icon: the Waypoint Shard
@@ -749,6 +753,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   cabin next to a tree survives Timber. Old worlds load fine (dev server start checked).
 - **Progress sync per tick:** XP bar/levels on the Character tab still update right away when mining
   and with Timber; skill XP kept after logging out right after mining, and after dying.
+- **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
+  Orchard apples still drop.
 
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 
