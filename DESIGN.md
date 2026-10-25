@@ -118,7 +118,7 @@ Implemented: 24 PAM milestones + 18 vanilla advancements with a reward (half hea
 | A Balanced Diet                             | stomach  |
 
 Totals: 26½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
-the cap) and 7 stomach levels. 20 is our config cap, not a vanilla limit (vanilla
+the cap) and 7 stomach upgrades (levels 0–7). 20 is our config cap, not a vanilla limit (vanilla
 max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
 Milestone ideas not built yet: raise a shield, desert/jungle temple, shipwreck or ocean
@@ -146,8 +146,11 @@ regeneration rules and other mods. Instead, change **how hungry you get**:
 | 3             | ×1.0         | ×1.0 (vanilla)  | 8 different foods        |
 | 4             | ×0.9         | ×1.1            | 15 different foods       |
 | 5             | ×0.8         | ×1.2            | 3 different crops        |
-| 6             | ×0.7         | ×1.3            | A Balanced Diet          |
-- Stomach levels can come in any order; the table shows a typical one.
+| 6             | ×0.7         | ×1.3            | First Trip (waypoints)   |
+| 7             | ×0.6         | ×1.4            | A Balanced Diet          |
+
+- Stomach levels can come in any order; the table shows a typical one. The config lists need one entry per
+  level (8 now); a missing entry reuses the last one, so a new stomach milestone needs a new entry too.
 - **Diet variety bonus (idea, not built):** eating a varied diet gives a temporary "Well Fed"
   buff (slower hunger drain, small regen). Eating the same food over and over gives
   less. This teaches kids to farm several crops and fits the Gourmet milestones.
@@ -170,10 +173,10 @@ level 4 (~64 blocks) and cap near +60%.
 | Combat      | Melee damage dealt            | Attack speed/damage                        | Idea |
 | Archery     | Arrow hits on mobs, kills     | Bow/crossbow draw speed (see 3c)           | Built (3c) |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Built (3b) |
+| Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
 
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
-| Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
 
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
@@ -260,7 +263,9 @@ after a few kills, and then gains are big early and flatten out:
 - The −15% stacks with the other early-game penalties (5 hearts, faster hunger).
   This is OK because early ranks only spawn zombies. Watch in playtests.
 - At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
-- Kills by AFK farms count for less or not at all.
+- Only kills credited to a player count (the player or their arrow dealt the killing blow), so fully
+  automatic farms give nothing. *Idea, not built:* AFK farms where the player still lands the hit
+  (kill chambers) count fully today; they could count for less.
 - We keep our own kill counter (not vanilla `Stats.KILLED`) so old worlds don't get
   retroactive progress.
 
@@ -380,8 +385,10 @@ mobs to elites.
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Rough budget: vanilla has ~125 advancements (~190 points), PAM adds ~40. Buying
-  every perk costs ~75 points, so early on you choose, late game you can have most.
+- Budget: vanilla advancements give ~175 points, PAM's 24 add 42, so ~217 Rank in total. Buying all
+  87 perks costs **206**, so early on you choose and owning (almost) everything is an endgame goal
+  that needs nearly every advancement. More advancements/milestones (more points) may come later;
+  players can suggest perks and milestones through the GitHub issue forms.
 
 #### Rules
 
@@ -710,6 +717,10 @@ To brainstorm later:
 - 2026-10-25: **Releases are automated:** a `/release` Claude skill prepares version + changelog
   and pushes a tag; a GitHub Action uploads to Modrinth and makes a GitHub release. Only the
   latest Minecraft version is supported (no multi-version builds for now).
+- 2026-10-25: **Audit** ([AUDIT.md](AUDIT.md)): First Trip was a 7th stomach upgrade but the tables stopped at
+  level 6, so an 8th level was added (×0.6 drain, ×1.4 saturation). Perk budget kept: all perks cost 206 of ~217
+  Rank, so owning everything is an endgame goal; more advancements may come later, and players can suggest perks
+  and milestones as GitHub issues. The `v0.2.0` tag question is dropped (0.4.0 is the first release).
 
 ## Playtest checklist
 
@@ -726,7 +737,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Second perk round:** Treasure Sense trail + chime (not annoying?), Vein Miner, Cat's Eyes
   brightness (I/II noticeable, caves not fully bright?), Lumberjack/Timber, Orchard and Bird's Nest
   rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
-  Sturdy Blade III, Forester (sapling appears?), Clear Cut (leaves vanish ~0.5s after felling, drops OK,
+  Sturdy Weapon III, Forester (sapling appears?), Clear Cut (leaves vanish ~0.5s after felling, drops OK,
   neighbouring trees untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works). Players who
   owned Timber keep it without Lumberjack.
 - **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
@@ -756,6 +767,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   cabin next to a tree survives Timber. Old worlds load fine (dev server start checked).
 - **Progress sync per tick:** XP bar/levels on the Character tab still update right away when mining
   and with Timber; skill XP kept after logging out right after mining, and after dying.
+- **Stomach level 7:** with all 7 stomach milestones the Character tab tooltip shows 60% hunger drain.
 - **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
   Orchard apples still drop.
 
@@ -766,7 +778,6 @@ Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 - [ ] Perk balance: costs and point budget (playtest).
 - [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
   elite chances, skill XP curves.
-- [ ] Tag `v0.2.0`? Offered, no answer yet.
 - [ ] Waypoint XP cap (50, +20 across dimensions): maybe higher? Revisit after the playtest.
 
 ## Roadmap

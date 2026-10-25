@@ -28,8 +28,9 @@ public class PamConfig {
 	public int maxHearts = 20;
 
 	// Metabolism: index = stomach level. Values past the end reuse the last entry.
-	public List<Double> stomachExhaustionMultipliers = List.of(1.5, 1.35, 1.2, 1.0, 0.9, 0.8, 0.7);
-	public List<Double> stomachSaturationMultipliers = List.of(0.6, 0.7, 0.8, 1.0, 1.1, 1.2, 1.3);
+	// 8 entries: levels 0-7, one per stomach milestone (see Milestones)
+	public List<Double> stomachExhaustionMultipliers = List.of(1.5, 1.35, 1.2, 1.0, 0.9, 0.8, 0.7, 0.6);
+	public List<Double> stomachSaturationMultipliers = List.of(0.6, 0.7, 0.8, 1.0, 1.1, 1.2, 1.3, 1.4);
 
 	// Proficiency: level = floor(sqrt(xp / xpPerLevelFactor));
 	// speed bonus = minSpeedBonus + (maxSpeedBonus - minSpeedBonus) * (1 - e^(-level / speedBonusCurve))

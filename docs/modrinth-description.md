@@ -94,7 +94,7 @@ or server.
 
 ## Feedback and ideas
 
-Found a bug, played a session and have thoughts, or have an idea for a new perk?
+Found a bug, played a session and have thoughts, or have an idea for a new perk or milestone?
 [Open an issue](https://github.com/joelharkes/pam/issues/new/choose). There's a form for each.
 See [CONTRIBUTING.md](https://github.com/joelharkes/pam/blob/main/CONTRIBUTING.md) if you want to help with code.
 

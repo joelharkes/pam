@@ -12,6 +12,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Feature ideas, design decisions, open questions, roadmap and the **playtest checklist**
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
+- Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
@@ -74,7 +75,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   description sync, GitHub release. Needs the `MODRINTH_TOKEN` repo secret. Never upload from here.
 - `version` and `release_channel` (alpha/beta/release) in `gradle.properties`; the tag must match `version`.
   `0.4.0` = first public release, not tagged/uploaded yet.
-- `CHANGELOG.md`: one `## X.Y.Z` section per release, written for players; the build fails if the
+- `CHANGELOG.md`: one `## X.Y.Z` section per release, written for players; `releaseNotes` and `modrinth` fail (plain `build` doesn't) if the
   current version has none (`./gradlew releaseNotes`). Dry run:
   `MODRINTH_TOKEN=dummy ./gradlew modrinth -PmodrinthDebug --no-configuration-cache` (Minotaur breaks the config cache).
 - One Minecraft version at a time (decided); no multi-version builds.
@@ -141,7 +142,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   26.x GUI: `GuiGraphicsExtractor`, `extractRenderState`, `minecraft.gui.setScreen(...)`.
   The scratchpad is cleared between sessions, so re-unzip when needed.
 - The Character tab and perk list are drawn by hand; when adding a skill or many perks, check
-  the layout still fits (Character tab: 4 skill rows of 28px in a 250px panel; Perks tab: category
+  the layout still fits (Character tab: 5 skill rows of 26px in a 250px panel, already full, so a 6th skill
+  needs a new layout; Perks tab: category
   column holds 10 rows of 19px, so an 11th category needs a new layout).
 
 ## Conventions
