@@ -11,15 +11,10 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 - Feature ideas, design decisions, open questions, roadmap and the **playtest checklist**
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
-- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
-  and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
-  implemented, not yet playtested. **Defense perks** (armor durability + per-damage-type guards)
-  and Fleet Foot I/II/III implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
-- Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy,
-  details in the DESIGN.md playtest checklist): Ore Sense (Mining 40), Replant (Farming 5),
-  Harvester (Farming 20).
-- **v0.3a mob unlocks** (Overworld hostile mobs gated on Adventure Rank) implemented, quick check
-  OK (`/pam`). **v0.3b** mob gear + elites and **v0.3c** elite traits implemented, not yet playtested.
+- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
+  not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
+  **v0.3a** mob unlocks, **v0.3b** mob gear + elites and **v0.3c** elite traits are implemented;
+  what still needs a playtest is in the DESIGN.md playtest checklist.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
 - Must work on dedicated servers and LAN with players at different progress levels.

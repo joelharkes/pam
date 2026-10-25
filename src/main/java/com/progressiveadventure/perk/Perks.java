@@ -29,8 +29,7 @@ public final class Perks {
 	public static final Perk STURDY_PICKAXE_3 = register("sturdy_pickaxe_3", PerkCategory.MINING, Items.DIAMOND_PICKAXE, 3, new SkillLevel(Skill.MINING, 30), "sturdy_pickaxe_2");
 	public static final Perk PROSPECTOR_1 = register("prospector_1", PerkCategory.MINING, Items.RAW_IRON, 2, new SkillLevel(Skill.MINING, 10), null);
 	public static final Perk PROSPECTOR_2 = register("prospector_2", PerkCategory.MINING, Items.DIAMOND, 3, new SkillLevel(Skill.MINING, 25), "prospector_1");
-	// TODO: restore new SkillLevel(Skill.MINING, 40) after playtesting (unlocked for testing)
-	public static final Perk ORE_SENSE = register("ore_sense", PerkCategory.MINING, Items.SPYGLASS, 4, Requirement.NONE, null);
+	public static final Perk ORE_SENSE = register("ore_sense", PerkCategory.MINING, Items.SPYGLASS, 4, new SkillLevel(Skill.MINING, 40), null);
 
 	public static final Perk STURDY_AXE_1 = register("sturdy_axe_1", PerkCategory.WOODCUTTING, Items.STONE_AXE, 1, new SkillLevel(Skill.WOODCUTTING, 5), null);
 	public static final Perk STURDY_AXE_2 = register("sturdy_axe_2", PerkCategory.WOODCUTTING, Items.IRON_AXE, 2, new SkillLevel(Skill.WOODCUTTING, 15), "sturdy_axe_1");
@@ -43,15 +42,13 @@ public final class Perks {
 	public static final Perk ARCHAEOLOGIST = register("archaeologist", PerkCategory.DIGGING, Items.BRUSH, 2, new SkillLevel(Skill.DIGGING, 10), null);
 
 	public static final Perk LIGHT_STEP = register("light_step", PerkCategory.FARMING, Items.LEATHER_BOOTS, 1, Requirement.NONE, null);
-	// TODO: restore new SkillLevel(Skill.FARMING, 5) after playtesting (unlocked for testing)
-	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, Requirement.NONE, null);
+	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, new SkillLevel(Skill.FARMING, 5), null);
 	public static final Perk STURDY_HOE_1 = register("sturdy_hoe_1", PerkCategory.FARMING, Items.STONE_HOE, 1, new SkillLevel(Skill.FARMING, 5), null);
 	public static final Perk STURDY_HOE_2 = register("sturdy_hoe_2", PerkCategory.FARMING, Items.IRON_HOE, 2, new SkillLevel(Skill.FARMING, 15), "sturdy_hoe_1");
 	public static final Perk STURDY_HOE_3 = register("sturdy_hoe_3", PerkCategory.FARMING, Items.DIAMOND_HOE, 3, new SkillLevel(Skill.FARMING, 30), "sturdy_hoe_2");
 	public static final Perk BOUNTIFUL_HARVEST_1 = register("bountiful_harvest_1", PerkCategory.FARMING, Items.WHEAT, 2, new SkillLevel(Skill.FARMING, 10), null);
 	public static final Perk BOUNTIFUL_HARVEST_2 = register("bountiful_harvest_2", PerkCategory.FARMING, Items.HAY_BLOCK, 3, new SkillLevel(Skill.FARMING, 25), "bountiful_harvest_1");
-	// TODO: restore new SkillLevel(Skill.FARMING, 20) after playtesting (unlocked for testing)
-	public static final Perk HARVESTER = register("harvester", PerkCategory.FARMING, Items.GOLDEN_HOE, 3, Requirement.NONE, null);
+	public static final Perk HARVESTER = register("harvester", PerkCategory.FARMING, Items.GOLDEN_HOE, 3, new SkillLevel(Skill.FARMING, 20), null);
 	public static final Perk RANCHER = register("rancher", PerkCategory.FARMING, Items.LEAD, 2, new SkillLevel(Skill.FARMING, 10), null);
 	public static final Perk GREEN_THUMB = register("green_thumb", PerkCategory.FARMING, Items.BONE_MEAL, 2, new SkillLevel(Skill.FARMING, 15), null);
 

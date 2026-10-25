@@ -51,8 +51,11 @@ public final class Skills {
 		return Component.translatable("skill_bonus.progressive_adventure." + (skill.isToolSkill() ? "speed" : "harvest"), formatted);
 	}
 
-	/** The tool skill that applies when breaking this block with this tool, or null. */
+	/** The tool skill that applies when breaking this block with this tool, or null. Farm blocks never count. */
 	public static Skill skillFor(ItemStack tool, BlockState state) {
+		if (Farming.isFarmBlock(state)) {
+			return null;
+		}
 		for (Skill skill : Skill.values()) {
 			if (skill.isToolSkill() && tool.is(skill.tools) && state.is(skill.blocks)) {
 				return skill;

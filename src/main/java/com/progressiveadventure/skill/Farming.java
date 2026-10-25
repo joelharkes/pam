@@ -58,6 +58,16 @@ public final class Farming {
 		return false;
 	}
 
+	/**
+	 * Blocks that belong to Farming, grown or not. They never train a tool skill, even though vanilla lets an axe
+	 * mine melons, pumpkins, cocoa and bamboo.
+	 */
+	public static boolean isFarmBlock(BlockState state) {
+		return state.getBlock() instanceof CropBlock || state.getBlock() instanceof NetherWartBlock
+				|| state.getBlock() instanceof CocoaBlock || state.is(Blocks.MELON) || state.is(Blocks.PUMPKIN)
+				|| state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS) || state.is(Blocks.BAMBOO);
+	}
+
 	private static BlockState replantedState(BlockState state) {
 		if (state.getBlock() instanceof CropBlock crop) {
 			return crop.getStateForAge(0);

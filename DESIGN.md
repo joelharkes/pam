@@ -166,6 +166,9 @@ level 4 (~64 blocks) and cap near +60%.
 | Combat      | Melee damage dealt            | Attack speed/damage                        | Idea |
 | Archery     | Bow/crossbow hits             | Arrow damage, draw speed                   | Idea |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Built (3b) |
+
+- Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
+  though vanilla lets an axe mine some of them.
 | Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
 
 - No skill XP from blocks the player placed (stops place/break loops).
@@ -194,10 +197,10 @@ level 4 (~64 blocks) and cap near +60%.
 | Perk | Effect | Requires | Cost |
 |---|---|---|---|
 | Light Step | You no longer trample farmland | — | 1 |
-| Replant | Right-click a grown crop to harvest and replant it | Farming 5 (unlocked for testing) | 2 |
+| Replant | Right-click a grown crop to harvest and replant it | Farming 5 | 2 |
 | Sturdy Hoe I/II/III | 10/20/30% chance hoes use no durability | Farming 5/15/30 | 1/2/3 |
 | Bountiful Harvest I/II | 10%/20% chance of double crop drops | Farming 10/25 | 2/3 |
-| Harvester | Breaking or Replanting a grown crop with a hoe also does the grown crops in a 3×3 area | Farming 20 (unlocked for testing) | 3 |
+| Harvester | Breaking or Replanting a grown crop with a hoe also does the grown crops in a 3×3 area | Farming 20 | 3 |
 | Rancher | 15% chance of twins when breeding | Farming 10 | 2 |
 | Green Thumb | 25% chance bone meal isn't used up | Farming 15 | 2 |
 
@@ -371,7 +374,7 @@ mobs to elites.
 | Mining      | Sturdy Pickaxe III  | 30% chance                                          | Mining 30, perk II  | 3    |
 | Mining      | Prospector I        | 10% chance of double ore drops                      | Mining 10           | 2    |
 | Mining      | Prospector II       | 20% chance                                          | Mining 25, perk I   | 3    |
-| Mining      | Ore Sense           | Holding a pickaxe: particle trail points at the nearest ore within 12 blocks, coloured by ore type, bigger when closer | Mining 40 (unlocked for testing) | 4 |
+| Mining      | Ore Sense           | Holding a pickaxe: particle trail points at the nearest ore within 12 blocks, coloured by ore type, bigger when closer | Mining 40 | 4 |
 | Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
 | Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 15      | 3    |
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
@@ -541,19 +544,17 @@ To brainstorm later:
 - 2026-10-24: UI declutter: perk rows show only an icon (✔ / 🔒) or the cost, details
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
+- 2026-10-25: Farm blocks never train tool skills (an axe on a pumpkin gave Woodcutting XP).
+  Ore Sense, Replant and Harvester playtested; their requirements are restored.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 
-- **Farming:** XP pace (30 wheat = level 2; Replant normally at level 5 = 100 harvests),
-  Replant (one seed replanted, rest dropped), Harvester (3×3 when breaking *and* on
-  right-click with Replant), Light Step, sweet berry XP, breeding XP + Rancher twins, Green Thumb.
+- **Farming:** XP pace (30 wheat = level 2; Replant at level 5 = 100 harvests), Light Step,
+  sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer
+  give Woodcutting XP (fixed, check it).
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
-- **Ore Sense** (playtested, works, took a moment to understand): does it feel right? Expected
-  complaint: coal/copper are so common the trail mostly points at them. Options: ignore
-  coal/copper, prefer the most valuable ore in range, or Ore Sense II (parked). Interval (30
-  ticks), radius (12) and trail length are constants in `client/OreSense.java`.
 - **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /
   `fleet_foot` perk lost it (point refunded).
 - **Defense perks:** reductions noticeable but not overpowered? Is 5/10 mob types the right gate?
@@ -564,13 +565,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   player kill, XP, bonus loot, Elite Slayer milestone. Does normal-mob gear feel right?
 - **Traits (v0.3c):** `/pam elite zombie frost` etc. Does each trait feel fair for kids?
 
-**Temporary test changes** (TODO comments in `perk/Perks.java`): requirements removed so the
-user can test without levelling. Replant and Ore Sense are confirmed working; keep Replant
-unlocked until Harvester's right-click mode is tested (it needs Replant), then restore all three
-and update the perk tables above and the CLAUDE.md status:
-- Ore Sense → `new SkillLevel(Skill.MINING, 40)`
-- Replant → `new SkillLevel(Skill.FARMING, 5)`
-- Harvester → `new SkillLevel(Skill.FARMING, 20)`
+Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 
 ## Open questions
 
