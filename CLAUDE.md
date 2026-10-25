@@ -116,7 +116,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
-  PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
+  PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks),
@@ -146,6 +146,9 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Hearts/stomach/rank are **derived** from completed advancements, never stored, so
   rewards can't double-grant and balance changes apply to existing players.
 - Attachments only sync when re-set → keep attachment values immutable, `setAttached` a new value.
+- Player progress: always use `PamAttachments.progress()` / `setProgress()`, never the attachment directly.
+  On the server, changes are held per player and stored (= synced) once at the end of the tick, or earlier
+  when the player is saved or respawns (`PlayerListMixin`).
 - Anything the client computes (e.g. break speed) must read synced data.
 - Code-driven milestones use a single `minecraft:impossible` criterion named `granted`.
 - **Milestone rewards live in `Milestones.java` and are repeated in the advancement

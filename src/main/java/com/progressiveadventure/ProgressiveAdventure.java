@@ -100,6 +100,8 @@ public class ProgressiveAdventure implements ModInitializer {
 			MovementPerks.tick(server);
 			PerkEffects.tick();
 			Waypoints.tick(server);
+			// Last, so changes from the handlers above go out in the same packet
+			PamAttachments.flushAllProgress();
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> PamCommand.register(dispatcher));

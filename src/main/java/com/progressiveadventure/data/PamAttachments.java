@@ -12,9 +12,12 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class PamAttachments {
 	/** Synced to the owning player only: the client needs skill levels to predict block breaking speed. */
@@ -70,15 +73,46 @@ public final class PamAttachments {
 					.persistent(Waypoint.CODEC.listOf())
 					.initializer(List::of));
 
+	/**
+	 * Server: progress changed this tick but not stored yet. Every setAttached sends the whole record to the client, so
+	 * changes are collected and stored once per tick (Timber felling 64 logs = one packet, not 64). Always read and
+	 * write progress through {@link #progress} and {@link #setProgress}, never the attachment directly.
+	 */
+	private static final Map<ServerPlayer, PlayerProgress> PENDING_PROGRESS = new HashMap<>();
+
 	private PamAttachments() {
 	}
 
 	public static PlayerProgress progress(Player player) {
+		if (player instanceof ServerPlayer serverPlayer) {
+			PlayerProgress pending = PENDING_PROGRESS.get(serverPlayer);
+			if (pending != null) {
+				return pending;
+			}
+		}
 		return player.getAttachedOrElse(PLAYER_PROGRESS, PlayerProgress.EMPTY);
 	}
 
 	public static void setProgress(Player player, PlayerProgress progress) {
-		player.setAttached(PLAYER_PROGRESS, progress);
+		if (player instanceof ServerPlayer serverPlayer) {
+			PENDING_PROGRESS.put(serverPlayer, progress);
+		} else {
+			player.setAttached(PLAYER_PROGRESS, progress);
+		}
+	}
+
+	/** Stores (and syncs) this player's pending progress now; before the player is saved or copied on respawn. */
+	public static void flushProgress(ServerPlayer player) {
+		PlayerProgress pending = PENDING_PROGRESS.remove(player);
+		if (pending != null) {
+			player.setAttached(PLAYER_PROGRESS, pending);
+		}
+	}
+
+	/** At the end of every server tick. */
+	public static void flushAllProgress() {
+		PENDING_PROGRESS.forEach((player, progress) -> player.setAttached(PLAYER_PROGRESS, progress));
+		PENDING_PROGRESS.clear();
 	}
 
 	public static ProgressionSnapshot snapshot(Player player) {

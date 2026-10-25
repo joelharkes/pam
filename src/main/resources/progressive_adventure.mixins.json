@@ -15,6 +15,7 @@
 		"NaturalSpawnerMixin",
 		"PatrolSpawnerMixin",
 		"PlayerAdvancementsMixin",
+		"PlayerListMixin",
 		"PlayerMixin",
 		"ProjectileWeaponItemMixin",
 		"ShovelItemMixin"

@@ -691,6 +691,10 @@ To brainstorm later:
   matters (logs, ores, melon/pumpkin/cane/cactus/bamboo); placing dirt/gravel/leaves again is more
   hassle than it's worth (vanilla gravel flint isn't protected either). Max 10,000 per chunk, then
   the oldest is forgotten. One mutable set per chunk instead of copying it on every place/break.
+- 2026-10-25: **Progress sync once per tick (performance):** every progress change used to send the
+  whole record to the client. Now changes are collected and sent once at the end of the tick (also
+  before a save or respawn, so nothing is lost on logout). The server still decides all XP, so this
+  changes nothing for cheating.
 - 2026-10-25: **License: MIT** (was All-Rights-Reserved), ahead of a first Modrinth release, so
   people can fork and send PRs.
 - 2026-10-25: **First public release = 0.4.0, Alpha channel** on Modrinth. Icon: the Waypoint Shard
@@ -740,6 +744,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 
 - **Placed blocks:** placing and breaking a log/ore still gives no XP; dirt/stone now do. Log
   cabin next to a tree survives Timber. Old worlds load fine (dev server start checked).
+- **Progress sync per tick:** XP bar/levels on the Character tab still update right away when mining
+  and with Timber; skill XP kept after logging out right after mining, and after dying.
 
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 
