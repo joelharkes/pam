@@ -33,22 +33,29 @@ public final class Skills {
 
 	/**
 	 * The skill's bonus as a fraction. Tool skills: break speed, starting below vanilla at minSpeedBonus and
-	 * flattening towards maxSpeedBonus. Farming: extra harvest chance, starting at 0 (no early penalty on food).
+	 * flattening towards maxSpeedBonus. Farming: extra harvest chance, Archery: draw speed, both starting at 0
+	 * (food and combat already have their own early penalties).
 	 */
 	public static double bonus(Skill skill, int level) {
 		PamConfig config = PamConfig.get();
 		double curve = 1 - Math.exp(-level / config.speedBonusCurve);
-		if (!skill.isToolSkill()) {
-			return config.farmingMaxHarvestBonus * curve;
-		}
-		return config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * curve;
+		return switch (skill) {
+			case FARMING -> config.farmingMaxHarvestBonus * curve;
+			case ARCHERY -> config.archeryMaxDrawBonus * curve;
+			default -> config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * curve;
+		};
 	}
 
-	/** E.g. "+19% speed" or "+12% extra harvest". */
+	/** E.g. "+19% speed", "+12% extra harvest" or "+8% draw speed". */
 	public static Component describeBonus(Skill skill, int level) {
 		long percent = Math.round(bonus(skill, level) * 100);
 		String formatted = (percent >= 0 ? "+" : "") + percent + "%";
-		return Component.translatable("skill_bonus.progressive_adventure." + (skill.isToolSkill() ? "speed" : "harvest"), formatted);
+		String key = switch (skill) {
+			case FARMING -> "harvest";
+			case ARCHERY -> "draw";
+			default -> "speed";
+		};
+		return Component.translatable("skill_bonus.progressive_adventure." + key, formatted);
 	}
 
 	/** The tool skill that applies when breaking this block with this tool, or null. Farm blocks never count. */

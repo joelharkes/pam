@@ -87,7 +87,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
 - `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
-  xp, extra harvests, Replant/Harvester/Rancher), `PlacedBlocks` anti-cheese
+  xp, extra harvests, Replant/Harvester/Rancher), `Archery` (arrow-hit xp, draw speed, arrow perks),
+  `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier
 - `world/MobUnlocks`: which hostile mobs may spawn naturally at a rank (lowest rank of nearby players),
   unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
@@ -101,7 +102,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook),
-  NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
+  ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks),
+  LivingEntity also speeds up bow/crossbow use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)

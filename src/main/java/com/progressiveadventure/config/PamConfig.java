@@ -44,6 +44,12 @@ public class PamConfig {
 	public int melonPumpkinXp = 2;
 	public int breedingXp = 5;
 
+	// Archery: draw speed bonus uses the same curve as speedBonusCurve, but starts at 0. Xp only for arrows a
+	// player shot that hit a mob (not players or armor stands); a kill gives archeryKillXp on top.
+	public double archeryMaxDrawBonus = 0.5;
+	public int archeryHitXp = 1;
+	public int archeryKillXp = 2;
+
 	// Bestiary: damage modifier per kill threshold, sorted by kills
 	public List<FamiliarityTier> familiarityTiers = List.of(
 			new FamiliarityTier(0, -0.15, "unknown"),
@@ -78,6 +84,16 @@ public class PamConfig {
 	public List<Double> bountifulHarvestChances = List.of(0.1, 0.2);
 	public double rancherTwinChance = 0.15;
 	public double greenThumbChance = 0.25;
+	public List<Double> thriftyQuiverChances = List.of(0.1, 0.2, 0.3);
+	public double fireArrowChance = 0.15;
+	public double frostArrowChance = 0.15;
+	public int frostArrowSlownessSeconds = 3;
+	public int piercingShotExtraMobs = 1;
+	// Steady Aim: a flying arrow turns at most this many degrees per tick toward the hostile mob closest to its
+	// path, if that mob is within the cone and range and in sight
+	public double steadyAimTurnDegrees = 2.0;
+	public double steadyAimConeDegrees = 15.0;
+	public double steadyAimRange = 20.0;
 
 	// Mob unlocks: an Overworld hostile mob in this list only spawns naturally once the lowest Adventure Rank
 	// among players within mobUnlockPlayerRadius reaches its rank. Unlisted mobs (zombies, other mods) always spawn.

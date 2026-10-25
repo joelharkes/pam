@@ -52,6 +52,14 @@ public final class Perks {
 	public static final Perk RANCHER = register("rancher", PerkCategory.FARMING, Items.LEAD, 2, new SkillLevel(Skill.FARMING, 10), null);
 	public static final Perk GREEN_THUMB = register("green_thumb", PerkCategory.FARMING, Items.BONE_MEAL, 2, new SkillLevel(Skill.FARMING, 15), null);
 
+	public static final Perk THRIFTY_QUIVER_1 = register("thrifty_quiver_1", PerkCategory.ARCHERY, Items.ARROW, 1, new SkillLevel(Skill.ARCHERY, 5), null);
+	public static final Perk THRIFTY_QUIVER_2 = register("thrifty_quiver_2", PerkCategory.ARCHERY, Items.BUNDLE, 2, new SkillLevel(Skill.ARCHERY, 15), "thrifty_quiver_1");
+	public static final Perk THRIFTY_QUIVER_3 = register("thrifty_quiver_3", PerkCategory.ARCHERY, Items.SPECTRAL_ARROW, 3, new SkillLevel(Skill.ARCHERY, 30), "thrifty_quiver_2");
+	public static final Perk FIRE_ARROWS = register("fire_arrows", PerkCategory.ARCHERY, Items.FIRE_CHARGE, 2, new SkillLevel(Skill.ARCHERY, 10), null);
+	public static final Perk FROST_ARROWS = register("frost_arrows", PerkCategory.ARCHERY, Items.SNOWBALL, 2, new SkillLevel(Skill.ARCHERY, 10), null);
+	public static final Perk PIERCING_SHOT = register("piercing_shot", PerkCategory.ARCHERY, Items.CROSSBOW, 2, new SkillLevel(Skill.ARCHERY, 15), null);
+	public static final Perk STEADY_AIM = register("steady_aim", PerkCategory.ARCHERY, Items.TARGET, 3, new SkillLevel(Skill.ARCHERY, 20), null);
+
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
 	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.COMBAT, Items.WRITABLE_BOOK, 2, new MobTypes(5), null);

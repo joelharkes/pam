@@ -46,6 +46,14 @@ public final class PamAttachments {
 	public static final AttachmentType<Boolean> ELITE_SUMMONED = AttachmentRegistry.create(
 			ProgressiveAdventure.id("elite_summoned"), builder -> builder.persistent(Codec.BOOL));
 
+	/** On arrows shot with a Frost Arrows proc: slow the mob they hit. */
+	public static final AttachmentType<Boolean> FROST_ARROW = AttachmentRegistry.create(
+			ProgressiveAdventure.id("frost_arrow"), builder -> builder.persistent(Codec.BOOL));
+
+	/** On arrows shot by a player with Steady Aim: they curve toward hostile mobs. */
+	public static final AttachmentType<Boolean> STEADY_AIM_ARROW = AttachmentRegistry.create(
+			ProgressiveAdventure.id("steady_aim_arrow"), builder -> builder.persistent(Codec.BOOL));
+
 	private PamAttachments() {
 	}
 

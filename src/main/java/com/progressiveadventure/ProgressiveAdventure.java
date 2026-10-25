@@ -8,6 +8,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
 import com.progressiveadventure.perk.PerkEffects;
+import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
@@ -51,6 +52,7 @@ public class ProgressiveAdventure implements ModInitializer {
 				Trackers.onDeath(player);
 			} else if (source.getEntity() instanceof ServerPlayer player) {
 				Bestiary.onKill(player, entity);
+				Archery.onKill(entity, source);
 			}
 			Elites.onDeath(entity, source);
 		});
@@ -60,6 +62,7 @@ public class ProgressiveAdventure implements ModInitializer {
 				PerkEffects.onDamaged(player);
 			}
 			Elites.onDamage(entity, source, damageTaken);
+			Archery.onDamage(entity, source, damageTaken, blocked);
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> Elites.onLoad(entity));
 

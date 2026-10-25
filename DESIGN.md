@@ -3,8 +3,8 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen) and pillar 5
-mob unlocks, elites and elite traits. Not built: Combat/Archery/Fishing skills, Well Fed.
+Digging/Farming/Archery skills, bestiary, 57 perks in 8 categories, Adventure screen) and pillar 5
+mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
 ## Vision
@@ -164,7 +164,7 @@ level 4 (~64 blocks) and cap near +60%.
 | Woodcutting | Axe blocks                    | Break speed (+ perk: fell small trees)     | Built |
 | Digging     | Shovel blocks                 | Break speed                                | Built |
 | Combat      | Melee damage dealt            | Attack speed/damage                        | Idea |
-| Archery     | Bow/crossbow hits             | Arrow damage, draw speed                   | Idea |
+| Archery     | Arrow hits on mobs, kills     | Bow/crossbow draw speed (see 3c)           | Built (3c) |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)           | Built (3b) |
 
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
@@ -206,6 +206,27 @@ level 4 (~64 blocks) and cap near +60%.
 
 **Farmer milestones:** harvest 3 different crops (stomach), harvest 10 different crops
 (½ heart), breed 5 different kinds of animals (½ heart).
+
+### 3c. Archery skill
+
+- **XP:** 1 per arrow a player shot that hits a mob, +2 for a kill with it. Any mob counts (animals
+  too), but not players, armor stands or blocked hits. Tridents don't count.
+- **Passive bonus:** bow and crossbow draw speed, 0% → +50% with the usual curve. No start
+  penalty: unknown mobs already take less damage early. The use timer itself runs faster, so the
+  pull animation, zoom and crossbow charge match the real power.
+- **No damage perks:** the bestiary is the damage progression (and already counts arrows).
+  Damage perks would undercut it and need matching sword perks.
+
+| Perk | Effect | Requires | Cost |
+|---|---|---|---|
+| Thrifty Quiver I/II/III | 10/20/30% chance a shot uses no arrow (like Infinity: that arrow can't be picked up) | Archery 5/15/30 | 1/2/3 |
+| Fire Arrows | 15% chance the arrow is on fire | Archery 10 | 2 |
+| Frost Arrows | 15% chance the arrow slows the mob it hits (Slowness II, 3s), snowflake trail | Archery 10 | 2 |
+| Piercing Shot | Arrows fly through 1 extra mob (stacks with the Piercing enchantment) | Archery 15 | 2 |
+| Steady Aim | Arrows turn up to 2°/tick toward the hostile mob nearest their path (15° cone, 20 blocks, in sight). Neutral mobs only when they target you; never animals, villagers, pets | Archery 20 | 3 |
+| Ricochet | After hitting a mob, the arrow bounces to one more nearby hostile mob | Archery 40 | 5 |
+
+Poison arrows were dropped: zombies and skeletons are immune, so it would look broken to kids.
 
 ### 4. Bestiary: mob familiarity
 
@@ -546,6 +567,9 @@ To brainstorm later:
   and stomach details moved to tooltips, perk reset without confirmation.
 - 2026-10-25: Farm blocks never train tool skills (an axe on a pumpkin gave Woodcutting XP).
   Ore Sense, Replant and Harvester playtested; their requirements are restored.
+- 2026-10-25: Archery skill with draw speed as its passive bonus (not a perk). Perks: Thrifty
+  Quiver, Fire/Frost Arrows, Piercing Shot, Steady Aim, Ricochet (Archery 40, 5 points). Poison
+  dropped for now, no damage perks (bestiary covers damage).
 
 ## Playtest checklist
 
@@ -554,6 +578,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Farming:** XP pace (30 wheat = level 2; Replant at level 5 = 100 harvests), Light Step,
   sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer
   give Woodcutting XP (fixed, check it).
+- **Archery (3c):** XP pace, draw speed feel (does the pull animation match?), each perk.
+  Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Character
+  tab: 5 skill rows only just fit with two rows of hearts.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
 - **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /
   `fleet_foot` perk lost it (point refunded).
@@ -587,5 +614,6 @@ Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 - **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
 - **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
 - **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)* Then tag v0.3.
-- **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
+- **v0.3.x:** Archery skill + perks. *(Implemented, needs playtesting.)*
+- **v0.4:** more skills (Combat, Fishing) + their perks, diet
   variety, more milestones, exploration extras.
