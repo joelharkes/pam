@@ -11,6 +11,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 - Feature ideas, design decisions, open questions, roadmap and the **playtest checklist**
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
+- Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
