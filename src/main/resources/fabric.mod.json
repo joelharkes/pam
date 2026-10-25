@@ -7,7 +7,7 @@
 	"authors": [
 		"joel"
 	],
-	"license": "All-Rights-Reserved",
+	"license": "MIT",
 	"icon": "assets/progressive_adventure/icon.png",
 	"environment": "*",
 	"entrypoints": {

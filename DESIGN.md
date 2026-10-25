@@ -691,6 +691,8 @@ To brainstorm later:
   matters (logs, ores, melon/pumpkin/cane/cactus/bamboo); placing dirt/gravel/leaves again is more
   hassle than it's worth (vanilla gravel flint isn't protected either). Max 10,000 per chunk, then
   the oldest is forgotten. One mutable set per chunk instead of copying it on every place/break.
+- 2026-10-25: **License: MIT** (was All-Rights-Reserved), ahead of a first Modrinth release, so
+  people can fork and send PRs.
 
 ## Playtest checklist
 
