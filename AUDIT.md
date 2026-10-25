@@ -11,7 +11,8 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
   log back in at 11.
   FIXED: the hearts modifier is permanent now (saved, in place before health loads). Vanilla drops it on death,
   so the respawn heal still works, and keeps it with health when leaving the End. Trade-off: removing PAM from a
-  world leaves players' current max health in their saved data. Players get one last free heal on the first login
+  world leaves players' current max health in their saved data (README Known limitations has the `/attribute`
+  command to undo it). Players get one last free heal on the first login
   after updating.
 - [x] **2. The 7th stomach upgrade did nothing** (`PamConfig.stomach*Multipliers`)
   7 milestones give a stomach upgrade (First Trip was the 7th), but the tables only had levels 0–6. Level 7 reused
@@ -48,7 +49,9 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
   defaults of the first launch were frozen and rebalances never reached existing installs (singleplayer and LAN too).
   FIXED: the file only holds overrides; `progressive_adventure.defaults.json` is a reference rewritten every start;
   unknown keys give a warning. Existing (pre-release) config files deleted, so no migration.
-- [ ] **9.** `/pam bestiary` throws if the familiarity tiers in the config don't start at 0 kills.
+- [x] **9.** `/pam bestiary` throws if the familiarity tiers in the config don't start at 0 kills.
+  FIXED: `Bestiary.tier` never returns null; below the first configured tier it uses "Unknown, no damage change".
+  This also fixed the same crash in the Bestiary tab tooltip.
 - [x] **10.** Spiders can roll the Leaping trait, which they already have (a wasted trait).
   FIXED: spiders and cave spiders can't get Leaping.
 

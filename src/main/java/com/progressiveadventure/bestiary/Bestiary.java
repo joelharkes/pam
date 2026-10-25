@@ -25,8 +25,12 @@ public final class Bestiary {
 		return BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
 	}
 
+	/** Used when the config has no tier for this few kills (its first tier starts above 0, or the list is empty). */
+	private static final FamiliarityTier NO_TIER = new FamiliarityTier(0, 0.0, "unknown");
+
+	/** The highest tier reached with this many kills; never null. */
 	public static FamiliarityTier tier(int kills) {
-		FamiliarityTier result = null;
+		FamiliarityTier result = NO_TIER;
 		for (FamiliarityTier tier : PamConfig.get().familiarityTiers) {
 			if (kills >= tier.kills()) {
 				result = tier;
@@ -37,7 +41,7 @@ public final class Bestiary {
 
 	public static float damageMultiplier(ServerPlayer player, LivingEntity target) {
 		FamiliarityTier tier = tier(PamAttachments.progress(player).killsOf(key(target.getType())));
-		return tier == null ? 1f : 1f + (float) tier.damageModifier();
+		return 1f + (float) tier.damageModifier();
 	}
 
 	public static void onKill(ServerPlayer player, LivingEntity killed) {
@@ -57,7 +61,7 @@ public final class Bestiary {
 		if (before == 0) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.bestiary_new", mobName)
 					.withStyle(ChatFormatting.YELLOW));
-		} else if (newTier != null && newTier != oldTier) {
+		} else if (newTier != oldTier) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.bestiary_tier",
 					mobName, Component.translatable("familiarity.progressive_adventure." + newTier.label()),
 					formatModifier(newTier.damageModifier())).withStyle(ChatFormatting.YELLOW));

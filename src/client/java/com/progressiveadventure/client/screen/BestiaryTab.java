@@ -122,9 +122,6 @@ class BestiaryTab implements AdventureTab {
 	}
 
 	private static int tierColor(FamiliarityTier tier) {
-		if (tier == null) {
-			return 0xFF555555;
-		}
 		return switch (tier.label()) {
 			case "known" -> 0xFFDDDDDD;
 			case "familiar" -> 0xFF55FF55;

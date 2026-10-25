@@ -103,6 +103,8 @@ when you open a world to LAN, the settings of the server (the host) count.
 ## Known limitations
 
 - **Removing PAM** from a world doesn't reset hearts: players keep the max health they had.
+  An op can undo it per player with
+  `/attribute <player> minecraft:max_health modifier remove progressive_adventure:milestone_hearts`.
 - **Mob unlocks and elites** only change natural spawns in the Overworld. The Nether, the End,
   spawners, structures (like witch huts) and raids stay vanilla.
 - **Land-claim mods:** perks that break blocks (Timber, Vein Miner, ...) follow the normal
