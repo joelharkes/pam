@@ -33,6 +33,14 @@ public final class Progression {
 	private static final Identifier DEEP_BREATH_MODIFIER = ProgressiveAdventure.id("perk_deep_breath");
 	private static final Identifier SOFT_LANDING_MODIFIER = ProgressiveAdventure.id("perk_soft_landing");
 	private static final Identifier FLEET_FOOT_MODIFIER = ProgressiveAdventure.id("perk_fleet_foot");
+	private static final Identifier SPRING_STEP_MODIFIER = ProgressiveAdventure.id("perk_spring_step");
+	private static final Identifier STEP_UP_MODIFIER = ProgressiveAdventure.id("perk_step_up");
+	private static final Identifier SURE_FEET_MODIFIER = ProgressiveAdventure.id("perk_sure_feet");
+	private static final Identifier SNEAKY_FEET_MODIFIER = ProgressiveAdventure.id("perk_sneaky_feet");
+	private static final Identifier SWIMMER_MODIFIER = ProgressiveAdventure.id("perk_swimmer");
+	private static final Identifier DIVER_MODIFIER = ProgressiveAdventure.id("perk_diver");
+	private static final Identifier LONG_ARMS_MODIFIER = ProgressiveAdventure.id("perk_long_arms");
+	private static final Identifier STEADY_STANCE_MODIFIER = ProgressiveAdventure.id("perk_steady_stance");
 
 	/** @param rank Adventure Rank = perk points earned from all advancements */
 	public record Status(int rank, int halfHearts, int stomach) {
@@ -112,6 +120,23 @@ public final class Progression {
 		int fleetFoot = Perks.tier(player, Perks.FLEET_FOOT_1, Perks.FLEET_FOOT_2, Perks.FLEET_FOOT_3);
 		applyModifier(player, fleetFoot > 0, Attributes.MOVEMENT_SPEED, FLEET_FOOT_MODIFIER,
 				fleetFoot > 0 ? PamConfig.listValue(config.fleetFootSpeedBonuses, fleetFoot - 1) : 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+		applyPerkModifier(player, Perks.SPRING_STEP, Attributes.JUMP_STRENGTH, SPRING_STEP_MODIFIER,
+				config.springStepJumpBonus, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.STEP_UP, Attributes.STEP_HEIGHT, STEP_UP_MODIFIER,
+				config.stepUpHeightBonus, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.SURE_FEET, Attributes.MOVEMENT_EFFICIENCY, SURE_FEET_MODIFIER,
+				config.sureFeetEfficiency, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.SNEAKY_FEET, Attributes.SNEAKING_SPEED, SNEAKY_FEET_MODIFIER,
+				config.sneakyFeetSpeedBonus, AttributeModifier.Operation.ADD_VALUE);
+		int swimmer = Perks.tier(player, Perks.SWIMMER_1, Perks.SWIMMER_2);
+		applyModifier(player, swimmer > 0, Attributes.WATER_MOVEMENT_EFFICIENCY, SWIMMER_MODIFIER,
+				swimmer > 0 ? PamConfig.listValue(config.swimmerEfficiencies, swimmer - 1) : 0, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.DIVER, Attributes.SUBMERGED_MINING_SPEED, DIVER_MODIFIER,
+				config.diverMiningBonus, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.LONG_ARMS, Attributes.BLOCK_INTERACTION_RANGE, LONG_ARMS_MODIFIER,
+				config.longArmsReachBonus, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.STEADY_STANCE, Attributes.KNOCKBACK_RESISTANCE, STEADY_STANCE_MODIFIER,
+				config.steadyStanceKnockbackResistance, AttributeModifier.Operation.ADD_VALUE);
 
 		Optional<PamConfig.MobUnlock> nextMobs = MobUnlocks.next(status.rank());
 		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(),

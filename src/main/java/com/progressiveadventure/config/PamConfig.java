@@ -78,6 +78,28 @@ public class PamConfig {
 	public List<Double> deepBreathOxygenBonuses = List.of(1.0, 2.0, 3.0);
 	public double softLandingBlocks = 3.0;
 	public List<Double> fleetFootSpeedBonuses = List.of(0.05, 0.10, 0.15);
+	// Jump strength is 0.42 by default (1.25 blocks); +0.08 jumps about 1.7 blocks, over fences
+	public double springStepJumpBonus = 0.08;
+	// Step height is 0.6 by default; 1.0 walks up full blocks
+	public double stepUpHeightBonus = 0.4;
+	// Movement efficiency 1 = soul sand and honey don't slow you down
+	public double sureFeetEfficiency = 1.0;
+	// Sneaking speed is 0.3 of walking speed by default
+	public double sneakyFeetSpeedBonus = 0.2;
+	// Shadow Step I: while sneaking, mobs notice you from this share of their normal distance (vanilla sneaking
+	// already gives 0.8, this multiplies on top)
+	public double shadowStepVisibility = 0.5;
+	// Shadow Step II: a mob chasing you gives up when you sneak further away than this, and then can't see you
+	// (while you sneak) for this long unless you hit it
+	public double shadowStepEscapeDistance = 8.0;
+	public int shadowStepForgetSeconds = 10;
+	// Water movement efficiency 1 = Depth Strider III
+	public List<Double> swimmerEfficiencies = List.of(0.33, 0.66);
+	// Submerged mining speed is 0.2 by default; +0.8 = Aqua Affinity
+	public double diverMiningBonus = 0.8;
+	// Block reach is 4.5 by default
+	public double longArmsReachBonus = 1.5;
+	public double steadyStanceKnockbackResistance = 0.3;
 	// Defense perks: share of damage taken away, by tier
 	public List<Double> guardDamageReductions = List.of(0.15, 0.30);
 	public List<Double> toughHideDamageReductions = List.of(0.10, 0.20);

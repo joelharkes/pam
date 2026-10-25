@@ -7,6 +7,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
+import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
@@ -85,6 +86,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			if (server.getTickCount() % 20 == 0) {
 				Trackers.tick(server);
 			}
+			MovementPerks.tick(server);
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> PamCommand.register(dispatcher));

@@ -11,7 +11,9 @@ public enum PerkCategory {
 	ARCHERY("archery", Items.BOW),
 	COMBAT("combat", Items.IRON_SWORD),
 	DEFENSE("defense", Items.IRON_CHESTPLATE),
-	SURVIVAL("survival", Items.GOLDEN_APPLE);
+	SURVIVAL("survival", Items.GOLDEN_APPLE),
+	MOVEMENT("movement", Items.IRON_BOOTS),
+	SWIMMING("swimming", Items.TRIDENT);
 
 	public final String id;
 	public final Item icon;

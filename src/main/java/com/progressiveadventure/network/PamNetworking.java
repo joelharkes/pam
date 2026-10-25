@@ -3,6 +3,7 @@ package com.progressiveadventure.network;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Progression;
+import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
 
@@ -20,9 +21,13 @@ public final class PamNetworking {
 	public static void init() {
 		PayloadTypeRegistry.serverboundPlay().register(BuyPerkPayload.TYPE, BuyPerkPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(ResetPerksPayload.TYPE, ResetPerksPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(DoubleJumpPayload.TYPE, DoubleJumpPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(MantlePayload.TYPE, MantlePayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(BuyPerkPayload.TYPE, (payload, context) -> buy(context.player(), payload.perkId()));
 		ServerPlayNetworking.registerGlobalReceiver(ResetPerksPayload.TYPE, (payload, context) -> reset(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.TYPE, (payload, context) -> MovementPerks.onDoubleJump(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(MantlePayload.TYPE, (payload, context) -> MovementPerks.onMantle(context.player()));
 	}
 
 	private static void buy(ServerPlayer player, String perkId) {

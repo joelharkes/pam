@@ -1,6 +1,7 @@
 package com.progressiveadventure.mixin;
 
 import com.progressiveadventure.bestiary.Bestiary;
+import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Archery;
@@ -66,6 +67,16 @@ public class LivingEntityMixin {
 		while (pam$drawCarry >= 1 && useItemRemaining > 1) {
 			pam$drawCarry--;
 			useItemRemaining--;
+		}
+	}
+
+	@Inject(method = "getVisibilityPercent", at = @At("RETURN"), cancellable = true)
+	private void pam$shadowStep(Entity looker, CallbackInfoReturnable<Double> cir) {
+		if ((Object) this instanceof Player player) {
+			double multiplier = MovementPerks.visibilityMultiplier(player, looker);
+			if (multiplier != 1) {
+				cir.setReturnValue(cir.getReturnValueD() * multiplier);
+			}
 		}
 	}
 

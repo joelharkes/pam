@@ -78,17 +78,33 @@ public final class Perks {
 	public static final Perk TOUGH_HIDE_1 = register("tough_hide_1", PerkCategory.DEFENSE, Items.LEATHER, 2, new MobTypes(5), null);
 	public static final Perk TOUGH_HIDE_2 = register("tough_hide_2", PerkCategory.DEFENSE, Items.ARMADILLO_SCUTE, 3, new MobTypes(10), "tough_hide_1");
 
+	public static final Perk STEADY_STANCE = register("steady_stance", PerkCategory.DEFENSE, Items.ANVIL, 2, new MobTypes(10), null);
+
 	public static final Perk BONUS_HEART_1 = register("bonus_heart_1", PerkCategory.SURVIVAL, Items.APPLE, 3, new Rank(5), null);
 	public static final Perk BONUS_HEART_2 = register("bonus_heart_2", PerkCategory.SURVIVAL, Items.GOLDEN_APPLE, 4, new Rank(20), "bonus_heart_1");
 	public static final Perk BONUS_HEART_3 = register("bonus_heart_3", PerkCategory.SURVIVAL, Items.ENCHANTED_GOLDEN_APPLE, 5, new Rank(40), "bonus_heart_2");
 	public static final Perk IRON_STOMACH = register("iron_stomach", PerkCategory.SURVIVAL, Items.ROTTEN_FLESH, 1, Requirement.NONE, null);
-	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SURVIVAL, Items.PUFFERFISH, 1, Requirement.NONE, null);
-	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
-	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
-	public static final Perk SOFT_LANDING = register("soft_landing", PerkCategory.SURVIVAL, Items.FEATHER, 2, Requirement.NONE, null);
-	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.SURVIVAL, Items.SUGAR, 2, new Rank(10), null);
-	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.SURVIVAL, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
-	public static final Perk FLEET_FOOT_3 = register("fleet_foot_3", PerkCategory.SURVIVAL, Items.DIAMOND_BOOTS, 4, new Rank(40), "fleet_foot_2");
+	public static final Perk LONG_ARMS = register("long_arms", PerkCategory.SURVIVAL, Items.SCAFFOLDING, 2, new Rank(10), null);
+
+	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.MOVEMENT, Items.SUGAR, 2, new Rank(10), null);
+	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.MOVEMENT, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
+	public static final Perk FLEET_FOOT_3 = register("fleet_foot_3", PerkCategory.MOVEMENT, Items.DIAMOND_BOOTS, 4, new Rank(40), "fleet_foot_2");
+	public static final Perk SOFT_LANDING = register("soft_landing", PerkCategory.MOVEMENT, Items.FEATHER, 2, Requirement.NONE, null);
+	public static final Perk SPRING_STEP = register("spring_step", PerkCategory.MOVEMENT, Items.SLIME_BLOCK, 2, new Rank(5), null);
+	public static final Perk STEP_UP = register("step_up", PerkCategory.MOVEMENT, Items.OAK_STAIRS, 2, new Rank(5), null);
+	public static final Perk SURE_FEET = register("sure_feet", PerkCategory.MOVEMENT, Items.SOUL_SAND, 1, Requirement.NONE, null);
+	public static final Perk SNEAKY_FEET = register("sneaky_feet", PerkCategory.MOVEMENT, Items.MOSS_CARPET, 1, Requirement.NONE, null);
+	public static final Perk SHADOW_STEP_1 = register("shadow_step_1", PerkCategory.MOVEMENT, Items.INK_SAC, 2, new Rank(10), null);
+	public static final Perk SHADOW_STEP_2 = register("shadow_step_2", PerkCategory.MOVEMENT, Items.ECHO_SHARD, 3, new Rank(25), "shadow_step_1");
+	public static final Perk MANTLE = register("mantle", PerkCategory.MOVEMENT, Items.LADDER, 3, new Rank(15), null);
+	public static final Perk DOUBLE_JUMP = register("double_jump", PerkCategory.MOVEMENT, Items.PHANTOM_MEMBRANE, 4, new Rank(30), null);
+
+	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SWIMMING, Items.PUFFERFISH, 1, Requirement.NONE, null);
+	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SWIMMING, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
+	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SWIMMING, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
+	public static final Perk SWIMMER_1 = register("swimmer_1", PerkCategory.SWIMMING, Items.TROPICAL_FISH, 2, new Rank(5), null);
+	public static final Perk SWIMMER_2 = register("swimmer_2", PerkCategory.SWIMMING, Items.HEART_OF_THE_SEA, 3, new Rank(20), "swimmer_1");
+	public static final Perk DIVER = register("diver", PerkCategory.SWIMMING, Items.PRISMARINE_SHARD, 2, new Rank(10), null);
 
 	public enum Status {
 		OWNED, BUYABLE, TOO_EXPENSIVE, LOCKED, NEEDS_PREREQUISITE

@@ -3,7 +3,7 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming/Archery skills, bestiary, 58 perks in 8 categories, Adventure screen) and pillar 5
+Digging/Farming/Archery skills, bestiary, 71 perks in 10 categories, Adventure screen) and pillar 5
 mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
@@ -409,11 +409,23 @@ mobs to elites.
 | Defense     | Arrow Guard I/II    | 15% / 30% less damage from projectiles              | 5 / 10 mob types    | 2/3  |
 | Defense     | Fire Guard I/II     | 15% / 30% less damage from fire, lava, burning      | 5 / 10 mob types    | 2/3  |
 | Defense     | Tough Hide I/II     | 10% / 20% less damage from mob hits (melee)         | 5 / 10 mob types    | 2/3  |
+| Defense     | Steady Stance       | 30% knockback resistance                            | 10 mob types        | 2    |
 | Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 20 / 40 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
-| Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
-| Survival    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
-| Survival    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
+| Survival    | Long Arms           | +1.5 blocks block reach                             | Rank 10             | 2    |
+| Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
+| Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
+| Movement    | Spring Step         | Jump strength +0.08 (~1.7 blocks, over fences)      | Rank 5              | 2    |
+| Movement    | Step Up             | Step height 1.0: walk up full blocks                | Rank 5              | 2    |
+| Movement    | Sure Feet           | Soul sand and honey don't slow you down             | —                   | 1    |
+| Movement    | Sneaky Feet         | Sneaking speed 0.3 → 0.5                            | —                   | 1    |
+| Movement    | Shadow Step I       | Sneaking: mobs notice you at half their normal distance | Rank 10         | 2    |
+| Movement    | Shadow Step II      | Sneak > 8 blocks from a chasing mob: it gives up and can't see you (while sneaking) for 10s, unless you hit it | Rank 25, perk I | 3 |
+| Movement    | Mantle              | Jump against a wall up to 2 blocks high while walking forward: pull yourself up | Rank 15 | 3 |
+| Movement    | Double Jump         | One extra jump in the air (not while wearing an elytra) | Rank 30         | 4    |
+| Swimming    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
+| Swimming    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
+| Swimming    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
 
 Implementation notes:
 - Durability: one hook where items lose durability; chance by tool type.
@@ -424,8 +436,22 @@ Implementation notes:
 - Defense guards: multiply incoming damage before armor (stacks with Protection
   enchantments). Only the first matching type counts: explosion, projectile, fire, then
   hits whose direct source is a mob. Uses vanilla damage type tags, so modded damage works.
-- Deep Breath / Soft Landing / Fleet Foot / Bonus Hearts: vanilla attributes.
-- Later ideas: Well Fed (diet variety), extra crop yield (Farming skill), faster bow
+- Deep Breath / Soft Landing / Fleet Foot / Bonus Hearts and the other attribute perks (Spring
+  Step, Step Up, Sure Feet, Sneaky Feet, Swimmer, Diver, Long Arms, Steady Stance): vanilla attributes.
+- Shadow Step: mixin on `LivingEntity.getVisibilityPercent` (what mobs use to notice targets,
+  vanilla sneaking already gives 0.8). II clears the target of mobs chasing a sneaking player from
+  further than 8 blocks (checked every 10 ticks, action-bar message) and makes the player invisible
+  to that mob (visibility 0 = noticed only within 2 blocks) for 10s while sneaking. Hitting it
+  re-aggros (revenge targeting ignores visibility).
+- Double Jump / Mantle: movement is client-driven, so the client (`AirMoves`) moves the player and
+  sends a payload; the server checks the perk, allows one of each per time in the air, resets fall
+  distance and plays a sound (and cloud particles for Double Jump). Double jump = a normal jump
+  (`jumpFromGround`, so Spring Step adds to it). Mantle: falling or near the top of a jump, pushing
+  forward into a wall whose top is 0.6–1.9 blocks above the feet, with room to stand on it; never
+  on fences/walls (collision taller than 1 block).
+- Later ideas: Night Owl (light/night vision underground), a trail home (bed/spawn), Wall
+  Slide, Lucky (fishing loot, with the Fishing skill), Fireproof Skin (overlaps Fire Guard). Animal
+  Friend can't be an attribute (tempt range belongs to the animal). Well Fed (diet variety), extra crop yield (Farming skill), faster bow
   draw (Archery), auto-smelt, night vision underground.
 - Parked: Ore Sense II (also points at rare ores, or prefers the most valuable ore in range;
   nearby coal/copper currently hide rarer ores further away).
@@ -571,6 +597,11 @@ To brainstorm later:
 - 2026-10-25: Archery skill with draw speed as its passive bonus (not a perk). Perks: Thrifty
   Quiver, Fire/Frost Arrows, Piercing Shot, Steady Aim, Ricochet (Archery 40, 5 points). Poison
   dropped for now, no damage perks (bestiary covers damage).
+- 2026-10-25: New perk categories **Movement** (Fleet Foot and Soft Landing moved there) and
+  **Swimming** (Deep Breath moved there) so Survival stays short; perk ids unchanged, so owned perks
+  stay owned. New: Spring Step, Step Up, Sure Feet, Sneaky Feet, Shadow Step I/II, Mantle, Double
+  Jump, Swimmer I/II, Diver, Long Arms (Survival), Steady Stance (Defense). No double jump with an
+  elytra equipped (jump in the air starts gliding). Category rows are 19px so 10 fit.
 
 ## Playtest checklist
 
@@ -584,6 +615,12 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
   tab: 5 skill rows only just fit with two rows of hearts.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
+- **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
+  perk noticeable? Spring Step over fences (pens!) OK? Double Jump: feels instant, no rubber-band
+  on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall
+  (jump just before landing): fun or too strong? Mantle: triggers on 2-block walls, not on fences,
+  not on every hop up a block, smooth on a server? Shadow Step I: sneak past mobs closer than
+  normal. II: mob gives up at 8+ blocks, message readable, hitting it re-aggros.
 - **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /
   `fleet_foot` perk lost it (point refunded).
 - **Defense perks:** reductions noticeable but not overpowered? Is 5/10 mob types the right gate?
@@ -617,5 +654,7 @@ Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 - **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
 - **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)* Then tag v0.3.
 - **v0.3.x:** Archery skill + perks. *(Implemented, needs playtesting.)*
+- **v0.3.x:** Movement and Swimming perk categories (Double Jump, Mantle, Shadow Step, ...).
+  *(Implemented, needs playtesting.)*
 - **v0.4:** more skills (Combat, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

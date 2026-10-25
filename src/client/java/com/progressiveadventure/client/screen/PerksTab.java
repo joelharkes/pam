@@ -35,6 +35,8 @@ class PerksTab implements AdventureTab {
 	private static final int HEADER_HEIGHT = 22;
 	private static final int CATEGORY_WIDTH = 96;
 	private static final int ROW_HEIGHT = 22;
+	// Shorter than perk rows so all categories fit next to the list (10 × 19 in the 192px below the header)
+	private static final int CATEGORY_ROW_HEIGHT = 19;
 
 	private static PerkCategory selectedCategory = PerkCategory.MINING;
 	private static int scroll = 0;
@@ -79,13 +81,13 @@ class PerksTab implements AdventureTab {
 		PerkCategory[] categories = PerkCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			PerkCategory category = categories[i];
-			int y = listTop + i * ROW_HEIGHT;
-			boolean hovered = isInside(mouseX, mouseY, categoryLeft, y, CATEGORY_WIDTH, ROW_HEIGHT - 2);
+			int y = listTop + i * CATEGORY_ROW_HEIGHT;
+			boolean hovered = isInside(mouseX, mouseY, categoryLeft, y, CATEGORY_WIDTH, CATEGORY_ROW_HEIGHT - 1);
 			int background = category == selectedCategory ? 0xFF3C3C5A : hovered ? 0xFF2A2A3A : 0xFF1C1C26;
-			graphics.fill(categoryLeft, y, categoryLeft + CATEGORY_WIDTH, y + ROW_HEIGHT - 2, background);
-			graphics.item(new ItemStack(category.icon), categoryLeft + 2, y + 2);
+			graphics.fill(categoryLeft, y, categoryLeft + CATEGORY_WIDTH, y + CATEGORY_ROW_HEIGHT - 1, background);
+			graphics.item(new ItemStack(category.icon), categoryLeft + 1, y + 1);
 			graphics.text(font, Component.translatable("perk_category.progressive_adventure." + category.id),
-					categoryLeft + 22, y + 6, category == selectedCategory ? AdventureScreen.TEXT_GOLD : AdventureScreen.TEXT);
+					categoryLeft + 20, y + 5, category == selectedCategory ? AdventureScreen.TEXT_GOLD : AdventureScreen.TEXT);
 		}
 
 		boolean mouseInList = isInside(mouseX, mouseY, listLeft, listTop, listWidth, listHeight);
@@ -173,7 +175,7 @@ class PerksTab implements AdventureTab {
 	public boolean mouseClicked(double mouseX, double mouseY) {
 		PerkCategory[] categories = PerkCategory.values();
 		for (int i = 0; i < categories.length; i++) {
-			if (isInside(mouseX, mouseY, categoryLeft, listTop + i * ROW_HEIGHT, CATEGORY_WIDTH, ROW_HEIGHT - 2)) {
+			if (isInside(mouseX, mouseY, categoryLeft, listTop + i * CATEGORY_ROW_HEIGHT, CATEGORY_WIDTH, CATEGORY_ROW_HEIGHT - 1)) {
 				selectedCategory = categories[i];
 				scroll = 0;
 				return true;

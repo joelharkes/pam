@@ -95,17 +95,20 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone; `world/EliteTrait`: traits
   (persistent `ELITE_TRAIT`; Leaping goal re-added on every entity load since goals aren't saved)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
-  durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`
-- `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`; server validates in `PamNetworking`
+  durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
+  (Shadow Step visibility/escape, server side of Double Jump and Mantle)
+- `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`;
+  server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite)
-- `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach),
+- `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks),
   LivingEntity also speeds up bow/crossbow use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
-- Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `screen/AdventureScreen` with
+- Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `AirMoves`
+  (Double Jump and Mantle: client moves itself, then tells the server); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
@@ -113,7 +116,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   26.x GUI: `GuiGraphicsExtractor`, `extractRenderState`, `minecraft.gui.setScreen(...)`.
   The scratchpad is cleared between sessions, so re-unzip when needed.
 - The Character tab and perk list are drawn by hand; when adding a skill or many perks, check
-  the layout still fits (Character tab: 4 skill rows of 28px in a 250px panel).
+  the layout still fits (Character tab: 4 skill rows of 28px in a 250px panel; Perks tab: category
+  column holds 10 rows of 19px, so an 11th category needs a new layout).
 
 ## Conventions
 
