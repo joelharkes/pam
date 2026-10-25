@@ -9,14 +9,15 @@ stack, commands, conventions or key decisions change.
 Minecraft Java that makes the game more progressive: the player starts weaker (fewer
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
-- Feature ideas, design decisions and open questions: [DESIGN.md](DESIGN.md)
-- Current state, pending playtests and next steps for a new session: [HANDOFF.md](HANDOFF.md)
+- Feature ideas, design decisions, open questions, roadmap and the **playtest checklist**
+  (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) implemented
   and playtested, not tagged yet. **Farming skill** + 10 farming perks + 3 Farmer milestones
   implemented, not yet playtested. **Defense perks** (armor durability + per-damage-type guards)
   and Fleet Foot I/II/III implemented, not yet playtested. Mob unlocking (v0.3) is postponed by the user.
-- Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy):
-  Ore Sense (Mining 40), Replant (Farming 5), Harvester (Farming 20).
+- Requirements removed for testing (TODOs in `Perks.java`, restore once the user is happy,
+  details in the DESIGN.md playtest checklist): Ore Sense (Mining 40), Replant (Farming 5),
+  Harvester (Farming 20).
 - **v0.3a mob unlocks** (Overworld hostile mobs gated on Adventure Rank) implemented, quick check
   OK (`/pam`). **v0.3b** mob gear + elites and **v0.3c** elite traits implemented, not yet playtested.
 - Audience: the user plays this with their kids → fun first, no death penalty,
@@ -52,14 +53,22 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - No `curl` on this machine; use `python3 -I` + urllib for HTTP.
 - Server smoke test after mixin changes: start `runServer` in the background, wait for
   `Done (` in the log, check for ERROR/Mixin lines, then stop it. Mixin targets that
-  don't match crash at startup (`defaultRequire: 1`).
+  don't match crash at startup (`defaultRequire: 1`). `pkill -f KnotServer` can exit with
+  code 144 (it signals its own shell); confirm with
+  `ps -eo pid,args | grep devlaunchinjector | grep -v grep` that the server stopped.
 
 ## Workflow
 
 - The user playtests in the client (`./gradlew runClient`); Claude can't see the game window,
   so report what was verified (compile, server start) vs. what still needs a playtest.
-- Discuss and challenge design ideas before building; record every decision in the
-  DESIGN.md decisions log and keep its roadmap current.
+- The user wants **ideas and push-back**, not just execution: propose a design with a
+  recommendation and 2–3 concrete questions, let them decide, then build. They often answer
+  briefly ("agree on all 3, go").
+- Record every decision in the DESIGN.md decisions log; keep its roadmap and playtest
+  checklist current (add what you build, remove what the user confirms).
+- In-game text: simple English (kids read it).
+- For testing the user may ask to drop perk requirements temporarily; mark them with TODOs
+  and list them in the playtest checklist.
 - Commit per feature/change. Tag playtested versions (`v0.1.0` = first test version).
 
 ## Adding things
@@ -99,12 +108,15 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   MixinExtras `@WrapMethod`), Animal (breeding hook),
   NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
-- Client (`src/client/java/.../client/`): K keybind; `screen/AdventureScreen` with
+- Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).
   26.x GUI: `GuiGraphicsExtractor`, `extractRenderState`, `minecraft.gui.setScreen(...)`.
+  The scratchpad is cleared between sessions, so re-unzip when needed.
+- The Character tab and perk list are drawn by hand; when adding a skill or many perks, check
+  the layout still fits (Character tab: 4 skill rows of 28px in a 250px panel).
 
 ## Conventions
 

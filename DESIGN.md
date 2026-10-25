@@ -2,9 +2,10 @@
 
 > Living document: ideas, decisions and open questions.
 
-**Built so far (2026-10-24):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
+**Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
 Digging/Farming skills, bestiary, 50 perks in 7 categories, Adventure screen) and pillar 5
-mob unlocks, elites and elite traits. Not built: Combat/Archery/Fishing skills, Well Fed. See the roadmap.
+mob unlocks, elites and elite traits. Not built: Combat/Archery/Fishing skills, Well Fed.
+Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
 ## Vision
 
@@ -270,9 +271,6 @@ reaches vanilla danger fairly quickly.
   player without armor. By Rank 12 players usually have a few extra hearts and some
   armor, and Blast Guard exists. Watch in playtests.
 
-Elites (v0.3b) start per mob type a few ranks after that type unlocks; numbers to be set
-after the v0.3a playtest.
-
 #### Mobs get stronger: gear and elites (v0.3b, built)
 
 Every natural Overworld hostile spawn uses the lowest Adventure Rank of nearby players.
@@ -359,7 +357,7 @@ mobs to elites.
 - A perk has a **cost**, an optional **requirement** (skill level, mob types
   defeated or Adventure Rank) and an optional **prerequisite perk** (tier II needs I).
 - Requirements are shown on locked perks so kids know what to do ("Reach Mining 15").
-- **Free respec:** a "Reset perks" button refunds everything (with a confirm). No
+- **Free respec:** a "Reset perks" button refunds everything (no confirmation, it's free). No
   penalty, fits the family rule.
 - Owned perks stay owned even if a config change lowers your points.
 - Server validates every purchase (no cheating from a modified client).
@@ -544,10 +542,42 @@ To brainstorm later:
   and blockers live in the single row tooltip. Next-perk line removed from skills, rank
   and stomach details moved to tooltips, perk reset without confirmation.
 
+## Playtest checklist
+
+Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+
+- **Farming:** XP pace (30 wheat = level 2; Replant normally at level 5 = 100 harvests),
+  Replant (one seed replanted, rest dropped), Harvester (3×3 when breaking *and* on
+  right-click with Replant), Light Step, sweet berry XP, breeding XP + Rancher twins, Green Thumb.
+- **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
+- **Ore Sense** (playtested, works, took a moment to understand): does it feel right? Expected
+  complaint: coal/copper are so common the trail mostly points at them. Options: ignore
+  coal/copper, prefer the most valuable ore in range, or Ore Sense II (parked). Interval (30
+  ticks), radius (12) and trail length are constants in `client/OreSense.java`.
+- **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /
+  `fleet_foot` perk lost it (point refunded).
+- **Defense perks:** reductions noticeable but not overpowered? Is 5/10 mob types the right gate?
+- **Mob unlocks (v0.3a, quick `/pam` check OK):** does night 1 feel right (only zombies, fewer
+  mobs)? Too empty → raise `lockedMobReplacementChance`. Unlock chat message and the "Next: ..."
+  line on the Character tab.
+- **Elites (v0.3b):** `/pam elite zombie` etc. Size, name on hover, gear by rank, drops only on
+  player kill, XP, bonus loot, Elite Slayer milestone. Does normal-mob gear feel right?
+- **Traits (v0.3c):** `/pam elite zombie frost` etc. Does each trait feel fair for kids?
+
+**Temporary test changes** (TODO comments in `perk/Perks.java`): requirements removed so the
+user can test without levelling. Replant and Ore Sense are confirmed working; keep Replant
+unlocked until Harvester's right-click mode is tested (it needs Replant), then restore all three
+and update the perk tables above and the CLAUDE.md status:
+- Ore Sense → `new SkillLevel(Skill.MINING, 40)`
+- Replant → `new SkillLevel(Skill.FARMING, 5)`
+- Harvester → `new SkillLevel(Skill.FARMING, 20)`
+
 ## Open questions
 
 - [ ] Perk balance: costs and point budget (playtest).
-- [ ] Balance: hearts per milestone, Rank thresholds, elite chances.
+- [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
+  elite chances, skill XP curves.
+- [ ] Tag `v0.2.0`? Offered, no answer yet.
 
 ## Roadmap
 
@@ -556,10 +586,11 @@ To brainstorm later:
   damage modifier, config, `/pam` commands. Playtested: works well.
 - **v0.2:** perk points + perk list above, Adventure screen (character, perks,
   bestiary tabs), keybind. Playtested: works (not tagged yet).
-- **v0.2.x:** Farming skill, farming perks, Farmer milestones, Defense perks, Fleet Foot tiers.
+- **v0.2.x:** Farming skill, farming perks, Farmer milestones, Ore Sense, Deep Breath and Fleet
+  Foot tiers, Defense perks.
   *(Implemented, needs playtesting.)*
 - **v0.3a:** Rank-based mob unlocking. *(Implemented, needs playtesting.)*
 - **v0.3b:** mob gear + elite mobs + elite loot. *(Implemented, needs playtesting.)*
-- **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)*
+- **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)* Then tag v0.3.
 - **v0.4:** more skills (Combat, Archery, Fishing) + their perks, diet
   variety, more milestones, exploration extras.
