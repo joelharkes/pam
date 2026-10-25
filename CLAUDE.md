@@ -13,7 +13,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
 - Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md)
-- Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
+- Status: **0.4.0 released** (tag `v0.4.0`, Modrinth Alpha, first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
   what still needs a playtest is in the DESIGN.md playtest checklist.
@@ -74,7 +74,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `.github/workflows/release.yml`: Modrinth upload (Minotaur, project `hCWGq4lt` = `pam-progressive-adventure`),
   description sync, GitHub release. Needs the `MODRINTH_TOKEN` repo secret. Never upload from here.
 - `version` and `release_channel` (alpha/beta/release) in `gradle.properties`; the tag must match `version`.
-  `0.4.0` = first public release, not tagged/uploaded yet.
+  `0.4.0` = first public release (tagged and uploaded 2026-10-25). Players now have saves/configs: removed or
+  renamed perks, milestones or settings need a migration or a CHANGELOG note.
 - `CHANGELOG.md`: one `## X.Y.Z` section per release, written for players; `releaseNotes` and `modrinth` fail (plain `build` doesn't) if the
   current version has none (`./gradlew releaseNotes`). Dry run:
   `MODRINTH_TOKEN=dummy ./gradlew modrinth -PmodrinthDebug --no-configuration-cache` (Minotaur breaks the config cache).

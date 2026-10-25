@@ -743,6 +743,9 @@ To brainstorm later:
   reference. Done before the first release, so no migration (old files deleted). The mob unlock radius is no
   longer a setting: it's fixed at 128 = vanilla's spawn distance (smaller let far spawns skip the lock).
   Known limitations for players/admins live in README.
+- 2026-10-25: **0.4.0 released** (tag `v0.4.0`, Alpha) on Modrinth and as a GitHub release, with much of the
+  playtest checklist still open. From now on players have real saves and configs: removing or renaming a perk,
+  milestone or setting needs a migration or a CHANGELOG note.
 
 ## Playtest checklist
 
@@ -828,5 +831,6 @@ override applied, typo warned).
   *(Implemented, needs playtesting.)*
 - **v0.4a:** Waypoint Shards + Waypoint Stones, travel for XP, Pathfinder perk.
   *(Implemented, needs playtesting.)*
+- **0.4.0 (tag `v0.4.0`):** first public release on Modrinth (Alpha), everything above.
 - **v0.4:** more skills (Combat, Fishing) + their perks, diet
   variety, more milestones, exploration extras.
