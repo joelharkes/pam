@@ -79,6 +79,8 @@ public class PamConfig {
 	// Bird's Nest: chance per natural log you chop with an axe; a nest has 1-2 finds, emeralds are rarer
 	public double birdsNestChance = 0.02;
 	public double birdsNestEmeraldChance = 0.1;
+	// Flint Finder: chance of an extra flint per natural gravel block (vanilla's own 10% still applies)
+	public double flintFinderChance = 0.3;
 	// Vein Miner: most extra ore blocks mined with one ore
 	public int veinMinerMaxBlocks = 16;
 	public double archaeologistChance = 0.03;

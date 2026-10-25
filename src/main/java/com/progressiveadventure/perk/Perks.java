@@ -40,6 +40,8 @@ public final class Perks {
 	public static final Perk STURDY_AXE_3 = register("sturdy_axe_3", PerkCategory.WOODCUTTING, Items.DIAMOND_AXE, 3, new SkillLevel(Skill.WOODCUTTING, 30), "sturdy_axe_2");
 	public static final Perk LUMBERJACK = register("lumberjack", PerkCategory.WOODCUTTING, Items.SPRUCE_LOG, 2, new SkillLevel(Skill.WOODCUTTING, 10), null);
 	public static final Perk TIMBER = register("timber", PerkCategory.WOODCUTTING, Items.OAK_LOG, 4, new SkillLevel(Skill.WOODCUTTING, 25), "lumberjack");
+	public static final Perk FORESTER = register("forester", PerkCategory.WOODCUTTING, Items.OAK_SAPLING, 2, new SkillLevel(Skill.WOODCUTTING, 15), "lumberjack");
+	public static final Perk CLEAR_CUT = register("clear_cut", PerkCategory.WOODCUTTING, Items.SHEARS, 2, new SkillLevel(Skill.WOODCUTTING, 30), "timber");
 	public static final Perk ORCHARD = register("orchard", PerkCategory.WOODCUTTING, Items.OAK_LEAVES, 2, new SkillLevel(Skill.WOODCUTTING, 5), null);
 	public static final Perk BIRDS_NEST = register("birds_nest", PerkCategory.WOODCUTTING, Items.EGG, 2, new SkillLevel(Skill.WOODCUTTING, 15), null);
 
@@ -47,6 +49,7 @@ public final class Perks {
 	public static final Perk STURDY_SHOVEL_2 = register("sturdy_shovel_2", PerkCategory.DIGGING, Items.IRON_SHOVEL, 2, new SkillLevel(Skill.DIGGING, 15), "sturdy_shovel_1");
 	public static final Perk STURDY_SHOVEL_3 = register("sturdy_shovel_3", PerkCategory.DIGGING, Items.DIAMOND_SHOVEL, 3, new SkillLevel(Skill.DIGGING, 30), "sturdy_shovel_2");
 	public static final Perk ARCHAEOLOGIST = register("archaeologist", PerkCategory.DIGGING, Items.BRUSH, 2, new SkillLevel(Skill.DIGGING, 10), null);
+	public static final Perk FLINT_FINDER = register("flint_finder", PerkCategory.DIGGING, Items.FLINT, 1, new SkillLevel(Skill.DIGGING, 5), null);
 	public static final Perk PATH_MAKER = register("path_maker", PerkCategory.DIGGING, Items.DIRT_PATH, 1, new SkillLevel(Skill.DIGGING, 5), null);
 	public static final Perk RELIC_SENSE = register("relic_sense", PerkCategory.DIGGING, Items.SUSPICIOUS_SAND, 2, new SkillLevel(Skill.DIGGING, 15), null);
 	public static final Perk EXCAVATOR = register("excavator", PerkCategory.DIGGING, Items.GOLDEN_SHOVEL, 4, new SkillLevel(Skill.DIGGING, 20), null);

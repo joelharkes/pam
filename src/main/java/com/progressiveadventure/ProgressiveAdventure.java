@@ -98,6 +98,7 @@ public class ProgressiveAdventure implements ModInitializer {
 				Trackers.tick(server);
 			}
 			MovementPerks.tick(server);
+			PerkEffects.tick();
 			Waypoints.tick(server);
 		});
 

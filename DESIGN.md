@@ -3,7 +3,7 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming/Archery skills, bestiary, 84 perks in 10 categories, Adventure screen) and pillar 5
+Digging/Farming/Archery skills, bestiary, 87 perks in 10 categories, Adventure screen) and pillar 5
 mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
@@ -403,10 +403,13 @@ mobs to elites.
 | Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
 | Woodcutting | Lumberjack          | Chopping a log also chops up to 6 connected logs (sneak = off) | Woodcutting 10 | 2 |
 | Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 25, Lumberjack | 4 |
+| Woodcutting | Forester            | Lumberjack/Timber plant the matching sapling where the bottom log stood | Woodcutting 15, Lumberjack | 2 |
+| Woodcutting | Clear Cut           | After Timber, the tree's leaves break at once (same drops as decay, Orchard applies) | Woodcutting 30, Timber | 2 |
 | Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.2% golden apple (any tree) | Woodcutting 5 | 2 |
 | Woodcutting | Bird's Nest         | 2% per natural log chopped with an axe: 1–2 of feather/egg/string/stick/seeds, 10% of nests also an emerald | Woodcutting 15 | 2 |
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
 | Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
+| Digging     | Flint Finder        | 30% chance of an extra flint from natural gravel    | Digging 5           | 1    |
 | Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single) | Digging 5 | 1 |
 | Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
 | Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
@@ -448,6 +451,11 @@ Implementation notes:
   or down), only shovel blocks without a block entity (so never suspicious sand/gravel).
 - Sense perks (`BlockSense`, client): one scanner that skips chunk sections whose palette can't
   contain the target, so a 24-block radius for rare blocks stays cheap.
+- Clear Cut: 10 ticks after felling (leaf distance spreads one block per tick), breaks the
+  non-persistent leaves at decay distance 7 in the felled logs' box + 7. Only leaves that would
+  decay anyway, so a neighbouring tree is never touched.
+- Forester: only when the broken log is the bottom one (no log below) and the sapling can survive
+  there. Single saplings for 2×2 trees (dark oak, big spruce/jungle) won't grow into the big tree.
 - Cat's Eyes: client mixin on the lightmap, raises the night-vision intensity it already uses.
   Player-placed logs are never felled, so houses are safe.
 - Defense guards: multiply incoming damage before armor (stacks with Protection
@@ -663,7 +671,7 @@ To brainstorm later:
   light blocks that stop mob spawns). Woodcutting: Lumberjack (6 logs) becomes Timber's prerequisite,
   Timber moves to Woodcutting 25 / 4 points; Orchard (leaves) and Bird's Nest (logs) trigger on
   different blocks so they don't compete. Digging: Excavator, Path Maker, Relic Sense (vanilla
-  suspicious sand/gravel). Clear Cut, Forester and Flint Finder not chosen yet.
+  suspicious sand/gravel). Then also Clear Cut, Forester and Flint Finder.
 - 2026-10-25: **Waypoints (v0.4a):** shards only from elites (first elite always drops one);
   stones are shared; the Nth stone you own costs N shards, refunded on break; travel only
   stone to stone, cost in XP *points* (fair at any level) by distance, capped (cap to revisit
@@ -686,7 +694,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Second perk round:** Treasure Sense trail + chime (not annoying?), Vein Miner, Cat's Eyes
   brightness (I/II noticeable, caves not fully bright?), Lumberjack/Timber, Orchard and Bird's Nest
   rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
-  Sturdy Blade III. Ore Sense was moved into `BlockSense` (recheck it still works). Players who
+  Sturdy Blade III, Forester (sapling appears?), Clear Cut (leaves vanish ~0.5s after felling, drops OK,
+  neighbouring trees untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works). Players who
   owned Timber keep it without Lumberjack.
 - **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
   perk noticeable? Double Jump: feels instant, no rubber-band

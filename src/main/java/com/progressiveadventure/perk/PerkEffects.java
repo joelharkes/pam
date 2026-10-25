@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -55,6 +56,19 @@ public final class PerkEffects {
 			ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 
 	private static final Map<UUID, Long> SECOND_WIND_COOLDOWNS = new HashMap<>();
+
+	/** Ticks to wait after felling before Clear Cut; leaves need up to 7 ticks to notice the logs are gone. */
+	private static final int CLEAR_CUT_DELAY_TICKS = 10;
+	private static final Map<Block, Block> SAPLINGS = Map.of(
+			Blocks.OAK_LOG, Blocks.OAK_SAPLING, Blocks.SPRUCE_LOG, Blocks.SPRUCE_SAPLING,
+			Blocks.BIRCH_LOG, Blocks.BIRCH_SAPLING, Blocks.JUNGLE_LOG, Blocks.JUNGLE_SAPLING,
+			Blocks.ACACIA_LOG, Blocks.ACACIA_SAPLING, Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_SAPLING,
+			Blocks.CHERRY_LOG, Blocks.CHERRY_SAPLING, Blocks.MANGROVE_LOG, Blocks.MANGROVE_PROPAGULE,
+			Blocks.PALE_OAK_LOG, Blocks.PALE_OAK_SAPLING);
+	private static final List<ClearCut> CLEAR_CUTS = new ArrayList<>();
+
+	private record ClearCut(ServerLevel level, UUID player, BoundingBox box, long dueTick) {
+	}
 
 	/** Set while Timber, Vein Miner or Excavator break extra blocks, so those breaks don't trigger the perk again. */
 	private static boolean fellingTree;
@@ -117,11 +131,20 @@ public final class PerkEffects {
 			Block.popResource(level, pos, new ItemStack(find));
 		}
 		if (tool.is(ItemTags.AXES) && state.is(BlockTags.LOGS) && !fellingTree && !player.isShiftKeyDown()) {
-			if (Perks.has(player, Perks.TIMBER)) {
-				fellTree(player, level, pos, PamConfig.get().timberMaxLogs);
-			} else if (Perks.has(player, Perks.LUMBERJACK)) {
-				fellTree(player, level, pos, PamConfig.get().lumberjackMaxLogs);
+			boolean timber = Perks.has(player, Perks.TIMBER);
+			if (timber || Perks.has(player, Perks.LUMBERJACK)) {
+				PamConfig config = PamConfig.get();
+				List<BlockPos> felled = fellTree(player, level, pos, timber ? config.timberMaxLogs : config.lumberjackMaxLogs);
+				if (!felled.isEmpty() && Perks.has(player, Perks.FORESTER)) {
+					replantTree(level, pos, state);
+				}
+				if (!felled.isEmpty() && timber && Perks.has(player, Perks.CLEAR_CUT)) {
+					scheduleClearCut(player, level, pos, felled);
+				}
 			}
+		}
+		if (state.is(Blocks.GRAVEL) && Perks.has(player, Perks.FLINT_FINDER) && level.getRandom().nextDouble() < PamConfig.get().flintFinderChance) {
+			Block.popResource(level, pos, new ItemStack(Items.FLINT));
 		}
 		if (tool.is(ItemTags.AXES) && state.is(BlockTags.LOGS) && Perks.has(player, Perks.BIRDS_NEST)) {
 			birdsNest(player, level, pos);
@@ -136,6 +159,52 @@ public final class PerkEffects {
 		if (tool.is(ItemTags.SHOVELS) && canExcavate(state) && !excavating && !player.isShiftKeyDown() && Perks.has(player, Perks.EXCAVATOR)) {
 			excavate(player, level, pos);
 		}
+	}
+
+	/** Forester: plants the matching sapling where the bottom log of a felled tree stood. */
+	private static void replantTree(ServerLevel level, BlockPos pos, BlockState log) {
+		Block sapling = SAPLINGS.get(log.getBlock());
+		if (sapling == null || !level.getBlockState(pos).isAir() || level.getBlockState(pos.below()).is(BlockTags.LOGS)) {
+			return;
+		}
+		BlockState saplingState = sapling.defaultBlockState();
+		if (saplingState.canSurvive(level, pos)) {
+			level.setBlockAndUpdate(pos, saplingState);
+		}
+	}
+
+	/**
+	 * Clear Cut: once vanilla has worked out which leaves lost their tree (leaf distance spreads one block per tick),
+	 * break them all at once instead of letting them decay slowly. Drops are the same as decay.
+	 */
+	private static void scheduleClearCut(ServerPlayer player, ServerLevel level, BlockPos origin, List<BlockPos> logs) {
+		BoundingBox box = BoundingBox.encapsulatingPositions(logs).orElse(new BoundingBox(origin))
+				.inflatedBy(LeavesBlock.DECAY_DISTANCE);
+		CLEAR_CUTS.add(new ClearCut(level, player.getUUID(), box, level.getGameTime() + CLEAR_CUT_DELAY_TICKS));
+	}
+
+	public static void tick() {
+		CLEAR_CUTS.removeIf(clearCut -> {
+			if (clearCut.level().getGameTime() < clearCut.dueTick()) {
+				return false;
+			}
+			ServerLevel level = clearCut.level();
+			ServerPlayer player = level.getServer().getPlayerList().getPlayer(clearCut.player());
+			boolean orchard = player != null && Perks.has(player, Perks.ORCHARD);
+			for (BlockPos pos : BlockPos.betweenClosed(clearCut.box().minX(), clearCut.box().minY(), clearCut.box().minZ(),
+					clearCut.box().maxX(), clearCut.box().maxY(), clearCut.box().maxZ())) {
+				BlockState state = level.getBlockState(pos);
+				if (state.getBlock() instanceof LeavesBlock && !state.getValue(LeavesBlock.PERSISTENT)
+						&& state.getValue(LeavesBlock.DISTANCE) >= LeavesBlock.DECAY_DISTANCE) {
+					BlockPos leaves = pos.immutable();
+					level.destroyBlock(leaves, true, player);
+					if (orchard) {
+						orchard(level, leaves);
+					}
+				}
+			}
+			return true;
+		});
 	}
 
 	private static void birdsNest(ServerPlayer player, ServerLevel level, BlockPos pos) {
@@ -252,8 +321,11 @@ public final class PerkEffects {
 		return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL);
 	}
 
-	/** Breaks up to maxLogs logs connected to the broken one, if they form a natural tree (non-persistent leaves nearby). */
-	private static void fellTree(ServerPlayer player, ServerLevel level, BlockPos origin, int maxLogs) {
+	/**
+	 * Breaks up to maxLogs logs connected to the broken one, if they form a natural tree (non-persistent leaves nearby).
+	 * Returns the logs it tried to break, or an empty list if it wasn't a natural tree.
+	 */
+	private static List<BlockPos> fellTree(ServerPlayer player, ServerLevel level, BlockPos origin, int maxLogs) {
 		List<BlockPos> logs = new ArrayList<>();
 		Set<BlockPos> visited = new HashSet<>();
 		Queue<BlockPos> queue = new ArrayDeque<>();
@@ -280,7 +352,7 @@ public final class PerkEffects {
 			}
 		}
 		if (!hasLeaves) {
-			return;
+			return List.of();
 		}
 
 		fellingTree = true;
@@ -296,6 +368,7 @@ public final class PerkEffects {
 		} finally {
 			fellingTree = false;
 		}
+		return logs;
 	}
 
 	public static void onDamaged(ServerPlayer player) {

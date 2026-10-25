@@ -98,7 +98,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (ACTIVE state = look only), `Waypoint` record, `Waypoints` (shared list as an Overworld attachment;
   turn on/rename/break, XP cost, charge-up, safe landing, pets, text-display name labels)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
-  durability, prospector, timber/lumberjack, vein miner, excavator, archaeologist, orchard, bird's nest,
+  durability, prospector, timber/lumberjack, forester, clear cut (delayed via a tick queue), flint finder, vein miner, excavator, archaeologist, orchard, bird's nest,
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
