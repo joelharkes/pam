@@ -6,6 +6,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.waypoint.Waypoints;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -23,11 +24,18 @@ public final class PamNetworking {
 		PayloadTypeRegistry.serverboundPlay().register(ResetPerksPayload.TYPE, ResetPerksPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(DoubleJumpPayload.TYPE, DoubleJumpPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(MantlePayload.TYPE, MantlePayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(NameWaypointPayload.TYPE, NameWaypointPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(WaypointTeleportPayload.TYPE, WaypointTeleportPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointNamePayload.TYPE, OpenWaypointNamePayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointListPayload.TYPE, OpenWaypointListPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(BuyPerkPayload.TYPE, (payload, context) -> buy(context.player(), payload.perkId()));
 		ServerPlayNetworking.registerGlobalReceiver(ResetPerksPayload.TYPE, (payload, context) -> reset(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.TYPE, (payload, context) -> MovementPerks.onDoubleJump(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(MantlePayload.TYPE, (payload, context) -> MovementPerks.onMantle(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(NameWaypointPayload.TYPE, (payload, context) -> Waypoints.onName(context.player(), payload.pos(), payload.name()));
+		ServerPlayNetworking.registerGlobalReceiver(WaypointTeleportPayload.TYPE,
+				(payload, context) -> Waypoints.onTeleportRequest(context.player(), payload.from(), payload.target()));
 	}
 
 	private static void buy(ServerPlayer player, String perkId) {

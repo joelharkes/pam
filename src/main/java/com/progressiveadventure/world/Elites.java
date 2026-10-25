@@ -5,6 +5,7 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.config.PamConfig.GearWeights;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Milestones;
+import com.progressiveadventure.waypoint.WaypointContent;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -244,12 +245,17 @@ public final class Elites {
 		if (!isElite(entity) || !(source.getEntity() instanceof ServerPlayer player) || !(entity.level() instanceof ServerLevel level)) {
 			return;
 		}
+		// Checked before granting: the first elite a player kills always drops a shard
+		boolean firstElite = !Milestones.isDone(player, Milestones.ELITE);
 		Milestones.grant(player, Milestones.ELITE);
 
 		PamConfig config = PamConfig.get();
 		int rank = eliteRank(entity);
 		RandomSource random = level.getRandom();
 		double lootBoost = trait(entity) != null ? config.traitLootMultiplier : 1;
+		if (firstElite || random.nextDouble() < config.eliteShardChance.at(rank) * lootBoost) {
+			entity.spawnAtLocation(level, new ItemStack(WaypointContent.WAYPOINT_SHARD));
+		}
 		if (random.nextDouble() < config.eliteEmeraldChance.at(rank) * lootBoost) {
 			int maxCount = Math.max(1, (int) Math.round(config.eliteEmeraldMaxCount.at(rank)));
 			entity.spawnAtLocation(level, new ItemStack(Items.EMERALD, 1 + random.nextInt(maxCount)));

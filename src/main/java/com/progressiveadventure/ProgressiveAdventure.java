@@ -13,6 +13,8 @@ import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.waypoint.WaypointContent;
+import com.progressiveadventure.waypoint.Waypoints;
 import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
 
@@ -40,6 +42,7 @@ public class ProgressiveAdventure implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		PamConfig.load();
+		WaypointContent.init();
 		PamAttachments.init();
 		PamNetworking.init();
 
@@ -61,11 +64,19 @@ public class ProgressiveAdventure implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
 			if (entity instanceof ServerPlayer player) {
 				PerkEffects.onDamaged(player);
+				if (damageTaken > 0) {
+					Waypoints.onDamaged(player);
+				}
 			}
 			Elites.onDamage(entity, source, damageTaken);
 			Archery.onDamage(entity, source, damageTaken, blocked);
 		});
-		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> Elites.onLoad(entity));
+		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+			Elites.onLoad(entity);
+			Waypoints.onEntityLoad(entity, level);
+		});
+
+		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) -> Waypoints.canBreak(player, level, pos, state));
 
 		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
 			if (!(player instanceof ServerPlayer serverPlayer)) {
@@ -87,6 +98,7 @@ public class ProgressiveAdventure implements ModInitializer {
 				Trackers.tick(server);
 			}
 			MovementPerks.tick(server);
+			Waypoints.tick(server);
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> PamCommand.register(dispatcher));

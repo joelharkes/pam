@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "progressive_adventure:item/waypoint_shard"
+  }
+}

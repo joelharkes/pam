@@ -35,6 +35,9 @@ public final class Milestones {
 	public static final Milestone BIOMES_15 = pam("explorer/biomes_15", 1, 0);
 	public static final Milestone BIOMES_30 = pam("explorer/biomes_30", 2, 0);
 	public static final Milestone FIND_VILLAGE = pam("explorer/find_village", 1, 0);
+	public static final Milestone WAYPOINT = pam("explorer/waypoint", 1, 0);
+	public static final Milestone FIRST_TRIP = pam("explorer/first_trip", 0, 1);
+	public static final Milestone NETWORK = pam("explorer/network", 2, 0);
 
 	public static final Milestone MOB_TYPES_5 = pam("hunter/mob_types_5", 1, 0);
 	public static final Milestone MOB_TYPES_15 = pam("hunter/mob_types_15", 1, 0);
@@ -70,7 +73,7 @@ public final class Milestones {
 			FIRST_NIGHT, IRON_ARMOR,
 			FIRST_FOOD, FOODS_3, FOODS_8, FOODS_15, FOODS_25,
 			CROPS_3, CROPS_10, BREED_5,
-			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE,
+			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK,
 			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, ELITE,
 			DIAMOND_TOOLS), VANILLA.stream()).toList();
 
@@ -87,6 +90,8 @@ public final class Milestones {
 			new Threshold(5, BIOMES_5), new Threshold(15, BIOMES_15), new Threshold(30, BIOMES_30));
 	public static final List<Threshold> MOB_TYPE_THRESHOLDS = List.of(
 			new Threshold(5, MOB_TYPES_5), new Threshold(15, MOB_TYPES_15), new Threshold(30, MOB_TYPES_30));
+	/** Turned-on stones you own. */
+	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK));
 
 	public record Threshold(int count, Milestone milestone) {
 	}

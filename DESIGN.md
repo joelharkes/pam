@@ -458,6 +458,44 @@ Implementation notes:
 
 ---
 
+### 7. Waypoints: travel between places you found (v0.4a)
+
+Elites drop **Waypoint Shards**; shards turn on **Waypoint Stones**; you travel between stones
+for XP. Rewards fighting elites and exploring far away, and leaves a visible network of
+places you've been.
+
+- **Shards:** only from elites, player kills only. Chance 25% → 50% at Rank 100 (×1.5 for
+  trait elites). The **first elite a player kills always drops one** (checked via the Elite
+  Slayer milestone, no extra data).
+- **Waypoint Stone:** crafted from 8 stone bricks around a compass. Right-click with enough
+  shards in your inventory → name screen → it turns on (glows, soft particles, floating name).
+  Your Nth stone costs N shards (`waypointShardCostBase` + `Step` × stones you own). Breaking
+  it gives the shards back, so moving a stone is never a punishment. Owner sneak + right-click
+  (empty hand) renames it.
+- **Shared:** every player sees and can use every stone; each pays their own XP.
+- **Tough:** blast-proof, pistons can't move it, only the owner or an op can break a
+  turned-on stone.
+- **Travel:** right-click a stone → list of all other stones with cost, owner and distance.
+  Only from stone to stone (teleport from anywhere = maybe a later Pathfinder tier).
+  2-second charge-up with particles; getting hurt or walking away cancels it (nothing paid).
+- **Cost in XP points, not levels**, so it doesn't feel harsh at level 30 vs level 3
+  (30 points ≈ 2 levels at level 3, ¼ level at level 30): 15 + 10 per 1000 blocks, max 50.
+  Distance is in Overworld blocks (Nether ×8), so a trip costs the same in every dimension.
+  Changing dimension adds +20 on top of the cap; to/from the End always costs 50 + 20.
+- **Arrival:** next to the stone, facing it, on solid ground, not in lava or with your head
+  underwater; on top of it as a last resort. No room → refused, nothing paid. A stone that
+  disappeared is removed from the list.
+- **Pets** (tamed, following: not sitting, not on a lead) within 16 blocks come along. You get
+  off mounts and boats; they stay behind.
+- **Milestones:** Waypoint (first stone, ½ heart), First Trip (first teleport, stomach),
+  Network (5 of your own stones turned on, 1 heart).
+- **Perk:** Pathfinder I/II (Movement, Rank 15/35, 2/3 points): trips cost 25% / 50% less.
+- **Ops:** `/pam waypoint list`, `/pam waypoint tp <name>` (free, no charge-up),
+  `/pam waypoint remove <name>` (turns the stone off, drops its shards there). Creative players
+  pay no shards or XP.
+- Storage: one shared list on the Overworld (Fabric world attachment). The floating name is a
+  text display entity; orphaned ones are removed when they load.
+
 ## UI
 
 Keep it simple and close to vanilla.
@@ -516,8 +554,8 @@ To brainstorm later:
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a
   related skill.
 - **Mob discovery:** first kill of a new mob type gives a big XP burst and a toast.
-- **Mobs drop exploration helpers** (user idea, parked): e.g. elites sometimes drop a
-  treasure map, explorer map or compass-like hint that leads somewhere new.
+- **Mobs drop exploration helpers** (user idea): became Waypoint Shards (see 7). Treasure
+  or explorer maps from elites are still an option.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
 
 ---
@@ -603,6 +641,12 @@ To brainstorm later:
   Jump, Swimmer I/II, Diver, Long Arms (Survival), Steady Stance (Defense). No double jump with an
   elytra equipped (jump in the air starts gliding). Category rows are 19px so 10 fit.
 - 2026-10-25: Spring Step clearing fences (and animal pens) is fine.
+- 2026-10-25: **Waypoints (v0.4a):** shards only from elites (first elite always drops one);
+  stones are shared; the Nth stone you own costs N shards, refunded on break; travel only
+  stone to stone, cost in XP *points* (fair at any level) by distance, capped (cap to revisit
+  after playtest); Nether included, distance in Overworld blocks, +20 for a dimension jump;
+  pets come along, mounts don't; particles + floating name; milestones Waypoint / First Trip /
+  Network; Pathfinder perk lowers the cost; op commands list/tp/remove.
 
 ## Playtest checklist
 
@@ -631,6 +675,13 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Elites (v0.3b):** `/pam elite zombie` etc. Size, name on hover, gear by rank, drops only on
   player kill, XP, bonus loot, Elite Slayer milestone. Does normal-mob gear feel right?
 - **Traits (v0.3c):** `/pam elite zombie frost` etc. Does each trait feel fair for kids?
+- **Waypoints (v0.4a):** `/pam elite zombie` → shard drop (first kill always). Craft a stone,
+  turn it on (name screen, shard cost), particles + floating name, texture looks OK? Second stone
+  costs 2. Travel: list, costs, greyed out without XP, charge-up, cancel by getting hurt/walking
+  away, landing spot, pets come along (sitting ones don't), Nether trip cost. Rename (sneak +
+  empty hand), another player can't break your stone, breaking gives shards back. First Trip and
+  Network milestones, Pathfinder discount. `/pam waypoint list/tp/remove`. Works on a server/LAN
+  with two players?
 
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 
@@ -640,6 +691,7 @@ Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 - [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
   elite chances, skill XP curves.
 - [ ] Tag `v0.2.0`? Offered, no answer yet.
+- [ ] Waypoint XP cap (50, +20 across dimensions): maybe higher? Revisit after the playtest.
 
 ## Roadmap
 
@@ -656,6 +708,8 @@ Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 - **v0.3c:** elite traits for high ranks. *(Implemented, needs playtesting.)* Then tag v0.3.
 - **v0.3.x:** Archery skill + perks. *(Implemented, needs playtesting.)*
 - **v0.3.x:** Movement and Swimming perk categories (Double Jump, Mantle, Shadow Step, ...).
+  *(Implemented, needs playtesting.)*
+- **v0.4a:** Waypoint Shards + Waypoint Stones, travel for XP, Pathfinder perk.
   *(Implemented, needs playtesting.)*
 - **v0.4:** more skills (Combat, Fishing) + their perks, diet
   variety, more milestones, exploration extras.

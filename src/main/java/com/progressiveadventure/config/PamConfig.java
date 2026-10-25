@@ -186,6 +186,24 @@ public class PamConfig {
 	public float blazingFireSeconds = 4f;
 	public int summonerHelpers = 2;
 
+	// Waypoints: elites drop shards (player kills only; the first elite a player kills always drops one).
+	public Ramp eliteShardChance = new Ramp(0, 0.25, 100, 0.5);
+	// Turning on a stone costs base + step × (stones you already own) shards; breaking it gives them back
+	public int waypointShardCostBase = 1;
+	public int waypointShardCostStep = 1;
+	// Teleport cost in XP points (not levels): base + per 1000 blocks, capped. Distance is in Overworld blocks
+	// (Nether ×8). Changing dimension adds the fee on top of the cap; trips to or from the End cost cap + fee.
+	public int teleportXpBase = 15;
+	public int teleportXpPer1000Blocks = 10;
+	public int teleportXpCap = 50;
+	public int teleportXpDimensionFee = 20;
+	// Charge-up before the teleport; getting hurt or walking away cancels it
+	public int teleportChargeTicks = 40;
+	// Tamed pets that follow you (not sitting, not on a lead) within this range come along
+	public double teleportPetRange = 16.0;
+	// Pathfinder perk: share of the teleport cost taken away, by tier
+	public List<Double> pathfinderCostReductions = List.of(0.25, 0.5);
+
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}
 

@@ -2,6 +2,7 @@ package com.progressiveadventure.data;
 
 import com.mojang.serialization.Codec;
 import com.progressiveadventure.ProgressiveAdventure;
+import com.progressiveadventure.waypoint.Waypoint;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
@@ -57,6 +58,12 @@ public final class PamAttachments {
 	/** On arrows that already bounced (or were bounced) with Ricochet: they don't bounce again. */
 	public static final AttachmentType<Boolean> RICOCHET_ARROW = AttachmentRegistry.create(
 			ProgressiveAdventure.id("ricochet_arrow"), builder -> builder.persistent(Codec.BOOL));
+
+	/** On the Overworld: all turned-on Waypoint Stones of every dimension (shared by all players). */
+	public static final AttachmentType<List<Waypoint>> WAYPOINTS = AttachmentRegistry.create(
+			ProgressiveAdventure.id("waypoints"), builder -> builder
+					.persistent(Waypoint.CODEC.listOf())
+					.initializer(List::of));
 
 	private PamAttachments() {
 	}

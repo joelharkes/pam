@@ -5,6 +5,8 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.progressiveadventure.bestiary.Bestiary;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.config.PamConfig.FamiliarityTier;
@@ -14,6 +16,8 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
+import com.progressiveadventure.waypoint.Waypoint;
+import com.progressiveadventure.waypoint.Waypoints;
 import com.progressiveadventure.world.EliteTrait;
 import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
@@ -23,6 +27,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -30,7 +35,10 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /** /pam: shows your progress until there is a proper screen for it. */
 public final class PamCommand {
@@ -59,7 +67,47 @@ public final class PamCommand {
 								.then(Commands.argument("level", IntegerArgumentType.integer(0, 100))
 										.executes(context -> setSkill(context, context.getSource().getPlayerOrException()))
 										.then(Commands.argument("player", EntityArgument.player())
-												.executes(context -> setSkill(context, EntityArgument.getPlayer(context, "player"))))))));
+												.executes(context -> setSkill(context, EntityArgument.getPlayer(context, "player")))))))
+				// Waypoint tools for ops: list all, travel for free, remove one (turns the stone off, drops its shards)
+				.then(Commands.literal("waypoint").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.literal("list").executes(PamCommand::listWaypoints))
+						.then(Commands.literal("tp")
+								.then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PamCommand::suggestWaypoints)
+										.executes(context -> waypointCommand(context, false))))
+						.then(Commands.literal("remove")
+								.then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PamCommand::suggestWaypoints)
+										.executes(context -> waypointCommand(context, true))))));
+	}
+
+	private static CompletableFuture<Suggestions> suggestWaypoints(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+		return SharedSuggestionProvider.suggest(Waypoints.all(context.getSource().getServer()).stream().map(Waypoint::name), builder);
+	}
+
+	private static int listWaypoints(CommandContext<CommandSourceStack> context) {
+		List<Waypoint> waypoints = Waypoints.all(context.getSource().getServer());
+		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.waypoint.list_header", waypoints.size())
+				.withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
+		for (Waypoint waypoint : waypoints) {
+			BlockPos pos = waypoint.pos();
+			context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.waypoint.list_entry", waypoint.name(),
+					waypoint.ownerName(), waypoint.dimension().identifier().toString(), pos.getX(), pos.getY(), pos.getZ(), waypoint.shards()), false);
+		}
+		return waypoints.size();
+	}
+
+	private static int waypointCommand(CommandContext<CommandSourceStack> context, boolean remove) throws CommandSyntaxException {
+		String name = StringArgumentType.getString(context, "name");
+		Optional<Waypoint> waypoint = Waypoints.byName(context.getSource().getServer(), name);
+		if (waypoint.isEmpty()) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.waypoint.unknown", name));
+			return 0;
+		}
+		if (remove) {
+			Waypoints.remove(context.getSource().getServer(), waypoint.get());
+			context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.waypoint.removed", waypoint.get().name()), true);
+			return 1;
+		}
+		return Waypoints.teleport(context.getSource().getPlayerOrException(), waypoint.get()) ? 1 : 0;
 	}
 
 	private static int setSkill(CommandContext<CommandSourceStack> context, ServerPlayer target) {

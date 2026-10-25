@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/stone_bricks",
+    "side": "progressive_adventure:block/waypoint_stone_side",
+    "top": "progressive_adventure:block/waypoint_stone_top"
+  }
+}

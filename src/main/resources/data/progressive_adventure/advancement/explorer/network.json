@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/first_trip",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:filled_map"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.network.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.network.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

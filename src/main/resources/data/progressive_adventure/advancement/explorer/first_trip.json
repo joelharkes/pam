@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/waypoint",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "progressive_adventure:waypoint_shard"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.first_trip.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.first_trip.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

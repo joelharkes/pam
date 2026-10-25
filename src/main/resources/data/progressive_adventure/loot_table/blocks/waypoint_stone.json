@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "progressive_adventure:waypoint_stone"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "progressive_adventure:blocks/waypoint_stone"
+}

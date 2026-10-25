@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "progressive_adventure:block/waypoint_stone"
+    },
+    "active=true": {
+      "model": "progressive_adventure:block/waypoint_stone_active"
+    }
+  }
+}

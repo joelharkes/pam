@@ -97,6 +97,8 @@ public final class Perks {
 	public static final Perk SHADOW_STEP_1 = register("shadow_step_1", PerkCategory.MOVEMENT, Items.INK_SAC, 2, new Rank(10), null);
 	public static final Perk SHADOW_STEP_2 = register("shadow_step_2", PerkCategory.MOVEMENT, Items.ECHO_SHARD, 3, new Rank(25), "shadow_step_1");
 	public static final Perk MANTLE = register("mantle", PerkCategory.MOVEMENT, Items.LADDER, 3, new Rank(15), null);
+	public static final Perk PATHFINDER_1 = register("pathfinder_1", PerkCategory.MOVEMENT, Items.COMPASS, 2, new Rank(15), null);
+	public static final Perk PATHFINDER_2 = register("pathfinder_2", PerkCategory.MOVEMENT, Items.RECOVERY_COMPASS, 3, new Rank(35), "pathfinder_1");
 	public static final Perk DOUBLE_JUMP = register("double_jump", PerkCategory.MOVEMENT, Items.PHANTOM_MEMBRANE, 4, new Rank(30), null);
 
 	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SWIMMING, Items.PUFFERFISH, 1, Requirement.NONE, null);

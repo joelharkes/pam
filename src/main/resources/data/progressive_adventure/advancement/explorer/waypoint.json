@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_5",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "progressive_adventure:waypoint_stone"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.waypoint.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.waypoint.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -13,7 +13,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md)
 - Status: **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
-  **v0.3a** mob unlocks, **v0.3b** mob gear + elites and **v0.3c** elite traits are implemented;
+  **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
   what still needs a playtest is in the DESIGN.md playtest checklist.
 - Audience: the user plays this with their kids → fun first, no death penalty,
   progress must be visible and understandable.
@@ -94,13 +94,17 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
   (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone; `world/EliteTrait`: traits
   (persistent `ELITE_TRAIT`; Leaping goal re-added on every entity load since goals aren't saved)
+- `waypoint/`: `WaypointContent` (the mod's own items/blocks: shard, stone), `WaypointStoneBlock`
+  (ACTIVE state = look only), `Waypoint` record, `Waypoints` (shared list as an Overworld attachment;
+  turn on/rename/break, XP cost, charge-up, safe landing, pets, text-display name labels)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle)
-- `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`;
-  server validates in `PamNetworking`
+- `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
+  `NameWaypointPayload`, `WaypointTeleportPayload`; S2C `OpenWaypointNamePayload`, `OpenWaypointListPayload`
+  open client screens; server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
-  `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks)
+  `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
@@ -110,7 +114,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `AirMoves`
   (Double Jump and Mantle: client moves itself, then tells the server); `screen/AdventureScreen` with
-  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs)
+  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs);
+  `WaypointNameScreen`, `WaypointListScreen`
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).
@@ -121,6 +126,9 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   column holds 10 rows of 19px, so an 11th category needs a new layout).
 
 ## Conventions
+
+- Textures: 16×16 PNGs generated with Python/PIL (installed) from vanilla textures unzipped from the
+  client jar, e.g. recolors.
 
 - Prefer vanilla **attributes** (max_health, ...) with named modifiers over mixins
   wherever possible: multiplayer-safe, auto-synced, stack cleanly with other mods.
