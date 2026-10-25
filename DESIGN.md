@@ -4,7 +4,7 @@
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
 Digging/Farming/Archery skills, bestiary, 87 perks in 10 categories, Adventure screen) and pillar 5
-mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
+mob unlocks, elites and elite traits, pillar 7 waypoints (shards, stones, travel). Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
 ## Vision
@@ -89,7 +89,7 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Implemented: 20 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
+Implemented: 24 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
 
 | Category | Milestone (PAM tab)                        | Reward         |
 |----------|--------------------------------------------|----------------|
@@ -102,8 +102,12 @@ Implemented: 20 PAM milestones + 18 vanilla advancements with a reward (half hea
 | Farmer   | Breed 5 different kinds of animals         | ½ heart        |
 | Explorer | Visit 5 / 15 / 30 biomes                   | ½ / ½ / 1 heart|
 | Explorer | Find a village                             | ½ heart        |
+| Explorer | Turn on a Waypoint Stone                   | ½ heart        |
+| Explorer | Travel between two Waypoint Stones         | stomach        |
+| Explorer | Have 5 of your own Waypoint Stones on      | 1 heart        |
 | Hunter   | Defeat 5 / 15 / 30 different mob types     | ½ / ½ / 1 heart|
 | Hunter   | Defeat the Elder Guardian / the Wither     | 2 hearts each  |
+| Hunter   | Defeat an elite (Elite Slayer)             | ½ heart        |
 | Crafter  | Get a diamond pickaxe                      | ½ heart        |
 
 | Vanilla advancement                         | Reward   |
@@ -113,13 +117,13 @@ Implemented: 20 PAM milestones + 18 vanilla advancements with a reward (half hea
 | Free the End                                | 2 hearts |
 | A Balanced Diet                             | stomach  |
 
-Totals: 24½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
-the cap) and 6 stomach levels. 20 is our config cap, not a vanilla limit (vanilla
+Totals: 26½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
+the cap) and 7 stomach levels. 20 is our config cap, not a vanilla limit (vanilla
 max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
 Milestone ideas not built yet: raise a shield, desert/jungle temple, shipwreck or ocean
 ruin, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or
-suspicious stew, defeat an elite, 5 villager professions. More advancements may be
+suspicious stew, 5 villager professions. More advancements may be
 added later to give more Rank/points.
 
 ### 2. Metabolism: hunger annoying early, easy later
@@ -435,6 +439,7 @@ mobs to elites.
 | Movement    | Shadow Step II      | Sneak > 8 blocks from a chasing mob: it gives up and can't see you (while sneaking) for 10s, unless you hit it | Rank 25, perk I | 3 |
 | Movement    | Mantle              | Jump against a wall up to 2 blocks high while walking forward: pull yourself up | Rank 15 | 3 |
 | Movement    | Double Jump         | One extra jump in the air (not while wearing an elytra) | Rank 30         | 4    |
+| Movement    | Pathfinder I/II     | Waypoint trips cost 25% / 50% less XP               | Rank 15 / 35        | 2/3  |
 | Swimming    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
 | Swimming    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
 | Swimming    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
