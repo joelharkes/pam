@@ -699,6 +699,9 @@ To brainstorm later:
 - 2026-10-25: **Clear Cut spread over ticks (performance):** 32 leaves per tick. Timber and Vein
   Miner stay instant: spreading them would feel slower and needs handling for tool switches,
   walking away and logging out, and their caps (64/16) keep them cheap enough.
+- 2026-10-25: **Mob unlock rank table (performance):** required ranks per mob type are looked up
+  in a table built at server start instead of comparing id strings on every spawn attempt. Small
+  gain (estimated <1% of a tick before), done because it's cheap.
 - 2026-10-25: **License: MIT** (was All-Rights-Reserved), ahead of a first Modrinth release, so
   people can fork and send PRs.
 - 2026-10-25: **First public release = 0.4.0, Alpha channel** on Modrinth. Icon: the Waypoint Shard

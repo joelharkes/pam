@@ -47,7 +47,7 @@ public class ProgressiveAdventure implements ModInitializer {
 		PamNetworking.init();
 
 		// After all mods registered their mobs, so modded ids in the config are known
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> MobUnlocks.validateConfig());
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> MobUnlocks.loadConfig());
 		ServerPlayerEvents.JOIN.register(Progression::apply);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
 

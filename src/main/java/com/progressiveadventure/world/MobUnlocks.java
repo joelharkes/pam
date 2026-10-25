@@ -26,7 +26,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -35,38 +37,45 @@ import java.util.Optional;
  * (unless listed in the config) are left alone.
  */
 public final class MobUnlocks {
+	/** Rank needed per locked mob type, built from the config once mobs are registered (asked on every spawn attempt). */
+	private static Map<EntityType<?>, Integer> requiredRanks;
+
 	private MobUnlocks() {
 	}
 
-	/** Logs config entries that don't name a known mob (typos would otherwise silently do nothing). */
-	public static void validateConfig() {
+	/** At server start: builds the rank table and logs config entries that don't name a known mob (typos would otherwise silently do nothing). */
+	public static void loadConfig() {
+		Map<EntityType<?>, Integer> ranks = new IdentityHashMap<>();
 		for (MobUnlock unlock : PamConfig.get().mobUnlocks) {
 			for (String mob : unlock.mobs()) {
 				Identifier id = Identifier.tryParse(mob);
-				if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
+				Optional<EntityType<?>> type = id == null ? Optional.empty() : BuiltInRegistries.ENTITY_TYPE.getOptional(id);
+				if (type.isEmpty()) {
 					ProgressiveAdventure.LOGGER.warn("Unknown mob '{}' in mob unlock '{}'", mob, unlock.name());
+				} else {
+					// First group that lists a mob wins, like before
+					ranks.putIfAbsent(type.get(), unlock.rank());
 				}
 			}
 		}
+		requiredRanks = ranks;
 	}
 
 	/** Rank needed before this mob spawns naturally, or 0 if it's never locked. */
 	public static int requiredRank(EntityType<?> type) {
-		String id = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
-		for (MobUnlock unlock : PamConfig.get().mobUnlocks) {
-			if (unlock.mobs().contains(id)) {
-				return unlock.rank();
-			}
+		if (requiredRanks == null) {
+			loadConfig();
 		}
-		return 0;
+		return requiredRanks.getOrDefault(type, 0);
 	}
 
 	/** Lowest Adventure Rank among non-spectator players near the position, or MAX_VALUE if nobody is near. */
 	public static int lowestRankNear(ServerLevel level, BlockPos pos) {
 		double radius = PamConfig.get().mobUnlockPlayerRadius;
+		Vec3 center = Vec3.atCenterOf(pos);
 		int lowest = Integer.MAX_VALUE;
 		for (ServerPlayer player : level.players()) {
-			if (!player.isSpectator() && player.distanceToSqr(Vec3.atCenterOf(pos)) <= radius * radius) {
+			if (!player.isSpectator() && player.distanceToSqr(center) <= radius * radius) {
 				lowest = Math.min(lowest, PamAttachments.snapshot(player).rank());
 			}
 		}
