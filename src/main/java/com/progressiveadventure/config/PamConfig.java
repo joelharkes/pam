@@ -71,6 +71,16 @@ public class PamConfig {
 	public List<Double> sturdyChances = List.of(0.1, 0.2, 0.3);
 	public List<Double> prospectorChances = List.of(0.1, 0.2);
 	public int timberMaxLogs = 64;
+	// Lumberjack: chopping a log also chops up to this many connected logs (Timber I)
+	public int lumberjackMaxLogs = 6;
+	// Orchard: chance per natural leaf block you break
+	public double orchardAppleChance = 0.05;
+	public double orchardGoldenAppleChance = 0.002;
+	// Bird's Nest: chance per natural log you chop with an axe; a nest has 1-2 finds, emeralds are rarer
+	public double birdsNestChance = 0.02;
+	public double birdsNestEmeraldChance = 0.1;
+	// Vein Miner: most extra ore blocks mined with one ore
+	public int veinMinerMaxBlocks = 16;
 	public double archaeologistChance = 0.03;
 	public float secondWindHealthThreshold = 6f;
 	public int secondWindCooldownSeconds = 120;

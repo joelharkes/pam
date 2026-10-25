@@ -6,11 +6,16 @@ import com.progressiveadventure.skill.PlacedBlocks;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -33,17 +38,28 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /** Server-side behaviour of perks that aren't plain attribute modifiers. */
 public final class PerkEffects {
 	private static final List<Item> ARCHAEOLOGIST_FINDS = List.of(
 			Items.FLINT, Items.CLAY_BALL, Items.BONE, Items.STICK, Items.WHEAT_SEEDS,
 			Items.IRON_NUGGET, Items.GOLD_NUGGET, Items.BOWL, Items.STRING);
+	private static final List<Item> BIRDS_NEST_FINDS = List.of(
+			Items.FEATHER, Items.FEATHER, Items.EGG, Items.STRING, Items.STICK, Items.WHEAT_SEEDS);
+	/** Ores that count as the same vein for Vein Miner (so a vein crossing into deepslate stays one vein). */
+	private static final List<TagKey<Block>> ORE_GROUPS = List.of(
+			ConventionalBlockTags.COAL_ORES, ConventionalBlockTags.COPPER_ORES, ConventionalBlockTags.IRON_ORES,
+			ConventionalBlockTags.GOLD_ORES, ConventionalBlockTags.REDSTONE_ORES, ConventionalBlockTags.LAPIS_ORES,
+			ConventionalBlockTags.DIAMOND_ORES, ConventionalBlockTags.EMERALD_ORES, ConventionalBlockTags.QUARTZ_ORES,
+			ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 
 	private static final Map<UUID, Long> SECOND_WIND_COOLDOWNS = new HashMap<>();
 
-	/** Set while Timber breaks logs, so the extra breaks don't trigger Timber again. */
+	/** Set while Timber, Vein Miner or Excavator break extra blocks, so those breaks don't trigger the perk again. */
 	private static boolean fellingTree;
+	private static boolean miningVein;
+	private static boolean excavating;
 
 	private PerkEffects() {
 	}
@@ -60,7 +76,7 @@ public final class PerkEffects {
 		} else if (stack.is(ItemTags.HOES)) {
 			tier = Perks.tier(player, Perks.STURDY_HOE_1, Perks.STURDY_HOE_2, Perks.STURDY_HOE_3);
 		} else if (stack.is(ItemTags.SWORDS)) {
-			tier = Perks.tier(player, Perks.STURDY_WEAPON_1, Perks.STURDY_WEAPON_2);
+			tier = Perks.tier(player, Perks.STURDY_WEAPON_1, Perks.STURDY_WEAPON_2, Perks.STURDY_WEAPON_3);
 		} else if (stack.is(ItemTags.HEAD_ARMOR) || stack.is(ItemTags.CHEST_ARMOR) || stack.is(ItemTags.LEG_ARMOR) || stack.is(ItemTags.FOOT_ARMOR)) {
 			tier = Perks.tier(player, Perks.STURDY_ARMOR_1, Perks.STURDY_ARMOR_2, Perks.STURDY_ARMOR_3);
 		} else {
@@ -100,8 +116,122 @@ public final class PerkEffects {
 			Item find = ARCHAEOLOGIST_FINDS.get(level.getRandom().nextInt(ARCHAEOLOGIST_FINDS.size()));
 			Block.popResource(level, pos, new ItemStack(find));
 		}
-		if (tool.is(ItemTags.AXES) && state.is(BlockTags.LOGS) && !fellingTree && !player.isShiftKeyDown() && Perks.has(player, Perks.TIMBER)) {
-			fellTree(player, level, pos);
+		if (tool.is(ItemTags.AXES) && state.is(BlockTags.LOGS) && !fellingTree && !player.isShiftKeyDown()) {
+			if (Perks.has(player, Perks.TIMBER)) {
+				fellTree(player, level, pos, PamConfig.get().timberMaxLogs);
+			} else if (Perks.has(player, Perks.LUMBERJACK)) {
+				fellTree(player, level, pos, PamConfig.get().lumberjackMaxLogs);
+			}
+		}
+		if (tool.is(ItemTags.AXES) && state.is(BlockTags.LOGS) && Perks.has(player, Perks.BIRDS_NEST)) {
+			birdsNest(player, level, pos);
+		}
+		if (state.getBlock() instanceof LeavesBlock && !state.getValue(LeavesBlock.PERSISTENT) && Perks.has(player, Perks.ORCHARD)) {
+			orchard(level, pos);
+		}
+		if (tool.is(ItemTags.PICKAXES) && state.is(ConventionalBlockTags.ORES) && !miningVein && !player.isShiftKeyDown()
+				&& Perks.has(player, Perks.VEIN_MINER)) {
+			mineVein(player, level, pos, state);
+		}
+		if (tool.is(ItemTags.SHOVELS) && canExcavate(state) && !excavating && !player.isShiftKeyDown() && Perks.has(player, Perks.EXCAVATOR)) {
+			excavate(player, level, pos);
+		}
+	}
+
+	private static void birdsNest(ServerPlayer player, ServerLevel level, BlockPos pos) {
+		PamConfig config = PamConfig.get();
+		if (level.getRandom().nextDouble() >= config.birdsNestChance) {
+			return;
+		}
+		int finds = 1 + level.getRandom().nextInt(2);
+		for (int i = 0; i < finds; i++) {
+			Block.popResource(level, pos, new ItemStack(BIRDS_NEST_FINDS.get(level.getRandom().nextInt(BIRDS_NEST_FINDS.size()))));
+		}
+		if (level.getRandom().nextDouble() < config.birdsNestEmeraldChance) {
+			Block.popResource(level, pos, new ItemStack(Items.EMERALD));
+		}
+		player.sendOverlayMessage(Component.translatable("message.progressive_adventure.birds_nest"));
+		level.playSound(null, pos, SoundEvents.PARROT_AMBIENT, SoundSource.PLAYERS, 0.8f, 1.2f);
+	}
+
+	private static void orchard(ServerLevel level, BlockPos pos) {
+		PamConfig config = PamConfig.get();
+		double roll = level.getRandom().nextDouble();
+		if (roll < config.orchardGoldenAppleChance) {
+			Block.popResource(level, pos, new ItemStack(Items.GOLDEN_APPLE));
+		} else if (roll < config.orchardGoldenAppleChance + config.orchardAppleChance) {
+			Block.popResource(level, pos, new ItemStack(Items.APPLE));
+		}
+	}
+
+	/** Mines ore blocks connected to the broken one (also diagonally) that belong to the same ore. */
+	private static void mineVein(ServerPlayer player, ServerLevel level, BlockPos origin, BlockState ore) {
+		TagKey<Block> group = ORE_GROUPS.stream().filter(ore::is).findFirst().orElse(null);
+		Predicate<BlockState> sameOre = state -> group != null ? state.is(group) : state.is(ore.getBlock());
+		List<BlockPos> vein = new ArrayList<>();
+		Set<BlockPos> visited = new HashSet<>();
+		Queue<BlockPos> queue = new ArrayDeque<>();
+		queue.add(origin);
+		visited.add(origin);
+		int max = PamConfig.get().veinMinerMaxBlocks;
+		while (!queue.isEmpty() && vein.size() < max) {
+			BlockPos current = queue.poll();
+			for (BlockPos next : BlockPos.betweenClosed(current.offset(-1, -1, -1), current.offset(1, 1, 1))) {
+				if (vein.size() >= max || visited.contains(next)) {
+					continue;
+				}
+				BlockPos pos = next.immutable();
+				visited.add(pos);
+				if (sameOre.test(level.getBlockState(pos)) && !PlacedBlocks.isPlaced(level, pos)) {
+					queue.add(pos);
+					vein.add(pos);
+				}
+			}
+		}
+
+		miningVein = true;
+		try {
+			for (BlockPos pos : vein) {
+				if (!player.getMainHandItem().is(ItemTags.PICKAXES)) {
+					break; // pickaxe broke
+				}
+				player.gameMode.destroyBlock(pos);
+			}
+		} finally {
+			miningVein = false;
+		}
+	}
+
+	private static boolean canExcavate(BlockState state) {
+		// Suspicious sand and gravel hide treasure for the brush, so never dig those up by accident
+		return state.is(BlockTags.MINEABLE_WITH_SHOVEL) && !state.hasBlockEntity();
+	}
+
+	/** Digs the 3x3 square around the broken block, facing the player (flat when looking up or down). */
+	private static void excavate(ServerPlayer player, ServerLevel level, BlockPos center) {
+		Direction.Axis axis = Math.abs(player.getXRot()) > 45 ? Direction.Axis.Y : player.getDirection().getAxis();
+		excavating = true;
+		try {
+			for (int a = -1; a <= 1; a++) {
+				for (int b = -1; b <= 1; b++) {
+					if (a == 0 && b == 0) {
+						continue;
+					}
+					if (!player.getMainHandItem().is(ItemTags.SHOVELS)) {
+						return; // shovel broke
+					}
+					BlockPos pos = switch (axis) {
+						case Y -> center.offset(a, 0, b);
+						case X -> center.offset(0, a, b);
+						case Z -> center.offset(a, b, 0);
+					};
+					if (canExcavate(level.getBlockState(pos)) && !PlacedBlocks.isPlaced(level, pos)) {
+						player.gameMode.destroyBlock(pos);
+					}
+				}
+			}
+		} finally {
+			excavating = false;
 		}
 	}
 
@@ -122,9 +252,8 @@ public final class PerkEffects {
 		return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL);
 	}
 
-	/** Breaks all logs connected to the broken one, if they form a natural tree (non-persistent leaves nearby). */
-	private static void fellTree(ServerPlayer player, ServerLevel level, BlockPos origin) {
-		int maxLogs = PamConfig.get().timberMaxLogs;
+	/** Breaks up to maxLogs logs connected to the broken one, if they form a natural tree (non-persistent leaves nearby). */
+	private static void fellTree(ServerPlayer player, ServerLevel level, BlockPos origin, int maxLogs) {
 		List<BlockPos> logs = new ArrayList<>();
 		Set<BlockPos> visited = new HashSet<>();
 		Queue<BlockPos> queue = new ArrayDeque<>();

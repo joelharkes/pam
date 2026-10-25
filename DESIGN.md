@@ -3,7 +3,7 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming/Archery skills, bestiary, 71 perks in 10 categories, Adventure screen) and pillar 5
+Digging/Farming/Archery skills, bestiary, 84 perks in 10 categories, Adventure screen) and pillar 5
 mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
@@ -397,11 +397,20 @@ mobs to elites.
 | Mining      | Prospector I        | 10% chance of double ore drops                      | Mining 10           | 2    |
 | Mining      | Prospector II       | 20% chance                                          | Mining 25, perk I   | 3    |
 | Mining      | Ore Sense           | Holding a pickaxe: particle trail points at the nearest ore within 12 blocks, coloured by ore type, bigger when closer | Mining 40 | 4 |
+| Mining      | Treasure Sense      | Holding a pickaxe: white sparkle trail (every 2.5s) to the nearest diamond ore / ancient debris within 24 blocks; quiet amethyst chime once per block within 6 | Mining 50, Ore Sense | 5 |
+| Mining      | Vein Miner          | Mining an ore also mines up to 16 connected ores of the same kind (sneak = off) | Mining 30 | 4 |
+| Mining      | Cat's Eyes I/II     | 25% / 50% of Night Vision's brightening, always on  | Mining 15 / 35      | 2/3  |
 | Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
-| Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 15      | 3    |
+| Woodcutting | Lumberjack          | Chopping a log also chops up to 6 connected logs (sneak = off) | Woodcutting 10 | 2 |
+| Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 25, Lumberjack | 4 |
+| Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.2% golden apple (any tree) | Woodcutting 5 | 2 |
+| Woodcutting | Bird's Nest         | 2% per natural log chopped with an axe: 1–2 of feather/egg/string/stick/seeds, 10% of nests also an emerald | Woodcutting 15 | 2 |
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
 | Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
-| Combat      | Sturdy Weapon I/II  | 10%/20% chance swords use no durability             | 5 / 15 mob types defeated | 1/2 |
+| Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single) | Digging 5 | 1 |
+| Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
+| Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
+| Combat      | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability        | 5 / 15 / 25 mob types defeated | 1/2/3 |
 | Combat      | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
 | Combat      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
 | Defense     | Sturdy Armor I/II/III | 10/20/30% chance armor uses no durability       | 5 / 10 / 15 mob types defeated | 1/2/3 |
@@ -431,7 +440,15 @@ Implementation notes:
 - Durability: one hook where items lose durability; chance by tool type.
 - Prospector: re-drops the block's loot (respects Fortune). Skipped when the drop is
   the ore block itself (Silk Touch).
-- Timber: breaks connected logs (max 64), each log uses durability and gives skill xp.
+- Timber / Lumberjack: breaks connected logs (max 64 / 6), each log uses durability and gives skill xp.
+- Vein Miner / Excavator work like Timber: extra blocks go through `destroyBlock`, so each one uses
+  durability, gives skill xp and can trigger Prospector/Archaeologist; player-placed blocks are
+  skipped. Vein Miner counts deepslate and normal variants of an ore as one vein (conventional ore
+  tags). Excavator: the 3×3 plane follows the look direction (flat when looking more than 45° up
+  or down), only shovel blocks without a block entity (so never suspicious sand/gravel).
+- Sense perks (`BlockSense`, client): one scanner that skips chunk sections whose palette can't
+  contain the target, so a 24-block radius for rare blocks stays cheap.
+- Cat's Eyes: client mixin on the lightmap, raises the night-vision intensity it already uses.
   Player-placed logs are never felled, so houses are safe.
 - Defense guards: multiply incoming damage before armor (stacks with Protection
   enchantments). Only the first matching type counts: explosion, projectile, fire, then
@@ -453,8 +470,7 @@ Implementation notes:
   Slide, Lucky (fishing loot, with the Fishing skill), Fireproof Skin (overlaps Fire Guard). Animal
   Friend can't be an attribute (tempt range belongs to the animal). Well Fed (diet variety), extra crop yield (Farming skill), faster bow
   draw (Archery), auto-smelt, night vision underground.
-- Parked: Ore Sense II (also points at rare ores, or prefers the most valuable ore in range;
-  nearby coal/copper currently hide rarer ores further away).
+- No 3×3 mining for pickaxes (trivialises caving and building); Vein Miner instead.
 
 ---
 
@@ -641,6 +657,13 @@ To brainstorm later:
   Jump, Swimmer I/II, Diver, Long Arms (Survival), Steady Stance (Defense). No double jump with an
   elytra equipped (jump in the air starts gliding). Category rows are 19px so 10 fit.
 - 2026-10-25: Spring Step clearing fences (and animal pens) is fine.
+- 2026-10-25: Second perk round: Sturdy Weapon III; Treasure Sense (Ore Sense II: diamonds +
+  ancient debris, 24 blocks, chime once per block so it never nags), Vein Miner (no 3×3 for
+  pickaxes), Cat's Eyes I/II (partial night vision; light around you would need lighting hacks or
+  light blocks that stop mob spawns). Woodcutting: Lumberjack (6 logs) becomes Timber's prerequisite,
+  Timber moves to Woodcutting 25 / 4 points; Orchard (leaves) and Bird's Nest (logs) trigger on
+  different blocks so they don't compete. Digging: Excavator, Path Maker, Relic Sense (vanilla
+  suspicious sand/gravel). Clear Cut, Forester and Flint Finder not chosen yet.
 - 2026-10-25: **Waypoints (v0.4a):** shards only from elites (first elite always drops one);
   stones are shared; the Nth stone you own costs N shards, refunded on break; travel only
   stone to stone, cost in XP *points* (fair at any level) by distance, capped (cap to revisit
@@ -660,6 +683,11 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
   tab: 5 skill rows only just fit with two rows of hearts.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
+- **Second perk round:** Treasure Sense trail + chime (not annoying?), Vein Miner, Cat's Eyes
+  brightness (I/II noticeable, caves not fully bright?), Lumberjack/Timber, Orchard and Bird's Nest
+  rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
+  Sturdy Blade III. Ore Sense was moved into `BlockSense` (recheck it still works). Players who
+  owned Timber keep it without Lumberjack.
 - **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
   perk noticeable? Double Jump: feels instant, no rubber-band
   on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall

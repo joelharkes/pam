@@ -16,7 +16,8 @@
 		"PatrolSpawnerMixin",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin",
-		"ProjectileWeaponItemMixin"
+		"ProjectileWeaponItemMixin",
+		"ShovelItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

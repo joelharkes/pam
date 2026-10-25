@@ -30,16 +30,26 @@ public final class Perks {
 	public static final Perk PROSPECTOR_1 = register("prospector_1", PerkCategory.MINING, Items.RAW_IRON, 2, new SkillLevel(Skill.MINING, 10), null);
 	public static final Perk PROSPECTOR_2 = register("prospector_2", PerkCategory.MINING, Items.DIAMOND, 3, new SkillLevel(Skill.MINING, 25), "prospector_1");
 	public static final Perk ORE_SENSE = register("ore_sense", PerkCategory.MINING, Items.SPYGLASS, 4, new SkillLevel(Skill.MINING, 40), null);
+	public static final Perk TREASURE_SENSE = register("treasure_sense", PerkCategory.MINING, Items.ANCIENT_DEBRIS, 5, new SkillLevel(Skill.MINING, 50), "ore_sense");
+	public static final Perk VEIN_MINER = register("vein_miner", PerkCategory.MINING, Items.IRON_ORE, 4, new SkillLevel(Skill.MINING, 30), null);
+	public static final Perk CATS_EYES_1 = register("cats_eyes_1", PerkCategory.MINING, Items.GLOW_INK_SAC, 2, new SkillLevel(Skill.MINING, 15), null);
+	public static final Perk CATS_EYES_2 = register("cats_eyes_2", PerkCategory.MINING, Items.GLOWSTONE, 3, new SkillLevel(Skill.MINING, 35), "cats_eyes_1");
 
 	public static final Perk STURDY_AXE_1 = register("sturdy_axe_1", PerkCategory.WOODCUTTING, Items.STONE_AXE, 1, new SkillLevel(Skill.WOODCUTTING, 5), null);
 	public static final Perk STURDY_AXE_2 = register("sturdy_axe_2", PerkCategory.WOODCUTTING, Items.IRON_AXE, 2, new SkillLevel(Skill.WOODCUTTING, 15), "sturdy_axe_1");
 	public static final Perk STURDY_AXE_3 = register("sturdy_axe_3", PerkCategory.WOODCUTTING, Items.DIAMOND_AXE, 3, new SkillLevel(Skill.WOODCUTTING, 30), "sturdy_axe_2");
-	public static final Perk TIMBER = register("timber", PerkCategory.WOODCUTTING, Items.OAK_LOG, 3, new SkillLevel(Skill.WOODCUTTING, 15), null);
+	public static final Perk LUMBERJACK = register("lumberjack", PerkCategory.WOODCUTTING, Items.SPRUCE_LOG, 2, new SkillLevel(Skill.WOODCUTTING, 10), null);
+	public static final Perk TIMBER = register("timber", PerkCategory.WOODCUTTING, Items.OAK_LOG, 4, new SkillLevel(Skill.WOODCUTTING, 25), "lumberjack");
+	public static final Perk ORCHARD = register("orchard", PerkCategory.WOODCUTTING, Items.OAK_LEAVES, 2, new SkillLevel(Skill.WOODCUTTING, 5), null);
+	public static final Perk BIRDS_NEST = register("birds_nest", PerkCategory.WOODCUTTING, Items.EGG, 2, new SkillLevel(Skill.WOODCUTTING, 15), null);
 
 	public static final Perk STURDY_SHOVEL_1 = register("sturdy_shovel_1", PerkCategory.DIGGING, Items.STONE_SHOVEL, 1, new SkillLevel(Skill.DIGGING, 5), null);
 	public static final Perk STURDY_SHOVEL_2 = register("sturdy_shovel_2", PerkCategory.DIGGING, Items.IRON_SHOVEL, 2, new SkillLevel(Skill.DIGGING, 15), "sturdy_shovel_1");
 	public static final Perk STURDY_SHOVEL_3 = register("sturdy_shovel_3", PerkCategory.DIGGING, Items.DIAMOND_SHOVEL, 3, new SkillLevel(Skill.DIGGING, 30), "sturdy_shovel_2");
 	public static final Perk ARCHAEOLOGIST = register("archaeologist", PerkCategory.DIGGING, Items.BRUSH, 2, new SkillLevel(Skill.DIGGING, 10), null);
+	public static final Perk PATH_MAKER = register("path_maker", PerkCategory.DIGGING, Items.DIRT_PATH, 1, new SkillLevel(Skill.DIGGING, 5), null);
+	public static final Perk RELIC_SENSE = register("relic_sense", PerkCategory.DIGGING, Items.SUSPICIOUS_SAND, 2, new SkillLevel(Skill.DIGGING, 15), null);
+	public static final Perk EXCAVATOR = register("excavator", PerkCategory.DIGGING, Items.GOLDEN_SHOVEL, 4, new SkillLevel(Skill.DIGGING, 20), null);
 
 	public static final Perk LIGHT_STEP = register("light_step", PerkCategory.FARMING, Items.LEATHER_BOOTS, 1, Requirement.NONE, null);
 	public static final Perk REPLANT = register("replant", PerkCategory.FARMING, Items.WHEAT_SEEDS, 2, new SkillLevel(Skill.FARMING, 5), null);
@@ -63,6 +73,7 @@ public final class Perks {
 
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
+	public static final Perk STURDY_WEAPON_3 = register("sturdy_weapon_3", PerkCategory.COMBAT, Items.DIAMOND_SWORD, 3, new MobTypes(25), "sturdy_weapon_2");
 	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.COMBAT, Items.WRITABLE_BOOK, 2, new MobTypes(5), null);
 	public static final Perk SECOND_WIND = register("second_wind", PerkCategory.COMBAT, Items.GLISTERING_MELON_SLICE, 2, Requirement.NONE, null);
 

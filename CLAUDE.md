@@ -98,7 +98,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (ACTIVE state = look only), `Waypoint` record, `Waypoints` (shared list as an Overworld attachment;
   turn on/rename/break, XP cost, charge-up, safe landing, pets, text-display name labels)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
-  durability, prospector, timber, archaeologist, second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
+  durability, prospector, timber/lumberjack, vein miner, excavator, archaeologist, orchard, bird's nest,
+  second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `NameWaypointPayload`, `WaypointTeleportPayload`; S2C `OpenWaypointNamePayload`, `OpenWaypointListPayload`
@@ -107,13 +108,14 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
-  ItemStack (Sturdy durability perks), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
+  ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks),
   LivingEntity also speeds up bow/crossbow use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
-- Client (`src/client/java/.../client/`): K keybind; `OreSense` (client-side particle trail); `AirMoves`
-  (Double Jump and Mantle: client moves itself, then tells the server); `screen/AdventureScreen` with
+- Client (`src/client/java/.../client/`): K keybind; `BlockSense` (Ore/Treasure/Relic Sense particle trails); `AirMoves`
+  (Double Jump and Mantle: client moves itself, then tells the server); client mixin on the lightmap
+  (Cat's Eyes); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs);
   `WaypointNameScreen`, `WaypointListScreen`
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
