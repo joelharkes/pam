@@ -1,0 +1,52 @@
+name: Perk or feature idea
+description: Suggest a new perk, milestone, skill or other feature.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas that fit PAM's principles are easiest to say yes to: fun first (also for kids), no harsh
+        punishments, visible progress, and big gains early with smaller ones later.
+        See [CONTRIBUTING.md](https://github.com/joelharkes/pam/blob/main/CONTRIBUTING.md#what-makes-a-good-idea).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of idea?
+      options:
+        - Perk
+        - Milestone
+        - Skill
+        - Mobs / elites
+        - Waypoints
+        - Adventure screen / UI
+        - Something else
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Perk category (if it's a perk)
+      options:
+        - Mining
+        - Woodcutting
+        - Digging
+        - Farming
+        - Archery
+        - Combat
+        - Defense
+        - Survival
+        - Movement
+        - Swimming
+        - A new category
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What does it do? For a perk, what would you need to unlock it (skill level, Rank)?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it be fun?
+      description: What moment in the game would it make better?

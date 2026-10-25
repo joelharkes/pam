@@ -1,0 +1,35 @@
+name: Playtest feedback
+description: You played a session. Tell us how it felt!
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Balance is still being tuned, so this helps a lot. Short answers are fine; fill in what you have.
+  - type: textarea
+    id: session
+    attributes:
+      label: How did you play?
+      description: How long, which part of the game, alone or with others (and their ages, if you like)?
+      placeholder: "About 3 hours on a new world, with my two kids (8 and 11), on LAN."
+    validations:
+      required: true
+  - type: textarea
+    id: fun
+    attributes:
+      label: What was fun?
+  - type: textarea
+    id: hard
+    attributes:
+      label: What felt too hard, too easy or too slow?
+      description: For example hearts, hunger, skill levels, perk costs, mobs, elites or waypoint costs.
+  - type: textarea
+    id: confusing
+    attributes:
+      label: What was confusing?
+      description: Anything you didn't understand, couldn't find, or had to look up.
+  - type: input
+    id: version
+    attributes:
+      label: PAM version
+      placeholder: "0.4.0"

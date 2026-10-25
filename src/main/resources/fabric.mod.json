@@ -7,6 +7,11 @@
 	"authors": [
 		"joel"
 	],
+	"contact": {
+		"homepage": "https://github.com/joelharkes/pam",
+		"sources": "https://github.com/joelharkes/pam",
+		"issues": "https://github.com/joelharkes/pam/issues"
+	},
 	"license": "MIT",
 	"icon": "assets/progressive_adventure/icon.png",
 	"environment": "*",

@@ -66,6 +66,15 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   and list them in the playtest checklist.
 - Commit per feature/change. Tag playtested versions (`v0.1.0` = first test version).
 
+## Release (Modrinth)
+
+- Version in `gradle.properties` (`0.4.0` = first public release, Alpha channel). Add an entry to
+  `CHANGELOG.md` per release; tag `vX.Y.Z` when it's uploaded.
+- `README.md` is for players (GitHub). `docs/modrinth-description.md` is the same text with absolute
+  `raw.githubusercontent.com` image links for the Modrinth page: update both together.
+- Screenshots in `docs/screenshots/` as JPG (quality 88) to keep the repo small.
+- Issue forms in `.github/ISSUE_TEMPLATE/` (bug, playtest feedback, perk/feature idea); `CONTRIBUTING.md`.
+
 ## Adding things
 
 - **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under

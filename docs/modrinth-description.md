@@ -1,0 +1,103 @@
+
+In vanilla Minecraft you spawn with full health, and every mob is out to get you on night one.
+After that, the only way to grow is better gear.
+
+PAM changes that. You start with **fewer hearts** and a **hungrier stomach**, and you earn your
+strength back by playing: reaching milestones, getting better at what you do, and exploring.
+The world grows with you. New monsters only show up once you're ready for them.
+
+There is **no death penalty**. PAM is made to be fun for families and kids, and progress is
+always shown on screen so it's clear what you've done and what's next.
+
+> **Alpha:** this is the first public version. Expect rough edges and balance changes.
+> Feedback is very welcome, see Feedback and ideas below.
+
+## Features
+
+### Hearts from milestones
+You start with **5 hearts**. Milestones give you more, up to **20 hearts**. Your first night,
+your first new food, finding a village, beating the Wither: **42 milestones** in total. 24 are
+in PAM's own **Adventure** advancement tab, and 18 are vanilla advancements that now give a reward too.
+
+![Milestone toast](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/advancement_first_bite.jpg)
+
+### A stomach that grows
+Early on you get hungry quickly and food fills you up less. Eating different foods and growing
+crops levels up your **stomach**, until you're better off than in vanilla.
+
+### Get better by doing
+Five skills level up as you use them: **Mining**, **Woodcutting**, **Digging**, **Farming** and
+**Archery**. Higher levels mean faster tools, extra harvests and quicker bow draws.
+
+![Woodcutting level up](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/woodcutting_level_1.jpg)
+
+### Adventure Rank and perks
+Every advancement raises your **Adventure Rank**, and every Rank is a **perk point**. Spend them
+on **87 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Ore Sense,
+Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
+
+Press **K** to open the Adventure screen.
+
+![Character tab](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/character_screen.jpg)
+![Mining perks](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/perks_mining.jpg)
+![Movement perks](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/perks_movement.jpg)
+
+### Bestiary
+Every mob type you defeat goes in your bestiary. The more of a mob you've beaten, the more
+damage you deal to it.
+
+![Bestiary](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/bestiary.jpg)
+![New bestiary entry](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/big_new_bestiary.jpg)
+
+### The world opens up as you grow
+On your first night only zombies come out. Skeletons, creepers, spiders, endermen and the rest
+unlock as your Adventure Rank goes up, and you get a chat message when a new mob type can
+appear. Later on, mobs start wearing gear, and rare **elite** mobs show up: bigger and tougher,
+with special traits and better loot.
+
+![Tough Zombie elite](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/tough_zombie.jpg)
+
+### Waypoints
+Elites can drop **Waypoint Shards**. Craft a **Waypoint Stone** (8 stone bricks around a
+compass), turn it on with shards and give it a name. Then travel between your stones for a
+bit of XP. Pets come along.
+
+![Waypoint Stone](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/see_home_waypoint.jpg)
+![Waypoint destinations](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/waypoint_destinations.jpg)
+
+## Multiplayer
+
+PAM works on dedicated servers and LAN. Every player has their own hearts, skills and perks,
+so friends at different progress levels can play together. Mob unlocks follow the
+**lowest-ranked player nearby**, so a new player is never thrown in at the deep end.
+
+## Installation
+
+1. Install [Fabric Loader](https://fabricmc.net/use/) for Minecraft **26.2**.
+2. Download [Fabric API](https://modrinth.com/mod/fabric-api).
+3. Put both jars and the PAM jar in your `mods` folder.
+
+PAM is needed **on both the client and the server**.
+
+## Config
+
+All balance numbers (starting hearts, hunger, skill speed, elite chances, waypoint costs, ...)
+live in `config/progressive_adventure.json`. It's created the first time you start the game
+or server.
+
+## Commands
+
+- `/pam`: shows your progress in chat.
+- `/pam bestiary`: lists your bestiary.
+- Ops only: `/pam elite <mob> [trait]`, `/pam skill <skill> <level> [player]`,
+  `/pam waypoint list|tp|remove`. These are for testing and server admins.
+
+## Feedback and ideas
+
+Found a bug, played a session and have thoughts, or have an idea for a new perk?
+[Open an issue](https://github.com/joelharkes/pam/issues/new/choose). There's a form for each.
+See [CONTRIBUTING.md](https://github.com/joelharkes/pam/blob/main/CONTRIBUTING.md) if you want to help with code.
+
+## License
+
+[MIT](https://github.com/joelharkes/pam/blob/main/LICENSE)

@@ -693,6 +693,9 @@ To brainstorm later:
   the oldest is forgotten. One mutable set per chunk instead of copying it on every place/break.
 - 2026-10-25: **License: MIT** (was All-Rights-Reserved), ahead of a first Modrinth release, so
   people can fork and send PRs.
+- 2026-10-25: **First public release = 0.4.0, Alpha channel** on Modrinth. Icon: the Waypoint Shard
+  on a night sky (more memorable than a heart). Feedback goes through GitHub issue forms (bug,
+  playtest feedback, perk/feature idea).
 
 ## Playtest checklist
 
