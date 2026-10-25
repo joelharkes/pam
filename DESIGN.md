@@ -3,7 +3,7 @@
 > Living document: ideas, decisions and open questions.
 
 **Built so far (2026-10-25):** pillars 1–4 and 6 (hearts, metabolism, Mining/Woodcutting/
-Digging/Farming/Archery skills, bestiary, 57 perks in 8 categories, Adventure screen) and pillar 5
+Digging/Farming/Archery skills, bestiary, 58 perks in 8 categories, Adventure screen) and pillar 5
 mob unlocks, elites and elite traits. Not built: Combat/Fishing skills, Well Fed.
 Much of it still needs a playtest: see the [playtest checklist](#playtest-checklist) and the roadmap.
 
@@ -224,7 +224,7 @@ level 4 (~64 blocks) and cap near +60%.
 | Frost Arrows | 15% chance the arrow slows the mob it hits (Slowness II, 3s), snowflake trail | Archery 10 | 2 |
 | Piercing Shot | Arrows fly through 1 extra mob (stacks with the Piercing enchantment) | Archery 15 | 2 |
 | Steady Aim | Arrows turn up to 2°/tick toward the hostile mob nearest their path (15° cone, 20 blocks, in sight). Neutral mobs only when they target you; never animals, villagers, pets | Archery 20 | 3 |
-| Ricochet | After hitting a mob, the arrow bounces to one more nearby hostile mob | Archery 40 | 5 |
+| Ricochet | After hitting (or killing) a mob, a new arrow flies to the nearest other hostile mob within 8 blocks, with the same damage, fire and frost. Bounces once; can't be picked up | Archery 40 | 5 |
 
 Poison arrows were dropped: zombies and skeletons are immune, so it would look broken to kids.
 
@@ -579,7 +579,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer
   give Woodcutting XP (fixed, check it).
 - **Archery (3c):** XP pace, draw speed feel (does the pull animation match?), each perk.
-  Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Character
+  Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Ricochet:
+  does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
   tab: 5 skill rows only just fit with two rows of hearts.
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
 - **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /

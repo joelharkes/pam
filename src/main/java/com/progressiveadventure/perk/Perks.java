@@ -59,6 +59,7 @@ public final class Perks {
 	public static final Perk FROST_ARROWS = register("frost_arrows", PerkCategory.ARCHERY, Items.SNOWBALL, 2, new SkillLevel(Skill.ARCHERY, 10), null);
 	public static final Perk PIERCING_SHOT = register("piercing_shot", PerkCategory.ARCHERY, Items.CROSSBOW, 2, new SkillLevel(Skill.ARCHERY, 15), null);
 	public static final Perk STEADY_AIM = register("steady_aim", PerkCategory.ARCHERY, Items.TARGET, 3, new SkillLevel(Skill.ARCHERY, 20), null);
+	public static final Perk RICOCHET = register("ricochet", PerkCategory.ARCHERY, Items.SLIME_BALL, 5, new SkillLevel(Skill.ARCHERY, 40), null);
 
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");

@@ -94,6 +94,9 @@ public class PamConfig {
 	public double steadyAimTurnDegrees = 2.0;
 	public double steadyAimConeDegrees = 15.0;
 	public double steadyAimRange = 20.0;
+	// Ricochet: after hitting a mob, the arrow bounces once to the nearest hostile mob within this range
+	public double ricochetRange = 8.0;
+	public double ricochetMinSpeed = 1.5;
 
 	// Mob unlocks: an Overworld hostile mob in this list only spawns naturally once the lowest Adventure Rank
 	// among players within mobUnlockPlayerRadius reaches its rank. Unlisted mobs (zombies, other mods) always spawn.

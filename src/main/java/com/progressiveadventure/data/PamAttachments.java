@@ -54,6 +54,10 @@ public final class PamAttachments {
 	public static final AttachmentType<Boolean> STEADY_AIM_ARROW = AttachmentRegistry.create(
 			ProgressiveAdventure.id("steady_aim_arrow"), builder -> builder.persistent(Codec.BOOL));
 
+	/** On arrows that already bounced (or were bounced) with Ricochet: they don't bounce again. */
+	public static final AttachmentType<Boolean> RICOCHET_ARROW = AttachmentRegistry.create(
+			ProgressiveAdventure.id("ricochet_arrow"), builder -> builder.persistent(Codec.BOOL));
+
 	private PamAttachments() {
 	}
 

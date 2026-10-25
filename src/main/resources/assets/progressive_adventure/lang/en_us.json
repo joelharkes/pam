@@ -106,6 +106,8 @@
   "perk.progressive_adventure.piercing_shot.description": "Your arrows fly through the first mob they hit and can hit one more.",
   "perk.progressive_adventure.steady_aim": "Steady Aim",
   "perk.progressive_adventure.steady_aim.description": "Your arrows curve a little toward hostile mobs in front of them. Never toward animals, villagers or pets.",
+  "perk.progressive_adventure.ricochet": "Ricochet",
+  "perk.progressive_adventure.ricochet.description": "When your arrow hits a mob, it bounces on to one more hostile mob nearby.",
   "perk.progressive_adventure.bonus_heart_1": "Bonus Heart I",
   "perk.progressive_adventure.bonus_heart_1.description": "+1 heart, on top of the hearts from milestones.",
   "perk.progressive_adventure.bonus_heart_2": "Bonus Heart II",

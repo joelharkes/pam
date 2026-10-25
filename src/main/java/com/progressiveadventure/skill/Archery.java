@@ -8,6 +8,8 @@ import com.progressiveadventure.perk.Perks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,6 +22,8 @@ import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.projectile.arrow.SpectralArrow;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
@@ -30,7 +34,8 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Archery skill and perks. Xp comes from arrows a player shot that hit a mob; the skill bonus is a faster bow and
- * crossbow draw. Perks act when the player shoots (ammo, fire, frost, pierce) or while the arrow flies (Steady Aim).
+ * crossbow draw. Perks act when the player shoots (ammo, fire, frost, pierce), while the arrow flies (Steady Aim)
+ * or when it hits (frost, Ricochet).
  */
 public final class Archery {
 	private Archery() {
@@ -54,20 +59,26 @@ public final class Archery {
 		return null;
 	}
 
+	/** A hit that didn't kill (Fabric's damage event skips killing hits, those go to {@link #onKill}). */
 	public static void onDamage(LivingEntity victim, DamageSource source, float damageTaken, boolean blocked) {
 		AbstractArrow arrow = playerArrow(source);
 		if (arrow == null || !(victim instanceof Mob) || blocked || damageTaken <= 0) {
 			return;
 		}
-		Skills.addXp((ServerPlayer) source.getEntity(), Skill.ARCHERY, PamConfig.get().archeryHitXp);
+		ServerPlayer player = (ServerPlayer) source.getEntity();
+		Skills.addXp(player, Skill.ARCHERY, PamConfig.get().archeryHitXp);
 		if (arrow.hasAttached(PamAttachments.FROST_ARROW)) {
 			victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, PamConfig.get().frostArrowSlownessSeconds * 20, 1));
 		}
+		tryRicochet(player, arrow, victim);
 	}
 
 	public static void onKill(LivingEntity victim, DamageSource source) {
-		if (playerArrow(source) != null && victim instanceof Mob) {
-			Skills.addXp((ServerPlayer) source.getEntity(), Skill.ARCHERY, PamConfig.get().archeryKillXp);
+		AbstractArrow arrow = playerArrow(source);
+		if (arrow != null && victim instanceof Mob) {
+			ServerPlayer player = (ServerPlayer) source.getEntity();
+			Skills.addXp(player, Skill.ARCHERY, PamConfig.get().archeryHitXp + PamConfig.get().archeryKillXp);
+			tryRicochet(player, arrow, victim);
 		}
 	}
 
@@ -133,8 +144,7 @@ public final class Archery {
 				bestDirection = toMob.scale(1 / distance);
 			}
 		}
-		if (best == null || level.clip(new ClipContext(arrow.position(), best.getBoundingBox().getCenter(),
-				ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, arrow)).getType() != HitResult.Type.MISS) {
+		if (best == null || !inSight(level, arrow.position(), best, arrow)) {
 			return;
 		}
 
@@ -143,6 +153,60 @@ public final class Archery {
 		Vec3 newDirection = angle <= maxTurn ? bestDirection : direction.lerp(bestDirection, maxTurn / angle).normalize();
 		arrow.setDeltaMovement(newDirection.scale(speed));
 		arrow.needsSync = true; // the client would otherwise keep flying the arrow straight
+	}
+
+	/**
+	 * Ricochet: a new arrow flies from the mob that was hit to the nearest other hostile mob in range, with the same
+	 * damage, fire and frost. Each arrow bounces once; the bounced arrow can't be picked up.
+	 */
+	private static void tryRicochet(ServerPlayer player, AbstractArrow arrow, LivingEntity from) {
+		if (!Perks.has(player, Perks.RICOCHET) || arrow.hasAttached(PamAttachments.RICOCHET_ARROW)
+				|| !(from.level() instanceof ServerLevel level)) {
+			return;
+		}
+		PamConfig config = PamConfig.get();
+		Vec3 start = from.getBoundingBox().getCenter();
+		Mob target = null;
+		double bestDistance = config.ricochetRange * config.ricochetRange;
+		for (Mob mob : level.getEntitiesOfClass(Mob.class, from.getBoundingBox().inflate(config.ricochetRange), mob -> mob != from && isAimTarget(mob, player))) {
+			double distance = mob.getBoundingBox().getCenter().distanceToSqr(start);
+			if (distance < bestDistance && inSight(level, start, mob, arrow)) {
+				target = mob;
+				bestDistance = distance;
+			}
+		}
+		if (target == null) {
+			return;
+		}
+		arrow.setAttached(PamAttachments.RICOCHET_ARROW, true); // a piercing arrow hits more mobs, but bounces once
+
+		Vec3 direction = target.getBoundingBox().getCenter().subtract(start).normalize();
+		// Start just outside the mob that was hit, so the new arrow doesn't hit it again
+		Vec3 spawn = start.add(direction.scale(from.getBbWidth() * 0.75 + 0.3));
+		ItemStack pickup = arrow.getPickupItemStackOrigin();
+		AbstractArrow bounce = arrow instanceof SpectralArrow
+				? new SpectralArrow(level, spawn.x, spawn.y, spawn.z, pickup, arrow.getWeaponItem())
+				: new Arrow(level, spawn.x, spawn.y, spawn.z, pickup, arrow.getWeaponItem());
+		bounce.setOwner(player);
+		bounce.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+		bounce.setBaseDamage(((ArrowAccess) arrow).pam$getBaseDamage());
+		bounce.setCritArrow(arrow.isCritArrow());
+		if (arrow.isOnFire()) {
+			bounce.igniteForSeconds(100);
+		}
+		if (arrow.hasAttached(PamAttachments.FROST_ARROW)) {
+			bounce.setAttached(PamAttachments.FROST_ARROW, true);
+		}
+		bounce.setAttached(PamAttachments.RICOCHET_ARROW, true);
+		float speed = (float) Math.max(arrow.getDeltaMovement().length(), config.ricochetMinSpeed);
+		bounce.shoot(direction.x, direction.y, direction.z, speed, 0);
+		level.addFreshEntity(bounce);
+		level.playSound(null, spawn.x, spawn.y, spawn.z, SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1f, 1.6f);
+	}
+
+	private static boolean inSight(ServerLevel level, Vec3 from, Mob mob, Entity arrow) {
+		return level.clip(new ClipContext(from, mob.getBoundingBox().getCenter(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, arrow))
+				.getType() == HitResult.Type.MISS;
 	}
 
 	/** Hostile mobs only; neutral ones (endermen, zombified piglins) only once they target the shooter. */

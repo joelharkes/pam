@@ -12,11 +12,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** Piercing Shot (pierce level setter is private) and the in-flight arrow perks (Frost particles, Steady Aim). */
+/** Piercing Shot and Ricochet (pierce level setter and base damage are private) and the in-flight arrow perks (Frost particles, Steady Aim). */
 @Mixin(AbstractArrow.class)
 public abstract class AbstractArrowMixin implements ArrowAccess {
 	@Shadow
 	protected abstract boolean isInGround();
+
+	@Shadow
+	private double baseDamage;
 
 	@Shadow
 	public abstract byte getPierceLevel();
@@ -28,6 +31,11 @@ public abstract class AbstractArrowMixin implements ArrowAccess {
 	@Override
 	public void pam$addPierceLevel(int extra) {
 		setPierceLevel((byte) Math.min(Byte.MAX_VALUE, getPierceLevel() + extra));
+	}
+
+	@Override
+	public double pam$getBaseDamage() {
+		return baseDamage;
 	}
 
 	@Inject(method = "tick", at = @At("HEAD"))
