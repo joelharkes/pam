@@ -4,6 +4,9 @@ import com.mojang.serialization.Codec;
 import com.progressiveadventure.ProgressiveAdventure;
 import com.progressiveadventure.waypoint.Waypoint;
 
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
+
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -12,7 +15,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
-import java.util.Set;
 
 public final class PamAttachments {
 	/** Synced to the owning player only: the client needs skill levels to predict block breaking speed. */
@@ -29,11 +31,14 @@ public final class PamAttachments {
 					.initializer(() -> ProgressionSnapshot.EMPTY)
 					.syncWith(ByteBufCodecs.fromCodecWithRegistries(ProgressionSnapshot.CODEC), AttachmentSyncPredicate.targetOnly()));
 
-	/** Per chunk: packed positions of blocks placed by players, which give no skill xp when broken. */
-	public static final AttachmentType<Set<Long>> PLACED_BLOCKS = AttachmentRegistry.create(
+	/**
+	 * Per chunk: packed positions of blocks placed by players, which give no skill xp when broken. Mutable and
+	 * oldest first (see PlacedBlocks); not synced, so the immutable-value rule doesn't apply.
+	 */
+	public static final AttachmentType<LongLinkedOpenHashSet> PLACED_BLOCKS = AttachmentRegistry.create(
 			ProgressiveAdventure.id("placed_blocks"), builder -> builder
-					.persistent(Codec.LONG.listOf().xmap(Set::copyOf, List::copyOf))
-					.initializer(Set::of));
+					.persistent(Codec.LONG.listOf().xmap(LongLinkedOpenHashSet::new, LongArrayList::new))
+					.initializer(LongLinkedOpenHashSet::new));
 
 	/** On elite mobs: the Adventure Rank they spawned at (decides their XP and loot). */
 	public static final AttachmentType<Integer> ELITE_RANK = AttachmentRegistry.create(

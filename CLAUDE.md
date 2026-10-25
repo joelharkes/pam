@@ -146,7 +146,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   speed and familiarity tiers, so a server with changed values can show different numbers.
 - Client reads attachments with `getAttachedOrElse` (never create attachments client-side).
 - Register attachments with `AttachmentRegistry.create(id, builder -> ...)` (`builder()` is deprecated).
-- Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
+- `PlacedBlocks` only remembers logs, ores and melon/pumpkin/cane/cactus/bamboo (mutable set per chunk,
+  max 10k, not synced). Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
   and bamboo only when not player-placed.
 - Changing a default in `PamConfig` doesn't reach existing config files (loading writes every field back),
   so also update `run/config/progressive_adventure.json` and tell the user about other servers.

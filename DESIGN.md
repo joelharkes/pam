@@ -175,7 +175,9 @@ level 4 (~64 blocks) and cap near +60%.
   though vanilla lets an axe mine some of them.
 | Fishing     | Catching fish                 | Faster bites, better loot                  | Idea |
 
-- No skill XP from blocks the player placed (stops place/break loops).
+- No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
+  melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
+  dirt, stone, sand, gravel, leaves and planks count like natural blocks.
 - **Perks** at certain levels are the exciting part. Percentages alone feel flat.
 
 ### 3b. Farming skill
@@ -450,8 +452,8 @@ Implementation notes:
   the ore block itself (Silk Touch).
 - Timber / Lumberjack: breaks connected logs (max 64 / 6), each log uses durability and gives skill xp.
 - Vein Miner / Excavator work like Timber: extra blocks go through `destroyBlock`, so each one uses
-  durability, gives skill xp and can trigger Prospector/Archaeologist; player-placed blocks are
-  skipped. Vein Miner counts deepslate and normal variants of an ore as one vein (conventional ore
+  durability, gives skill xp and can trigger Prospector/Archaeologist; player-placed ores and logs
+  are skipped (Excavator digs placed dirt/sand too, since those aren't remembered). Vein Miner counts deepslate and normal variants of an ore as one vein (conventional ore
   tags). Excavator: the 3×3 plane follows the look direction (flat when looking more than 45° up
   or down), only shovel blocks without a block entity (so never suspicious sand/gravel).
 - Sense perks (`BlockSense`, client): one scanner that skips chunk sections whose palette can't
@@ -685,6 +687,10 @@ To brainstorm later:
   after playtest); Nether included, distance in Overworld blocks, +20 for a dimension jump;
   pets come along, mounts don't; particles + floating name; milestones Waypoint / First Trip /
   Network; Pathfinder perk lowers the cost; op commands list/tp/remove.
+- 2026-10-25: **Placed blocks (performance):** only remember blocks where place/break farming
+  matters (logs, ores, melon/pumpkin/cane/cactus/bamboo); placing dirt/gravel/leaves again is more
+  hassle than it's worth (vanilla gravel flint isn't protected either). Max 10,000 per chunk, then
+  the oldest is forgotten. One mutable set per chunk instead of copying it on every place/break.
 
 ## Playtest checklist
 
@@ -726,6 +732,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   empty hand), another player can't break your stone, breaking gives shards back. First Trip and
   Network milestones, Pathfinder discount. `/pam waypoint list/tp/remove`. Works on a server/LAN
   with two players?
+
+- **Placed blocks:** placing and breaking a log/ore still gives no XP; dirt/stone now do. Log
+  cabin next to a tree survives Timber. Old worlds load fine (dev server start checked).
 
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
 
