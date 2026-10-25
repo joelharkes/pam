@@ -75,7 +75,7 @@ public class PamConfig {
 	public int lumberjackMaxLogs = 6;
 	// Orchard: chance per natural leaf block you break
 	public double orchardAppleChance = 0.05;
-	public double orchardGoldenAppleChance = 0.002;
+	public double orchardGoldenAppleChance = 0.0004;
 	// Bird's Nest: chance per natural log you chop with an axe; a nest has 1-2 finds, emeralds are rarer
 	public double birdsNestChance = 0.02;
 	public double birdsNestEmeraldChance = 0.1;

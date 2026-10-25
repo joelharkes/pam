@@ -405,7 +405,7 @@ mobs to elites.
 | Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 25, Lumberjack | 4 |
 | Woodcutting | Forester            | Lumberjack/Timber plant the matching sapling where the bottom log stood | Woodcutting 15, Lumberjack | 2 |
 | Woodcutting | Clear Cut           | After Timber, the tree's leaves break at once (same drops as decay, Orchard applies) | Woodcutting 30, Timber | 2 |
-| Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.2% golden apple (any tree) | Woodcutting 5 | 2 |
+| Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.04% golden apple (any tree) | Woodcutting 5 | 2 |
 | Woodcutting | Bird's Nest         | 2% per natural log chopped with an axe: 1–2 of feather/egg/string/stick/seeds, 10% of nests also an emerald | Woodcutting 15 | 2 |
 | Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
 | Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
@@ -665,6 +665,8 @@ To brainstorm later:
   Jump, Swimmer I/II, Diver, Long Arms (Survival), Steady Stance (Defense). No double jump with an
   elytra equipped (jump in the air starts gliding). Category rows are 19px so 10 fit.
 - 2026-10-25: Spring Step clearing fences (and animal pens) is fine.
+- 2026-10-25: Orchard golden apple chance 0.2% → 0.04% per leaf: with Timber + Clear Cut a tree
+  breaks ~60-100 leaves at once, so 0.2% gave a golden apple every 5-8 trees (now ~1 in 30).
 - 2026-10-25: Second perk round: Sturdy Weapon III; Treasure Sense (Ore Sense II: diamonds +
   ancient debris, 24 blocks, chime once per block so it never nags), Vein Miner (no 3×3 for
   pickaxes), Cat's Eyes I/II (partial night vision; light around you would need lighting hacks or
