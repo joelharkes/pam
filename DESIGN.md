@@ -178,6 +178,11 @@ level 4 (~64 blocks) and cap near +60%.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
 
+- **Combat skill (idea, 2026-10-25):** something per weapon type (swords, axes, maces, spears/tridents), either
+  one skill per weapon or one Combat skill with a perk branch per weapon. Things to keep in mind: the bestiary is
+  already the damage progression (same reason Archery has no damage perks), so the passive bonus should be
+  something else, like attack speed; and the Character tab is full at 5 skills, so any new skill needs a new layout.
+  One Combat skill with weapon perk branches needs only one more row.
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
@@ -364,6 +369,10 @@ random trait, shown in its name instead of "Tough":
 | Summoner | the first time a player hits it, calls 2 normal helpers of its kind |
 
 Trait elites have ×1.5 bonus loot chances. Test: `/pam elite <mob> [trait]`.
+
+**Idea (2026-10-25): more elite weapons.** Elite zombies always get a sword now; they could also roll an axe (and
+maybe other weapons) by material. Note: a mob hitting with an axe disables your shield for a few seconds (vanilla),
+which can surprise kids, so axes maybe only from a higher rank. Maces are probably too strong.
 
 #### Multiplayer
 
@@ -599,6 +608,10 @@ To brainstorm later:
 - **Mobs drop exploration helpers** (user idea): became Waypoint Shards (see 7). Treasure
   or explorer maps from elites are still an option.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
+- **Recycle elite gear (2026-10-25):** elites drop a lot of armor and weapons. Vanilla already smelts iron,
+  chainmail and gold tools/armor into a single nugget each, which feels poor for a whole piece; diamond and
+  leather gear can't be recycled at all. Idea: a better yield, e.g. a grindstone/recycling station that returns part
+  of the ingots or diamonds (more for less worn gear), or salvaging into something useful.
 
 ---
 
@@ -738,7 +751,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Farming:** XP pace (30 wheat = level 2; Replant at level 5 = 100 harvests), Light Step,
   sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer
   give Woodcutting XP (fixed, check it).
-- **Archery (3c):** test the perks with `/pam skill archery 40` (ops). XP pace, draw speed feel (does the pull animation match?), each perk.
+- **Archery (3c):** test the perks with `/pam skill archery 40` (ops). XP pace, each perk.
   Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Ricochet:
   does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
   tab: 5 skill rows only just fit with two rows of hearts.
@@ -746,17 +759,14 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Second perk round:** Treasure Sense trail + chime (not annoying?), Vein Miner, Cat's Eyes
   brightness (I/II noticeable, caves not fully bright?), Lumberjack/Timber, Orchard and Bird's Nest
   rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
-  Sturdy Weapon III, Forester (sapling appears?), Clear Cut (leaves vanish ~0.5s after felling, drops OK,
-  neighbouring trees untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works). Players who
-  owned Timber keep it without Lumberjack.
+  Sturdy Weapon III, Forester (sapling appears?), Clear Cut (drops OK incl. Orchard apples, neighbouring trees
+  untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works).
 - **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
   perk noticeable? Double Jump: feels instant, no rubber-band
   on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall
   (jump just before landing): fun or too strong? Mantle: triggers on 2-block walls, not on fences,
   not on every hop up a block, smooth on a server? Shadow Step I: sneak past mobs closer than
   normal. II: mob gives up at 8+ blocks, message readable, hitting it re-aggros.
-- **Deep Breath tiers / Fleet Foot tiers:** owners of the old single `deep_breath` /
-  `fleet_foot` perk lost it (point refunded).
 - **Defense perks:** reductions noticeable but not overpowered? Is 5/10 mob types the right gate?
 - **Mob unlocks (v0.3a, quick `/pam` check OK):** does night 1 feel right (only zombies, fewer
   mobs)? Too empty → raise `lockedMobReplacementChance`. Unlock chat message and the "Next: ..."
@@ -784,13 +794,14 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Audit fixes 2:** `/advancement revoke` takes hearts/Rank away right away. Replant, Harvester, Timber and
   Path Maker don't change blocks inside spawn protection (test on the dev server as a non-op). Path Maker 3×3 uses
   9 durability (less with Sturdy Shovel). `/pam elite spider leaping` is refused.
-- **Config overrides:** first start creates an empty `progressive_adventure.json` and a full
-  `progressive_adventure.defaults.json`; an override (e.g. `"startingHearts": 10`) works after a restart; a typo
-  gives a warning in the log.
-- **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
-  Orchard apples still drop.
 
-Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25).
+Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25). Clear Cut: leaves come down
+smoothly. Archery draw speed: very fast at level 80, but fair for the grind it takes. General testing over time:
+most things work well and feel good; balance needs more play time (see Open questions).
+
+Dropped (never released, so no old saves to migrate): owners of the old single Deep Breath / Fleet Foot perk,
+owners of Timber without Lumberjack. Config overrides were checked on the dev server (empty file + defaults file,
+override applied, typo warned).
 
 ## Open questions
 
