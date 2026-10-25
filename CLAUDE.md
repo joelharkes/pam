@@ -133,5 +133,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Register attachments with `AttachmentRegistry.create(id, builder -> ...)` (`builder()` is deprecated).
 - Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
   and bamboo only when not player-placed.
+- Changing a default in `PamConfig` doesn't reach existing config files (loading writes every field back),
+  so also update `run/config/progressive_adventure.json` and tell the user about other servers.
 - All balance numbers live in config, not hard-coded. Use tabs, match the template style.
 - Git identity is set repo-locally (no global git config on this machine).
