@@ -111,7 +111,7 @@ tasks.register("releaseNotes") {
 // Needs the MODRINTH_TOKEN environment variable. -PmodrinthDebug only prints what would be uploaded.
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
-	projectId = "pam-progressive-adventure"
+	projectId = "hCWGq4lt" // modrinth.com/project/pam-progressive-adventure
 	versionNumber = project.version.toString()
 	versionName = "PAM ${project.version}"
 	versionType = project.release_channel

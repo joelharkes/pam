@@ -69,7 +69,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 ## Release (Modrinth)
 
 - Use the `/release` skill (`.claude/skills/release/`). Pushing a `vX.Y.Z` tag runs
-  `.github/workflows/release.yml`: Modrinth upload (Minotaur, project `pam-progressive-adventure`),
+  `.github/workflows/release.yml`: Modrinth upload (Minotaur, project `hCWGq4lt` = `pam-progressive-adventure`),
   description sync, GitHub release. Needs the `MODRINTH_TOKEN` repo secret. Never upload from here.
 - `version` and `release_channel` (alpha/beta/release) in `gradle.properties`; the tag must match `version`.
   `0.4.0` = first public release, not tagged/uploaded yet.

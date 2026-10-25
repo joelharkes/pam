@@ -6,7 +6,7 @@ description: Prepare and publish a new PAM version - pick the version number, wr
 # Release a PAM version
 
 Pushing a `vX.Y.Z` tag starts `.github/workflows/release.yml`. That workflow builds the jar,
-uploads it to Modrinth (Minotaur, project `pam-progressive-adventure`), syncs the Modrinth
+uploads it to Modrinth (Minotaur, project `hCWGq4lt` = `pam-progressive-adventure`), syncs the Modrinth
 description from `docs/modrinth-description.md`, and creates a GitHub release. This skill does
 everything up to the push. Never upload to Modrinth from this machine.
 
