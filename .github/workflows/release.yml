@@ -1,0 +1,50 @@
+# Publish a release when a version tag (v0.4.0, ...) is pushed: upload the jar to Modrinth,
+# sync the Modrinth description, and create a GitHub release with the same changelog.
+# Needs the repository secret MODRINTH_TOKEN (Modrinth PAT with "Create versions" and "Write projects").
+
+name: release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+      - name: setup jdk
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'microsoft'
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: check tag matches version
+        run: |
+          version=$(grep '^version=' gradle.properties | cut -d= -f2)
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match version=$version in gradle.properties"
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "CHANNEL=$(grep '^release_channel=' gradle.properties | cut -d= -f2)" >> "$GITHUB_ENV"
+      - name: build
+        run: ./gradlew build releaseNotes --no-configuration-cache
+      - name: publish to modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew modrinth modrinthSyncBody --no-configuration-cache
+      - name: create github release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          if [ "$CHANNEL" != "release" ]; then prerelease="--prerelease"; fi
+          gh release create "$GITHUB_REF_NAME" "build/libs/progressive_adventure-$VERSION.jar" \
+            --title "PAM $VERSION" --notes-file build/release-notes.md $prerelease

@@ -68,8 +68,15 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 ## Release (Modrinth)
 
-- Version in `gradle.properties` (`0.4.0` = first public release, Alpha channel). Add an entry to
-  `CHANGELOG.md` per release; tag `vX.Y.Z` when it's uploaded.
+- Use the `/release` skill (`.claude/skills/release/`). Pushing a `vX.Y.Z` tag runs
+  `.github/workflows/release.yml`: Modrinth upload (Minotaur, project `pam-progressive-adventure`),
+  description sync, GitHub release. Needs the `MODRINTH_TOKEN` repo secret. Never upload from here.
+- `version` and `release_channel` (alpha/beta/release) in `gradle.properties`; the tag must match `version`.
+  `0.4.0` = first public release, not tagged/uploaded yet.
+- `CHANGELOG.md`: one `## X.Y.Z` section per release, written for players; the build fails if the
+  current version has none (`./gradlew releaseNotes`). Dry run:
+  `MODRINTH_TOKEN=dummy ./gradlew modrinth -PmodrinthDebug --no-configuration-cache` (Minotaur breaks the config cache).
+- One Minecraft version at a time (decided); no multi-version builds.
 - `README.md` is for players (GitHub). `docs/modrinth-description.md` is the same text with absolute
   `raw.githubusercontent.com` image links for the Modrinth page: update both together.
 - Screenshots in `docs/screenshots/` as JPG (quality 88) to keep the repo small.

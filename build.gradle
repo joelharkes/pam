@@ -1,6 +1,7 @@
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
+	id 'com.modrinth.minotaur' version '2.10.0'
 }
 
 repositories {
@@ -85,4 +86,47 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+
+// Release notes for the current version: its section of CHANGELOG.md ("## 0.4.0 ..." up to the next "## ")
+def releaseNotes() {
+	def matcher = file("CHANGELOG.md").text =~ /(?ms)^## ${java.util.regex.Pattern.quote(project.version.toString())}\b[^\n]*\n(.*?)(?=^## |\z)/
+	if (!matcher.find()) {
+		throw new GradleException("CHANGELOG.md has no section for version ${project.version}")
+	}
+	return matcher.group(1).trim()
+}
+
+tasks.register("releaseNotes") {
+	description = "Writes this version's CHANGELOG.md section to build/release-notes.md."
+	notCompatibleWithConfigurationCache("reads CHANGELOG.md at execution time")
+	doLast {
+		def out = layout.buildDirectory.file("release-notes.md").get().asFile
+		out.parentFile.mkdirs()
+		out.text = releaseNotes()
+	}
+}
+
+// Upload to Modrinth: run by .github/workflows/release.yml when a vX.Y.Z tag is pushed.
+// Needs the MODRINTH_TOKEN environment variable. -PmodrinthDebug only prints what would be uploaded.
+modrinth {
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = "pam-progressive-adventure"
+	versionNumber = project.version.toString()
+	versionName = "PAM ${project.version}"
+	versionType = project.release_channel
+	changelog = provider { releaseNotes() }
+	uploadFile = jar
+	gameVersions = [project.minecraft_version]
+	loaders = ["fabric"]
+	dependencies {
+		required.project "fabric-api"
+	}
+	syncBodyFrom = provider { file("docs/modrinth-description.md").text }
+	debugMode = providers.gradleProperty("modrinthDebug").isPresent()
+}
+
+tasks.named("modrinth") {
+	notCompatibleWithConfigurationCache("Minotaur")
+	dependsOn jar
 }

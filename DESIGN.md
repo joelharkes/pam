@@ -700,6 +700,9 @@ To brainstorm later:
 - 2026-10-25: **First public release = 0.4.0, Alpha channel** on Modrinth. Icon: the Waypoint Shard
   on a night sky (more memorable than a heart). Feedback goes through GitHub issue forms (bug,
   playtest feedback, perk/feature idea).
+- 2026-10-25: **Releases are automated:** a `/release` Claude skill prepares version + changelog
+  and pushes a tag; a GitHub Action uploads to Modrinth and makes a GitHub release. Only the
+  latest Minecraft version is supported (no multi-version builds for now).
 
 ## Playtest checklist
 
