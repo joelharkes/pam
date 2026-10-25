@@ -209,7 +209,8 @@ level 4 (~64 blocks) and cap near +60%.
 
 ### 3c. Archery skill
 
-- **XP:** 1 per arrow a player shot that hits a mob, +2 for a kill with it. Any mob counts (animals
+- **XP:** 3 per arrow a player shot that hits a mob, 5 for a kill with it (raised from 1/3: hits
+  are much rarer than mined blocks; Archery 20 ≈ 320 kills, 40 ≈ 1300). Any mob counts (animals
   too), but not players, armor stands or blocked hits. Tridents don't count.
 - **Passive bonus:** bow and crossbow draw speed, 0% → +50% with the usual curve. No start
   penalty: unknown mobs already take less damage early. The use timer itself runs faster, so the

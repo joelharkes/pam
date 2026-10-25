@@ -47,7 +47,7 @@ public class PamConfig {
 	// Archery: draw speed bonus uses the same curve as speedBonusCurve, but starts at 0. Xp only for arrows a
 	// player shot that hit a mob (not players or armor stands); a kill gives archeryKillXp on top.
 	public double archeryMaxDrawBonus = 0.5;
-	public int archeryHitXp = 1;
+	public int archeryHitXp = 3;
 	public int archeryKillXp = 2;
 
 	// Bestiary: damage modifier per kill threshold, sorted by kills
