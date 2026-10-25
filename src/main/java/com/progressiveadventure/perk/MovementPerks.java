@@ -37,6 +37,13 @@ public final class MovementPerks {
 	private MovementPerks() {
 	}
 
+	/** Forgets everything when the server stops (singleplayer: the next world has the same player UUID). */
+	public static void onServerStopped() {
+		FORGOTTEN.clear();
+		DOUBLE_JUMPED.clear();
+		MANTLED.clear();
+	}
+
 	/** Visibility multiplier for a player as seen by a mob (1 = normal). Mobs only notice targets within range × visibility. */
 	public static double visibilityMultiplier(Player player, Entity looker) {
 		if (!player.isDiscrete() || player.level().isClientSide()) {

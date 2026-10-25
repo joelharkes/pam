@@ -5,21 +5,29 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
 
 ## Bugs
 
-- [ ] **1. Relogging heals players with more than 10 hearts** (`milestone/Progression.apply`)
+- [x] **1. Relogging heals players with more than 10 hearts** (`milestone/Progression.apply`)
   The hearts modifier is transient, so it isn't saved. On login, health loads while max health is vanilla's 20 HP
   and gets capped there; `apply()` then sees max health "grow" and heals the difference. 15 hearts, log out at 6,
   log back in at 11.
+  FIXED: the hearts modifier is permanent now (saved, in place before health loads). Vanilla drops it on death,
+  so the respawn heal still works, and keeps it with health when leaving the End. Trade-off: removing PAM from a
+  world leaves players' current max health in their saved data. Players get one last free heal on the first login
+  after updating.
 - [x] **2. The 7th stomach upgrade did nothing** (`PamConfig.stomach*Multipliers`)
   7 milestones give a stomach upgrade (First Trip was the 7th), but the tables only had levels 0–6. Level 7 reused
   level 6, so the last upgrade a player earned was wasted while the Character tab said "level 7".
   FIXED: 8th entry (×0.6 drain, ×1.4 saturation). Existing config files need it added by hand.
-- [ ] **3. Character tab draws a third row of hearts over the stomach line** (`client/screen/CharacterTab`)
+- [x] **3. Character tab draws a third row of hearts over the stomach line** (`client/screen/CharacterTab`)
   Room is kept for 2 rows (20 hearts); 20 milestone hearts + Bonus Hearts can reach 23.
-- [ ] **4. In-memory state carries over between singleplayer worlds** (`PerkEffects`, `Trackers`, ...)
+  FIXED: more than two rows overlap like the HUD, so they stay in two rows' space (the skill rows can't move down).
+- [x] **4. In-memory state carries over between singleplayer worlds** (`PerkEffects`, `Trackers`, ...)
   Static maps are never cleared when a world closes, and the singleplayer UUID is the same in every world:
   - Second Wind cooldown stores a world time: after a newer world it can be blocked for hours.
   - First Night: dark in world A, open world B by day → milestone granted within a second.
   - Clear Cut queues keep a reference to the closed world.
+
+  FIXED: everything is cleared on `SERVER_STOPPED`. First Night is also forgotten on disconnect (logging out at
+  night and back in by day no longer counts as surviving it).
 
 ## Smaller issues (to discuss)
 

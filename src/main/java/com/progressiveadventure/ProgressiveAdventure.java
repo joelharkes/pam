@@ -27,6 +27,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -48,6 +49,15 @@ public class ProgressiveAdventure implements ModInitializer {
 
 		// After all mods registered their mobs, so modded ids in the config are known
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> MobUnlocks.loadConfig());
+		// In singleplayer the JVM (and these static maps) outlive the world, and the next world has the same player UUID
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			PamAttachments.onServerStopped();
+			Trackers.onServerStopped();
+			PerkEffects.onServerStopped();
+			MovementPerks.onServerStopped();
+			Waypoints.onServerStopped();
+		});
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> Trackers.onDisconnect(handler.player));
 		ServerPlayerEvents.JOIN.register(Progression::apply);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
 

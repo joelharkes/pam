@@ -21,6 +21,16 @@ public final class Trackers {
 	private Trackers() {
 	}
 
+	/** Forgets everything when the server stops: in singleplayer, the next world has the same player UUID. */
+	public static void onServerStopped() {
+		SAW_NIGHT.clear();
+	}
+
+	/** Logged out during the night: that night doesn't count as survived. */
+	public static void onDisconnect(ServerPlayer player) {
+		SAW_NIGHT.remove(player.getUUID());
+	}
+
 	public static void onFoodEaten(ServerPlayer player, ItemStack stack) {
 		String item = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		PlayerProgress progress = PamAttachments.progress(player);

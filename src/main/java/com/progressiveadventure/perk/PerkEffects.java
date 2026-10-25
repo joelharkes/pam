@@ -84,6 +84,13 @@ public final class PerkEffects {
 	private PerkEffects() {
 	}
 
+	/** Forgets everything when the server stops: cooldowns are in world time, and queued Clear Cuts hold the old world. */
+	public static void onServerStopped() {
+		SECOND_WIND_COOLDOWNS.clear();
+		CLEAR_CUTS.clear();
+		LEAF_BREAKS.clear();
+	}
+
 	/** Chance that this item takes no durability damage, from Sturdy perks. */
 	public static double durabilitySaveChance(ServerPlayer player, ItemStack stack) {
 		int tier;

@@ -83,6 +83,11 @@ public final class PamAttachments {
 	private PamAttachments() {
 	}
 
+	/** Players are saved (and flushed) before this; nothing pending may point at the closed world's players. */
+	public static void onServerStopped() {
+		PENDING_PROGRESS.clear();
+	}
+
 	public static PlayerProgress progress(Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			PlayerProgress pending = PENDING_PROGRESS.get(serverPlayer);

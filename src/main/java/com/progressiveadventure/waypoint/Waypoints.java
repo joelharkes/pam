@@ -67,6 +67,11 @@ public final class Waypoints {
 	private Waypoints() {
 	}
 
+	/** Forgets pending trips when the server stops (singleplayer: the next world has the same player UUID). */
+	public static void onServerStopped() {
+		PENDING.clear();
+	}
+
 	// --- Stored list ---
 
 	public static List<Waypoint> all(MinecraftServer server) {

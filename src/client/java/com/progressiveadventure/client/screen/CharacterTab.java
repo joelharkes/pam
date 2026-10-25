@@ -93,12 +93,14 @@ class CharacterTab implements AdventureTab {
 		}
 	}
 
-	/** Ten hearts per row, like the HUD. */
+	/** Ten hearts per row, like the HUD. More than two rows overlap (also like the HUD) so they fit in two rows' space. */
 	private static void drawHearts(GuiGraphicsExtractor graphics, int x, int y, int halfHearts) {
 		int hearts = (halfHearts + 1) / 2;
+		int rows = (hearts + 9) / 10;
+		int rowStep = rows > 2 ? 10 / (rows - 1) : 10;
 		for (int i = 0; i < hearts; i++) {
 			int hx = x + (i % 10) * 8;
-			int hy = y + (i / 10) * 10;
+			int hy = y + (i / 10) * rowStep;
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, HEART_CONTAINER, hx, hy, 9, 9);
 			boolean half = i * 2 + 1 == halfHearts;
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, half ? HEART_HALF : HEART_FULL, hx, hy, 9, 9);

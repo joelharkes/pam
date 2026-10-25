@@ -100,7 +100,10 @@ public final class Progression {
 
 		AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
 		double before = player.getMaxHealth();
-		maxHealth.addOrUpdateTransientModifier(new AttributeModifier(HEALTH_MODIFIER,
+		// Permanent, so it's saved and already in place when health loads on login; a transient one let health load
+		// capped at vanilla's 20, and the heal below then refilled it on every relog. Vanilla drops it on death
+		// (so the respawn heal still works) and keeps it, with health, when leaving the End.
+		maxHealth.addOrReplacePermanentModifier(new AttributeModifier(HEALTH_MODIFIER,
 				maxHealth(player, status) - maxHealth.getBaseValue(), AttributeModifier.Operation.ADD_VALUE));
 		double gained = player.getMaxHealth() - before;
 		if (gained > 0) {

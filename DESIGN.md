@@ -768,6 +768,10 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Progress sync per tick:** XP bar/levels on the Character tab still update right away when mining
   and with Timber; skill XP kept after logging out right after mining, and after dying.
 - **Stomach level 7:** with all 7 stomach milestones the Character tab tooltip shows 60% hunger drain.
+- **Audit fixes:** with more than 10 hearts, get hurt, relog: health stays the same (log in twice after updating,
+  the first one still heals). Die and respawn: full health. More than 20 hearts (e.g. `/pam` + Bonus Hearts):
+  hearts on the Character tab overlap neatly, nothing drawn over the stomach line. Second Wind works in a
+  second world opened after using it in another.
 - **Clear Cut 32 leaves/tick:** big jungle/dark oak canopy disappears smoothly over a few ticks,
   Orchard apples still drop.
 
