@@ -1,48 +1,57 @@
 # Changelog
 
-## Unreleased
+## 0.5.0: Melee, Fishing and a bigger Bestiary
 
-- **Bestiary pages:** click a mob in the Bestiary tab to see where to find it, its 3D model and, as you
-  get to know it, its stats and a tip (Known), its drops (Familiar) and exact drop chances (Expert).
-  Master gives a 50% chance of double loot from that mob.
+### New
+
+- **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The
+  Combat perk category is now called **Melee**, with the perks grouped by weapon:
+  - Any weapon: **Careful Sweep** (your sword sweep no longer hurts your pets, villagers or golems).
+  - Sword: **Wide Sweep I/II** (your sweep hurts the other mobs nearby more), **Whirlwind** (sneak while you
+    sweep to hit every hostile mob around you), **Disarm** (knock the weapon out of a mob's hand).
+  - Axe: **Heavy Swing** (big knockback) and **Sunder** (cracks the mob's armor for a few seconds).
+  - Mace: **Ground Pound** (sneak in the air to slam down) and **Shockwave** (your smash also hurts the mobs
+    around you).
+  - Spear: **Running Charge** (stronger charge on foot) and **Pinning Jab** (your jab slows mobs).
+- **Shield perks** (Defense): **Shield Bash** (attack with your shield up to push mobs away), **Parry** (raise
+  your shield just before a hit and the attacker gets hurt instead) and **Deflect** (arrows fly back at the
+  shooter).
+- **Hearty Kill I/II/III** (Survival): defeating a hostile mob heals ½, 1 or 1½ hearts.
+- **Fishing skill:** catch fish to level it up and get faster bites. New perks: **Keen Eye** (a bell rings when
+  a fish bites, more time to reel in), **Lucky** (more treasure), **Double Catch** and **Treasure Hunter**
+  (treasure even in small ponds).
+- **2 new milestones** in the Adventure tab: Sunken Treasure (fish up a treasure) and Fish Collector (catch all
+  4 kinds of fish), ½ heart each.
+- **Tridents** count for Archery when you throw them: they give Archery XP and charge faster as your Archery
+  level goes up. New Archery perk **Loyal Trident**: thrown tridents always come back to you.
+- **Bestiary pages:** click a mob in the Bestiary tab to see where to find it, its 3D model and, as you get to
+  know it, its stats and a tip (Known), its drops (Familiar) and exact drop chances (Expert). Master gives a
+  50% chance of double loot from that mob.
 - **Bestiary collections:** 7 new advancements in the Adventure tab (Night Watch, Deep Sea Hunter, Raid
   Breaker, Nether Hunter, End Hunter, Master Hunter, Trait Collector). They give Adventure Rank, no hearts.
 - **Elite records:** a mob's page shows how many Tough ones you defeated and which traits you've beaten.
 - **Assist kills:** everyone who hurt a mob during the fight gets the bestiary kill, not only the last hit.
+- **Character tab:** skills are shown in two columns to make room for new skills. Hover a skill to see how much
+  XP you need for the next level and which perk it unlocks next.
+
+### Changes
+
 - **Familiarity is slower and gentler:** you become Expert at 100 kills and Master at 200 (was 60 and 100),
   and the damage bonus grows to +30% at Master and +35% at 500 kills (was +50% and +55%). Your kills are
   kept, so you may drop back a tier.
-- A new bestiary entry now shows a toast instead of a message above the hotbar.
-- **Fishing skill:** catch fish to level it up and get faster bites. New fishing perks: Keen Eye (a bell rings
-  when a fish bites, more time to reel in), Lucky (more treasure), Double Catch and Treasure Hunter (treasure
-  even in small ponds).
-- **2 new milestones** in the Adventure tab: Sunken Treasure (fish up a treasure) and Fish Collector (catch all
-  4 kinds of fish), ½ heart each.
-- **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The Combat
-  perk category is now called Melee, with the perks grouped by weapon. New: **Wide Sweep I/II** (your sword sweep
-  hurts the other mobs nearby more), **Whirlwind** (sneak while you sweep to hit every hostile mob around you),
-  **Disarm** (knock the weapon out of a mob's hand), and for axes **Heavy Swing** (big knockback) and **Sunder**
-  (cracks the mob's armor for a few seconds).
-- **Mace and spear perks:** **Ground Pound** (sneak in the air with a mace to slam down), **Shockwave** (your
-  smash also hurts the mobs around you), **Running Charge** (stronger spear charge on foot) and **Pinning Jab**
-  (your jab slows mobs).
+- **Swimming perks moved:** Deep Breath and Diver are now under Survival, Swimmer under Movement. **Second
+  Wind** moved to Survival. Perks you own stay yours.
 - **Sturdy Weapon** (was Sturdy Blade) now also works for spears, maces and tridents.
-- The Bestiary tab no longer stays on a mob's page when you switch to another world.
-- Long perk descriptions wrap instead of running off the screen.
 - **Double Jump** no longer gives a big forward boost when you sprint: the second jump only adds height.
-- **Shield perks** (Defense): **Shield Bash** (attack with your shield up to push mobs away), **Parry** (raise your
-  shield just before a hit and the attacker gets hurt instead) and **Deflect** (arrows fly back at the shooter).
-- **Careful Sweep** (Melee): your sword sweep no longer hurts your pets, villagers or golems.
-- **Hearty Kill I/II/III** (Survival): defeating a hostile mob heals ½, 1 or 1½ hearts. **Second Wind** moved
-  to Survival (you keep it if you have it).
-- **Tridents** now count for Archery when you throw them: they give Archery XP and charge faster as your Archery
-  level goes up. New Archery perk **Loyal Trident**: thrown tridents always come back to you.
-- **Character tab:** skills are shown in two columns to make room for new skills. Hover a skill to see how much
-  xp you need for the next level and which perk it unlocks next.
-- **Swimming perks moved:** Deep Breath and Diver are now under Survival, Swimmer under Movement. Perks you
-  own stay yours.
-- New settings: `masterDoubleLootChance`, `assistKills`, `fishingMaxBiteBonus`, `fishingFishXp`, `fishingJunkXp`,
-  `fishingTreasureXp`, `keenEyeExtraTicks`, `luckyLuck`, `doubleCatchChance`. Ops: `/pam kills <mob> <count> [player]`.
+- A new bestiary entry now shows a toast instead of a message above the hotbar.
+- Long perk descriptions wrap instead of running off the screen.
+- New settings: `masterDoubleLootChance`, `assistKills`, `fishingMaxBiteBonus`, `fishingFishXp`,
+  `fishingJunkXp`, `fishingTreasureXp`, `keenEyeExtraTicks`, `luckyLuck`, `doubleCatchChance`.
+  New op command: `/pam kills <mob> <count> [player]`.
+
+### Fixes
+
+- The Bestiary tab no longer stays on a mob's page when you switch to another world.
 
 ## 0.4.0 (Alpha): first public release
 
