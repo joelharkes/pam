@@ -106,6 +106,9 @@ public final class Perks {
 	public static final Perk TOUGH_HIDE_2 = register("tough_hide_2", PerkCategory.DEFENSE, Items.ARMADILLO_SCUTE, 3, new MobTypes(10), "tough_hide_1");
 
 	public static final Perk STEADY_STANCE = register("steady_stance", PerkCategory.DEFENSE, Items.ANVIL, 2, new MobTypes(10), null);
+	public static final Perk SHIELD_BASH = register("shield_bash", PerkCategory.DEFENSE, "shield", Items.SHIELD, 2, new MobTypes(5), null);
+	public static final Perk PARRY = register("parry", PerkCategory.DEFENSE, "shield", Items.IRON_INGOT, 3, new MobTypes(10), null);
+	public static final Perk DEFLECT = register("deflect", PerkCategory.DEFENSE, "shield", Items.SPECTRAL_ARROW, 2, new MobTypes(15), "parry");
 
 	public static final Perk BONUS_HEART_1 = register("bonus_heart_1", PerkCategory.SURVIVAL, Items.APPLE, 3, new Rank(5), null);
 	public static final Perk BONUS_HEART_2 = register("bonus_heart_2", PerkCategory.SURVIVAL, Items.GOLDEN_APPLE, 4, new Rank(20), "bonus_heart_1");

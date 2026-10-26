@@ -67,6 +67,10 @@ public final class PamAttachments {
 	public static final AttachmentType<Boolean> RICOCHET_ARROW = AttachmentRegistry.create(
 			ProgressiveAdventure.id("ricochet_arrow"), builder -> builder.persistent(Codec.BOOL));
 
+	/** On an arrow that hit a player's shield during a Deflect parry: it gets aimed back at the shooter. */
+	public static final AttachmentType<Boolean> DEFLECTED_ARROW = AttachmentRegistry.create(
+			ProgressiveAdventure.id("deflected_arrow"), builder -> builder.persistent(Codec.BOOL));
+
 	/** On the Overworld: all turned-on Waypoint Stones of every dimension (shared by all players). */
 	public static final AttachmentType<List<Waypoint>> WAYPOINTS = AttachmentRegistry.create(
 			ProgressiveAdventure.id("waypoints"), builder -> builder

@@ -4,6 +4,7 @@ import com.progressiveadventure.bestiary.Bestiary;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.world.Elites;
 
@@ -45,6 +46,14 @@ public class LivingEntityMixin {
 			return amount * PerkEffects.damageTakenMultiplier(player, source);
 		}
 		return amount;
+	}
+
+	/** Parry and Deflect: the player's shield just blocked something. */
+	@Inject(method = "applyItemBlocking", at = @At("RETURN"))
+	private void pam$parry(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Float> cir) {
+		if ((Object) this instanceof ServerPlayer player && cir.getReturnValueF() > 0) {
+			ShieldPerks.onBlocked(player, level, source, damage);
+		}
 	}
 
 	@Inject(method = "canBeAffected", at = @At("RETURN"), cancellable = true)

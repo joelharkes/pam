@@ -128,21 +128,22 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber/lumberjack, forester, clear cut (delayed via a tick queue), flint finder, vein miner, excavator, archaeologist, orchard, bird's nest,
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
-  (Shadow Step visibility/escape, server side of Double Jump and Mantle)
+  (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
-  `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
+  `ShieldBashPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
-- `mixin/`: FoodData (hunger multipliers), Player (break speed, Careful Sweep), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
+- `mixin/`: FoodData (hunger multipliers), Player (break speed, Careful Sweep), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),
-  ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks), ThrownTrident (Loyal Trident),
+  ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks, Deflect), ThrownTrident (Loyal Trident),
   LivingEntity also speeds up bow/crossbow/trident use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `BlockSense` (Ore/Treasure/Relic Sense particle trails); `AirMoves`
-  (Double Jump and Mantle: client moves itself, then tells the server); client mixin on the lightmap
+  (Double Jump and Mantle: client moves itself, then tells the server); `ShieldBash` (attack click while
+  blocking, read at the start of the client tick); client mixin on the lightmap
   (Cat's Eyes); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (grid + mob page, custom-drawn, simple Button tabs);
   `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);

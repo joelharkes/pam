@@ -276,8 +276,8 @@ and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays a
 ### 3e. Melee skill
 
 One skill for every hand-to-hand weapon (sword, axe, mace, spear, trident stab), with perks grouped by weapon in
-the Melee perk category. Built in slices: a (skill, Wide Sweep, Hearty Kill) and b (Whirlwind, Disarm, axe perks)
-are built, c–d are in [Ideas](#ideas).
+the Melee perk category. Built in slices: a (skill, Wide Sweep, Hearty Kill), b (Whirlwind, Disarm, axe perks) and
+c (shield perks, in Defense) are built, d is in [Ideas](#ideas).
 
 - **XP:** 1 per hit on a mob that deals at least 2 damage (1 heart), 4 for a kill. The minimum stops spam-clicked
   weak hits (cooldown not filled) from counting. Sweeps, mace smashes and spear attacks count; thorns and
@@ -310,6 +310,23 @@ are built, c–d are in [Ideas](#ideas).
   give Melee XP (≥ 1 heart).
 
 Hearty Kill (heal on a kill) is in Survival, since it works with any weapon.
+
+**Shield perks** (Defense category, "Shield" heading; blocking is defense):
+
+| Perk | Effect | Requires | Cost |
+|---|---|---|---|
+| Shield Bash | Attack click while blocking: pushes hostile mobs within 3 blocks in front of you away (once per second) | 5 mob types | 2 |
+| Parry | A melee hit blocked within 0.5 s after the shield starts blocking goes back to the attacker (thorns damage credited to you, max 4 hearts) with knockback; "Parry!" + clang; 3 Melee XP | 10 mob types | 3 |
+| Deflect | An arrow blocked in the same window flies straight back at its shooter (now your arrow) | 15 mob types, Parry | 2 |
+
+- Window: vanilla's shield only blocks 5 ticks after raising; Parry counts the next 10 ticks (generous for ping).
+  Holding the shield up doesn't parry: you raise it at the right moment.
+- Explosions (direct entity = the creeper), piercing arrows (vanilla doesn't block them) and the Warden's sonic
+  boom (bypasses shields) can't be parried. Parry uses thorns damage so it doesn't count as a Melee hit.
+- Deflect marks the arrow when it's blocked; after vanilla bounces it (`AbstractArrow.onHitEntity` tail) it's aimed
+  at the shooter, a little high for gravity, owned by the player.
+- Shield Bash: vanilla drops attack clicks while an item is used, so the client checks at the start of its tick
+  (before vanilla's key handling) and sends `ShieldBashPayload`; the server checks perk, blocking and cooldown.
 
 ### 4. Bestiary: mob familiarity
 
@@ -707,14 +724,9 @@ it's new); when it gets built, move its description into the pillars above and l
 Players can suggest more through the GitHub issue forms.
 
 ### New skills
-- **Melee skill, slices c–d (2026-10-26, decided; a and b built, see 3e).** Perks change *how* you fight
+- **Melee skill, slice d (2026-10-26, decided; a–c built, see 3e).** Perks change *how* you fight
   (crowds, control, moves), never the main hit's damage. Active moves only hit hostile mobs (the Steady Aim
   filter: never pets, villagers or players).
-  - **c. Shield (Defense category):** **Parry**: raise your shield just before a melee hit lands (window about
-    ½ s, generous because of server ping) and the attacker takes the damage back, capped (e.g. 4 hearts) so a
-    Ravager or a diamond elite is hurt but not one-shot, plus knockback. **Deflect** (needs Parry): a parried arrow
-    flies straight back at the shooter (vanilla bounces blocked arrows randomly). Explosions and the Warden's
-    sonic boom can't be parried. Parries give Melee XP. **Shield Bash**: hitting while blocking pushes mobs away.
   - **d. Mace and spear:** **Ground Pound** (mace): sneak in the air to slam straight down; client move like
     Double Jump/Mantle (`AirMoves`), combos with Double Jump. **Shockwave** (mace): a smash attack pushes back
     every hostile mob around where you land. **Skewer** (spear): the jab pierces 1–2 more mobs. **Charge on
@@ -955,6 +967,10 @@ Players can suggest more through the GitHub issue forms.
   would feel broken) and wraps vanilla's sweep instead of being its own attack. Sunder is a 5 s armor crack
   (−50%) instead of "ignore armor on this hit": simpler, visible, and it rewards following up. Disarm drops the
   item (no special loot rule), so it can also free a drowned's trident.
+- 2026-10-26: **Shield perks (Melee slice c)** in Defense under a "Shield" heading, gated on mob types like the
+  other Defense perks. Parry window 10 ticks after the shield starts blocking; reflected damage capped at 4 hearts
+  and dealt as thorns (credited to the player, no Melee hit XP; a parry gives its own 3 XP). Shield Bash is a
+  client-detected attack click while blocking (vanilla ignores those), 1 s cooldown, pushes only (no damage).
 
 ## Playtest checklist
 
@@ -968,7 +984,10 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   under Survival. Character tab shows 7 skills. **Slice b:** Whirlwind (sneak + sweep) hits mobs behind you but not
   your dog or a cow; is the ring visible? Disarm: skeleton drops its bow and walks up; message readable. Heavy Swing
   knockback feels heavy, not silly. Sunder on an armored elite (`/pam elite zombie`): sparks/sound, next hits clearly
-  stronger, armor back after 5 s. Tridents: throw charge faster with Archery, thrown hits give
+  stronger, armor back after 5 s. **Slice c:** Parry timing feels fair on a server (raise just before the zombie
+  hits); reflected damage, knockback, clang + "Parry!"; holding the shield up doesn't parry. Deflect: skeleton arrow
+  flies back and hits it (aim OK at 10-20 blocks?). Shield Bash: left-click with shield up pushes zombies/creepers,
+  works with the shield in either hand, not spammable. Tridents: throw charge faster with Archery, thrown hits give
   Archery XP, Loyal Trident brings a plain trident back (a mixin failure would crash on the first throw).
 
 - **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs

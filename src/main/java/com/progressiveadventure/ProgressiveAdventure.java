@@ -10,6 +10,7 @@ import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
+import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.Melee;
@@ -57,6 +58,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			Trackers.onServerStopped();
 			PerkEffects.onServerStopped();
 			Melee.onServerStopped();
+			ShieldPerks.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
 			BestiaryInfo.clearCache();

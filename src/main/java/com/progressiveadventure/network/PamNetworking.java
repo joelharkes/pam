@@ -5,6 +5,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.MovementPerks;
+import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.waypoint.Waypoints;
@@ -24,6 +25,7 @@ public final class PamNetworking {
 		PayloadTypeRegistry.serverboundPlay().register(BuyPerkPayload.TYPE, BuyPerkPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(ResetPerksPayload.TYPE, ResetPerksPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(DoubleJumpPayload.TYPE, DoubleJumpPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(ShieldBashPayload.TYPE, ShieldBashPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(MantlePayload.TYPE, MantlePayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(NameWaypointPayload.TYPE, NameWaypointPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(WaypointTeleportPayload.TYPE, WaypointTeleportPayload.CODEC);
@@ -37,6 +39,7 @@ public final class PamNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(ResetPerksPayload.TYPE, (payload, context) -> reset(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.TYPE, (payload, context) -> MovementPerks.onDoubleJump(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(MantlePayload.TYPE, (payload, context) -> MovementPerks.onMantle(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(ShieldBashPayload.TYPE, (payload, context) -> ShieldPerks.onBash(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(NameWaypointPayload.TYPE, (payload, context) -> Waypoints.onName(context.player(), payload.pos(), payload.name()));
 		ServerPlayNetworking.registerGlobalReceiver(WaypointTeleportPayload.TYPE,
 				(payload, context) -> Waypoints.onTeleportRequest(context.player(), payload.from(), payload.target()));

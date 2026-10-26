@@ -129,6 +129,17 @@ public class PamConfig {
 	// Sunder: a fully charged axe hit lowers the mob's armor by this share for sunderSeconds
 	public double sunderArmorReduction = 0.5;
 	public int sunderSeconds = 5;
+	// Parry / Deflect: a hit blocked at most parryWindowTicks after the shield starts blocking (the shield itself needs
+	// 5 ticks first). Parry sends the hit back to the attacker (at most parryMaxDamage, 8 = 4 hearts) with knockback.
+	public int parryWindowTicks = 10;
+	public float parryMaxDamage = 8f;
+	public double parryKnockback = 0.8;
+	public int parryXp = 3;
+	public double deflectArrowSpeed = 1.6;
+	// Shield Bash: pushes hostile mobs within range in front of you, at most once per cooldown
+	public double shieldBashRange = 3.0;
+	public double shieldBashKnockback = 1.0;
+	public int shieldBashCooldownTicks = 20;
 	// Hearty Kill: health healed per hostile mob kill (2 = one heart), at most once per heartyKillCooldownTicks
 	public List<Double> heartyKillHeals = List.of(1.0, 2.0, 3.0);
 	public int heartyKillCooldownTicks = 20;

@@ -31,6 +31,8 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 				context.client().gui.setScreen(new WaypointListScreen(payload)));
 		BestiaryClient.init();
 
+		// Before vanilla's key handling, which drops attack clicks while blocking
+		ClientTickEvents.START_CLIENT_TICK.register(ShieldBash::tick);
 		ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
 			BlockSense.tick(minecraft);
 			AirMoves.tick(minecraft);
