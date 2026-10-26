@@ -37,6 +37,21 @@ This mod makes the **player character and the world** progress together:
 - **Works on servers and LAN**, with players at different progress levels.
 - **Configurable.** All numbers live in config.
 
+### Non-goals (decided)
+
+Things we deliberately leave out. Check here before building an idea that touches them.
+
+- **Fighting farms or kill chambers.** No nerfs, no detection, no penalties. Progress needs the player
+  to do the thing (land the hit, harvest the crop), so fully automatic farms give no progress, but
+  anything where the player is involved counts fully. The goal is for a stronger player to need farms
+  less, not for farms to stop working.
+- **Mobs that scale with the player.** The world opens up with Rank (new mob types, rare elites), but
+  normal mobs never get tougher to match you (see [Risks](#risks--things-to-watch), level-scaling treadmill).
+- **A death penalty.** See Principles.
+- **Several Minecraft versions at once.** One version at a time, no multi-version builds.
+- **Server-only or client-only installs.** The mod is needed on both sides (synced progress, the
+  Adventure screen, client-side perks).
+
 ---
 
 ## Core idea: one source, two rewards
@@ -261,7 +276,7 @@ after a few kills, and then gains are big early and flatten out:
 - At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
 - Only kills credited to a player count (the player or their arrow dealt the killing blow), so fully
   automatic farms give nothing. AFK farms where the player still lands the hit (kill chambers)
-  count fully.
+  count fully, on purpose (see [Non-goals](#non-goals-decided)).
 - We keep our own kill counter (not vanilla `Stats.KILLED`) so old worlds don't get
   retroactive progress.
 
@@ -646,7 +661,6 @@ Players can suggest more through the GitHub issue forms.
 - Animal Friend: can't be an attribute (tempt range belongs to the animal), needs a mixin.
 
 ### Bestiary
-- AFK kill chambers (player lands the hit) count fully today; they could count for less.
 - **Look-at info (2026-10-26, on hold):** a small "Zombie ❤ 14/20" line under the crosshair for Known mobs,
   instead of floating health bars (rejected: changes vanilla too much). The user wants the HUD vanilla for now.
 - **More bestiary content (2026-10-26):** the user feels there's still a gap after the mob pages; more ideas
@@ -821,6 +835,11 @@ Players can suggest more through the GitHub issue forms.
   toast; no XP burst (collections already give Rank). **No health bar / HUD change** for now: the user wants the
   HUD vanilla (look-at info line stays an idea). Hunting requests belong to a future quests feature.
   Drop chances are sampled on the server (1000 loot rolls) rather than read from the loot table structure.
+- 2026-10-26: **Non-goals section** added under Vision. No protection against farms or kill chambers: the
+  mod should make them less needed by making the player stronger, not stop them working. Fully automatic
+  farms still give no progress (the player has to do the thing). The idea "kill chambers count for less" is
+  dropped. Also listed there: mobs scaling with the player, a death penalty, multi-version builds,
+  server-only or client-only installs (all decided earlier).
 
 ## Playtest checklist
 

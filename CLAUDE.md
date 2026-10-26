@@ -9,7 +9,7 @@ stack, commands, conventions or key decisions change.
 Minecraft Java that makes the game more progressive: the player starts weaker (fewer
 hearts, faster hunger) and grows stronger through milestones and by doing things.
 
-- Design of what's built, decisions log, open questions, roadmap and the **playtest checklist**
+- Design of what's built, non-goals (check before building an idea that touches them), decisions log, open questions, roadmap and the **playtest checklist**
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md). **All not-built ideas
   live in its single "Ideas" section**: add new ones there (not in the pillars), and move an idea's text
   into its pillar when it gets built.
