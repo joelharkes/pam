@@ -257,11 +257,12 @@ after a few kills, and then gains are big early and flatten out:
 | 1     | −10%            | Unfamiliar (mob appears in the bestiary) |
 | 3     | −5%             | Unfamiliar |
 | 5     | ±0% (vanilla)   | Known      |
-| 15    | +10%            | Familiar   |
-| 30    | +20%            | Familiar   |
-| 60    | +35%            | Expert     |
-| 100   | +50%            | Master     |
-| 250   | +55%            | Master (cap) |
+| 15    | +5%             | Familiar   |
+| 30    | +10%            | Familiar   |
+| 60    | +15%            | Familiar   |
+| 100   | +20%            | Expert     |
+| 200   | +30%            | Master     |
+| 500   | +35%            | Master (cap) |
 
 - Example: a zombie (20 HP) vs. a wooden sword (4 damage) takes 5 hits in vanilla
   and 6 hits at −15%. Noticeable, not brutal.
@@ -273,7 +274,8 @@ after a few kills, and then gains are big early and flatten out:
   kill: loot, XP, Archery XP and the elite milestone stay with the killer. `assistKills` in config.
 - The −15% stacks with the other early-game penalties (5 hearts, faster hunger).
   This is OK because early ranks only spawn zombies. Watch in playtests.
-- At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
+- At Master (200 kills) a zombie clearly goes down faster than in vanilla, but it takes several play sessions:
+  zombies are almost the only early mob, so faster tiers (Master at 100, +50%) made the early game easy too soon.
 - Only kills credited to a player count (the player or their arrow dealt the killing blow), so fully
   automatic farms give nothing. AFK farms where the player still lands the hit (kill chambers)
   count fully, on purpose (see [Non-goals](#non-goals-decided)).
@@ -288,8 +290,8 @@ after a few kills, and then gains are big early and flatten out:
 | Unfamiliar (1) | Name, 3D model (follows the mouse), kills, familiarity |
 | Known (5) | Stats (health, attack in hearts, armor of a fresh mob) and a tip |
 | Familiar (15) | Drops as item icons, hover says Often / Sometimes / Rarely |
-| Expert (60) | Exact drop chances ("35% of kills") |
-| Master (100) | Gold border, "Mastered" count, **50% chance of double loot** (`masterDoubleLootChance`) |
+| Expert (100) | Exact drop chances ("35% of kills") |
+| Master (200) | Gold border, "Mastered" count, **50% chance of double loot** (`masterDoubleLootChance`) |
 
 - Expert and Master are a lot of grinding, so their rewards stay small on purpose.
 - Drops come from the server: it rolls the mob's loot table 1000 times as a player kill without Looting and
@@ -835,6 +837,11 @@ Players can suggest more through the GitHub issue forms.
   toast; no XP burst (collections already give Rank). **No health bar / HUD change** for now: the user wants the
   HUD vanilla (look-at info line stays an idea). Hunting requests belong to a future quests feature.
   Drop chances are sampled on the server (1000 loot rolls) rather than read from the loot table structure.
+- 2026-10-26: **Slower, smaller familiarity bonuses.** 100 zombie kills came fast (zombies are almost the only
+  early mob) and +50% made you strong too soon. Now +5/+10/+15% at 15/30/60 (Familiar), +20% Expert at 100,
+  +30% Master at 200, +35% at 500 (was +10/+20 Familiar, +35 Expert 60, +50 Master 100, +55 at 250). Elites
+  stay at 3 kills (they're ≤10% of spawns, so barely matter) and Quick Study stays at double. Master's 50%
+  double loot stays. No playtest item: feedback from players later.
 - 2026-10-26: **Non-goals section** added under Vision. No protection against farms or kill chambers: the
   mod should make them less needed by making the player stronger, not stop them working. Fully automatic
   farms still give no progress (the player has to do the thing). The idea "kill chambers count for less" is

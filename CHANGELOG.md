@@ -9,6 +9,9 @@
   Breaker, Nether Hunter, End Hunter, Master Hunter, Trait Collector). They give Adventure Rank, no hearts.
 - **Elite records:** a mob's page shows how many Tough ones you defeated and which traits you've beaten.
 - **Assist kills:** everyone who hurt a mob during the fight gets the bestiary kill, not only the last hit.
+- **Familiarity is slower and gentler:** you become Expert at 100 kills and Master at 200 (was 60 and 100),
+  and the damage bonus grows to +30% at Master and +35% at 500 kills (was +50% and +55%). Your kills are
+  kept, so you may drop back a tier.
 - A new bestiary entry now shows a toast instead of a message above the hotbar.
 - New settings: `masterDoubleLootChance`, `assistKills`. Ops: `/pam kills <mob> <count> [player]`.
 

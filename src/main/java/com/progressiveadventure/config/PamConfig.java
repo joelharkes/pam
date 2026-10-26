@@ -69,11 +69,12 @@ public class PamConfig {
 			new FamiliarityTier(1, -0.10, "unfamiliar"),
 			new FamiliarityTier(3, -0.05, "unfamiliar"),
 			new FamiliarityTier(5, 0.0, "known"),
-			new FamiliarityTier(15, 0.10, "familiar"),
-			new FamiliarityTier(30, 0.20, "familiar"),
-			new FamiliarityTier(60, 0.35, "expert"),
-			new FamiliarityTier(100, 0.50, "master"),
-			new FamiliarityTier(250, 0.55, "master"));
+			new FamiliarityTier(15, 0.05, "familiar"),
+			new FamiliarityTier(30, 0.10, "familiar"),
+			new FamiliarityTier(60, 0.15, "familiar"),
+			new FamiliarityTier(100, 0.20, "expert"),
+			new FamiliarityTier(200, 0.30, "master"),
+			new FamiliarityTier(500, 0.35, "master"));
 	// Master (tier label "master"): chance that a mob's normal loot drops a second time when you get the kill
 	public double masterDoubleLootChance = 0.5;
 	// Players who hurt a mob during the fight also get the bestiary kill (not only the one who landed the last hit)
