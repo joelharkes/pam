@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
@@ -75,7 +76,11 @@ final class AirMoves {
 			ClientPlayNetworking.send(new MantlePayload());
 		} else if (jumpPressed && airborne && !doubleJumped && Perks.has(player, Perks.DOUBLE_JUMP) && !wearsGlider(player)) {
 			doubleJumped = true;
+			// Vanilla's jump (so Spring Step and Jump Boost count), but without its sprint push: a second push in the
+			// air, where there's little drag, sent players flying forward
+			Vec3 before = player.getDeltaMovement();
 			player.jumpFromGround();
+			player.setDeltaMovement(before.x, player.getDeltaMovement().y, before.z);
 			player.resetFallDistance();
 			ClientPlayNetworking.send(new DoubleJumpPayload());
 		}

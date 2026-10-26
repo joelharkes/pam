@@ -29,6 +29,7 @@
 - **Sturdy Weapon** (was Sturdy Blade) now also works for spears, maces and tridents.
 - The Bestiary tab no longer stays on a mob's page when you switch to another world.
 - Long perk descriptions wrap instead of running off the screen.
+- **Double Jump** no longer gives a big forward boost when you sprint: the second jump only adds height.
 - **Shield perks** (Defense): **Shield Bash** (attack with your shield up to push mobs away), **Parry** (raise your
   shield just before a hit and the attacker gets hurt instead) and **Deflect** (arrows fly back at the shooter).
 - **Careful Sweep** (Melee): your sword sweep no longer hurts your pets, villagers or golems.

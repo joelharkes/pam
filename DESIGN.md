@@ -623,7 +623,8 @@ Implementation notes:
 - Double Jump / Mantle: movement is client-driven, so the client (`AirMoves`) moves the player and
   sends a payload; the server checks the perk, allows one of each per time in the air, resets fall
   distance and plays a sound (and cloud particles for Double Jump). Double jump = a normal jump
-  (`jumpFromGround`, so Spring Step adds to it). Mantle: falling or near the top of a jump, pushing
+  (`jumpFromGround`, so Spring Step adds to it) but without the sprint push (decided 2026-10-26: it sent players
+  flying forward). Mantle: falling or near the top of a jump, pushing
   forward into a wall whose top is 0.6–1.9 blocks above the feet, with room to stand on it; never
   on fences/walls (collision taller than 1 block).
 - No 3×3 mining for pickaxes (trivialises caving and building); Vein Miner instead.
@@ -990,6 +991,9 @@ Players can suggest more through the GitHub issue forms.
 - 2026-10-26: Perk group headings stay as they are (only Melee and the Shield perks use them; they don't add much
   to the other categories). Tooltips in the Adventure screen wrap, since long perk descriptions went off screen.
   Avoiding all fall damage (Double Jump, Ground Pound) and the double jump's sprint push are open questions.
+- 2026-10-26: **Double Jump has no sprint push.** It called vanilla's jump, which adds +0.2 blocks/tick forward when
+  sprinting; with little drag in the air that second push was a big dash. Now it only adds height (Spring Step and
+  Jump Boost still count).
 
 ## Playtest checklist
 
@@ -1040,7 +1044,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   hearts? Hover tooltip readable (bonus, xp to next level, next perk)? Swimming perks now show under Survival
   (Deep Breath, Diver) and Movement (Swimmer).
 - **Movement perks:** 10 category rows fit at the user's GUI scale? Each attribute
-  perk noticeable? Double Jump: feels instant, no rubber-band
+  perk noticeable? Double Jump: no forward dash when sprinting (push removed 2026-10-26), feels instant, no rubber-band
   on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall
   (jump just before landing): fun or too strong? Mantle: triggers on 2-block walls, not on fences,
   not on every hop up a block, smooth on a server? Shadow Step I: sneak past mobs closer than
@@ -1095,9 +1099,6 @@ override applied, typo warned).
   needs to fear heights. Fun, but it takes away a danger. Options: Double Jump only resets part of the fall (or
   only below some height); Ground Pound only protects the dive itself (fall distance from where it started);
   leave it as the reward for late perks (Rank 30, Melee 15).
-- [ ] **Double Jump while sprinting adds speed (2026-10-26).** It uses vanilla's `jumpFromGround`, which adds the
-  sprint-jump push (+0.2 blocks/tick forward) every time; in the air there's little drag, so the second push
-  carries far. Looks cool, maybe too strong. Options: keep it; half the push; no push (height only).
 - [ ] Ground Pound may get too strong later (2026-10-26): Double Jump + dive is fun and fine now, but watch it with
   Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatio`, a fall cap for the bonus.
 
