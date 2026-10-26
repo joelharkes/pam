@@ -422,6 +422,10 @@ class BestiaryTab implements AdventureTab {
 		if (modelType != type) {
 			modelType = type;
 			model = type.create(Minecraft.getInstance().level, EntitySpawnReason.LOAD) instanceof LivingEntity living ? living : null;
+			if (model != null) {
+				// The renderer reads the ID (held item seed) and throws while it's unassigned; negative never clashes with real entities
+				model.setId(-1);
+			}
 		}
 		return model;
 	}
