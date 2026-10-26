@@ -1,5 +1,6 @@
 package com.progressiveadventure.client.screen;
 
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -8,7 +9,9 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** The K screen: character overview, perks and bestiary in one tabbed window. */
@@ -32,6 +35,18 @@ public class AdventureScreen extends Screen {
 
 	/** Remembered between openings. */
 	private static int selectedTab = 0;
+
+	/** Tooltip lines wider than this wrap (vanilla's button tooltips wrap at 170). */
+	private static final int TOOLTIP_WIDTH = 200;
+
+	/** A tooltip whose long lines wrap, so descriptions never run off the screen. Keeps each line's colour. */
+	static void wrappedTooltip(GuiGraphicsExtractor graphics, Font font, List<Component> lines, int mouseX, int mouseY) {
+		List<FormattedCharSequence> wrapped = new ArrayList<>();
+		for (Component line : lines) {
+			wrapped.addAll(font.split(line, TOOLTIP_WIDTH));
+		}
+		graphics.setTooltipForNextFrame(font, wrapped, mouseX, mouseY);
+	}
 
 	/** Called when leaving a world or server: a mob page from the last world shouldn't stay open in the next. */
 	public static void onDisconnect() {

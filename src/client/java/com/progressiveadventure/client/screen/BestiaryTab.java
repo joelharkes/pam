@@ -220,7 +220,7 @@ class BestiaryTab implements AdventureTab {
 				graphics.centeredText(font, "?", x + (CELL - 2) / 2, y + 5, 0xFF555555);
 			}
 			if (i == hovered) {
-				graphics.setComponentTooltipForNextFrame(font, tooltip(entry, kills, tier), mouseX, mouseY);
+				AdventureScreen.wrappedTooltip(graphics, font, tooltip(entry, kills, tier), mouseX, mouseY);
 			}
 		}
 	}
@@ -390,7 +390,7 @@ class BestiaryTab implements AdventureTab {
 			graphics.fill(slotX, slotY, slotX + DROP_SLOT - 1, slotY + DROP_SLOT - 1, 0xFF262636);
 			graphics.item(drop.item(), slotX, slotY);
 			if (mouseY < bottom && PerksTab.isInside(mouseX, mouseY, slotX, slotY, DROP_SLOT - 1, DROP_SLOT - 1)) {
-				graphics.setComponentTooltipForNextFrame(font, List.of(drop.item().getHoverName(), dropChance(drop, kills)), mouseX, mouseY);
+				AdventureScreen.wrappedTooltip(graphics, font, List.of(drop.item().getHoverName(), dropChance(drop, kills)), mouseX, mouseY);
 			}
 		}
 		return y + ((info.drops().size() + perRow - 1) / perRow) * DROP_SLOT;

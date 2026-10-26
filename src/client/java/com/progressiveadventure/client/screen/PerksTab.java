@@ -126,7 +126,7 @@ class PerksTab implements AdventureTab {
 			}
 
 			if (hovered) {
-				graphics.setComponentTooltipForNextFrame(font, tooltip(perk, status, progress, snapshot), mouseX, mouseY);
+				AdventureScreen.wrappedTooltip(graphics, font, tooltip(perk, status, progress, snapshot), mouseX, mouseY);
 			}
 		}
 		graphics.disableScissor();

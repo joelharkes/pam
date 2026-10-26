@@ -702,6 +702,7 @@ Keep it simple and close to vanilla.
 │ └──────────┘ └────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────┘
 ```
+- Tooltips wrap at 200px (`AdventureScreen.wrappedTooltip`): long perk descriptions ran off the screen.
 - The category column holds 10 rows of 19px: an 11th category needs a new layout (16px rows would fit 12).
 - Perks can have a **group** (Melee: one per weapon); the list then shows a small gold heading above each group,
   so a long category reads as a few short lists.
@@ -986,6 +987,9 @@ Players can suggest more through the GitHub issue forms.
   (was "Sturdy Blade", swords only) now covers swords, spears, maces and tridents; axes keep Sturdy Axe so nothing
   gets two Sturdy perks. Bestiary goes back to the grid when you leave a world. AUDIT.md now has a **Minecraft
   update checklist** of hooks that could silently break on an update.
+- 2026-10-26: Perk group headings stay as they are (only Melee and the Shield perks use them; they don't add much
+  to the other categories). Tooltips in the Adventure screen wrap, since long perk descriptions went off screen.
+  Avoiding all fall damage (Double Jump, Ground Pound) and the double jump's sprint push are open questions.
 
 ## Playtest checklist
 
@@ -999,10 +1003,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   under Survival. Character tab shows 7 skills. **Slice b:** Whirlwind (sneak + sweep) hits mobs behind you but not
   your dog or a cow; is the ring visible? Disarm: skeleton drops its bow and walks up; message readable. Heavy Swing
   knockback feels heavy, not silly. Sunder on an armored elite (`/pam elite zombie`): sparks/sound, next hits clearly
-  stronger, armor back after 5 s. **Slice c:** Parry timing feels fair on a server (raise just before the zombie
-  hits); reflected damage, knockback, clang + "Parry!"; holding the shield up doesn't parry. Deflect: skeleton arrow
-  flies back and hits it (aim OK at 10-20 blocks?). Shield Bash: left-click with shield up pushes zombies/creepers,
-  works with the shield in either hand, not spammable. **Slice d:** Ground Pound (mace, jump or fall, press sneak):
+  stronger, armor back after 5 s. **Slice c** (Parry and Shield Bash work in singleplayer): Parry timing on a server
+  with ping; Deflect: skeleton arrow flies back and hits it (aim OK at 10-20 blocks?). **Slice d:** Ground Pound (mace, jump or fall, press sneak):
   dive feels good, no fall damage, mobs pushed, no rubber-band on a server; not too low (2 blocks); water landing
   doesn't leave it "stuck" (next normal fall still hurts). Shockwave hurts mobs around a smash and a pound landing.
   Running Charge: sprinting spear charge clearly stronger, can knock a skeleton jockey off. Pinning Jab slows.
@@ -1087,6 +1089,15 @@ override applied, typo warned).
 - [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
   elite chances, skill XP curves.
 - [ ] Waypoint XP cap (50, +20 across dimensions): maybe higher? Revisit after the playtest.
+- [ ] **Fall damage can be avoided completely (2026-10-26, design question, not fixing yet).** Double Jump resets
+  fall distance (a jump just before landing cancels any fall), and Ground Pound with a mace cancels the landing
+  damage of a dive started 2+ blocks up, even at the end of a huge fall. Together, a player with either perk never
+  needs to fear heights. Fun, but it takes away a danger. Options: Double Jump only resets part of the fall (or
+  only below some height); Ground Pound only protects the dive itself (fall distance from where it started);
+  leave it as the reward for late perks (Rank 30, Melee 15).
+- [ ] **Double Jump while sprinting adds speed (2026-10-26).** It uses vanilla's `jumpFromGround`, which adds the
+  sprint-jump push (+0.2 blocks/tick forward) every time; in the air there's little drag, so the second push
+  carries far. Looks cool, maybe too strong. Options: keep it; half the push; no push (height only).
 - [ ] Ground Pound may get too strong later (2026-10-26): Double Jump + dive is fun and fine now, but watch it with
   Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatio`, a fall cap for the bonus.
 

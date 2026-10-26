@@ -50,7 +50,7 @@ class CharacterTab implements AdventureTab {
 		Component rank = Component.translatable("screen.progressive_adventure.rank", snapshot.rank());
 		graphics.text(font, rank, left, y, AdventureScreen.TEXT_AQUA);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(rank), 10)) {
-			graphics.setComponentTooltipForNextFrame(font, List.of(
+			AdventureScreen.wrappedTooltip(graphics, font, List.of(
 					Component.translatable("screen.progressive_adventure.rank.tooltip.1"),
 					Component.translatable("screen.progressive_adventure.rank.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
 		}
@@ -60,7 +60,7 @@ class CharacterTab implements AdventureTab {
 			int nextX = left + width - font.width(nextMobs);
 			graphics.text(font, nextMobs, nextX, y, AdventureScreen.TEXT_RED);
 			if (PerksTab.isInside(mouseX, mouseY, nextX, y - 1, font.width(nextMobs), 10)) {
-				graphics.setComponentTooltipForNextFrame(font, List.of(
+				AdventureScreen.wrappedTooltip(graphics, font, List.of(
 						Component.translatable("screen.progressive_adventure.next_mobs.tooltip.1"),
 						Component.translatable("screen.progressive_adventure.next_mobs.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
 			}
@@ -70,7 +70,7 @@ class CharacterTab implements AdventureTab {
 		Component points = Component.translatable("screen.progressive_adventure.perk_points", Perks.pointsAvailable(progress, snapshot));
 		graphics.text(font, points, left, y, AdventureScreen.TEXT_PURPLE);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 1, font.width(points), 10)) {
-			graphics.setComponentTooltipForNextFrame(font, List.of(
+			AdventureScreen.wrappedTooltip(graphics, font, List.of(
 					Component.translatable("screen.progressive_adventure.perk_points.tooltip.1"),
 					Component.translatable("screen.progressive_adventure.perk_points.tooltip.2").withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
 		}
@@ -85,7 +85,7 @@ class CharacterTab implements AdventureTab {
 		Component stomach = Component.translatable("screen.progressive_adventure.stomach", snapshot.stomach());
 		graphics.text(font, stomach, left + 20, y, AdventureScreen.TEXT);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 4, 20 + font.width(stomach), 16)) {
-			graphics.setComponentTooltipForNextFrame(font, List.of(
+			AdventureScreen.wrappedTooltip(graphics, font, List.of(
 					Component.translatable("screen.progressive_adventure.stomach.tooltip", Math.round(snapshot.hungerDrain() * 100))),
 					mouseX, mouseY);
 		}
@@ -143,7 +143,7 @@ class CharacterTab implements AdventureTab {
 					? Component.translatable("screen.progressive_adventure.skill_no_perks_left")
 					: Component.translatable("screen.progressive_adventure.skill_next_perk", nextPerk.name(),
 							((Requirement.SkillLevel) nextPerk.requirement()).level());
-			graphics.setComponentTooltipForNextFrame(font, List.of(
+			AdventureScreen.wrappedTooltip(graphics, font, List.of(
 					title,
 					Skills.describeBonus(skill, level).copy().withColor(bonusColor),
 					Component.translatable("screen.progressive_adventure.skill_xp", levelEnd - xp, level + 1).withStyle(ChatFormatting.GRAY),
