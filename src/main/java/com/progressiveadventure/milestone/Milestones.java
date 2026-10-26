@@ -48,6 +48,15 @@ public final class Milestones {
 
 	public static final Milestone DIAMOND_TOOLS = pam("crafter/diamond_tools", 1, 0);
 
+	// Bestiary collections: no hearts or stomach, they only add Adventure Rank. Not in ALL (that's the reward list).
+	public static final Milestone NIGHT_WATCH = pam("hunter/night_watch", 0, 0);
+	public static final Milestone OCEAN_DEEP = pam("hunter/ocean_deep", 0, 0);
+	public static final Milestone RAIDERS = pam("hunter/raiders", 0, 0);
+	public static final Milestone NETHER_HUNTER = pam("hunter/nether_hunter", 0, 0);
+	public static final Milestone END_HUNTER = pam("hunter/end_hunter", 0, 0);
+	public static final Milestone FIRST_MASTER = pam("hunter/first_master", 0, 0);
+	public static final Milestone ALL_TRAITS = pam("hunter/all_traits", 0, 0);
+
 	// Vanilla advancements with a reward. Their descriptions are overridden in our lang file to show it.
 	public static final List<Milestone> VANILLA = List.of(
 			vanilla("adventure/sleep_in_bed", 1, 0),

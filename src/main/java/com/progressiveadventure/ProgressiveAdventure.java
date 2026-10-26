@@ -1,6 +1,7 @@
 package com.progressiveadventure;
 
 import com.progressiveadventure.bestiary.Bestiary;
+import com.progressiveadventure.bestiary.BestiaryInfo;
 import com.progressiveadventure.command.PamCommand;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
@@ -56,16 +57,21 @@ public class ProgressiveAdventure implements ModInitializer {
 			PerkEffects.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
+			BestiaryInfo.clearCache();
 		});
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> BestiaryInfo.clearCache());
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> Trackers.onDisconnect(handler.player));
-		ServerPlayerEvents.JOIN.register(Progression::apply);
+		ServerPlayerEvents.JOIN.register(player -> {
+			Progression.apply(player);
+			Bestiary.checkCollections(player, PamAttachments.progress(player));
+		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof ServerPlayer player) {
 				Trackers.onDeath(player);
 			} else if (source.getEntity() instanceof ServerPlayer player) {
-				Bestiary.onKill(player, entity);
+				Bestiary.onKill(player, entity, source);
 				Archery.onKill(entity, source);
 			}
 			Elites.onDeath(entity, source);

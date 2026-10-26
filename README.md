@@ -54,7 +54,10 @@ Press **K** to open the Adventure screen.
 
 ### Bestiary
 Every mob type you defeat goes in your bestiary. The more of a mob you've beaten, the more
-damage you deal to it.
+damage you deal to it. Click a mob to open its page: where to find it, and as you get to know it
+better its stats and a tip, what it drops, and at Master a chance of double loot. Collect sets of
+mobs (night monsters, Nether, End, raiders, ocean) for extra Adventure Rank. When friends fight a
+mob together, everyone who hit it gets the kill in their bestiary.
 
 ![Bestiary](docs/screenshots/bestiary.jpg)
 ![New bestiary entry](docs/screenshots/big_new_bestiary.jpg)
@@ -128,7 +131,7 @@ when you open a world to LAN, the settings of the server (the host) count.
 
 - `/pam`: shows your progress in chat.
 - `/pam bestiary`: lists your bestiary.
-- Ops only: `/pam elite <mob> [trait]`, `/pam skill <skill> <level> [player]`,
+- Ops only: `/pam elite <mob> [trait]`, `/pam skill <skill> <level> [player]`, `/pam kills <mob> <count> [player]`,
   `/pam waypoint list|tp|remove`. These are for testing and server admins.
 
 ## Feedback and ideas

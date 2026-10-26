@@ -250,9 +250,12 @@ after a few kills, and then gains are big early and flatten out:
 
 - Example: a zombie (20 HP) vs. a wooden sword (4 damage) takes 5 hits in vanilla
   and 6 hits at −15%. Noticeable, not brutal.
-- The label is visible (Bestiary tab tooltip, `/pam bestiary`, action-bar message on a new entry and
+- The label is visible (Bestiary tab, `/pam bestiary`, a toast on a new entry and an action-bar message
   on every new tier) so a penalty never feels like a bug: "I don't know this mob yet."
 - An elite kill counts as 3 kills; the Quick Study perk doubles kills.
+- **Assist kills:** everyone who hurt the mob during the fight gets the bestiary kill, not only the player
+  who landed the last hit (vanilla's combat tracker already lists them, so no extra cost). Only the bestiary
+  kill: loot, XP, Archery XP and the elite milestone stay with the killer. `assistKills` in config.
 - The −15% stacks with the other early-game penalties (5 hearts, faster hunger).
   This is OK because early ranks only spawn zombies. Watch in playtests.
 - At 100 kills a zombie clearly goes down faster than in vanilla (goal achieved).
@@ -261,6 +264,34 @@ after a few kills, and then gains are big early and flatten out:
   count fully.
 - We keep our own kill counter (not vanilla `Stats.KILLED`) so old worlds don't get
   retroactive progress.
+
+**What familiarity shows (mob page in the Bestiary tab):**
+
+| Tier | Shows / gives |
+|------|---------------|
+| Unknown | "?" tile, where to find it, "Appears from Adventure Rank X" while it's still locked |
+| Unfamiliar (1) | Name, 3D model (follows the mouse), kills, familiarity |
+| Known (5) | Stats (health, attack in hearts, armor of a fresh mob) and a tip |
+| Familiar (15) | Drops as item icons, hover says Often / Sometimes / Rarely |
+| Expert (60) | Exact drop chances ("35% of kills") |
+| Master (100) | Gold border, "Mastered" count, **50% chance of double loot** (`masterDoubleLootChance`) |
+
+- Expert and Master are a lot of grinding, so their rewards stay small on purpose.
+- Drops come from the server: it rolls the mob's loot table 1000 times as a player kill without Looting and
+  sends the share of kills per item (cached per mob type until /reload). Sampling follows every loot condition
+  the way the game does, so other mods' mobs work too. Equipment drops (elite gear) are not in it.
+- Double loot = the normal loot table rolled once more, only for the killer, only with mob drops on and not
+  for babies.
+- Where-to-find hints and tips are hand-written lang text (`bestiary.progressive_adventure.where/tip.<ns>.<mob>`);
+  mobs without one show "Nobody knows yet..." / no tips section (e.g. other mods' mobs).
+- **Elite records:** for mobs that can be elites, the page shows elites defeated and which traits you've beaten
+  (others "???"). Stored in `PlayerProgress` (`elite_kills`, `elite_traits`); counted for assists too.
+- **Collections** (advancements, Rank only, no hearts: the user felt hearts are already plentiful):
+  Night Watch (zombie, skeleton, spider, creeper; task), Deep Sea Hunter (drowned, guardian, zombie nautilus),
+  Raid Breaker (pillager, vindicator, evoker, ravager, witch), Nether Hunter (zombified piglin, ghast, magma cube,
+  blaze, wither skeleton, hoglin, piglin), End Hunter (enderman, endermite, shulker) as goals; Master Hunter
+  (first Master) and Trait Collector (an elite with every trait) as challenges. Also checked on join, so old
+  kills count.
 
 ### 5. World progression: mob unlocks and elite mobs
 
@@ -564,16 +595,20 @@ Keep it simple and close to vanilla.
 
 #### Bestiary tab
 - Grid of spawn-egg icons for every mob with a spawn egg, hostile mobs first, with
-  pages. "Discovered 12 / 80" at the top.
+  pages. "Discovered 12 / 84" (and "Mastered N") at the top.
 - Undiscovered mobs show a dark "?" tile ("Defeat one to discover").
-- Hover: name, kills, familiarity label, damage modifier, kills needed for next tier.
+- Hover: name, kills, familiarity label, damage modifier. Click opens the mob's page (also for undiscovered
+  mobs, to see where to find them).
+- Mob page: Back and </> buttons; left a model box (big "?" when undiscovered: GUI entity rendering forces full
+  brightness, so no black silhouette) with kills, familiarity, next tier and the Master bonus; right the
+  sections Where to find, Stats, Tips, Drops, Tough ones. Locked sections say "Locked: reach Known (5 kills)".
 - Tile border colour by tier (dark grey for Unknown/Unfamiliar → light grey Known → green Familiar →
   aqua Expert → gold Master).
 
 #### Messages
 - Chat: hearts gained, stomach upgrade, perk points / Rank gained, mob unlocks, waypoint actions.
-- Action bar: skill level-up, new bestiary entry and new familiarity tier, Shadow Step II escape,
-  Bird's Nest.
+- Action bar: skill level-up, new familiarity tier, Shadow Step II escape, Bird's Nest.
+- Toast: new bestiary entry (advancement-style, with the spawn egg).
 - `/pam` and `/pam bestiary` are text fallbacks for the screen.
 
 ---
@@ -611,10 +646,12 @@ Players can suggest more through the GitHub issue forms.
 - Animal Friend: can't be an attribute (tempt range belongs to the animal), needs a mixin.
 
 ### Bestiary
-- Unlocks per tier: see a mob's health bar (Known), its drops in the bestiary (Familiar 30), a "Mastered"
-  badge (Master).
 - AFK kill chambers (player lands the hit) count fully today; they could count for less.
-- First kill of a new mob type: a big XP burst and a toast (today: an action-bar message).
+- **Look-at info (2026-10-26, on hold):** a small "Zombie ❤ 14/20" line under the crosshair for Known mobs,
+  instead of floating health bars (rejected: changes vanilla too much). The user wants the HUD vanilla for now.
+- **More bestiary content (2026-10-26):** the user feels there's still a gap after the mob pages; more ideas
+  welcome (e.g. per-mob behaviour notes, biome/dimension filters, a "favourite"/tracked mob).
+- First-discovery XP burst: dropped for now (collections already add Rank); the toast is built.
 
 ### Mobs and elites
 - **More elite weapons (2026-10-25):** elite zombies always get a sword; they could also roll an axe (and maybe
@@ -638,7 +675,7 @@ Players can suggest more through the GitHub issue forms.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
 
 ### UI
-- Toasts instead of chat/action-bar messages for level-ups, new bestiary entries and Rank-ups.
+- Toasts instead of chat/action-bar messages for level-ups and Rank-ups (new bestiary entries have one).
 
 ---
 
@@ -776,10 +813,25 @@ Players can suggest more through the GitHub issue forms.
 - 2026-10-25: **DESIGN.md cleanup:** all not-built ideas moved into one [Ideas](#ideas) section; the pillars only
   describe what's built. Checked against the code; stale bits fixed (Perks tab mockup with 10 categories, bestiary
   tier colours, which messages use the action bar, perk "later ideas" that were already built).
+- 2026-10-26: **Bestiary upgrade.** Mob pages (grid + click → page with 3D model) instead of only a tooltip.
+  Tiers unlock info: Known = stats + tip, Familiar = drops, Expert = exact drop chances, Master = 50% double loot.
+  Rewards for Expert/Master stay small because reaching 60/100 kills is a grind. Where-to-find hints for every
+  vanilla mob, shown even before discovery. Collections are advancements with Rank only (no hearts), plus Master
+  Hunter and Trait Collector. Elite records per mob. Assist kills (cheap: vanilla's combat tracker). New entry =
+  toast; no XP burst (collections already give Rank). **No health bar / HUD change** for now: the user wants the
+  HUD vanilla (look-at info line stays an idea). Hunting requests belong to a future quests feature.
+  Drop chances are sampled on the server (1000 loot rolls) rather than read from the loot table structure.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+
+- **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs
+  (ghast, ender dragon, wither, slime, bat)? Do the sections fit the panel (long tips + 2 rows of drops + elite
+  traits)? Drops load (server request) and look right (zombie: rotten flesh often, iron/carrot/potato rarely)?
+  Exact chances at Expert, double loot at Master (test with `/pam kills zombie 100`). New-entry
+  toast. Assist kills: two players hit a mob, both get the kill. Collections and Trait Collector granted, also
+  on join for old saves.
 
 - **Farming:** XP pace (30 wheat = level 2; Replant at level 5 = 100 harvests), Light Step,
   sweet berry XP, breeding XP + Rancher twins, Green Thumb. Axes on pumpkins/melons no longer

@@ -89,6 +89,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 ## Adding things
 
+- **Bestiary text:** where-to-find hints and tips are lang keys `bestiary.progressive_adventure.where|tip.<namespace>.<mob>`;
+  the page hides a missing tip and shows "Nobody knows yet..." for a missing hint.
 - **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under
   `data/progressive_adventure/advancement/<category>/`, and title + description (ending in
   "Reward: ...") in `lang/en_us.json`. Code-driven ones use the `granted` impossible criterion.
@@ -103,7 +105,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `ProgressiveAdventure`: entrypoint, registers all events
 - `config/PamConfig`: all balance numbers (defaults in code). `config/progressive_adventure.json` holds only
   overrides; `config/progressive_adventure.defaults.json` is a reference rewritten every start, never read
-- `data/PlayerProgress`: immutable per-player record (kills, skill xp, foods, biomes, owned perks)
+- `data/PlayerProgress`: immutable per-player record (kills, skill xp, foods, biomes, owned perks, elite kills and traits per mob)
 - `data/ProgressionSnapshot`: server-derived values synced for the UI (rank, hearts, stomach, perk points)
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
@@ -111,7 +113,9 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
   xp, extra harvests, Replant/Harvester/Rancher), `Archery` (arrow-hit xp, draw speed, arrow perks),
   `PlacedBlocks` anti-cheese
-- `bestiary/Bestiary`: familiarity tiers → damage multiplier
+- `bestiary/Bestiary`: familiarity tiers → damage multiplier, what each tier unlocks (labels known/familiar/expert/master),
+  assist kills (CombatTracker entries via `CombatTrackerAccessor`), Master double loot, collections; `BestiaryInfo`:
+  answers the mob page's request (drop chances sampled from the loot table, cached; unlock rank; elite traits)
 - `world/MobUnlocks`: which hostile mobs may spawn naturally at a rank (lowest rank of nearby players),
   unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
   (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone; `world/EliteTrait`: traits
@@ -124,10 +128,10 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
-  `NameWaypointPayload`, `WaypointTeleportPayload`; S2C `OpenWaypointNamePayload`, `OpenWaypointListPayload`
-  open client screens; server validates in `PamNetworking`
+  `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
+  `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
-  `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam waypoint list|tp|remove` (ops)
+  `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
@@ -138,7 +142,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Client (`src/client/java/.../client/`): K keybind; `BlockSense` (Ore/Treasure/Relic Sense particle trails); `AirMoves`
   (Double Jump and Mantle: client moves itself, then tells the server); client mixin on the lightmap
   (Cat's Eyes); `screen/AdventureScreen` with
-  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (custom-drawn, simple Button tabs);
+  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (grid + mob page, custom-drawn, simple Button tabs);
+  `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);
   `WaypointNameScreen`, `WaypointListScreen`
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under

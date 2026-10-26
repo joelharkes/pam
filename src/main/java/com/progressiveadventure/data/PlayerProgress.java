@@ -20,10 +20,13 @@ import java.util.Set;
  * @param perks      ids of owned perks
  * @param crops      block ids of distinct crops harvested
  * @param bred       entity type ids of distinct animals bred
+ * @param eliteKills elite kills per entity type id (bestiary elite records)
+ * @param eliteTraits traits of defeated elites, as "entity type id/trait id"
  */
 public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> skillXp, Set<String> foodsEaten, Set<String> biomes,
-		Set<String> perks, Set<String> crops, Set<String> bred) {
-	public static final PlayerProgress EMPTY = new PlayerProgress(Map.of(), Map.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
+		Set<String> perks, Set<String> crops, Set<String> bred, Map<String, Integer> eliteKills, Set<String> eliteTraits) {
+	public static final PlayerProgress EMPTY = new PlayerProgress(Map.of(), Map.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(),
+			Map.of(), Set.of());
 
 	private static final Codec<Set<String>> STRING_SET = Codec.STRING.listOf().xmap(Set::copyOf, List::copyOf);
 
@@ -34,11 +37,17 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 			STRING_SET.optionalFieldOf("biomes", Set.of()).forGetter(PlayerProgress::biomes),
 			STRING_SET.optionalFieldOf("perks", Set.of()).forGetter(PlayerProgress::perks),
 			STRING_SET.optionalFieldOf("crops", Set.of()).forGetter(PlayerProgress::crops),
-			STRING_SET.optionalFieldOf("bred", Set.of()).forGetter(PlayerProgress::bred)
+			STRING_SET.optionalFieldOf("bred", Set.of()).forGetter(PlayerProgress::bred),
+			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("elite_kills", Map.of()).forGetter(PlayerProgress::eliteKills),
+			STRING_SET.optionalFieldOf("elite_traits", Set.of()).forGetter(PlayerProgress::eliteTraits)
 	).apply(instance, PlayerProgress::new));
 
 	public int killsOf(String entityType) {
 		return kills.getOrDefault(entityType, 0);
+	}
+
+	public int eliteKillsOf(String entityType) {
+		return eliteKills.getOrDefault(entityType, 0);
 	}
 
 	public int xpOf(String skill) {
@@ -48,37 +57,47 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 	public PlayerProgress withKills(String entityType, int amount) {
 		Map<String, Integer> copy = new HashMap<>(kills);
 		copy.merge(entityType, amount, Integer::sum);
-		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks, crops, bred);
+		// A count of 0 (only from /pam kills) means not discovered, so it mustn't count as a defeated type
+		copy.remove(entityType, 0);
+		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withSkillXp(String skill, int amount) {
 		Map<String, Integer> copy = new HashMap<>(skillXp);
 		copy.merge(skill, amount, Integer::sum);
-		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks, crops, bred);
+		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withFood(String item) {
-		return new PlayerProgress(kills, skillXp, add(foodsEaten, item), biomes, perks, crops, bred);
+		return new PlayerProgress(kills, skillXp, add(foodsEaten, item), biomes, perks, crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withBiome(String biome) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, add(biomes, biome), perks, crops, bred);
+		return new PlayerProgress(kills, skillXp, foodsEaten, add(biomes, biome), perks, crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withPerk(String perk) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, add(perks, perk), crops, bred);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, add(perks, perk), crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withoutPerks() {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of(), crops, bred);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of(), crops, bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withCrop(String crop) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, add(crops, crop), bred);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, add(crops, crop), bred, eliteKills, eliteTraits);
 	}
 
 	public PlayerProgress withBred(String entityType) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, add(bred, entityType));
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, add(bred, entityType), eliteKills, eliteTraits);
+	}
+
+	/** @param trait trait id, or null for an elite without one */
+	public PlayerProgress withEliteKill(String entityType, String trait) {
+		Map<String, Integer> copy = new HashMap<>(eliteKills);
+		copy.merge(entityType, 1, Integer::sum);
+		Set<String> traits = trait == null ? eliteTraits : add(eliteTraits, entityType + "/" + trait);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, Map.copyOf(copy), traits);
 	}
 
 	private static Set<String> add(Set<String> set, String value) {

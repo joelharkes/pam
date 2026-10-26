@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- **Bestiary pages:** click a mob in the Bestiary tab to see where to find it, its 3D model and, as you
+  get to know it, its stats and a tip (Known), its drops (Familiar) and exact drop chances (Expert).
+  Master gives a 50% chance of double loot from that mob.
+- **Bestiary collections:** 7 new advancements in the Adventure tab (Night Watch, Deep Sea Hunter, Raid
+  Breaker, Nether Hunter, End Hunter, Master Hunter, Trait Collector). They give Adventure Rank, no hearts.
+- **Elite records:** a mob's page shows how many Tough ones you defeated and which traits you've beaten.
+- **Assist kills:** everyone who hurt a mob during the fight gets the bestiary kill, not only the last hit.
+- A new bestiary entry now shows a toast instead of a message above the hotbar.
+- New settings: `masterDoubleLootChance`, `assistKills`. Ops: `/pam kills <mob> <count> [player]`.
+
 ## 0.4.0 (Alpha): first public release
 
 First version on Modrinth. Everything below is new.

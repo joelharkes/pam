@@ -1,5 +1,6 @@
 package com.progressiveadventure.network;
 
+import com.progressiveadventure.bestiary.BestiaryInfo;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Progression;
@@ -27,7 +28,10 @@ public final class PamNetworking {
 		PayloadTypeRegistry.serverboundPlay().register(NameWaypointPayload.TYPE, NameWaypointPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(WaypointTeleportPayload.TYPE, WaypointTeleportPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointNamePayload.TYPE, OpenWaypointNamePayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(BestiaryInfoRequestPayload.TYPE, BestiaryInfoRequestPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointListPayload.TYPE, OpenWaypointListPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(BestiaryInfoPayload.TYPE, BestiaryInfoPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(BestiaryDiscoveredPayload.TYPE, BestiaryDiscoveredPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(BuyPerkPayload.TYPE, (payload, context) -> buy(context.player(), payload.perkId()));
 		ServerPlayNetworking.registerGlobalReceiver(ResetPerksPayload.TYPE, (payload, context) -> reset(context.player()));
@@ -36,6 +40,8 @@ public final class PamNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(NameWaypointPayload.TYPE, (payload, context) -> Waypoints.onName(context.player(), payload.pos(), payload.name()));
 		ServerPlayNetworking.registerGlobalReceiver(WaypointTeleportPayload.TYPE,
 				(payload, context) -> Waypoints.onTeleportRequest(context.player(), payload.from(), payload.target()));
+		ServerPlayNetworking.registerGlobalReceiver(BestiaryInfoRequestPayload.TYPE,
+				(payload, context) -> BestiaryInfo.onRequest(context.player(), payload.entityType()));
 	}
 
 	private static void buy(ServerPlayer player, String perkId) {

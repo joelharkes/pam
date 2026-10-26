@@ -29,6 +29,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 				context.client().gui.setScreen(new WaypointNameScreen(payload.pos(), payload.shardCost(), payload.currentName())));
 		ClientPlayNetworking.registerGlobalReceiver(OpenWaypointListPayload.TYPE, (payload, context) ->
 				context.client().gui.setScreen(new WaypointListScreen(payload)));
+		BestiaryClient.init();
 
 		ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
 			BlockSense.tick(minecraft);

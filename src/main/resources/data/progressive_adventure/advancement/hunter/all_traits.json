@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/elite",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:totem_of_undying"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.all_traits.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.all_traits.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

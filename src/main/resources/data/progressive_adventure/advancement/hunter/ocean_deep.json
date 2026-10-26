@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/night_watch",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:nautilus_shell"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.ocean_deep.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.ocean_deep.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

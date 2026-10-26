@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/night_watch",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:crossbow"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.raiders.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.raiders.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

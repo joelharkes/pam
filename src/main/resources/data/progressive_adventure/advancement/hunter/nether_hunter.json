@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/night_watch",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:blaze_rod"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.nether_hunter.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.nether_hunter.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -74,6 +74,10 @@ public class PamConfig {
 			new FamiliarityTier(60, 0.35, "expert"),
 			new FamiliarityTier(100, 0.50, "master"),
 			new FamiliarityTier(250, 0.55, "master"));
+	// Master (tier label "master"): chance that a mob's normal loot drops a second time when you get the kill
+	public double masterDoubleLootChance = 0.5;
+	// Players who hurt a mob during the fight also get the bestiary kill (not only the one who landed the last hit)
+	public boolean assistKills = true;
 
 	// Perks: points per completed advancement by frame
 	public int perkPointsTask = 1;

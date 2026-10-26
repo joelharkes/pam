@@ -32,6 +32,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -68,6 +69,13 @@ public final class PamCommand {
 										.executes(context -> setSkill(context, context.getSource().getPlayerOrException()))
 										.then(Commands.argument("player", EntityArgument.player())
 												.executes(context -> setSkill(context, EntityArgument.getPlayer(context, "player")))))))
+				// Test helper for ops: set bestiary kills to try familiarity tiers without grinding
+				.then(Commands.literal("kills").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.argument("mob", StringArgumentType.word())
+								.then(Commands.argument("count", IntegerArgumentType.integer(0, 10000))
+										.executes(context -> setKills(context, context.getSource().getPlayerOrException()))
+										.then(Commands.argument("player", EntityArgument.player())
+												.executes(context -> setKills(context, EntityArgument.getPlayer(context, "player")))))))
 				// Waypoint tools for ops: list all, travel for free, remove one (turns the stone off, drops its shards)
 				.then(Commands.literal("waypoint").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 						.then(Commands.literal("list").executes(PamCommand::listWaypoints))
@@ -123,6 +131,21 @@ public final class PamCommand {
 		Component name = Component.translatable("skill.progressive_adventure." + skill.id);
 		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.skill_set",
 				target.getDisplayName(), name, level), true);
+		return 1;
+	}
+
+	private static int setKills(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+		String mob = StringArgumentType.getString(context, "mob");
+		Identifier id = Identifier.tryParse(mob);
+		if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.kills_set.unknown", mob));
+			return 0;
+		}
+		EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(id);
+		int count = IntegerArgumentType.getInteger(context, "count");
+		Bestiary.setKills(target, type, count);
+		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.kills_set",
+				target.getDisplayName(), type.getDescription(), count), true);
 		return 1;
 	}
 

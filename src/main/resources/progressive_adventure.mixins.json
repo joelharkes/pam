@@ -7,6 +7,7 @@
 		"AnimalMixin",
 		"BlockItemMixin",
 		"BoneMealItemMixin",
+		"CombatTrackerAccessor",
 		"ConsumeItemTriggerMixin",
 		"FarmlandBlockMixin",
 		"FoodDataMixin",
