@@ -756,6 +756,10 @@ Players can suggest more through the GitHub issue forms.
 - Show the stomach level as a small icon next to the hunger bar.
 
 ### Perks
+- **Lose less hunger when healing (2026-10-26, next session):** a Survival perk (maybe tiered) that makes natural
+  heart regeneration cost less hunger. Vanilla adds 6 exhaustion per half heart healed (both the fast saturation
+  heal and the normal one); the perk scales that down, e.g. −25% / −50%. Likely the same `FoodData` mixin as the
+  hunger multipliers. Check how it stacks with the stomach (Metabolism) multipliers.
 - A trail home (to bed/spawn), like the Sense perks.
 - Wall Slide.
 - Auto-smelt.
