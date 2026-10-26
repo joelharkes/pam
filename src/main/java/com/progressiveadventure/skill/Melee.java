@@ -70,7 +70,13 @@ public final class Melee {
 	public static void onDamage(LivingEntity victim, DamageSource source, float damageTaken, boolean blocked) {
 		ServerPlayer player = meleeAttacker(source);
 		PamConfig config = PamConfig.get();
-		if (player == null || !(victim instanceof Mob mob) || blocked || damageTaken < config.meleeMinHitDamage) {
+		if (player == null || !(victim instanceof Mob mob) || blocked) {
+			return;
+		}
+		if (source.is(DamageTypes.MACE_SMASH)) {
+			MeleeMoves.onSmashHit(player, victim);
+		}
+		if (damageTaken < config.meleeMinHitDamage) {
 			return;
 		}
 		Skills.addXp(player, Skill.MELEE, config.meleeHitXp);
@@ -191,6 +197,9 @@ public final class Melee {
 		ServerPlayer player = meleeAttacker(source);
 		if (player != null && victim instanceof Mob) {
 			Skills.addXp(player, Skill.MELEE, PamConfig.get().meleeHitXp + PamConfig.get().meleeKillXp);
+			if (source.is(DamageTypes.MACE_SMASH)) {
+				MeleeMoves.onSmashHit(player, victim);
+			}
 		}
 	}
 

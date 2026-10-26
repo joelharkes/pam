@@ -129,6 +129,13 @@ public class PamConfig {
 	// Sunder: a fully charged axe hit lowers the mob's armor by this share for sunderSeconds
 	public double sunderArmorReduction = 0.5;
 	public int sunderSeconds = 5;
+	// Shockwave: share of vanilla's extra mace smash damage (from the fall) that the hostile mobs around take
+	public double shockwaveDamageRatio = 0.3;
+	// Running Charge: a player on foot counts this much faster for the spear charge (sprint ~5.6 blocks/s; the iron
+	// spear knocks riders off from 11)
+	public double runningChargeSpeedMultiplier = 1.75;
+	// Pinning Jab: Slowness II time for every hostile mob a spear jab hits
+	public int pinningJabSlownessTicks = 30;
 	// Parry / Deflect: a hit blocked at most parryWindowTicks after the shield starts blocking (the shield itself needs
 	// 5 ticks first). Parry sends the hit back to the attacker (at most parryMaxDamage, 8 = 4 hearts) with knockback.
 	public int parryWindowTicks = 10;

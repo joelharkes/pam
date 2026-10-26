@@ -23,6 +23,9 @@
   hurts the other mobs nearby more), **Whirlwind** (sneak while you sweep to hit every hostile mob around you),
   **Disarm** (knock the weapon out of a mob's hand), and for axes **Heavy Swing** (big knockback) and **Sunder**
   (cracks the mob's armor for a few seconds).
+- **Mace and spear perks:** **Ground Pound** (sneak in the air with a mace to slam down), **Shockwave** (your
+  smash also hurts the mobs around you), **Running Charge** (stronger spear charge on foot) and **Pinning Jab**
+  (your jab slows mobs).
 - **Shield perks** (Defense): **Shield Bash** (attack with your shield up to push mobs away), **Parry** (raise your
   shield just before a hit and the attacker gets hurt instead) and **Deflect** (arrows fly back at the shooter).
 - **Careful Sweep** (Melee): your sword sweep no longer hurts your pets, villagers or golems.

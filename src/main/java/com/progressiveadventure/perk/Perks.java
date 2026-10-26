@@ -92,6 +92,10 @@ public final class Perks {
 	public static final Perk DISARM = register("disarm", PerkCategory.MELEE, "sword", Items.TRIPWIRE_HOOK, 2, new SkillLevel(Skill.MELEE, 15), null);
 	public static final Perk HEAVY_SWING = register("heavy_swing", PerkCategory.MELEE, "axe", Items.IRON_AXE, 2, new SkillLevel(Skill.MELEE, 10), null);
 	public static final Perk SUNDER = register("sunder", PerkCategory.MELEE, "axe", Items.DIAMOND_AXE, 3, new SkillLevel(Skill.MELEE, 20), null);
+	public static final Perk GROUND_POUND = register("ground_pound", PerkCategory.MELEE, "mace", Items.MACE, 3, new SkillLevel(Skill.MELEE, 15), null);
+	public static final Perk SHOCKWAVE = register("shockwave", PerkCategory.MELEE, "mace", Items.HEAVY_CORE, 4, new SkillLevel(Skill.MELEE, 30), null);
+	public static final Perk RUNNING_CHARGE = register("running_charge", PerkCategory.MELEE, "spear", Items.IRON_SPEAR, 2, new SkillLevel(Skill.MELEE, 10), null);
+	public static final Perk PINNING_JAB = register("pinning_jab", PerkCategory.MELEE, "spear", Items.COBWEB, 2, new SkillLevel(Skill.MELEE, 15), null);
 
 	public static final Perk STURDY_ARMOR_1 = register("sturdy_armor_1", PerkCategory.DEFENSE, Items.LEATHER_CHESTPLATE, 1, new MobTypes(5), null);
 	public static final Perk STURDY_ARMOR_2 = register("sturdy_armor_2", PerkCategory.DEFENSE, Items.IRON_CHESTPLATE, 2, new MobTypes(10), "sturdy_armor_1");

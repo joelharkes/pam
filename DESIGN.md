@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-25):** 0.4.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 97 perks in 10
+Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 109 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -276,8 +276,8 @@ and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays a
 ### 3e. Melee skill
 
 One skill for every hand-to-hand weapon (sword, axe, mace, spear, trident stab), with perks grouped by weapon in
-the Melee perk category. Built in slices: a (skill, Wide Sweep, Hearty Kill), b (Whirlwind, Disarm, axe perks) and
-c (shield perks, in Defense) are built, d is in [Ideas](#ideas).
+the Melee perk category. Built in four slices on 2026-10-26: a (skill, Wide Sweep, Hearty Kill), b (Whirlwind, Disarm, axe perks), c (shield
+perks, in Defense), d (mace and spear).
 
 - **XP:** 1 per hit on a mob that deals at least 2 damage (1 heart), 4 for a kill. The minimum stops spam-clicked
   weak hits (cooldown not filled) from counting. Sweeps, mace smashes and spear attacks count; thorns and
@@ -300,6 +300,10 @@ c (shield perks, in Defense) are built, d is in [Ideas](#ideas).
 | Sword | Disarm | 15% per sword hit: the mob's main-hand item drops next to it (skeletons then walk up and punch; zombies may pick it up again) | Melee 15 | 2 |
 | Axe | Heavy Swing | Fully charged axe hit: extra knockback (1.0) and Slowness II for 2 s | Melee 10 | 2 |
 | Axe | Sunder | Fully charged axe hit: the mob's armor −50% for 5 s (shield-break sound, crit sparks). The answer to elites in diamond gear | Melee 20 | 3 |
+| Mace | Ground Pound | Holding a mace in the air (at least 2 blocks up), press sneak: dive straight down (1.5 blocks/tick). No fall damage on landing; hostile mobs within 3.5 blocks are pushed away like by vanilla's smash | Melee 15 | 3 |
+| Mace | Shockwave | A mace smash that hits a mob, and a Ground Pound landing, also hurt the hostile mobs within 3.5 blocks for 30% of vanilla's fall bonus (e.g. 5 blocks: 16 → ~5 damage) | Melee 30 | 4 |
+| Spear | Running Charge | On foot, the spear charge counts your speed ×1.75 (sprint ≈ 5.6 → 9.8 blocks/s): more charge damage, and riders get knocked off (iron spear: 11) | Melee 10 | 2 |
+| Spear | Pinning Jab | Every hostile mob a jab hits gets Slowness II for 1.5 s | Melee 15 | 2 |
 
 - "Fully charged" = cooldown over 90%, like vanilla's crit/sweep check. Vanilla resets the strength before the hit
   lands, so `PlayerMixin` stores it at the start of `Player.attack` (`PlayerAttackAccess`).
@@ -308,6 +312,15 @@ c (shield perks, in Defense) are built, d is in [Ideas](#ideas).
 - Sunder: a transient `armor` modifier (multiply total −0.5) that `Melee.tick` removes after 5 s. It lands with the
   hit, so it helps the *next* hits, not the one that cracked the armor. Disarm and the axe perks run on hits that
   give Melee XP (≥ 1 heart).
+- Ground Pound is a client move (`AirMoves`, sneak pressed in the air, `GroundPoundPayload`); the server remembers
+  the dive and handles the landing in `Player.causeFallDamage` instead of fall damage (forgotten on the ground, after 10 s, in water
+  or gliding). The dive keeps fall distance, so hitting a mob mid-dive is a big vanilla smash.
+- Vanilla already does what the first ideas for these were: the mace smash pushes everything within 3.5 blocks
+  (so Shockwave deals damage instead of pushing) and the spear jab already hits every mob along its reach (so
+  Skewer became Pinning Jab). A sprint already passes the spear's damage and knockback speeds, so Running Charge
+  mostly adds damage and the dismount.
+- Running Charge scales the attacker's speed in `KineticWeapon.damageEntities` (first `dot`); Pinning Jab wraps
+  `stabAttack` in `PiercingWeapon.attack`. Shockwave hits use player-attack damage (they count as Melee hits).
 
 Hearty Kill (heal on a kill) is in Survival, since it works with any weapon.
 
@@ -504,7 +517,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
-  97 perks costs **232**, so early on you choose and owning everything is out of reach until more milestones
+  109 perks costs **261**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -724,15 +737,6 @@ it's new); when it gets built, move its description into the pillars above and l
 Players can suggest more through the GitHub issue forms.
 
 ### New skills
-- **Melee skill, slice d (2026-10-26, decided; a–c built, see 3e).** Perks change *how* you fight
-  (crowds, control, moves), never the main hit's damage. Active moves only hit hostile mobs (the Steady Aim
-  filter: never pets, villagers or players).
-  - **d. Mace and spear:** **Ground Pound** (mace): sneak in the air to slam straight down; client move like
-    Double Jump/Mantle (`AirMoves`), combos with Double Jump. **Shockwave** (mace): a smash attack pushes back
-    every hostile mob around where you land. **Skewer** (spear): the jab pierces 1–2 more mobs. **Charge on
-    Foot** (spear): a sprinting charge counts like a mounted one. Longer spear reach was considered and left out
-    (a quiet number; the spear's reach is its `AttackRange` item component, so the reach attribute doesn't
-    touch it).
 - **Campfire Catch / Auto-smelt (2026-10-26):** fish come out cooked; a matching Mining perk that smelts ores.
   Left out of Fishing for now.
 
@@ -971,6 +975,10 @@ Players can suggest more through the GitHub issue forms.
   other Defense perks. Parry window 10 ticks after the shield starts blocking; reflected damage capped at 4 hearts
   and dealt as thorns (credited to the player, no Melee hit XP; a parry gives its own 3 XP). Shield Bash is a
   client-detected attack click while blocking (vanilla ignores those), 1 s cooldown, pushes only (no damage).
+- 2026-10-26: **Melee slice d (mace, spear):** vanilla already pushes mobs on a mace smash and the spear jab already
+  hits every mob in its line, so Shockwave deals damage (30% of the fall bonus, hostile mobs only) and Skewer was
+  replaced by Pinning Jab (slow). Ground Pound is a client air move like Double Jump, landing handled on the server
+  instead of fall damage. Running Charge ×1.75 on-foot speed. Melee now has 15 perks in 5 groups; all perks cost 261.
 
 ## Playtest checklist
 
@@ -987,7 +995,11 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   stronger, armor back after 5 s. **Slice c:** Parry timing feels fair on a server (raise just before the zombie
   hits); reflected damage, knockback, clang + "Parry!"; holding the shield up doesn't parry. Deflect: skeleton arrow
   flies back and hits it (aim OK at 10-20 blocks?). Shield Bash: left-click with shield up pushes zombies/creepers,
-  works with the shield in either hand, not spammable. Tridents: throw charge faster with Archery, thrown hits give
+  works with the shield in either hand, not spammable. **Slice d:** Ground Pound (mace, jump or fall, press sneak):
+  dive feels good, no fall damage, mobs pushed, no rubber-band on a server; not too low (2 blocks); water landing
+  doesn't leave it "stuck" (next normal fall still hurts). Shockwave hurts mobs around a smash and a pound landing.
+  Running Charge: sprinting spear charge clearly stronger, can knock a skeleton jockey off. Pinning Jab slows.
+  Perk list: 5 Melee headings (Any weapon, Sword, Axe, Mace, Spear) scroll fine. Tridents: throw charge faster with Archery, thrown hits give
   Archery XP, Loyal Trident brings a plain trident back (a mixin failure would crash on the first throw).
 
 - **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs

@@ -4,9 +4,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.progressiveadventure.access.PlayerAttackAccess;
 import com.progressiveadventure.skill.Melee;
+import com.progressiveadventure.skill.MeleeMoves;
 import com.progressiveadventure.skill.Skills;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,6 +48,14 @@ public abstract class PlayerMixin implements PlayerAttackAccess {
 	@Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
 	private void pam$applySkillSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
 		cir.setReturnValue(cir.getReturnValueF() * Skills.speedMultiplier((Player) (Object) this, state));
+	}
+
+	/** Ground Pound: the landing of a dive pushes mobs away instead of hurting the player. */
+	@Inject(method = "causeFallDamage", at = @At("HEAD"), cancellable = true)
+	private void pam$groundPoundLanding(double fallDistance, float multiplier, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+		if ((Object) this instanceof ServerPlayer player && MeleeMoves.onLanding(player, fallDistance)) {
+			cir.setReturnValue(false);
+		}
 	}
 
 	/** Careful Sweep: sword sweeps don't hurt pets, villagers or golems next to the mob you hit. */

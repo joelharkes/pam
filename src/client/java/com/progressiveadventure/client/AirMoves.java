@@ -1,8 +1,10 @@
 package com.progressiveadventure.client;
 
 import com.progressiveadventure.network.DoubleJumpPayload;
+import com.progressiveadventure.network.GroundPoundPayload;
 import com.progressiveadventure.network.MantlePayload;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.skill.MeleeMoves;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -18,18 +20,24 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * Double Jump and Mantle. Player movement is client-driven, so the client moves itself right away and tells the
- * server, which checks the perk and resets fall distance. One of each per time in the air.
+ * Double Jump, Mantle and Ground Pound. Player movement is client-driven, so the client moves itself right away and
+ * tells the server, which checks the perk and resets fall distance (Ground Pound: handles the landing). One of each
+ * per time in the air.
  */
 final class AirMoves {
 	/** Lowest and highest ledge (above the feet) Mantle grabs; lower ones a normal jump already reaches. */
 	private static final double MIN_LEDGE = 0.6;
 	private static final double MAX_LEDGE = 1.9;
+	/** Ground Pound: how fast the dive goes down (blocks/tick) and how high above the ground it must start. */
+	private static final double POUND_SPEED = 1.5;
+	private static final double POUND_MIN_HEIGHT = 2.0;
 
 	private static boolean wasJumpDown;
 	private static boolean wasAirborne;
 	private static boolean doubleJumped;
 	private static boolean mantled;
+	private static boolean wasSneakDown;
+	private static boolean pounded;
 
 	private AirMoves() {
 	}
@@ -42,6 +50,9 @@ final class AirMoves {
 		boolean jumpDown = player.input.keyPresses.jump();
 		boolean jumpPressed = jumpDown && !wasJumpDown;
 		wasJumpDown = jumpDown;
+		boolean sneakDown = player.input.keyPresses.shift();
+		boolean sneakPressed = sneakDown && !wasSneakDown;
+		wasSneakDown = sneakDown;
 		// The normal jump from the ground already happened this tick, so only count presses that start in the air
 		boolean airborne = wasAirborne;
 		wasAirborne = !player.onGround();
@@ -49,13 +60,19 @@ final class AirMoves {
 		if (player.onGround() || player.isInWater() || player.isInLava() || player.onClimbable()) {
 			doubleJumped = false;
 			mantled = false;
+			pounded = false;
 			return;
 		}
 		if (player.getAbilities().flying || player.isFallFlying() || player.isPassenger()) {
 			return;
 		}
 
-		if (jumpDown && !mantled && Perks.has(player, Perks.MANTLE) && tryMantle(player)) {
+		if (sneakPressed && !pounded && MeleeMoves.canGroundPound(player)
+				&& player.level().noCollision(player, player.getBoundingBox().move(0, -POUND_MIN_HEIGHT, 0))) {
+			pounded = true;
+			player.setDeltaMovement(player.getDeltaMovement().x * 0.2, -POUND_SPEED, player.getDeltaMovement().z * 0.2);
+			ClientPlayNetworking.send(new GroundPoundPayload());
+		} else if (jumpDown && !mantled && Perks.has(player, Perks.MANTLE) && tryMantle(player)) {
 			mantled = true;
 			ClientPlayNetworking.send(new MantlePayload());
 		} else if (jumpPressed && airborne && !doubleJumped && Perks.has(player, Perks.DOUBLE_JUMP) && !wearsGlider(player)) {

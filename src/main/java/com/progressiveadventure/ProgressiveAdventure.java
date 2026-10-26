@@ -14,6 +14,7 @@ import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.Melee;
+import com.progressiveadventure.skill.MeleeMoves;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
 import com.progressiveadventure.waypoint.WaypointContent;
@@ -58,6 +59,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			Trackers.onServerStopped();
 			PerkEffects.onServerStopped();
 			Melee.onServerStopped();
+			MeleeMoves.onServerStopped();
 			ShieldPerks.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
@@ -123,6 +125,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			MovementPerks.tick(server);
 			PerkEffects.tick();
 			Melee.tick();
+			MeleeMoves.tick(server);
 			Waypoints.tick(server);
 			// Last, so changes from the handlers above go out in the same packet
 			PamAttachments.flushAllProgress();
