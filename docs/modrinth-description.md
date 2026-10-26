@@ -26,14 +26,15 @@ Early on you get hungry quickly and food fills you up less. Eating different foo
 crops levels up your **stomach**, until you're better off than in vanilla.
 
 ### Get better by doing
-Six skills level up as you use them: **Mining**, **Woodcutting**, **Digging**, **Farming**,
-**Archery** and **Fishing**. Higher levels mean faster tools, extra harvests, quicker bow draws and faster bites.
+Seven skills level up as you use them: **Mining**, **Woodcutting**, **Digging**, **Farming**,
+**Melee**, **Archery** and **Fishing**. Higher levels mean faster tools, extra harvests, faster attacks, quicker
+bow draws and faster bites.
 
 ![Woodcutting level up](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/woodcutting_level_1.jpg)
 
 ### Adventure Rank and perks
 Every advancement raises your **Adventure Rank**, and every Rank is a **perk point**. Spend them
-on **91 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Ore Sense,
+on **97 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
 Press **K** to open the Adventure screen.

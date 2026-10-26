@@ -8,9 +8,9 @@ public enum PerkCategory {
 	WOODCUTTING("woodcutting", Items.IRON_AXE),
 	DIGGING("digging", Items.IRON_SHOVEL),
 	FARMING("farming", Items.IRON_HOE),
+	MELEE("melee", Items.IRON_SWORD),
 	ARCHERY("archery", Items.BOW),
 	FISHING("fishing", Items.FISHING_ROD),
-	COMBAT("combat", Items.IRON_SWORD),
 	DEFENSE("defense", Items.IRON_CHESTPLATE),
 	SURVIVAL("survival", Items.GOLDEN_APPLE),
 	MOVEMENT("movement", Items.IRON_BOOTS);

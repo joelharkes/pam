@@ -20,7 +20,8 @@
 		"PlayerListMixin",
 		"PlayerMixin",
 		"ProjectileWeaponItemMixin",
-		"ShovelItemMixin"
+		"ShovelItemMixin",
+		"ThrownTridentMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

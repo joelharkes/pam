@@ -70,6 +70,14 @@ public class PamConfig {
 	public int fishingJunkXp = 2;
 	public int fishingTreasureXp = 10;
 
+	// Melee: attack speed bonus (how fast the attack cooldown fills) uses the same curve as speedBonusCurve, but
+	// starts at 0. Xp for hits on a mob dealing at least meleeMinHitDamage (so spam-clicked weak hits give nothing);
+	// a kill gives meleeHitXp + meleeKillXp.
+	public double meleeMaxAttackSpeedBonus = 0.3;
+	public int meleeHitXp = 1;
+	public int meleeKillXp = 3;
+	public float meleeMinHitDamage = 2f;
+
 	// Bestiary: damage modifier per kill threshold, sorted by kills
 	public List<FamiliarityTier> familiarityTiers = List.of(
 			new FamiliarityTier(0, -0.15, "unknown"),
@@ -111,6 +119,13 @@ public class PamConfig {
 	public double archaeologistChance = 0.03;
 	public float secondWindHealthThreshold = 6f;
 	public int secondWindCooldownSeconds = 120;
+	// Wide Sweep: added to the sweeping damage ratio (vanilla sweep = 1 + ratio x hit damage; Sweeping Edge III adds 0.75)
+	public List<Double> wideSweepRatios = List.of(0.25, 0.5);
+	// Hearty Kill: health healed per hostile mob kill (2 = one heart), at most once per heartyKillCooldownTicks
+	public List<Double> heartyKillHeals = List.of(1.0, 2.0, 3.0);
+	public int heartyKillCooldownTicks = 20;
+	// Loyal Trident: Loyalty level given to thrown tridents without Loyalty (higher returns faster)
+	public int loyalTridentLoyalty = 1;
 	// Oxygen bonus works like Respiration: each point adds ~15s of air
 	public List<Double> deepBreathOxygenBonuses = List.of(1.0, 2.0, 3.0);
 	public double softLandingBlocks = 3.0;

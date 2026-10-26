@@ -7,6 +7,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.ProgressionSnapshot;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.skill.Melee;
 import com.progressiveadventure.world.MobUnlocks;
 
 import net.minecraft.ChatFormatting;
@@ -42,6 +43,8 @@ public final class Progression {
 	private static final Identifier LONG_ARMS_MODIFIER = ProgressiveAdventure.id("perk_long_arms");
 	private static final Identifier LUCKY_MODIFIER = ProgressiveAdventure.id("perk_lucky");
 	private static final Identifier STEADY_STANCE_MODIFIER = ProgressiveAdventure.id("perk_steady_stance");
+	private static final Identifier MELEE_SPEED_MODIFIER = ProgressiveAdventure.id("skill_melee");
+	private static final Identifier WIDE_SWEEP_MODIFIER = ProgressiveAdventure.id("perk_wide_sweep");
 
 	/** @param rank Adventure Rank = perk points earned from all advancements */
 	public record Status(int rank, int halfHearts, int stomach) {
@@ -143,6 +146,13 @@ public final class Progression {
 				config.luckyLuck, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.STEADY_STANCE, Attributes.KNOCKBACK_RESISTANCE, STEADY_STANCE_MODIFIER,
 				config.steadyStanceKnockbackResistance, AttributeModifier.Operation.ADD_VALUE);
+		// Multiplies the total (weapon included): on the base it would be +0.3 x 4 = +1.2 attacks/s for every weapon
+		double meleeSpeed = Melee.attackSpeedBonus(player);
+		applyModifier(player, meleeSpeed > 0, Attributes.ATTACK_SPEED, MELEE_SPEED_MODIFIER,
+				meleeSpeed, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		int wideSweep = Perks.tier(player, Perks.WIDE_SWEEP_1, Perks.WIDE_SWEEP_2);
+		applyModifier(player, wideSweep > 0, Attributes.SWEEPING_DAMAGE_RATIO, WIDE_SWEEP_MODIFIER,
+				wideSweep > 0 ? PamConfig.listValue(config.wideSweepRatios, wideSweep - 1) : 0, AttributeModifier.Operation.ADD_VALUE);
 
 		Optional<PamConfig.MobUnlock> nextMobs = MobUnlocks.next(status.rank());
 		player.setAttached(PamAttachments.PROGRESSION, new ProgressionSnapshot(status.rank(),

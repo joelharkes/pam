@@ -12,6 +12,7 @@ import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
+import com.progressiveadventure.skill.Melee;
 import com.progressiveadventure.skill.PlacedBlocks;
 import com.progressiveadventure.skill.Skills;
 import com.progressiveadventure.waypoint.WaypointContent;
@@ -72,7 +73,9 @@ public class ProgressiveAdventure implements ModInitializer {
 				Trackers.onDeath(player);
 			} else if (source.getEntity() instanceof ServerPlayer player) {
 				Bestiary.onKill(player, entity, source);
+				PerkEffects.onKill(player, entity);
 				Archery.onKill(entity, source);
+				Melee.onKill(entity, source);
 			}
 			Elites.onDeath(entity, source);
 		});
@@ -86,6 +89,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			}
 			Elites.onDamage(entity, source, damageTaken);
 			Archery.onDamage(entity, source, damageTaken, blocked);
+			Melee.onDamage(entity, source, damageTaken, blocked);
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
 			Elites.onLoad(entity);

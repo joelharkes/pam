@@ -19,7 +19,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,6 +58,7 @@ public final class PerkEffects {
 			ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 
 	private static final Map<UUID, Long> SECOND_WIND_COOLDOWNS = new HashMap<>();
+	private static final Map<UUID, Long> HEARTY_KILL_COOLDOWNS = new HashMap<>();
 
 	/** Ticks to wait after felling before Clear Cut; leaves need up to 7 ticks to notice the logs are gone. */
 	private static final int CLEAR_CUT_DELAY_TICKS = 10;
@@ -87,6 +90,7 @@ public final class PerkEffects {
 	/** Forgets everything when the server stops: cooldowns are in world time, and queued Clear Cuts hold the old world. */
 	public static void onServerStopped() {
 		SECOND_WIND_COOLDOWNS.clear();
+		HEARTY_KILL_COOLDOWNS.clear();
 		CLEAR_CUTS.clear();
 		LEAF_BREAKS.clear();
 	}
@@ -425,5 +429,24 @@ public final class PerkEffects {
 		}
 		SECOND_WIND_COOLDOWNS.put(player.getUUID(), now + config.secondWindCooldownSeconds * 20L);
 		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
+	}
+
+	/**
+	 * Hearty Kill: killing a hostile mob (any weapon) heals a little. The short cooldown stops a sweep through a
+	 * crowd from healing several times at once.
+	 */
+	public static void onKill(ServerPlayer player, LivingEntity victim) {
+		int tier = Perks.tier(player, Perks.HEARTY_KILL_1, Perks.HEARTY_KILL_2, Perks.HEARTY_KILL_3);
+		if (tier == 0 || !(victim instanceof Enemy) || !player.isAlive() || player.getHealth() >= player.getMaxHealth()) {
+			return;
+		}
+		PamConfig config = PamConfig.get();
+		long now = player.level().getGameTime();
+		Long readyAt = HEARTY_KILL_COOLDOWNS.get(player.getUUID());
+		if (readyAt != null && now < readyAt) {
+			return;
+		}
+		HEARTY_KILL_COOLDOWNS.put(player.getUUID(), now + config.heartyKillCooldownTicks);
+		player.heal((float) PamConfig.listValue(config.heartyKillHeals, tier - 1));
 	}
 }

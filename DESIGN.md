@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-25):** 0.4.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 91 perks in 10
+Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 97 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -181,13 +181,14 @@ level 4 (~64 blocks) and cap near +60%.
 | Woodcutting | Axe blocks                       | Break speed                      |
 | Digging     | Shovel blocks                    | Break speed                      |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)    |
-| Archery     | Arrow hits on mobs, kills        | Bow/crossbow draw speed (see 3c) |
+| Melee       | Hand-to-hand hits on mobs, kills | Attack speed (see 3e)            |
+| Archery     | Arrow/trident hits on mobs, kills | Bow/crossbow/trident draw speed (see 3c) |
 | Fishing     | Catches (fish, junk, treasure)   | Bite speed (see 3d)              |
 
 - Level = floor(√(xp / 4)); bonus curve and numbers are in the config.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
-- The Character tab shows skills in two columns of 4 rows: 8 fit (7 planned with Fishing and Combat).
+- The Character tab shows skills in two columns of 4 rows: 8 fit (7 used).
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
@@ -230,8 +231,9 @@ level 4 (~64 blocks) and cap near +60%.
 
 - **XP:** 3 per arrow a player shot that hits a mob, 5 for a kill with it (raised from 1/3: hits
   are much rarer than mined blocks; Archery 20 ≈ 320 kills, 40 ≈ 1300). Any mob counts (animals
-  too), but not players, armor stands or blocked hits. Tridents don't count.
-- **Passive bonus:** bow and crossbow draw speed, 0% → +50% with the usual curve. No start
+  too), but not players, armor stands or blocked hits. Thrown tridents count like arrows (stabbing with one
+  trains Melee).
+- **Passive bonus:** bow, crossbow and trident draw speed, 0% → +50% with the usual curve. No start
   penalty: unknown mobs already take less damage early. The use timer itself runs faster, so the
   pull animation, zoom and crossbow charge match the real power.
 - **No damage perks:** the bestiary is the damage progression (and already counts arrows).
@@ -245,6 +247,9 @@ level 4 (~64 blocks) and cap near +60%.
 | Piercing Shot | Arrows fly through 1 extra mob (stacks with the Piercing enchantment) | Archery 15 | 2 |
 | Steady Aim | Arrows turn up to 2°/tick toward the hostile mob nearest their path (15° cone, 20 blocks, in sight). Neutral mobs only when they target you; never animals, villagers, pets | Archery 20 | 3 |
 | Ricochet | After hitting (or killing) a mob, a new arrow flies to the nearest other hostile mob within 8 blocks, with the same damage, fire and frost. Bounces once; can't be picked up | Archery 40 | 5 |
+| Loyal Trident | Thrown tridents come back like Loyalty I (tridents that already have Loyalty keep theirs) | Archery 15 | 2 |
+
+The arrow perks (Thrifty Quiver, Fire/Frost, Piercing Shot, Steady Aim, Ricochet) stay bows/crossbows only.
 
 Poison arrows were dropped: zombies and skeletons are immune, so it would look broken to kids.
 
@@ -267,6 +272,30 @@ Poison arrows were dropped: zombies and skeletons are immune, so it would look b
 Implementation: `FishingHookMixin` changes the wait and the reel window (`Mth.nextInt` calls in
 `catchingFish`), the caught items (`retrieve`, before the advancement trigger, so Double Catch fish count)
 and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays an idea, with auto-smelt for Mining.
+
+### 3e. Melee skill
+
+One skill for every hand-to-hand weapon (sword, axe, mace, spear, trident stab), with perks grouped by weapon in
+the Melee perk category. Built in slices; slice a is built, b–d are in [Ideas](#ideas).
+
+- **XP:** 1 per hit on a mob that deals at least 2 damage (1 heart), 4 for a kill. The minimum stops spam-clicked
+  weak hits (cooldown not filled) from counting. Sweeps, mace smashes and spear attacks count; thorns and
+  explosions don't. Like Archery: any mob, not players, armor stands or blocked hits.
+- **Passive bonus:** attack speed (how fast the attack cooldown fills), 0% → +30% with the usual curve, no start
+  penalty. An `attack_speed` modifier that multiplies the total, so every weapon gets the same share faster
+  (multiplying the base would add the same +1.2 attacks/s to a slow axe and a fast sword).
+- **No damage bonus on your main hit:** the bestiary is the damage progression. Wide Sweep only changes the
+  damage the *other* mobs take.
+- **Sweeps spare friends:** a sword sweep never hurts tamed pets, villagers or golems next to the mob you hit
+  (vanilla's sweep hits everything not on your team). Always on, not tied to a perk.
+
+| Group | Perk | Effect | Requires | Cost |
+|---|---|---|---|---|
+| Any weapon | Quick Study | Kills count double towards familiarity | 5 mob types defeated | 2 |
+| Sword | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability | 5 / 15 / 25 mob types | 1/2/3 |
+| Sword | Wide Sweep I/II | Sweep damage to the other mobs +25% / +50% of the hit (`sweeping_damage_ratio`, stacks with Sweeping Edge up to 1.0) | Melee 10 / 25 | 2/3 |
+
+Hearty Kill (heal on a kill) is in Survival, since it works with any weapon.
 
 ### 4. Bestiary: mob familiarity
 
@@ -444,8 +473,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
-  91 perks costs **216**, so early on you choose and owning (almost) everything is an endgame goal
-  that needs nearly every advancement. Players can suggest perks and milestones through the GitHub
+  97 perks costs **232**, so early on you choose and owning everything is out of reach until more milestones
+  come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
 #### Rules
@@ -484,9 +513,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 | Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single); each block uses durability | Digging 5 | 1 |
 | Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
 | Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
-| Combat      | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability        | 5 / 15 / 25 mob types defeated | 1/2/3 |
-| Combat      | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
-| Combat      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Melee       | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability        | 5 / 15 / 25 mob types defeated | 1/2/3 |
+| Melee       | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
 | Defense     | Sturdy Armor I/II/III | 10/20/30% chance armor uses no durability       | 5 / 10 / 15 mob types defeated | 1/2/3 |
 | Defense     | Blast Guard I/II    | 15% / 30% less damage from explosions               | 5 / 10 mob types    | 2/3  |
 | Defense     | Arrow Guard I/II    | 15% / 30% less damage from projectiles              | 5 / 10 mob types    | 2/3  |
@@ -498,6 +526,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 | Survival    | Long Arms           | +1.5 blocks block reach                             | Rank 10             | 2    |
 | Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
 | Survival    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
+| Survival    | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
 | Movement    | Spring Step         | Jump strength +0.08 (~1.7 blocks, over fences)      | Rank 5              | 2    |
@@ -617,16 +647,18 @@ Keep it simple and close to vanilla.
 │ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II          2 pts │  │
 │ │ Digging  │ │ ⛏ Sturdy Pickaxe III            🔒 │  │
 │ │ Farming  │ │ 💎 Prospector I              2 pts │  │
-│ │ Archery  │ │ 💎 Prospector II                🔒 │  │
-│ │ Combat   │ │                                    │  │
+│ │ Melee    │ │ 💎 Prospector II                🔒 │  │
+│ │ Archery  │ │                                    │  │
+│ │ Fishing  │ │                                    │  │
 │ │ Defense  │ │                                    │  │
 │ │ Survival │ │                                    │  │
 │ │ Movement │ │                                    │  │
-│ │ (Fishing)│ │                                    │  │
 │ └──────────┘ └────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────┘
 ```
-- The category column holds 10 rows of 19px: an 11th category needs a new layout.
+- The category column holds 10 rows of 19px: an 11th category needs a new layout (16px rows would fit 12).
+- Perks can have a **group** (Melee: one per weapon); the list then shows a small gold heading above each group,
+  so a long category reads as a few short lists.
 - Categories on the left, perks of the selected category on the right (scrolls when a
   category has more perks than fit). Hover a perk for its full description.
 - States: owned (✔), buyable (cost in gold, click the row), too expensive (cost in red),
@@ -661,11 +693,26 @@ it's new); when it gets built, move its description into the pillars above and l
 Players can suggest more through the GitHub issue forms.
 
 ### New skills
-- **Combat skill (2026-10-25):** something per weapon type (swords, axes, maces, spears/tridents), either one
-  skill per weapon or one Combat skill with a perk branch per weapon. The bestiary is already the damage
-  progression (same reason Archery has no damage perks), so the passive bonus should be something else, like
-  attack speed. One Combat skill with weapon perk branches (decided 2026-10-26: one skill, the 7th) fits the
-  two-column Character tab and uses the existing Combat perk category.
+- **Melee skill, slices b–d (2026-10-26, decided; slice a built, see 3e).** Perks change *how* you fight
+  (crowds, control, moves), never the main hit's damage. Active moves only hit hostile mobs (the Steady Aim
+  filter: never pets, villagers or players).
+  - **b. Sword and axe:** **Whirlwind** (sword): hitting a mob while sneaking hits every hostile mob within ~3
+    blocks around you, with a ring of sweep particles, for the sweep damage (so Wide Sweep makes it stronger).
+    Server only (the server knows you sneak when the hit lands). **Disarm** (sword): 10–15% chance a hit knocks
+    the weapon out of a mob's hand (a skeleton without a bow has to walk up; elite swords drop). **Sunder** (axe):
+    a fully charged axe hit ignores part of the mob's armor; the counter to elites in diamond gear. **Heavy
+    Swing** (axe): a fully charged hit knocks the mob far back and slows it briefly.
+  - **c. Shield (Defense category):** **Parry**: raise your shield just before a melee hit lands (window about
+    ½ s, generous because of server ping) and the attacker takes the damage back, capped (e.g. 4 hearts) so a
+    Ravager or a diamond elite is hurt but not one-shot, plus knockback. **Deflect** (needs Parry): a parried arrow
+    flies straight back at the shooter (vanilla bounces blocked arrows randomly). Explosions and the Warden's
+    sonic boom can't be parried. Parries give Melee XP. **Shield Bash**: hitting while blocking pushes mobs away.
+  - **d. Mace and spear:** **Ground Pound** (mace): sneak in the air to slam straight down; client move like
+    Double Jump/Mantle (`AirMoves`), combos with Double Jump. **Shockwave** (mace): a smash attack pushes back
+    every hostile mob around where you land. **Skewer** (spear): the jab pierces 1–2 more mobs. **Charge on
+    Foot** (spear): a sprinting charge counts like a mounted one. Longer spear reach was considered and left out
+    (a quiet number; the spear's reach is its `AttackRange` item component, so the reach attribute doesn't
+    touch it).
 - **Campfire Catch / Auto-smelt (2026-10-26):** fish come out cooked; a matching Mining perk that smelts ores.
   Left out of Fishing for now.
 
@@ -884,10 +931,28 @@ Players can suggest more through the GitHub issue forms.
   matching idea. XP raised to fish 4 / junk 2 / treasure 10 since catches are slow (1 xp each would need
   ~400 catches for level 10). Treasure Hunter at Fishing 25. Milestones Sunken Treasure (code-driven) and Fish
   Collector (vanilla `fishing_rod_hooked` criteria, all four fish), ½ heart each, new Angler category.
+- 2026-10-26: **Melee skill** (slice a built, see 3e): one skill for all hand-to-hand weapons, not one per weapon
+  (one Character tab row, XP isn't split when you switch weapons; same as Archery covering bows and crossbows).
+  Passive bonus attack speed, +0% → +30%. Perks change how you fight, never the main hit (bestiary = damage).
+  The Combat perk category becomes **Melee** (category ids aren't saved, perk ids unchanged) with weapon group
+  headings in the list instead of an 11th category; shield perks will go to Defense; Second Wind moved to Survival
+  with the new **Hearty Kill I/II/III** (½ / 1 / 1½ hearts per hostile kill, 1 s cooldown so a sweep through a crowd
+  heals once). Sword: **Wide Sweep I/II** (more sweep damage, the vanilla way) *and* Whirlwind later (more moves are
+  fun). Sweeps never hit pets, villagers or golems (always on). **Tridents:** thrown ones train Archery and get the
+  draw speed bonus; Loyal Trident perk in Archery. Owning every perk is out of reach for now (97 perks cost 232 of
+  ~220 Rank); more milestones later. Slices: a = skill + Wide Sweep + Hearty Kill + headings, b = Whirlwind, Disarm,
+  axe perks, c = Parry/Deflect/Shield Bash, d = mace and spear moves.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Melee skill, slice a (2026-10-26):** XP pace (Melee 10 ≈ 50 zombies?), no XP from spam-clicked weak hits.
+  Attack speed noticeable at higher levels (`/pam skill melee 30`): cooldown bar fills faster, also for axes.
+  Wide Sweep: other mobs in a sweep clearly take more; a sweep never hurts your dog, a villager or an iron golem.
+  Hearty Kill heals on a hostile kill, only once when a sweep kills several. Perks tab: Melee category with
+  "Any weapon" / "Sword" headings, scrolling and clicking still hit the right row; Second Wind and Hearty Kill
+  under Survival. Character tab shows 7 skills. Tridents: throw charge faster with Archery, thrown hits give
+  Archery XP, Loyal Trident brings a plain trident back (a mixin failure would crash on the first throw).
 
 - **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs
   (ghast, ender dragon, wither, slime, bat)? Do the sections fit the panel (long tips + 2 rows of drops + elite
@@ -981,5 +1046,5 @@ override applied, typo warned).
 - **0.4.0 (tag `v0.4.0`, 2026-10-25):** first public release on Modrinth (Alpha), everything above.
   Not tagged separately: v0.2 and v0.3. What still needs a playtest is in the playtest checklist.
 - **Next:** work through the playtest checklist and Open questions (balance), then pick from
-  [Ideas](#ideas) (likely candidates: a Combat skill, Well Fed, more milestones). Built since 0.4.0: bestiary
-  pages, two-column Character tab, Fishing skill.
+  [Ideas](#ideas) (likely candidates: Melee slices b–d, Well Fed, more milestones). Built since 0.4.0: bestiary
+  pages, two-column Character tab, Fishing skill, Melee skill (slice a).

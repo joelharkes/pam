@@ -28,13 +28,14 @@ import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Archery skill and perks. Xp comes from arrows a player shot that hit a mob; the skill bonus is a faster bow and
- * crossbow draw. Perks act when the player shoots (ammo, fire, frost, pierce), while the arrow flies (Steady Aim)
+ * Archery skill and perks. Xp comes from arrows and thrown tridents a player shot that hit a mob; the skill bonus is a
+ * faster bow, crossbow and trident draw. Arrow perks act when the player shoots (ammo, fire, frost, pierce), while the arrow flies (Steady Aim)
  * or when it hits (frost, Ricochet).
  */
 public final class Archery {
@@ -42,7 +43,7 @@ public final class Archery {
 	}
 
 	public static boolean isDrawWeapon(ItemStack stack) {
-		return stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem;
+		return stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem || stack.getItem() instanceof TridentItem;
 	}
 
 	/** Extra draw progress per tick as a fraction. Runs on client and server, so it reads the synced attachment. */
@@ -50,10 +51,9 @@ public final class Archery {
 		return Skills.bonus(Skill.ARCHERY, Skills.level(player, Skill.ARCHERY));
 	}
 
-	/** The arrow behind this damage if a player shot it (tridents don't count), or null. */
+	/** The arrow or thrown trident behind this damage if a player shot it, or null. */
 	private static AbstractArrow playerArrow(DamageSource source) {
-		if (source.getDirectEntity() instanceof AbstractArrow arrow && !(arrow instanceof ThrownTrident)
-				&& source.getEntity() instanceof ServerPlayer) {
+		if (source.getDirectEntity() instanceof AbstractArrow arrow && source.getEntity() instanceof ServerPlayer) {
 			return arrow;
 		}
 		return null;
@@ -157,10 +157,10 @@ public final class Archery {
 
 	/**
 	 * Ricochet: a new arrow flies from the mob that was hit to the nearest other hostile mob in range, with the same
-	 * damage, fire and frost. Each arrow bounces once; the bounced arrow can't be picked up.
+	 * damage, fire and frost. Each arrow bounces once; the bounced arrow can't be picked up. Not for tridents.
 	 */
 	private static void tryRicochet(ServerPlayer player, AbstractArrow arrow, LivingEntity from) {
-		if (!Perks.has(player, Perks.RICOCHET) || arrow.hasAttached(PamAttachments.RICOCHET_ARROW)
+		if (!Perks.has(player, Perks.RICOCHET) || arrow instanceof ThrownTrident || arrow.hasAttached(PamAttachments.RICOCHET_ARROW)
 				|| !(from.level() instanceof ServerLevel level)) {
 			return;
 		}

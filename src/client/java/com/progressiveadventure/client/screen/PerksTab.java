@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Categories on the left, the selected category's perks on the right (scrollable). Click a perk to buy it.
  * Rows stay short (an icon or the cost); the details, including what blocks a perk, are in the row tooltip.
+ * Perks with a group (Melee: one per weapon) get a small heading above each group.
  */
 class PerksTab implements AdventureTab {
 	private static final Identifier LOCK = Identifier.withDefaultNamespace("container/cartography_table/locked");
@@ -35,6 +36,7 @@ class PerksTab implements AdventureTab {
 	private static final int HEADER_HEIGHT = 22;
 	private static final int CATEGORY_WIDTH = 96;
 	private static final int ROW_HEIGHT = 22;
+	private static final int GROUP_HEIGHT = 12;
 	// Shorter than perk rows so all categories fit next to the list (10 × 19 in the 192px below the header)
 	private static final int CATEGORY_ROW_HEIGHT = 19;
 
@@ -71,8 +73,8 @@ class PerksTab implements AdventureTab {
 		listTop = top + HEADER_HEIGHT;
 		listWidth = width - CATEGORY_WIDTH - 6;
 		listHeight = height - HEADER_HEIGHT;
-		List<Perk> perks = Perks.inCategory(selectedCategory);
-		int maxScroll = maxScroll(perks.size());
+		List<Row> rows = rows(selectedCategory);
+		int maxScroll = maxScroll(rows);
 		scroll = Math.clamp(scroll, 0, maxScroll);
 		if (maxScroll > 0) {
 			listWidth -= 5; // room for the scrollbar
@@ -92,9 +94,13 @@ class PerksTab implements AdventureTab {
 
 		boolean mouseInList = isInside(mouseX, mouseY, listLeft, listTop, listWidth, listHeight);
 		graphics.enableScissor(listLeft, listTop, listLeft + listWidth, listTop + listHeight);
-		for (int i = 0; i < perks.size(); i++) {
-			Perk perk = perks.get(i);
-			int y = listTop + i * ROW_HEIGHT - scroll;
+		for (Row row : rows) {
+			int y = listTop + row.y() - scroll;
+			if (row.perk() == null) {
+				graphics.text(font, Component.translatable("perk_group.progressive_adventure." + row.group()), listLeft + 2, y + 2, AdventureScreen.TEXT_GOLD);
+				continue;
+			}
+			Perk perk = row.perk();
 			Perks.Status status = Perks.status(perk, progress, snapshot);
 			boolean hovered = mouseInList && isInside(mouseX, mouseY, listLeft, y, listWidth, ROW_HEIGHT - 2);
 			int background = switch (status) {
@@ -134,8 +140,29 @@ class PerksTab implements AdventureTab {
 		}
 	}
 
-	private int maxScroll(int perkCount) {
-		return Math.max(0, perkCount * ROW_HEIGHT - 2 - listHeight);
+	/** A perk row, or a group heading when perk is null. y is relative to the top of the list. */
+	private record Row(Perk perk, String group, int y) {
+	}
+
+	private static List<Row> rows(PerkCategory category) {
+		List<Row> rows = new ArrayList<>();
+		String group = null;
+		int y = 0;
+		for (Perk perk : Perks.inCategory(category)) {
+			if (perk.group() != null && !perk.group().equals(group)) {
+				group = perk.group();
+				rows.add(new Row(null, group, y));
+				y += GROUP_HEIGHT;
+			}
+			rows.add(new Row(perk, group, y));
+			y += ROW_HEIGHT;
+		}
+		return rows;
+	}
+
+	private int maxScroll(List<Row> rows) {
+		int contentHeight = rows.isEmpty() ? 0 : rows.getLast().y() + ROW_HEIGHT - 2;
+		return Math.max(0, contentHeight - listHeight);
 	}
 
 	@Override
@@ -143,7 +170,7 @@ class PerksTab implements AdventureTab {
 		if (!isInside(mouseX, mouseY, listLeft, listTop, listWidth + 5, listHeight)) {
 			return false;
 		}
-		scroll = Math.clamp(scroll - (int) Math.round(scrollY * ROW_HEIGHT), 0, maxScroll(Perks.inCategory(selectedCategory).size()));
+		scroll = Math.clamp(scroll - (int) Math.round(scrollY * ROW_HEIGHT), 0, maxScroll(rows(selectedCategory)));
 		return true;
 	}
 
@@ -186,10 +213,9 @@ class PerksTab implements AdventureTab {
 			return false;
 		}
 		Minecraft minecraft = Minecraft.getInstance();
-		List<Perk> perks = Perks.inCategory(selectedCategory);
-		for (int i = 0; i < perks.size(); i++) {
-			Perk perk = perks.get(i);
-			if (isInside(mouseX, mouseY, listLeft, listTop + i * ROW_HEIGHT - scroll, listWidth, ROW_HEIGHT - 2)) {
+		for (Row row : rows(selectedCategory)) {
+			Perk perk = row.perk();
+			if (perk != null && isInside(mouseX, mouseY, listLeft, listTop + row.y() - scroll, listWidth, ROW_HEIGHT - 2)) {
 				Perks.Status status = Perks.status(perk, PamAttachments.progress(minecraft.player), PamAttachments.snapshot(minecraft.player));
 				if (status == Perks.Status.BUYABLE) {
 					ClientPlayNetworking.send(new BuyPerkPayload(perk.id()));

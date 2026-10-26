@@ -73,17 +73,20 @@ public final class Perks {
 	public static final Perk PIERCING_SHOT = register("piercing_shot", PerkCategory.ARCHERY, Items.CROSSBOW, 2, new SkillLevel(Skill.ARCHERY, 15), null);
 	public static final Perk STEADY_AIM = register("steady_aim", PerkCategory.ARCHERY, Items.TARGET, 3, new SkillLevel(Skill.ARCHERY, 20), null);
 	public static final Perk RICOCHET = register("ricochet", PerkCategory.ARCHERY, Items.SLIME_BALL, 5, new SkillLevel(Skill.ARCHERY, 40), null);
+	public static final Perk LOYAL_TRIDENT = register("loyal_trident", PerkCategory.ARCHERY, Items.TRIDENT, 2, new SkillLevel(Skill.ARCHERY, 15), null);
 
 	public static final Perk KEEN_EYE = register("keen_eye", PerkCategory.FISHING, Items.BELL, 1, new SkillLevel(Skill.FISHING, 5), null);
 	public static final Perk LUCKY = register("lucky", PerkCategory.FISHING, Items.EMERALD, 2, new SkillLevel(Skill.FISHING, 10), null);
 	public static final Perk DOUBLE_CATCH = register("double_catch", PerkCategory.FISHING, Items.COD, 3, new SkillLevel(Skill.FISHING, 15), null);
 	public static final Perk TREASURE_HUNTER = register("treasure_hunter", PerkCategory.FISHING, Items.NAME_TAG, 4, new SkillLevel(Skill.FISHING, 25), null);
 
-	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
-	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
-	public static final Perk STURDY_WEAPON_3 = register("sturdy_weapon_3", PerkCategory.COMBAT, Items.DIAMOND_SWORD, 3, new MobTypes(25), "sturdy_weapon_2");
-	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.COMBAT, Items.WRITABLE_BOOK, 2, new MobTypes(5), null);
-	public static final Perk SECOND_WIND = register("second_wind", PerkCategory.COMBAT, Items.GLISTERING_MELON_SLICE, 2, Requirement.NONE, null);
+	// Melee: grouped by weapon in the perk list (perks without a weapon first)
+	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.MELEE, "general", Items.WRITABLE_BOOK, 2, new MobTypes(5), null);
+	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.MELEE, "sword", Items.STONE_SWORD, 1, new MobTypes(5), null);
+	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.MELEE, "sword", Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
+	public static final Perk STURDY_WEAPON_3 = register("sturdy_weapon_3", PerkCategory.MELEE, "sword", Items.DIAMOND_SWORD, 3, new MobTypes(25), "sturdy_weapon_2");
+	public static final Perk WIDE_SWEEP_1 = register("wide_sweep_1", PerkCategory.MELEE, "sword", Items.GOLDEN_SWORD, 2, new SkillLevel(Skill.MELEE, 10), null);
+	public static final Perk WIDE_SWEEP_2 = register("wide_sweep_2", PerkCategory.MELEE, "sword", Items.NETHERITE_SWORD, 3, new SkillLevel(Skill.MELEE, 25), "wide_sweep_1");
 
 	public static final Perk STURDY_ARMOR_1 = register("sturdy_armor_1", PerkCategory.DEFENSE, Items.LEATHER_CHESTPLATE, 1, new MobTypes(5), null);
 	public static final Perk STURDY_ARMOR_2 = register("sturdy_armor_2", PerkCategory.DEFENSE, Items.IRON_CHESTPLATE, 2, new MobTypes(10), "sturdy_armor_1");
@@ -108,6 +111,10 @@ public final class Perks {
 	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
 	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
 	public static final Perk DIVER = register("diver", PerkCategory.SURVIVAL, Items.PRISMARINE_SHARD, 2, new Rank(10), null);
+	public static final Perk SECOND_WIND = register("second_wind", PerkCategory.SURVIVAL, Items.GLISTERING_MELON_SLICE, 2, Requirement.NONE, null);
+	public static final Perk HEARTY_KILL_1 = register("hearty_kill_1", PerkCategory.SURVIVAL, Items.COOKED_BEEF, 2, new MobTypes(10), null);
+	public static final Perk HEARTY_KILL_2 = register("hearty_kill_2", PerkCategory.SURVIVAL, Items.RABBIT_STEW, 3, new MobTypes(20), "hearty_kill_1");
+	public static final Perk HEARTY_KILL_3 = register("hearty_kill_3", PerkCategory.SURVIVAL, Items.GOLDEN_CARROT, 4, new MobTypes(30), "hearty_kill_2");
 
 	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.MOVEMENT, Items.SUGAR, 2, new Rank(10), null);
 	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.MOVEMENT, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
@@ -134,7 +141,11 @@ public final class Perks {
 	}
 
 	private static Perk register(String id, PerkCategory category, Item icon, int cost, Requirement requirement, String prerequisite) {
-		Perk perk = new Perk(id, category, icon, cost, requirement, prerequisite);
+		return register(id, category, null, icon, cost, requirement, prerequisite);
+	}
+
+	private static Perk register(String id, PerkCategory category, String group, Item icon, int cost, Requirement requirement, String prerequisite) {
+		Perk perk = new Perk(id, category, icon, cost, requirement, prerequisite, group);
 		BY_ID.put(id, perk);
 		return perk;
 	}

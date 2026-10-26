@@ -55,7 +55,7 @@ public class LivingEntityMixin {
 	}
 
 	/**
-	 * Archery draw speed: bows and crossbows count extra use ticks. Runs on client and server, so the pull
+	 * Archery draw speed: bows, crossbows and tridents count extra use ticks. Runs on client and server, so the pull
 	 * animation, zoom and crossbow charge match the arrow's real power.
 	 */
 	@Inject(method = "updateUsingItem", at = @At("TAIL"))

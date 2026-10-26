@@ -18,6 +18,14 @@
   even in small ponds).
 - **2 new milestones** in the Adventure tab: Sunken Treasure (fish up a treasure) and Fish Collector (catch all
   4 kinds of fish), ½ heart each.
+- **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The Combat
+  perk category is now called Melee, with the perks grouped by weapon. New: **Wide Sweep I/II** (your sword sweep
+  hurts the other mobs nearby more).
+- Sword sweeps no longer hurt your pets, villagers or golems.
+- **Hearty Kill I/II/III** (Survival): defeating a hostile mob heals ½, 1 or 1½ hearts. **Second Wind** moved
+  to Survival (you keep it if you have it).
+- **Tridents** now count for Archery when you throw them: they give Archery XP and charge faster as your Archery
+  level goes up. New Archery perk **Loyal Trident**: thrown tridents always come back to you.
 - **Character tab:** skills are shown in two columns to make room for new skills. Hover a skill to see how much
   xp you need for the next level and which perk it unlocks next.
 - **Swimming perks moved:** Deep Breath and Diver are now under Survival, Swimmer under Movement. Perks you
