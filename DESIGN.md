@@ -3,7 +3,7 @@
 > Living document: how the mod works and why, decisions, ideas and open questions.
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
-**Status (2026-10-25):** 0.4.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
+**Status (2026-10-26):** 0.5.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
 Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 109 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
@@ -994,6 +994,8 @@ Players can suggest more through the GitHub issue forms.
 - 2026-10-26: **Double Jump has no sprint push.** It called vanilla's jump, which adds +0.2 blocks/tick forward when
   sprinting; with little drag in the air that second push was a big dash. Now it only adds height (Spring Step and
   Jump Boost still count).
+- 2026-10-26: **0.5.0 released** (tag `v0.5.0`, Alpha): Melee (slices a–d + shield perks), Fishing, trident Archery,
+  bestiary pages/collections, two-column Character tab. Released before most of it was playtested (user's call).
 
 ## Playtest checklist
 
@@ -1118,6 +1120,8 @@ override applied, typo warned).
 - **v0.4a:** Waypoint Shards + Waypoint Stones, travel for XP, Pathfinder perk.
 - **0.4.0 (tag `v0.4.0`, 2026-10-25):** first public release on Modrinth (Alpha), everything above.
   Not tagged separately: v0.2 and v0.3. What still needs a playtest is in the playtest checklist.
+- **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
+  trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
+  the playtest checklist (user's call).
 - **Next:** work through the playtest checklist and Open questions (balance), then pick from
-  [Ideas](#ideas) (likely candidates: Melee slices b–d, Well Fed, more milestones). Built since 0.4.0: bestiary
-  pages, two-column Character tab, Fishing skill, Melee skill (slice a).
+  [Ideas](#ideas) (likely candidates: Well Fed, more milestones).
