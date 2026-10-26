@@ -1071,6 +1071,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   Path Maker don't change blocks inside spawn protection (test on the dev server as a non-op). Path Maker 3×3 uses
   9 durability (less with Sturdy Shovel). `/pam elite spider leaping` is refused.
 
+Confirmed 2026-10-26: the combat perks work well in a first playtest; Double Jump + Ground Pound with a mace is fun
+and its damage felt fine (exact perks tested not recorded, so the Melee items above stay open).
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25). Clear Cut: leaves come down
 smoothly. Archery draw speed: very fast at level 80, but fair for the grind it takes. General testing over time:
 most things work well and feel good; balance needs more play time (see Open questions).
@@ -1085,6 +1087,8 @@ override applied, typo warned).
 - [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
   elite chances, skill XP curves.
 - [ ] Waypoint XP cap (50, +20 across dimensions): maybe higher? Revisit after the playtest.
+- [ ] Ground Pound may get too strong later (2026-10-26): Double Jump + dive is fun and fine now, but watch it with
+  Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatio`, a fall cap for the bonus.
 
 ## Roadmap
 
