@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.MaceItem;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -96,7 +97,7 @@ public final class MeleeMoves {
 		if (POUNDING.remove(player.getUUID()) == null || !(player.level() instanceof ServerLevel level)) {
 			return false;
 		}
-		level.levelEvent(2013, player.getOnPos(), 750); // vanilla's mace smash dust
+		level.levelEvent(LevelEvent.PARTICLES_SMASH_ATTACK, player.getOnPos(), 750); // vanilla's mace smash dust
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				fallDistance > 5 ? SoundEvents.MACE_SMASH_GROUND_HEAVY : SoundEvents.MACE_SMASH_GROUND, SoundSource.PLAYERS, 1f, 1f);
 		for (Mob mob : hostileMobsAround(player, player, player.position())) {

@@ -6,8 +6,7 @@
 
 - **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The
   Combat perk category is now called **Melee**, with the perks grouped by weapon:
-  - Any weapon: **Careful Sweep** (your sword sweep no longer hurts your pets, villagers or golems).
-  - Sword: **Wide Sweep I/II** (your sweep hurts the other mobs nearby more), **Whirlwind** (sneak while you
+  - Sword: **Careful Sweep** (your sweep no longer hurts your pets, villagers or golems), **Wide Sweep I/II** (your sweep hurts the other mobs nearby more), **Whirlwind** (sneak while you
     sweep to hit every hostile mob around you), **Disarm** (knock the weapon out of a mob's hand).
   - Axe: **Heavy Swing** (big knockback) and **Sunder** (cracks the mob's armor for a few seconds).
   - Mace: **Ground Pound** (sneak in the air to slam down) and **Shockwave** (your smash also hurts the mobs

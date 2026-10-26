@@ -32,4 +32,15 @@ up in a profile).
   Fix: sections nearest-first with early stop, or spread over ticks.
 - [ ] **7. Small things**
   - `Progression.onAdvancementCompleted` computes `status()` twice (all ~1000+ advancements each time).
-  - `PerkEffects.SECOND_WIND_COOLDOWNS` never removes anyone (tiny leak).
+  - ~~`PerkEffects.SECOND_WIND_COOLDOWNS` never removes anyone (tiny leak).~~ DONE: `perk/Cooldown` drops
+    finished cooldowns on logout and clears all on server stop.
+- [ ] **8. Bestiary page requests** (`bestiary/BestiaryInfo.onRequest`)
+  Every request creates a throwaway entity, even when the drops are already cached; any entity type id is
+  accepted and nothing limits how often a client asks. A modified client could spam it (some modded entities do
+  work in their constructor). The server also sends drop chances whatever the player's familiarity (only the
+  client hides them; fine for now).
+  Fix: cache the whole reply per type (traits and `canBeElite` only depend on type and config), create the entity
+  only on a cache miss, ignore types without a spawn egg.
+- [ ] **9. Collections checked on every kill** (`Bestiary.checkCollections`)
+  For the killer and every assisting player: goes through all kill counts and tries up to 7 advancement grants.
+  Cheap today; with kill chambers, skip milestones the player already has.

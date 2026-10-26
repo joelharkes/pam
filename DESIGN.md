@@ -535,6 +535,9 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 
 #### Perk list
 
+Skill perks built later have their tables in their own section: Farming in 3b, Archery in 3c, Fishing in 3d,
+Melee (by weapon) and the Shield perks (Defense) in 3e.
+
 | Category    | Perk                | Effect                                              | Requires            | Cost |
 |-------------|---------------------|-----------------------------------------------------|---------------------|------|
 | Mining      | Sturdy Pickaxe I    | 10% chance pickaxes use no durability               | Mining 5            | 1    |

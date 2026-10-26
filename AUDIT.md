@@ -82,6 +82,16 @@ A read-through of the Melee skill, shield perks and trident changes after buildi
 - [ ] **M10. Parry also works against other players** when PvP is on. Fine for now.
 - [ ] **M11. Shield Bash swings your arm on every click,** even while the server ignores it (1 s cooldown). Visual only.
 
+## Review of 2026-10-26's code (after 0.5.0)
+
+- [ ] **R1. Loyal Trident is lost when the trident is reloaded** (`mixin/ThrownTridentMixin`). The perk sets
+  loyalty only in the throw constructor; vanilla's `ThrownTrident.readAdditionalSaveData` recomputes it from the
+  item's enchantments. A trident lying in the ocean when the player logs out (or its chunk unloads, or the server
+  restarts) never comes back.
+  Fix: mark the trident with a persistent attachment and set loyalty again at the end of `readAdditionalSaveData`.
+- `MeleeMoves.onLanding`: `levelEvent(2013)` replaced by `LevelEvent.PARTICLES_SMASH_ATTACK`.
+- Master double loot's "not a baby" rule added to the update checklist (copy of `shouldDropLoot`).
+
 ## Minecraft update checklist
 
 The mod hooks into vanilla code. Every mixin has `defaultRequire: 1`, so a hook whose target is gone or renamed
@@ -113,6 +123,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `MobUnlocks` (128 blocks) | vanilla's spawn/despawn distance |
 | `Milestones.VANILLA` + lang overrides | vanilla advancement ids and their description keys |
 | `Targets.isFriendly` | shulkers extend `AbstractGolem` |
+| `Bestiary.onKill` (Master double loot) | `LivingEntity.shouldDropLoot` = not a baby (and the `mobDrops` game rule) |
 
 **Also check:** vanilla mob list vs. the bestiary hint/tip lang keys and `mobUnlocks`; item tags used
 (`SWORDS`, `SPEARS`, `MACE_ENCHANTABLE`, `TRIDENT_ENCHANTABLE`, ore/log tags); `fishing_treasure` tag contents;
@@ -135,7 +146,7 @@ All FIXED (also: README/Modrinth text now invite milestone ideas too, decisions 
 - [x] CLAUDE.md: Character tab is 5 skill rows of 26px (not 4 of 28px) and full.
 - [x] CLAUDE.md: a missing CHANGELOG section fails `releaseNotes`/`modrinth`, not `./gradlew build`.
 
-## Checked and consistent
+## Checked and consistent (2026-10-25 audit; counts are from then, there are more perks and milestones now)
 
 - 42 milestones: rewards in `Milestones.java` match the "Reward: ..." lang text; 26½ hearts, 24 PAM + 18 vanilla.
 - 87 perks: all have name + description; costs/requirements match the DESIGN table; numbers in descriptions match
