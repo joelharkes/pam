@@ -8,9 +8,9 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
+import com.progressiveadventure.perk.Cooldown;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
-import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.skill.Archery;
 import com.progressiveadventure.skill.Farming;
 import com.progressiveadventure.skill.Melee;
@@ -60,13 +60,16 @@ public class ProgressiveAdventure implements ModInitializer {
 			PerkEffects.onServerStopped();
 			Melee.onServerStopped();
 			MeleeMoves.onServerStopped();
-			ShieldPerks.onServerStopped();
+			Cooldown.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
 			BestiaryInfo.clearCache();
 		});
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> BestiaryInfo.clearCache());
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> Trackers.onDisconnect(handler.player));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			Trackers.onDisconnect(handler.player);
+			Cooldown.onDisconnect(handler.player);
+		});
 		ServerPlayerEvents.JOIN.register(player -> {
 			Progression.apply(player);
 			Bestiary.checkCollections(player, PamAttachments.progress(player));

@@ -28,9 +28,8 @@ final class AirMoves {
 	/** Lowest and highest ledge (above the feet) Mantle grabs; lower ones a normal jump already reaches. */
 	private static final double MIN_LEDGE = 0.6;
 	private static final double MAX_LEDGE = 1.9;
-	/** Ground Pound: how fast the dive goes down (blocks/tick) and how high above the ground it must start. */
+	/** Ground Pound: how fast the dive goes down (blocks/tick). */
 	private static final double POUND_SPEED = 1.5;
-	private static final double POUND_MIN_HEIGHT = 2.0;
 
 	private static boolean wasJumpDown;
 	private static boolean wasAirborne;
@@ -67,8 +66,7 @@ final class AirMoves {
 			return;
 		}
 
-		if (sneakPressed && !pounded && MeleeMoves.canGroundPound(player)
-				&& player.level().noCollision(player, player.getBoundingBox().move(0, -POUND_MIN_HEIGHT, 0))) {
+		if (sneakPressed && !pounded && MeleeMoves.canGroundPound(player) && MeleeMoves.highEnoughToPound(player)) {
 			pounded = true;
 			player.setDeltaMovement(player.getDeltaMovement().x * 0.2, -POUND_SPEED, player.getDeltaMovement().z * 0.2);
 			ClientPlayNetworking.send(new GroundPoundPayload());

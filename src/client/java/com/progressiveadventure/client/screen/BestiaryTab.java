@@ -56,8 +56,14 @@ class BestiaryTab implements AdventureTab {
 	private static final int DROP_SLOT = 18;
 
 	private static int page = 0;
-	/** Index of the open mob page, or -1 for the grid. Remembered between openings, like the page. */
+	/** Index of the open mob page, or -1 for the grid. Remembered between openings, like the page (not between worlds). */
 	private static int selected = -1;
+
+	/** Back to the first page of the grid, e.g. when leaving a world (the next one has other discoveries). */
+	static void forgetSelection() {
+		page = 0;
+		selected = -1;
+	}
 
 	private record Entry(EntityType<?> type, ItemStack icon) {
 	}

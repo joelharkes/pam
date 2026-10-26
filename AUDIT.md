@@ -55,6 +55,69 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
 - [x] **10.** Spiders can roll the Leaping trait, which they already have (a wasted trait).
   FIXED: spiders and cave spiders can't get Leaping.
 
+## Melee skill review (2026-10-26)
+
+A read-through of the Melee skill, shield perks and trident changes after building them. Not playtested.
+
+- [x] **M1. Ground Pound trusted the client to start a dive at any height** (`skill/MeleeMoves`). A modified client
+  could send the dive message just before every landing and never take fall damage while holding a mace.
+  FIXED: the server also checks there are at least 2 blocks of air below the player (same check as the client).
+- [x] **M2. A dive that never "landed" could cancel the fall damage of a later fall.** Ladders, cobwebs and powder
+  snow stop a fall without vanilla's landing call, so the dive stayed remembered up to 10 s.
+  FIXED: the dive is forgotten on the ground, on a ladder/vine, in water, while gliding, or once the player isn't
+  moving down any more (after the first 3 ticks).
+- [x] **M3. Disarm played the item-break sound:** a kid could think their own sword broke. FIXED: a short clang.
+- [x] **M4. The Deflect arrow marker was saved to disk** although it only lives for one tick. FIXED: not persistent.
+- [x] **M5. Three copies of the same cooldown code** (Second Wind, Hearty Kill, Shield Bash), never cleaned on logout.
+  FIXED: `perk/Cooldown`; all cleared when the server stops, finished ones dropped on logout (running ones stay, so
+  relogging doesn't reset Second Wind).
+- [x] **M6. The "hostile mob" filter lived in Archery** and was used by melee and shield code; the "friendly" filter
+  was in Melee. FIXED: `skill/Targets` (`isHostile`, `isFriendly`).
+- [x] **M7. Bestiary tab stayed on the last mob page after switching worlds** (static UI state). FIXED: the grid
+  goes back to page 1 when you leave a world or server.
+- [x] **M8. Sturdy Weapon only covered swords.** FIXED: swords, spears, maces and tridents (vanilla's tags); axes
+  keep Sturdy Axe. Renamed from "Sturdy Blade" to Sturdy Weapon (its id), listed under "Any weapon".
+- [ ] **M9. Disarm also works on mobs hit by the sweep** (15% each), so a big Whirlwind can disarm several. Fine for
+  now, documented in DESIGN 3e.
+- [ ] **M10. Parry also works against other players** when PvP is on. Fine for now.
+- [ ] **M11. Shield Bash swings your arm on every click,** even while the server ignores it (1 s cooldown). Visual only.
+
+## Minecraft update checklist
+
+The mod hooks into vanilla code. Every mixin has `defaultRequire: 1`, so a hook whose target is gone or renamed
+**stops the game at startup** (safe: you notice). The dangerous ones are hooks that still apply but could hit the
+wrong spot, and code that copies a vanilla rule. Go through this list on every Minecraft update: start the dev
+server (`runServer`) and client, then re-read the vanilla code marked "re-read".
+
+**Silent risk (re-read the vanilla method):**
+
+| Hook | Picks | Check that it's still |
+|---|---|---|
+| `KineticWeaponMixin` (Running Charge) | 1st `Vec3.dot` in `KineticWeapon.damageEntities` | the attacker's speed (`attackerLookVector.dot(getMotion(livingEntity))`) |
+| `FishingHookMixin` (bite speed, Keen Eye) | 1st and 3rd `Mth.nextInt` in `FishingHook.catchingFish` | the wait before a fish swims up, and the reel-in window |
+| `ProjectileWeaponItemMixin` (Thrifty Quiver) | every `EnchantmentHelper.processAmmoUse` in `useAmmo` (one in 26.2); the 2nd `ItemStack` argument of `useAmmo` | a single ammo-count call; the projectile stack |
+| `PlayerMixin` Whirlwind | `getEntitiesOfClass` and `isAlliedTo` in `Player.doSweepAttack` | the sweep's target search and team filter; the 3-block distance check (Whirlwind's radius) |
+
+**Copies of vanilla rules (update by hand if vanilla changes):**
+
+| Where | Copies |
+|---|---|
+| `MeleeMoves.smashBonus` | `MaceItem.getAttackDamageBonus` fall formula (Shockwave damage) |
+| `MeleeMoves.SMASH_RADIUS` (3.5), `Melee.WHIRLWIND_RADIUS` (3) | mace smash knockback reach; sweep distance check |
+| `MeleeMoves.onLanding` | relies on `Block.fallOn` calling `causeFallDamage` on every landing |
+| `ShieldPerks.inParryWindow` | shield blocks only after `BlocksAttacks.blockDelayTicks` |
+| Client `ShieldBash` | `Minecraft.handleKeybinds` drops attack clicks while using an item (Fabric's start-of-tick runs first) |
+| `Melee.disarm` | skeletons switch to melee when their main hand changes (`AbstractSkeleton.setItemSlot`) |
+| `PlayerMixin.pam$rememberAttackStrength` | vanilla resets the attack strength in `onAttack()` before the hit lands |
+| `LivingEntityMixin.pam$drawSpeed` | bow/crossbow/trident power comes from `useItemRemaining` |
+| `MobUnlocks` (128 blocks) | vanilla's spawn/despawn distance |
+| `Milestones.VANILLA` + lang overrides | vanilla advancement ids and their description keys |
+| `Targets.isFriendly` | shulkers extend `AbstractGolem` |
+
+**Also check:** vanilla mob list vs. the bestiary hint/tip lang keys and `mobUnlocks`; item tags used
+(`SWORDS`, `SPEARS`, `MACE_ENCHANTABLE`, `TRIDENT_ENCHANTABLE`, ore/log tags); `fishing_treasure` tag contents;
+GUI classes for the Adventure screen (`GuiGraphicsExtractor`, `extractRenderState`).
+
 ## Known limitations
 
 Things that stay true are listed for players in README.md / docs/modrinth-description.md ("Known limitations").

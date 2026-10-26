@@ -11,6 +11,7 @@ import com.progressiveadventure.network.OpenWaypointNamePayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.minecraft.client.KeyMapping;
@@ -30,6 +31,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(OpenWaypointListPayload.TYPE, (payload, context) ->
 				context.client().gui.setScreen(new WaypointListScreen(payload)));
 		BestiaryClient.init();
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> AdventureScreen.onDisconnect());
 
 		// Before vanilla's key handling, which drops attack clicks while blocking
 		ClientTickEvents.START_CLIENT_TICK.register(ShieldBash::tick);

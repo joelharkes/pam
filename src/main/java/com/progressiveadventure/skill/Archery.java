@@ -18,8 +18,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
@@ -131,7 +129,7 @@ public final class Archery {
 		Mob best = null;
 		Vec3 bestDirection = null;
 		double bestCos = Math.cos(Math.toRadians(config.steadyAimConeDegrees));
-		for (Mob mob : level.getEntitiesOfClass(Mob.class, arrow.getBoundingBox().inflate(config.steadyAimRange), mob -> isAimTarget(mob, owner))) {
+		for (Mob mob : level.getEntitiesOfClass(Mob.class, arrow.getBoundingBox().inflate(config.steadyAimRange), mob -> Targets.isHostile(mob, owner))) {
 			Vec3 toMob = mob.getBoundingBox().getCenter().subtract(arrow.position());
 			double distance = toMob.length();
 			if (distance < 0.5 || distance > config.steadyAimRange) {
@@ -168,7 +166,7 @@ public final class Archery {
 		Vec3 start = from.getBoundingBox().getCenter();
 		Mob target = null;
 		double bestDistance = config.ricochetRange * config.ricochetRange;
-		for (Mob mob : level.getEntitiesOfClass(Mob.class, from.getBoundingBox().inflate(config.ricochetRange), mob -> mob != from && isAimTarget(mob, player))) {
+		for (Mob mob : level.getEntitiesOfClass(Mob.class, from.getBoundingBox().inflate(config.ricochetRange), mob -> mob != from && Targets.isHostile(mob, player))) {
 			double distance = mob.getBoundingBox().getCenter().distanceToSqr(start);
 			if (distance < bestDistance && inSight(level, start, mob, arrow)) {
 				target = mob;
@@ -207,11 +205,5 @@ public final class Archery {
 	private static boolean inSight(ServerLevel level, Vec3 from, Mob mob, Entity arrow) {
 		return level.clip(new ClipContext(from, mob.getBoundingBox().getCenter(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, arrow))
 				.getType() == HitResult.Type.MISS;
-	}
-
-	/** Hostile mobs only; neutral ones (endermen, zombified piglins) only once they target the shooter. Also Whirlwind's filter. */
-	public static boolean isAimTarget(Mob mob, Entity owner) {
-		return mob instanceof Enemy && mob.isAlive() && !mob.isInvisible()
-				&& (!(mob instanceof NeutralMob) || (owner != null && mob.getTarget() == owner));
 	}
 }

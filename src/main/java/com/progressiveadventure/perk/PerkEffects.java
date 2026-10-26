@@ -34,7 +34,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +56,8 @@ public final class PerkEffects {
 			ConventionalBlockTags.DIAMOND_ORES, ConventionalBlockTags.EMERALD_ORES, ConventionalBlockTags.QUARTZ_ORES,
 			ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 
-	private static final Map<UUID, Long> SECOND_WIND_COOLDOWNS = new HashMap<>();
-	private static final Map<UUID, Long> HEARTY_KILL_COOLDOWNS = new HashMap<>();
+	private static final Cooldown SECOND_WIND = Cooldown.create();
+	private static final Cooldown HEARTY_KILL = Cooldown.create();
 
 	/** Ticks to wait after felling before Clear Cut; leaves need up to 7 ticks to notice the logs are gone. */
 	private static final int CLEAR_CUT_DELAY_TICKS = 10;
@@ -89,8 +88,6 @@ public final class PerkEffects {
 
 	/** Forgets everything when the server stops: cooldowns are in world time, and queued Clear Cuts hold the old world. */
 	public static void onServerStopped() {
-		SECOND_WIND_COOLDOWNS.clear();
-		HEARTY_KILL_COOLDOWNS.clear();
 		CLEAR_CUTS.clear();
 		LEAF_BREAKS.clear();
 	}
@@ -101,6 +98,15 @@ public final class PerkEffects {
 	 */
 	public static boolean mayChangeBlock(ServerPlayer player, ServerLevel level, BlockPos pos) {
 		return level.mayInteract(player, pos) && !player.blockActionRestricted(level, pos, player.gameMode.getGameModeForPlayer());
+	}
+
+	/**
+	 * Weapons for Sturdy Weapon: swords, spears, maces and tridents (by vanilla's tags, so modded ones in them count).
+	 * Axes are weapons too but already have Sturdy Axe (Woodcutting), checked first.
+	 */
+	private static boolean isWeapon(ItemStack stack) {
+		return stack.is(ItemTags.SWORDS) || stack.is(ItemTags.SPEARS) || stack.is(ItemTags.MACE_ENCHANTABLE)
+				|| stack.is(ItemTags.TRIDENT_ENCHANTABLE);
 	}
 
 	/** Chance that this item takes no durability damage, from Sturdy perks. */
@@ -114,7 +120,7 @@ public final class PerkEffects {
 			tier = Perks.tier(player, Perks.STURDY_SHOVEL_1, Perks.STURDY_SHOVEL_2, Perks.STURDY_SHOVEL_3);
 		} else if (stack.is(ItemTags.HOES)) {
 			tier = Perks.tier(player, Perks.STURDY_HOE_1, Perks.STURDY_HOE_2, Perks.STURDY_HOE_3);
-		} else if (stack.is(ItemTags.SWORDS)) {
+		} else if (isWeapon(stack)) {
 			tier = Perks.tier(player, Perks.STURDY_WEAPON_1, Perks.STURDY_WEAPON_2, Perks.STURDY_WEAPON_3);
 		} else if (stack.is(ItemTags.HEAD_ARMOR) || stack.is(ItemTags.CHEST_ARMOR) || stack.is(ItemTags.LEG_ARMOR) || stack.is(ItemTags.FOOT_ARMOR)) {
 			tier = Perks.tier(player, Perks.STURDY_ARMOR_1, Perks.STURDY_ARMOR_2, Perks.STURDY_ARMOR_3);
@@ -422,12 +428,9 @@ public final class PerkEffects {
 		if (!player.isAlive() || player.getHealth() >= config.secondWindHealthThreshold || !Perks.has(player, Perks.SECOND_WIND)) {
 			return;
 		}
-		long now = player.level().getGameTime();
-		Long readyAt = SECOND_WIND_COOLDOWNS.get(player.getUUID());
-		if (readyAt != null && now < readyAt) {
+		if (!SECOND_WIND.tryUse(player, config.secondWindCooldownSeconds * 20L)) {
 			return;
 		}
-		SECOND_WIND_COOLDOWNS.put(player.getUUID(), now + config.secondWindCooldownSeconds * 20L);
 		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
 	}
 
@@ -441,12 +444,9 @@ public final class PerkEffects {
 			return;
 		}
 		PamConfig config = PamConfig.get();
-		long now = player.level().getGameTime();
-		Long readyAt = HEARTY_KILL_COOLDOWNS.get(player.getUUID());
-		if (readyAt != null && now < readyAt) {
+		if (!HEARTY_KILL.tryUse(player, config.heartyKillCooldownTicks)) {
 			return;
 		}
-		HEARTY_KILL_COOLDOWNS.put(player.getUUID(), now + config.heartyKillCooldownTicks);
 		player.heal((float) PamConfig.listValue(config.heartyKillHeals, tier - 1));
 	}
 }

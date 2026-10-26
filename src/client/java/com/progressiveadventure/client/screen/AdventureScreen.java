@@ -33,6 +33,11 @@ public class AdventureScreen extends Screen {
 	/** Remembered between openings. */
 	private static int selectedTab = 0;
 
+	/** Called when leaving a world or server: a mob page from the last world shouldn't stay open in the next. */
+	public static void onDisconnect() {
+		BestiaryTab.forgetSelection();
+	}
+
 	private final List<AdventureTab> tabs = List.of(new CharacterTab(), new PerksTab(), new BestiaryTab());
 	private int left;
 	private int top;

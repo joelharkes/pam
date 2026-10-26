@@ -22,13 +22,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.golem.AbstractGolem;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
@@ -108,7 +104,8 @@ public final class Melee {
 		}
 		mob.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY); // skeletons switch to melee on their own
 		mob.spawnAtLocation(level, held, mob.getBbHeight() * 0.6f);
-		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 0.8f, 1.4f);
+		// A clang, not the item-break sound: that would sound like the player's own sword broke
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.4f, 2f);
 		player.sendOverlayMessage(Component.translatable("message.progressive_adventure.disarmed", mob.getDisplayName()));
 	}
 
@@ -176,7 +173,7 @@ public final class Melee {
 
 	/** Only hostile mobs (neutral ones that target the player); never pets, villagers, animals or players. */
 	public static boolean isWhirlwindTarget(Player player, Entity entity) {
-		return entity instanceof Mob mob && Archery.isAimTarget(mob, player);
+		return entity instanceof Mob mob && Targets.isHostile(mob, player);
 	}
 
 	/** A ring of sweep particles around the player. */
@@ -208,13 +205,6 @@ public final class Melee {
 	 * hit everything that isn't on your team).
 	 */
 	public static boolean sparedBySweep(Player player, LivingEntity entity) {
-		return Perks.has(player, Perks.CAREFUL_SWEEP) && isFriendly(entity);
-	}
-
-	/** Tamed pets, villagers and golems: what Careful Sweep and the area moves leave alone. */
-	public static boolean isFriendly(LivingEntity entity) {
-		return (entity instanceof OwnableEntity pet && pet.getOwnerReference() != null)
-				|| entity instanceof AbstractVillager
-				|| (entity instanceof AbstractGolem && !(entity instanceof Enemy)); // shulkers are golems too
+		return Perks.has(player, Perks.CAREFUL_SWEEP) && Targets.isFriendly(entity);
 	}
 }

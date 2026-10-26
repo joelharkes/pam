@@ -2,7 +2,7 @@ package com.progressiveadventure.perk;
 
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
-import com.progressiveadventure.skill.Archery;
+import com.progressiveadventure.skill.Targets;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 
@@ -23,22 +23,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Shield perks (Defense). Parry and Deflect act when a shield blocks a hit right after it was raised; Shield Bash is
  * an attack click while blocking (vanilla ignores those, so the client sends {@code ShieldBashPayload}).
  */
 public final class ShieldPerks {
-	private static final Map<UUID, Long> BASH_COOLDOWNS = new HashMap<>();
+	private static final Cooldown BASH = Cooldown.create();
 
 	private ShieldPerks() {
-	}
-
-	public static void onServerStopped() {
-		BASH_COOLDOWNS.clear();
 	}
 
 	/**
@@ -110,15 +103,12 @@ public final class ShieldPerks {
 			return;
 		}
 		PamConfig config = PamConfig.get();
-		long now = level.getGameTime();
-		Long readyAt = BASH_COOLDOWNS.get(player.getUUID());
-		if (readyAt != null && now < readyAt) {
+		if (!BASH.tryUse(player, config.shieldBashCooldownTicks)) {
 			return;
 		}
-		BASH_COOLDOWNS.put(player.getUUID(), now + config.shieldBashCooldownTicks);
 
 		Vec3 look = player.getLookAngle().multiply(1, 0, 1).normalize();
-		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(config.shieldBashRange), mob -> Archery.isAimTarget(mob, player))) {
+		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(config.shieldBashRange), mob -> Targets.isHostile(mob, player))) {
 			Vec3 toMob = mob.position().subtract(player.position()).multiply(1, 0, 1);
 			double distance = toMob.length();
 			if (distance > config.shieldBashRange || (distance > 0.5 && look.dot(toMob.scale(1 / distance)) < 0.5)) {

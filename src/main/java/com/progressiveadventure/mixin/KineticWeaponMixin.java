@@ -11,7 +11,14 @@ import net.minecraft.world.item.component.KineticWeapon;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-/** Running Charge: a player on foot counts faster for the spear charge (the first dot product is the attacker's speed). */
+/**
+ * Running Charge: a player on foot counts faster for the spear charge.
+ * <p>
+ * UPDATE RISK: this targets the first {@code Vec3.dot} call in {@code damageEntities} by position (ordinal 0), which in
+ * 26.2 is {@code attackerLookVector.dot(getMotion(livingEntity))}, the attacker's speed. If a Minecraft update adds
+ * another dot product before it, the mixin still applies (no crash) but silently scales the wrong value. Re-read
+ * {@code KineticWeapon.damageEntities} on every Minecraft update (listed in AUDIT.md).
+ */
 @Mixin(KineticWeapon.class)
 public class KineticWeaponMixin {
 	@ModifyExpressionValue(method = "damageEntities", at = @At(value = "INVOKE",

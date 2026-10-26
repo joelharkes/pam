@@ -293,7 +293,7 @@ perks, in Defense), d (mace and spear).
 | Group | Perk | Effect | Requires | Cost |
 |---|---|---|---|---|
 | Any weapon | Quick Study | Kills count double towards familiarity | 5 mob types defeated | 2 |
-| Sword | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability | 5 / 15 / 25 mob types | 1/2/3 |
+| Any weapon | Sturdy Weapon I/II/III | 10/20/30% chance swords, spears, maces and tridents use no durability (axes: Sturdy Axe) | 5 / 15 / 25 mob types | 1/2/3 |
 | Sword | Careful Sweep | Your sweep no longer hurts tamed pets, villagers or golems (not shulkers) | Melee 5 | 1 |
 | Sword | Wide Sweep I/II | Sweep damage to the other mobs +25% / +50% of the hit (`sweeping_damage_ratio`, stacks with Sweeping Edge up to 1.0) | Melee 10 / 25 | 2/3 |
 | Sword | Whirlwind | A sweep while sneaking hits every hostile mob within 3 blocks around you (not only next to the target), ring of sweep particles + wind sound. Same sweep damage, so it needs Wide Sweep I | Melee 20, Wide Sweep I | 3 |
@@ -311,10 +311,12 @@ perks, in Defense), d (mace and spear).
   (Steady Aim's: hostile, or neutral and targeting you). Vanilla's 3-block distance check stays, so 3 is the radius.
 - Sunder: a transient `armor` modifier (multiply total −0.5) that `Melee.tick` removes after 5 s. It lands with the
   hit, so it helps the *next* hits, not the one that cracked the armor. Disarm and the axe perks run on hits that
-  give Melee XP (≥ 1 heart).
+  give Melee XP (≥ 1 heart), also the ones from a sweep (so Whirlwind can disarm several mobs).
 - Ground Pound is a client move (`AirMoves`, sneak pressed in the air, `GroundPoundPayload`); the server remembers
-  the dive and handles the landing in `Player.causeFallDamage` instead of fall damage (forgotten on the ground, after 10 s, in water
-  or gliding). The dive keeps fall distance, so hitting a mob mid-dive is a big vanilla smash.
+  the dive and handles the landing in `Player.causeFallDamage` instead of fall damage. The server also checks the
+  2 blocks of air (else a modified client could cancel any fall). The dive is forgotten on the ground, on a ladder,
+  in water, while gliding, once you stop moving down, or after 10 s. The dive keeps fall distance, so hitting a mob
+  mid-dive is a big vanilla smash.
 - Vanilla already does what the first ideas for these were: the mace smash pushes everything within 3.5 blocks
   (so Shockwave deals damage instead of pushing) and the spear jab already hits every mob along its reach (so
   Skewer became Pinning Jab). A sprint already passes the spear's damage and knockback speeds, so Running Charge
@@ -557,7 +559,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 | Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single); each block uses durability | Digging 5 | 1 |
 | Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
 | Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
-| Melee       | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability        | 5 / 15 / 25 mob types defeated | 1/2/3 |
+| Melee       | Sturdy Weapon I/II/III | 10/20/30% chance swords, spears, maces, tridents use no durability | 5 / 15 / 25 mob types defeated | 1/2/3 |
 | Melee       | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
 | Defense     | Sturdy Armor I/II/III | 10/20/30% chance armor uses no durability       | 5 / 10 / 15 mob types defeated | 1/2/3 |
 | Defense     | Blast Guard I/II    | 15% / 30% less damage from explosions               | 5 / 10 mob types    | 2/3  |
@@ -979,6 +981,11 @@ Players can suggest more through the GitHub issue forms.
   hits every mob in its line, so Shockwave deals damage (30% of the fall bonus, hostile mobs only) and Skewer was
   replaced by Pinning Jab (slow). Ground Pound is a client air move like Double Jump, landing handled on the server
   instead of fall damage. Running Charge ×1.75 on-foot speed. Melee now has 15 perks in 5 groups; all perks cost 261.
+- 2026-10-26: **Combat review** ([AUDIT.md](AUDIT.md), Melee skill review): Ground Pound checked on the server too,
+  dives forgotten when the fall ends without a landing; shared `Targets` and `Cooldown` helpers. **Sturdy Weapon**
+  (was "Sturdy Blade", swords only) now covers swords, spears, maces and tridents; axes keep Sturdy Axe so nothing
+  gets two Sturdy perks. Bestiary goes back to the grid when you leave a world. AUDIT.md now has a **Minecraft
+  update checklist** of hooks that could silently break on an update.
 
 ## Playtest checklist
 
@@ -999,7 +1006,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   dive feels good, no fall damage, mobs pushed, no rubber-band on a server; not too low (2 blocks); water landing
   doesn't leave it "stuck" (next normal fall still hurts). Shockwave hurts mobs around a smash and a pound landing.
   Running Charge: sprinting spear charge clearly stronger, can knock a skeleton jockey off. Pinning Jab slows.
-  Perk list: 5 Melee headings (Any weapon, Sword, Axe, Mace, Spear) scroll fine. Tridents: throw charge faster with Archery, thrown hits give
+  Perk list: 5 Melee headings (Any weapon, Sword, Axe, Mace, Spear) scroll fine. **Review fixes:** Sturdy Weapon
+  saves durability on a spear, mace and trident; Disarm clang. Open a mob page in the Bestiary, leave the world,
+  open another: the grid shows. A Ground Pound onto a ladder, then a normal fall: fall damage again. Tridents: throw charge faster with Archery, thrown hits give
   Archery XP, Loyal Trident brings a plain trident back (a mixin failure would crash on the first throw).
 
 - **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs

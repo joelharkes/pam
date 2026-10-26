@@ -30,6 +30,8 @@ import java.util.UUID;
 public final class MeleeMoves {
 	// Vanilla's mace smash pushes everything within 3.5 blocks; the landing and Shockwave use the same reach
 	private static final double SMASH_RADIUS = 3.5;
+	/** How high above the ground a dive must start (the client checks the same), so it can't be sent just before landing. */
+	public static final double POUND_MIN_HEIGHT = 2.0;
 	/** Players in a Ground Pound dive: game time it started. */
 	private static final Map<UUID, Long> POUNDING = new HashMap<>();
 	private static boolean shockwaving;
@@ -48,9 +50,17 @@ public final class MeleeMoves {
 				&& !player.isInWater() && !player.isPassenger();
 	}
 
-	/** The client started a dive (it already moves itself down). */
+	/** Whether there are at least POUND_MIN_HEIGHT blocks of air below the player. Runs on client and server. */
+	public static boolean highEnoughToPound(Player player) {
+		return player.level().noCollision(player, player.getBoundingBox().move(0, -POUND_MIN_HEIGHT, 0));
+	}
+
+	/**
+	 * The client started a dive (it already moves itself down). The server checks it too: otherwise a modified client
+	 * could send this just before every landing and never take fall damage while holding a mace.
+	 */
 	public static void onGroundPound(ServerPlayer player) {
-		if (!canGroundPound(player)) {
+		if (!canGroundPound(player) || !highEnoughToPound(player)) {
 			return;
 		}
 		POUNDING.put(player.getUUID(), player.level().getGameTime());
@@ -58,8 +68,10 @@ public final class MeleeMoves {
 	}
 
 	/**
-	 * Every server tick: forget dives that ended without a landing (water, elytra, ...). On the ground counts too: the
-	 * landing itself was handled earlier in the tick, when the movement packet arrived.
+	 * Every server tick: forget dives that ended without a landing, so they can't cancel the fall damage of a later
+	 * fall. On the ground counts too: the landing itself was handled earlier in the tick, when the movement packet
+	 * arrived. Ladders, cobwebs and powder snow stop a fall without a landing; a dive that isn't going down any more
+	 * (after the first ticks, while the client's dive reaches the server) is over as well.
 	 */
 	public static void tick(MinecraftServer server) {
 		if (POUNDING.isEmpty()) {
@@ -67,8 +79,12 @@ public final class MeleeMoves {
 		}
 		POUNDING.entrySet().removeIf(entry -> {
 			ServerPlayer player = server.getPlayerList().getPlayer(entry.getKey());
-			return player == null || player.onGround() || player.isInWater() || player.isFallFlying()
-					|| player.level().getGameTime() - entry.getValue() > 200;
+			if (player == null) {
+				return true;
+			}
+			long age = player.level().getGameTime() - entry.getValue();
+			return player.onGround() || player.isInWater() || player.isFallFlying() || player.onClimbable()
+					|| (age > 3 && player.getKnownMovement().y >= 0) || age > 200;
 		});
 	}
 
@@ -135,7 +151,7 @@ public final class MeleeMoves {
 
 	private static Iterable<Mob> hostileMobsAround(ServerPlayer player, Entity except, Vec3 center) {
 		return player.level().getEntitiesOfClass(Mob.class, new AABB(center, center).inflate(SMASH_RADIUS),
-				mob -> mob != except && mob.position().distanceToSqr(center) <= SMASH_RADIUS * SMASH_RADIUS && Archery.isAimTarget(mob, player));
+				mob -> mob != except && mob.position().distanceToSqr(center) <= SMASH_RADIUS * SMASH_RADIUS && Targets.isHostile(mob, player));
 	}
 
 	/** Running Charge: how much faster a player on foot counts for the spear charge (1 = vanilla). */
@@ -147,7 +163,7 @@ public final class MeleeMoves {
 	/** Pinning Jab: a spear jab that hit a hostile mob slows it. */
 	public static void onJabHit(LivingEntity attacker, Entity target) {
 		if (attacker instanceof ServerPlayer player && target instanceof Mob mob && Perks.has(player, Perks.PINNING_JAB)
-				&& Archery.isAimTarget(mob, player)) {
+				&& Targets.isHostile(mob, player)) {
 			mob.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, PamConfig.get().pinningJabSlownessTicks, 1));
 		}
 	}

@@ -14,7 +14,9 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   live in its single "Ideas" section**: add new ones there (not in the pillars), and move an idea's text
   into its pillar when it gets built.
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
-- Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md)
+- Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md). Its **Minecraft
+  update checklist** lists the hooks that can break silently: go through it on every Minecraft update, and add to it
+  when a new mixin targets a call by position (`ordinal`) or code copies a vanilla rule.
 - Status: **0.4.0 released** (tag `v0.4.0`, Modrinth Alpha, first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Fishing skill/perks/milestones, Melee skill (slice a of 4), Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
@@ -112,7 +114,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
 - `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
   xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, sword/axe perks), `MeleeMoves` (Ground Pound, Shockwave,
-  spear perks),
+  spear perks), `Targets` (hostile/friendly filters shared by the combat perks),
   `Archery` (arrow/thrown-trident hit xp, draw speed incl. tridents, arrow perks), `Fishing`
   (catch xp, bite speed, fishing perks; treasure = item tag `fishing_treasure` or enchanted),
   `PlacedBlocks` anti-cheese
@@ -129,7 +131,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber/lumberjack, forester, clear cut (delayed via a tick queue), flint finder, vein miner, excavator, archaeologist, orchard, bird's nest,
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
-  (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash)
+  (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
+  `Cooldown` (per-player perk cooldowns, cleared on server stop)
 - `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
