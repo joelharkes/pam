@@ -48,14 +48,18 @@ public final class Skills {
 
 	/** E.g. "+19% speed", "+12% extra harvest" or "+8% draw speed". */
 	public static Component describeBonus(Skill skill, int level) {
-		long percent = Math.round(bonus(skill, level) * 100);
-		String formatted = (percent >= 0 ? "+" : "") + percent + "%";
 		String key = switch (skill) {
 			case FARMING -> "harvest";
 			case ARCHERY -> "draw";
 			default -> "speed";
 		};
-		return Component.translatable("skill_bonus.progressive_adventure." + key, formatted);
+		return Component.translatable("skill_bonus.progressive_adventure." + key, formatBonus(skill, level));
+	}
+
+	/** E.g. "+19%" or "-20%". */
+	public static String formatBonus(Skill skill, int level) {
+		long percent = Math.round(bonus(skill, level) * 100);
+		return (percent >= 0 ? "+" : "") + percent + "%";
 	}
 
 	/** The tool skill that applies when breaking this block with this tool, or null. Farm blocks never count. */

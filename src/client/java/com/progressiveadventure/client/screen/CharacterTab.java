@@ -4,8 +4,10 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.data.ProgressionSnapshot;
 import com.progressiveadventure.milestone.Progression;
+import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.PerkCategory;
 import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.perk.Requirement;
 import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 import com.progressiveadventure.world.MobUnlocks;
@@ -23,11 +25,15 @@ import net.minecraft.world.item.Items;
 
 import java.util.List;
 
-/** Rank, hearts, stomach, perk points and one row per skill. */
+/** Rank, hearts, stomach, perk points and the skills in two columns (details in a hover tooltip). */
 class CharacterTab implements AdventureTab {
 	private static final Identifier HEART_CONTAINER = Identifier.withDefaultNamespace("hud/heart/container");
 	private static final Identifier HEART_FULL = Identifier.withDefaultNamespace("hud/heart/full");
 	private static final Identifier HEART_HALF = Identifier.withDefaultNamespace("hud/heart/half");
+	// Two columns of 26px rows: 4 rows (8 skills) fit below the progress section
+	private static final int SKILL_ROW_HEIGHT = 26;
+	private static final int SKILL_COLUMN_GAP = 8;
+	private static final int SKILL_BAR_WIDTH = 100;
 
 	@Override
 	public void render(GuiGraphicsExtractor graphics, int left, int top, int width, int height, int mouseX, int mouseY) {
@@ -87,9 +93,12 @@ class CharacterTab implements AdventureTab {
 		y += 18;
 		graphics.text(font, Component.translatable("screen.progressive_adventure.skills"), left, y, AdventureScreen.TEXT_GOLD);
 		y += 12;
-		for (Skill skill : Skill.values()) {
-			drawSkill(graphics, font, progress, skill, left, y, width);
-			y += 26;
+		int columnWidth = (width - SKILL_COLUMN_GAP) / 2;
+		Skill[] skills = Skill.values();
+		for (int i = 0; i < skills.length; i++) {
+			int x = left + (i % 2) * (columnWidth + SKILL_COLUMN_GAP);
+			int rowY = y + (i / 2) * SKILL_ROW_HEIGHT;
+			drawSkill(graphics, font, progress, skills[i], x, rowY, columnWidth, mouseX, mouseY);
 		}
 	}
 
@@ -107,25 +116,38 @@ class CharacterTab implements AdventureTab {
 		}
 	}
 
-	private static void drawSkill(GuiGraphicsExtractor graphics, Font font, PlayerProgress progress, Skill skill, int x, int y, int width) {
+	private static void drawSkill(GuiGraphicsExtractor graphics, Font font, PlayerProgress progress, Skill skill, int x, int y, int width,
+			int mouseX, int mouseY) {
 		int xp = progress.xpOf(skill.id);
 		int level = Skills.level(xp);
 		int levelStart = Skills.xpForLevel(level);
 		int levelEnd = Skills.xpForLevel(level + 1);
 		PerkCategory category = PerkCategory.valueOf(skill.name());
+		Component name = Component.translatable("skill.progressive_adventure." + skill.id);
+		Component title = Component.translatable("screen.progressive_adventure.skill_level", name, level);
+		int bonusColor = Skills.bonus(skill, level) < 0 ? AdventureScreen.TEXT_RED : AdventureScreen.TEXT_GREEN;
 
 		graphics.item(new ItemStack(category.icon), x, y);
-		Component name = Component.translatable("skill.progressive_adventure." + skill.id);
-		graphics.text(font, Component.translatable("screen.progressive_adventure.skill_level", name, level), x + 20, y, AdventureScreen.TEXT);
-		graphics.text(font, Skills.describeBonus(skill, level),
-				x + 150, y, Skills.bonus(skill, level) < 0 ? AdventureScreen.TEXT_RED : AdventureScreen.TEXT_GREEN);
+		graphics.text(font, title, x + 20, y, AdventureScreen.TEXT);
 
 		int barX = x + 20;
 		int barY = y + 11;
-		int barWidth = 120;
 		float fraction = levelEnd > levelStart ? (float) (xp - levelStart) / (levelEnd - levelStart) : 0f;
-		graphics.fill(barX, barY, barX + barWidth, barY + 4, 0xFF2A2A2A);
-		graphics.fill(barX, barY, barX + Math.round(barWidth * fraction), barY + 4, 0xFF55CC55);
-		graphics.text(font, (xp - levelStart) + " / " + (levelEnd - levelStart), barX + barWidth + 6, barY - 2, AdventureScreen.TEXT_DIM);
+		graphics.fill(barX, barY, barX + SKILL_BAR_WIDTH, barY + 4, 0xFF2A2A2A);
+		graphics.fill(barX, barY, barX + Math.round(SKILL_BAR_WIDTH * fraction), barY + 4, 0xFF55CC55);
+		graphics.text(font, Skills.formatBonus(skill, level), barX + SKILL_BAR_WIDTH + 6, barY - 2, bonusColor);
+
+		if (PerksTab.isInside(mouseX, mouseY, x, y - 1, width, SKILL_ROW_HEIGHT - 4)) {
+			Perk nextPerk = Perks.nextForSkill(skill, level);
+			Component perkLine = nextPerk == null
+					? Component.translatable("screen.progressive_adventure.skill_no_perks_left")
+					: Component.translatable("screen.progressive_adventure.skill_next_perk", nextPerk.name(),
+							((Requirement.SkillLevel) nextPerk.requirement()).level());
+			graphics.setComponentTooltipForNextFrame(font, List.of(
+					title,
+					Skills.describeBonus(skill, level).copy().withColor(bonusColor),
+					Component.translatable("screen.progressive_adventure.skill_xp", levelEnd - xp, level + 1).withStyle(ChatFormatting.GRAY),
+					perkLine.copy().withStyle(ChatFormatting.GOLD)), mouseX, mouseY);
+		}
 	}
 }

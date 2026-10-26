@@ -13,6 +13,10 @@
   and the damage bonus grows to +30% at Master and +35% at 500 kills (was +50% and +55%). Your kills are
   kept, so you may drop back a tier.
 - A new bestiary entry now shows a toast instead of a message above the hotbar.
+- **Character tab:** skills are shown in two columns to make room for new skills. Hover a skill to see how much
+  xp you need for the next level and which perk it unlocks next.
+- **Swimming perks moved:** Deep Breath and Diver are now under Survival, Swimmer under Movement. Perks you
+  own stay yours.
 - New settings: `masterDoubleLootChance`, `assistKills`. Ops: `/pam kills <mob> <count> [player]`.
 
 ## 0.4.0 (Alpha): first public release

@@ -99,6 +99,10 @@ public final class Perks {
 	public static final Perk BONUS_HEART_3 = register("bonus_heart_3", PerkCategory.SURVIVAL, Items.ENCHANTED_GOLDEN_APPLE, 5, new Rank(40), "bonus_heart_2");
 	public static final Perk IRON_STOMACH = register("iron_stomach", PerkCategory.SURVIVAL, Items.ROTTEN_FLESH, 1, Requirement.NONE, null);
 	public static final Perk LONG_ARMS = register("long_arms", PerkCategory.SURVIVAL, Items.SCAFFOLDING, 2, new Rank(10), null);
+	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SURVIVAL, Items.PUFFERFISH, 1, Requirement.NONE, null);
+	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SURVIVAL, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
+	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SURVIVAL, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
+	public static final Perk DIVER = register("diver", PerkCategory.SURVIVAL, Items.PRISMARINE_SHARD, 2, new Rank(10), null);
 
 	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.MOVEMENT, Items.SUGAR, 2, new Rank(10), null);
 	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.MOVEMENT, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
@@ -114,13 +118,8 @@ public final class Perks {
 	public static final Perk PATHFINDER_1 = register("pathfinder_1", PerkCategory.MOVEMENT, Items.COMPASS, 2, new Rank(15), null);
 	public static final Perk PATHFINDER_2 = register("pathfinder_2", PerkCategory.MOVEMENT, Items.RECOVERY_COMPASS, 3, new Rank(35), "pathfinder_1");
 	public static final Perk DOUBLE_JUMP = register("double_jump", PerkCategory.MOVEMENT, Items.PHANTOM_MEMBRANE, 4, new Rank(30), null);
-
-	public static final Perk DEEP_BREATH_1 = register("deep_breath_1", PerkCategory.SWIMMING, Items.PUFFERFISH, 1, Requirement.NONE, null);
-	public static final Perk DEEP_BREATH_2 = register("deep_breath_2", PerkCategory.SWIMMING, Items.NAUTILUS_SHELL, 2, new Rank(10), "deep_breath_1");
-	public static final Perk DEEP_BREATH_3 = register("deep_breath_3", PerkCategory.SWIMMING, Items.TURTLE_HELMET, 3, new Rank(25), "deep_breath_2");
-	public static final Perk SWIMMER_1 = register("swimmer_1", PerkCategory.SWIMMING, Items.TROPICAL_FISH, 2, new Rank(5), null);
-	public static final Perk SWIMMER_2 = register("swimmer_2", PerkCategory.SWIMMING, Items.HEART_OF_THE_SEA, 3, new Rank(20), "swimmer_1");
-	public static final Perk DIVER = register("diver", PerkCategory.SWIMMING, Items.PRISMARINE_SHARD, 2, new Rank(10), null);
+	public static final Perk SWIMMER_1 = register("swimmer_1", PerkCategory.MOVEMENT, Items.TROPICAL_FISH, 2, new Rank(5), null);
+	public static final Perk SWIMMER_2 = register("swimmer_2", PerkCategory.MOVEMENT, Items.HEART_OF_THE_SEA, 3, new Rank(20), "swimmer_1");
 
 	public enum Status {
 		OWNED, BUYABLE, TOO_EXPENSIVE, LOCKED, NEEDS_PREREQUISITE
@@ -147,6 +146,20 @@ public final class Perks {
 			}
 		}
 		return result;
+	}
+
+	/** The perk with the lowest skill level requirement above the given level, or null when none is left. */
+	public static Perk nextForSkill(Skill skill, int level) {
+		Perk next = null;
+		int nextLevel = Integer.MAX_VALUE;
+		for (Perk perk : BY_ID.values()) {
+			if (perk.requirement() instanceof SkillLevel(Skill required, int needed)
+					&& required == skill && needed > level && needed < nextLevel) {
+				next = perk;
+				nextLevel = needed;
+			}
+		}
+		return next;
 	}
 
 	public static boolean has(Player player, Perk perk) {

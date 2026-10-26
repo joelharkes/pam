@@ -184,7 +184,7 @@ level 4 (~64 blocks) and cap near +60%.
 - Level = floor(√(xp / 4)); bonus curve and numbers are in the config.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
-- The Character tab is full at 5 skills: a 6th skill needs a new layout.
+- The Character tab shows skills in two columns of 4 rows: 8 fit (7 planned with Fishing and Combat).
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
@@ -473,6 +473,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 | Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 20 / 40 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
 | Survival    | Long Arms           | +1.5 blocks block reach                             | Rank 10             | 2    |
+| Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
+| Survival    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
 | Movement    | Spring Step         | Jump strength +0.08 (~1.7 blocks, over fences)      | Rank 5              | 2    |
@@ -484,9 +486,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 | Movement    | Mantle              | Jump against a wall up to 2 blocks high while walking forward: pull yourself up | Rank 15 | 3 |
 | Movement    | Double Jump         | One extra jump in the air (not while wearing an elytra) | Rank 30         | 4    |
 | Movement    | Pathfinder I/II     | Waypoint trips cost 25% / 50% less XP               | Rank 15 / 35        | 2/3  |
-| Swimming    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
-| Swimming    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
-| Swimming    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
+| Movement    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
 
 Implementation notes:
 - Durability: one hook where items lose durability; chance by tool type.
@@ -581,8 +581,9 @@ Keep it simple and close to vanilla.
 - **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 12"), available perk
   points, hearts (as heart icons) and stomach level. Details (what Rank is, hunger drain %) are in
   hover tooltips.
-- **Skills:** one row per skill: tool icon, name, level, xp progress bar to next level, current
-  bonus. Full at 5 rows.
+- **Skills:** two columns of 4 rows (room for 8). Each skill: tool icon, name and level, xp bar to
+  the next level and the bonus as a number ("+35%", red below vanilla). Hover for the details: the
+  bonus in words, how much xp to the next level and the next perk the skill unlocks.
 
 #### Perks tab
 ```
@@ -598,7 +599,7 @@ Keep it simple and close to vanilla.
 │ │ Defense  │ │                                    │  │
 │ │ Survival │ │                                    │  │
 │ │ Movement │ │                                    │  │
-│ │ Swimming │ │                                    │  │
+│ │ (Fishing)│ │                                    │  │
 │ └──────────┘ └────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────┘
 ```
@@ -640,9 +641,14 @@ Players can suggest more through the GitHub issue forms.
 - **Combat skill (2026-10-25):** something per weapon type (swords, axes, maces, spears/tridents), either one
   skill per weapon or one Combat skill with a perk branch per weapon. The bestiary is already the damage
   progression (same reason Archery has no damage perks), so the passive bonus should be something else, like
-  attack speed. One Combat skill with weapon perk branches needs only one more row, but the Character tab is
-  full at 5 skills, so any new skill needs a new layout.
-- **Fishing skill:** trained by catching fish; faster bites, better loot. Perk idea: **Lucky** (fishing loot).
+  attack speed. One Combat skill with weapon perk branches (decided 2026-10-26: one skill, the 7th) fits the
+  two-column Character tab and uses the existing Combat perk category.
+- **Fishing skill (next, see decisions log 2026-10-26):** trained by catches (fish/junk 1, treasure 3); faster
+  bites from +0%. Perks: **Lucky** (more treasure, less junk; vanilla `luck` attribute), **Keen Eye** (bite shows
+  sooner, longer reel window), **Double Catch**, **Treasure Hunter** (treasure in small ponds). Milestones: catch a
+  treasure, catch all 4 fish (no vanilla advancement for either).
+- **Campfire Catch / Auto-smelt (2026-10-26):** fish come out cooked; a matching Mining perk that smelts ores.
+  Left out of Fishing for now.
 
 ### Milestones and Rank
 - More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
@@ -847,6 +853,16 @@ Players can suggest more through the GitHub issue forms.
   farms still give no progress (the player has to do the thing). The idea "kill chambers count for less" is
   dropped. Also listed there: mobs scaling with the player, a death penalty, multi-version builds,
   server-only or client-only installs (all decided earlier).
+- 2026-10-26: **Swimming perk category removed** to make room for Fishing: Deep Breath and Diver moved to
+  Survival, Swimmer to Movement. Rule: one category per skill plus Defense, Survival and Movement (10 with
+  Fishing). Perk ids unchanged, so owned perks stay owned.
+- 2026-10-26: **Character tab in two columns** (room for 8 skills; 7 planned with Fishing and Combat). Rows show
+  level, bar and bonus number only; "x / total" xp moved to a hover tooltip with the bonus in words, xp to the
+  next level and the next perk the skill unlocks.
+- 2026-10-26: **Fishing skill** next: trained by catches, passive bonus = faster bites starting at vanilla
+  (+0%, not −20% like the other skills; waiting is already the slow part). Perks: Lucky, Keen Eye, Double
+  Catch, Treasure Hunter. Campfire Catch (cooked fish) left out for now, with auto-smelt for Mining as a
+  matching idea.
 
 ## Playtest checklist
 
@@ -864,15 +880,17 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   give Woodcutting XP (fixed, check it).
 - **Archery (3c):** test the perks with `/pam skill archery 40` (ops). XP pace, each perk.
   Steady Aim: helpful but not silly? Does the curving arrow look smooth on the client? Ricochet:
-  does the bounce look and sound clear, and does the new arrow ever hit the first mob again? Character
-  tab: 5 skill rows only just fit with two rows of hearts.
+  does the bounce look and sound clear, and does the new arrow ever hit the first mob again?
 - **Screen:** taller panel (250px) at the user's GUI scale; perk list scrolling.
 - **Second perk round:** Treasure Sense trail + chime (not annoying?), Vein Miner, Cat's Eyes
   brightness (I/II noticeable, caves not fully bright?), Lumberjack/Timber, Orchard and Bird's Nest
   rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
   Sturdy Weapon III, Forester (sapling appears?), Clear Cut (drops OK incl. Orchard apples, neighbouring trees
   untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works).
-- **Movement / Swimming perks:** 10 category rows fit at the user's GUI scale? Each attribute
+- **Character tab, two columns (2026-10-26):** skills fit at the user's GUI scale, also with two rows of
+  hearts? Hover tooltip readable (bonus, xp to next level, next perk)? Swimming perks now show under Survival
+  (Deep Breath, Diver) and Movement (Swimmer).
+- **Movement perks:** 10 category rows fit at the user's GUI scale? Each attribute
   perk noticeable? Double Jump: feels instant, no rubber-band
   on a server, no fall damage after it, off with elytra. Note it can be used to cancel any fall
   (jump just before landing): fun or too strong? Mantle: triggers on 2-block walls, not on fences,
