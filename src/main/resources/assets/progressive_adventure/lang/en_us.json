@@ -115,6 +115,8 @@
   "perk.progressive_adventure.sturdy_weapon_3.description": "30% chance that swords use no durability.",
   "perk.progressive_adventure.quick_study": "Quick Study",
   "perk.progressive_adventure.quick_study.description": "Each kill counts double towards mob familiarity.",
+  "perk.progressive_adventure.careful_sweep": "Careful Sweep",
+  "perk.progressive_adventure.careful_sweep.description": "Your sword sweep no longer hurts pets, villagers or golems standing near the mob you hit.",
   "perk.progressive_adventure.wide_sweep_1": "Wide Sweep I",
   "perk.progressive_adventure.wide_sweep_1.description": "When your sword sweeps, the other mobs nearby take a quarter of your hit extra.",
   "perk.progressive_adventure.wide_sweep_2": "Wide Sweep II",

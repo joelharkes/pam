@@ -111,7 +111,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
 - `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
-  xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, which mobs a sweep spares),
+  xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, melee perks),
   `Archery` (arrow/thrown-trident hit xp, draw speed incl. tridents, arrow perks), `Fishing`
   (catch xp, bite speed, fishing perks; treasure = item tag `fishing_treasure` or enchanted),
   `PlacedBlocks` anti-cheese
@@ -134,7 +134,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
-- `mixin/`: FoodData (hunger multipliers), Player (break speed, sweeps spare pets/villagers/golems), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
+- `mixin/`: FoodData (hunger multipliers), Player (break speed, Careful Sweep), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),

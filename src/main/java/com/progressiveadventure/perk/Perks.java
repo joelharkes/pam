@@ -85,6 +85,7 @@ public final class Perks {
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.MELEE, "sword", Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.MELEE, "sword", Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
 	public static final Perk STURDY_WEAPON_3 = register("sturdy_weapon_3", PerkCategory.MELEE, "sword", Items.DIAMOND_SWORD, 3, new MobTypes(25), "sturdy_weapon_2");
+	public static final Perk CAREFUL_SWEEP = register("careful_sweep", PerkCategory.MELEE, "sword", Items.LEAD, 1, new SkillLevel(Skill.MELEE, 5), null);
 	public static final Perk WIDE_SWEEP_1 = register("wide_sweep_1", PerkCategory.MELEE, "sword", Items.GOLDEN_SWORD, 2, new SkillLevel(Skill.MELEE, 10), null);
 	public static final Perk WIDE_SWEEP_2 = register("wide_sweep_2", PerkCategory.MELEE, "sword", Items.NETHERITE_SWORD, 3, new SkillLevel(Skill.MELEE, 25), "wide_sweep_1");
 

@@ -23,10 +23,10 @@ public class PlayerMixin {
 		cir.setReturnValue(cir.getReturnValueF() * Skills.speedMultiplier((Player) (Object) this, state));
 	}
 
-	/** Sword sweeps don't hurt pets, villagers or golems next to the mob you hit (Wide Sweep makes sweeps strong). */
+	/** Careful Sweep: sword sweeps don't hurt pets, villagers or golems next to the mob you hit. */
 	@WrapOperation(method = "doSweepAttack", at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/LivingEntity;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
 	private boolean pam$spareFriendsFromSweep(LivingEntity nearby, ServerLevel level, DamageSource source, float damage, Operation<Boolean> original) {
-		return !Melee.sparedBySweep(nearby) && original.call(nearby, level, source, damage);
+		return !Melee.sparedBySweep((Player) (Object) this, nearby) && original.call(nearby, level, source, damage);
 	}
 }

@@ -286,13 +286,14 @@ the Melee perk category. Built in slices; slice a is built, b–d are in [Ideas]
   (multiplying the base would add the same +1.2 attacks/s to a slow axe and a fast sword).
 - **No damage bonus on your main hit:** the bestiary is the damage progression. Wide Sweep only changes the
   damage the *other* mobs take.
-- **Sweeps spare friends:** a sword sweep never hurts tamed pets, villagers or golems next to the mob you hit
-  (vanilla's sweep hits everything not on your team). Always on, not tied to a perk.
+- **Sweeps hit like vanilla** (everything near the target that isn't on your team, also pets and villagers) unless
+  you own **Careful Sweep**. The user wanted vanilla kept and the protection as a choice.
 
 | Group | Perk | Effect | Requires | Cost |
 |---|---|---|---|---|
 | Any weapon | Quick Study | Kills count double towards familiarity | 5 mob types defeated | 2 |
 | Sword | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability | 5 / 15 / 25 mob types | 1/2/3 |
+| Sword | Careful Sweep | Your sweep no longer hurts tamed pets, villagers or golems (not shulkers) | Melee 5 | 1 |
 | Sword | Wide Sweep I/II | Sweep damage to the other mobs +25% / +50% of the hit (`sweeping_damage_ratio`, stacks with Sweeping Edge up to 1.0) | Melee 10 / 25 | 2/3 |
 
 Hearty Kill (heal on a kill) is in Survival, since it works with any weapon.
@@ -940,7 +941,8 @@ Players can suggest more through the GitHub issue forms.
   heals once). Sword: **Wide Sweep I/II** (more sweep damage, the vanilla way) *and* Whirlwind later (more moves are
   fun). Sweeps never hit pets, villagers or golems (always on). **Tridents:** thrown ones train Archery and get the
   draw speed bonus; Loyal Trident perk in Archery. Owning every perk is out of reach for now (97 perks cost 232 of
-  ~220 Rank); more milestones later. Slices: a = skill + Wide Sweep + Hearty Kill + headings, b = Whirlwind, Disarm,
+  ~220 Rank); more milestones later. Sweep protection first shipped always on; the user wanted vanilla kept, so it
+  became the **Careful Sweep** perk (Melee 5, 1 point) the same day. Slices: a = skill + Wide Sweep + Hearty Kill + headings, b = Whirlwind, Disarm,
   axe perks, c = Parry/Deflect/Shield Bash, d = mace and spear moves.
 
 ## Playtest checklist
@@ -948,7 +950,8 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Melee skill, slice a (2026-10-26):** XP pace (Melee 10 ≈ 50 zombies?), no XP from spam-clicked weak hits.
   Attack speed noticeable at higher levels (`/pam skill melee 30`): cooldown bar fills faster, also for axes.
-  Wide Sweep: other mobs in a sweep clearly take more; a sweep never hurts your dog, a villager or an iron golem.
+  Wide Sweep: other mobs in a sweep clearly take more. Without Careful Sweep a sweep hits your dog (vanilla); with it,
+  never your dog, a villager or an iron golem.
   Hearty Kill heals on a hostile kill, only once when a sweep kills several. Perks tab: Melee category with
   "Any weapon" / "Sword" headings, scrolling and clicking still hit the right row; Second Wind and Hearty Kill
   under Survival. Character tab shows 7 skills. Tridents: throw charge faster with Archery, thrown hits give

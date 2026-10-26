@@ -21,7 +21,7 @@
 - **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The Combat
   perk category is now called Melee, with the perks grouped by weapon. New: **Wide Sweep I/II** (your sword sweep
   hurts the other mobs nearby more).
-- Sword sweeps no longer hurt your pets, villagers or golems.
+- **Careful Sweep** (Melee): your sword sweep no longer hurts your pets, villagers or golems.
 - **Hearty Kill I/II/III** (Survival): defeating a hostile mob heals ½, 1 or 1½ hearts. **Second Wind** moved
   to Survival (you keep it if you have it).
 - **Tridents** now count for Archery when you throw them: they give Archery XP and charge faster as your Archery

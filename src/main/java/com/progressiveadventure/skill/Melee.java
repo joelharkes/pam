@@ -1,6 +1,7 @@
 package com.progressiveadventure.skill;
 
 import com.progressiveadventure.config.PamConfig;
+import com.progressiveadventure.perk.Perks;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -51,10 +52,15 @@ public final class Melee {
 	}
 
 	/**
-	 * Whether a player's sword sweep leaves this entity alone: pets, villagers and golems standing next to the mob
-	 * you hit (vanilla sweeps hit everything that isn't on your team).
+	 * Careful Sweep: the player's sword sweep leaves pets, villagers and golems next to the mob alone (vanilla sweeps
+	 * hit everything that isn't on your team).
 	 */
-	public static boolean sparedBySweep(LivingEntity entity) {
+	public static boolean sparedBySweep(Player player, LivingEntity entity) {
+		return Perks.has(player, Perks.CAREFUL_SWEEP) && isFriendly(entity);
+	}
+
+	/** Tamed pets, villagers and golems: what Careful Sweep and the area moves leave alone. */
+	public static boolean isFriendly(LivingEntity entity) {
 		return (entity instanceof OwnableEntity pet && pet.getOwnerReference() != null)
 				|| entity instanceof AbstractVillager
 				|| (entity instanceof AbstractGolem && !(entity instanceof Enemy)); // shulkers are golems too
