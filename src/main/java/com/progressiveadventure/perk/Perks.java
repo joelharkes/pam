@@ -88,6 +88,10 @@ public final class Perks {
 	public static final Perk CAREFUL_SWEEP = register("careful_sweep", PerkCategory.MELEE, "sword", Items.LEAD, 1, new SkillLevel(Skill.MELEE, 5), null);
 	public static final Perk WIDE_SWEEP_1 = register("wide_sweep_1", PerkCategory.MELEE, "sword", Items.GOLDEN_SWORD, 2, new SkillLevel(Skill.MELEE, 10), null);
 	public static final Perk WIDE_SWEEP_2 = register("wide_sweep_2", PerkCategory.MELEE, "sword", Items.NETHERITE_SWORD, 3, new SkillLevel(Skill.MELEE, 25), "wide_sweep_1");
+	public static final Perk WHIRLWIND = register("whirlwind", PerkCategory.MELEE, "sword", Items.WIND_CHARGE, 3, new SkillLevel(Skill.MELEE, 20), "wide_sweep_1");
+	public static final Perk DISARM = register("disarm", PerkCategory.MELEE, "sword", Items.TRIPWIRE_HOOK, 2, new SkillLevel(Skill.MELEE, 15), null);
+	public static final Perk HEAVY_SWING = register("heavy_swing", PerkCategory.MELEE, "axe", Items.IRON_AXE, 2, new SkillLevel(Skill.MELEE, 10), null);
+	public static final Perk SUNDER = register("sunder", PerkCategory.MELEE, "axe", Items.DIAMOND_AXE, 3, new SkillLevel(Skill.MELEE, 20), null);
 
 	public static final Perk STURDY_ARMOR_1 = register("sturdy_armor_1", PerkCategory.DEFENSE, Items.LEATHER_CHESTPLATE, 1, new MobTypes(5), null);
 	public static final Perk STURDY_ARMOR_2 = register("sturdy_armor_2", PerkCategory.DEFENSE, Items.IRON_CHESTPLATE, 2, new MobTypes(10), "sturdy_armor_1");

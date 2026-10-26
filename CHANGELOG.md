@@ -20,7 +20,9 @@
   4 kinds of fish), ½ heart each.
 - **Melee skill:** hit mobs with a sword, axe, mace, spear or trident to level it up and attack faster. The Combat
   perk category is now called Melee, with the perks grouped by weapon. New: **Wide Sweep I/II** (your sword sweep
-  hurts the other mobs nearby more).
+  hurts the other mobs nearby more), **Whirlwind** (sneak while you sweep to hit every hostile mob around you),
+  **Disarm** (knock the weapon out of a mob's hand), and for axes **Heavy Swing** (big knockback) and **Sunder**
+  (cracks the mob's armor for a few seconds).
 - **Careful Sweep** (Melee): your sword sweep no longer hurts your pets, villagers or golems.
 - **Hearty Kill I/II/III** (Survival): defeating a hostile mob heals ½, 1 or 1½ hearts. **Second Wind** moved
   to Survival (you keep it if you have it).

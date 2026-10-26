@@ -121,6 +121,14 @@ public class PamConfig {
 	public int secondWindCooldownSeconds = 120;
 	// Wide Sweep: added to the sweeping damage ratio (vanilla sweep = 1 + ratio x hit damage; Sweeping Edge III adds 0.75)
 	public List<Double> wideSweepRatios = List.of(0.25, 0.5);
+	// Disarm: chance per sword hit (at least meleeMinHitDamage) that the mob drops the item in its main hand
+	public double disarmChance = 0.15;
+	// Heavy Swing: knockback strength of a fully charged axe hit (vanilla's sprint knockback adds 0.5) and Slowness II time
+	public float heavySwingKnockback = 1.0f;
+	public int heavySwingSlownessTicks = 40;
+	// Sunder: a fully charged axe hit lowers the mob's armor by this share for sunderSeconds
+	public double sunderArmorReduction = 0.5;
+	public int sunderSeconds = 5;
 	// Hearty Kill: health healed per hostile mob kill (2 = one heart), at most once per heartyKillCooldownTicks
 	public List<Double> heartyKillHeals = List.of(1.0, 2.0, 3.0);
 	public int heartyKillCooldownTicks = 20;

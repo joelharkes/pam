@@ -276,7 +276,8 @@ and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays a
 ### 3e. Melee skill
 
 One skill for every hand-to-hand weapon (sword, axe, mace, spear, trident stab), with perks grouped by weapon in
-the Melee perk category. Built in slices; slice a is built, b–d are in [Ideas](#ideas).
+the Melee perk category. Built in slices: a (skill, Wide Sweep, Hearty Kill) and b (Whirlwind, Disarm, axe perks)
+are built, c–d are in [Ideas](#ideas).
 
 - **XP:** 1 per hit on a mob that deals at least 2 damage (1 heart), 4 for a kill. The minimum stops spam-clicked
   weak hits (cooldown not filled) from counting. Sweeps, mace smashes and spear attacks count; thorns and
@@ -295,6 +296,18 @@ the Melee perk category. Built in slices; slice a is built, b–d are in [Ideas]
 | Sword | Sturdy Weapon I/II/III | 10/20/30% chance swords use no durability | 5 / 15 / 25 mob types | 1/2/3 |
 | Sword | Careful Sweep | Your sweep no longer hurts tamed pets, villagers or golems (not shulkers) | Melee 5 | 1 |
 | Sword | Wide Sweep I/II | Sweep damage to the other mobs +25% / +50% of the hit (`sweeping_damage_ratio`, stacks with Sweeping Edge up to 1.0) | Melee 10 / 25 | 2/3 |
+| Sword | Whirlwind | A sweep while sneaking hits every hostile mob within 3 blocks around you (not only next to the target), ring of sweep particles + wind sound. Same sweep damage, so it needs Wide Sweep I | Melee 20, Wide Sweep I | 3 |
+| Sword | Disarm | 15% per sword hit: the mob's main-hand item drops next to it (skeletons then walk up and punch; zombies may pick it up again) | Melee 15 | 2 |
+| Axe | Heavy Swing | Fully charged axe hit: extra knockback (1.0) and Slowness II for 2 s | Melee 10 | 2 |
+| Axe | Sunder | Fully charged axe hit: the mob's armor −50% for 5 s (shield-break sound, crit sparks). The answer to elites in diamond gear | Melee 20 | 3 |
+
+- "Fully charged" = cooldown over 90%, like vanilla's crit/sweep check. Vanilla resets the strength before the hit
+  lands, so `PlayerMixin` stores it at the start of `Player.attack` (`PlayerAttackAccess`).
+- Whirlwind wraps vanilla's sweep (`doSweepAttack`): another search box around the player and a hostile-only filter
+  (Steady Aim's: hostile, or neutral and targeting you). Vanilla's 3-block distance check stays, so 3 is the radius.
+- Sunder: a transient `armor` modifier (multiply total −0.5) that `Melee.tick` removes after 5 s. It lands with the
+  hit, so it helps the *next* hits, not the one that cracked the armor. Disarm and the axe perks run on hits that
+  give Melee XP (≥ 1 heart).
 
 Hearty Kill (heal on a kill) is in Survival, since it works with any weapon.
 
@@ -694,15 +707,9 @@ it's new); when it gets built, move its description into the pillars above and l
 Players can suggest more through the GitHub issue forms.
 
 ### New skills
-- **Melee skill, slices b–d (2026-10-26, decided; slice a built, see 3e).** Perks change *how* you fight
+- **Melee skill, slices c–d (2026-10-26, decided; a and b built, see 3e).** Perks change *how* you fight
   (crowds, control, moves), never the main hit's damage. Active moves only hit hostile mobs (the Steady Aim
   filter: never pets, villagers or players).
-  - **b. Sword and axe:** **Whirlwind** (sword): hitting a mob while sneaking hits every hostile mob within ~3
-    blocks around you, with a ring of sweep particles, for the sweep damage (so Wide Sweep makes it stronger).
-    Server only (the server knows you sneak when the hit lands). **Disarm** (sword): 10–15% chance a hit knocks
-    the weapon out of a mob's hand (a skeleton without a bow has to walk up; elite swords drop). **Sunder** (axe):
-    a fully charged axe hit ignores part of the mob's armor; the counter to elites in diamond gear. **Heavy
-    Swing** (axe): a fully charged hit knocks the mob far back and slows it briefly.
   - **c. Shield (Defense category):** **Parry**: raise your shield just before a melee hit lands (window about
     ½ s, generous because of server ping) and the attacker takes the damage back, capped (e.g. 4 hearts) so a
     Ravager or a diamond elite is hurt but not one-shot, plus knockback. **Deflect** (needs Parry): a parried arrow
@@ -944,6 +951,10 @@ Players can suggest more through the GitHub issue forms.
   ~220 Rank); more milestones later. Sweep protection first shipped always on; the user wanted vanilla kept, so it
   became the **Careful Sweep** perk (Melee 5, 1 point) the same day. Slices: a = skill + Wide Sweep + Hearty Kill + headings, b = Whirlwind, Disarm,
   axe perks, c = Parry/Deflect/Shield Bash, d = mace and spear moves.
+- 2026-10-26: **Melee slice b:** Whirlwind needs Wide Sweep I (without it the sweep does 1 damage and Whirlwind
+  would feel broken) and wraps vanilla's sweep instead of being its own attack. Sunder is a 5 s armor crack
+  (−50%) instead of "ignore armor on this hit": simpler, visible, and it rewards following up. Disarm drops the
+  item (no special loot rule), so it can also free a drowned's trident.
 
 ## Playtest checklist
 
@@ -954,7 +965,10 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   never your dog, a villager or an iron golem.
   Hearty Kill heals on a hostile kill, only once when a sweep kills several. Perks tab: Melee category with
   "Any weapon" / "Sword" headings, scrolling and clicking still hit the right row; Second Wind and Hearty Kill
-  under Survival. Character tab shows 7 skills. Tridents: throw charge faster with Archery, thrown hits give
+  under Survival. Character tab shows 7 skills. **Slice b:** Whirlwind (sneak + sweep) hits mobs behind you but not
+  your dog or a cow; is the ring visible? Disarm: skeleton drops its bow and walks up; message readable. Heavy Swing
+  knockback feels heavy, not silly. Sunder on an armored elite (`/pam elite zombie`): sparks/sound, next hits clearly
+  stronger, armor back after 5 s. Tridents: throw charge faster with Archery, thrown hits give
   Archery XP, Loyal Trident brings a plain trident back (a mixin failure would crash on the first throw).
 
 - **Bestiary pages (2026-10-26):** click a tile → page; does the 3D model fit its box for big and small mobs

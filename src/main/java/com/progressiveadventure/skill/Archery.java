@@ -209,8 +209,8 @@ public final class Archery {
 				.getType() == HitResult.Type.MISS;
 	}
 
-	/** Hostile mobs only; neutral ones (endermen, zombified piglins) only once they target the shooter. */
-	private static boolean isAimTarget(Mob mob, Entity owner) {
+	/** Hostile mobs only; neutral ones (endermen, zombified piglins) only once they target the shooter. Also Whirlwind's filter. */
+	public static boolean isAimTarget(Mob mob, Entity owner) {
 		return mob instanceof Enemy && mob.isAlive() && !mob.isInvisible()
 				&& (!(mob instanceof NeutralMob) || (owner != null && mob.getTarget() == owner));
 	}

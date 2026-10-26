@@ -56,6 +56,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			PamAttachments.onServerStopped();
 			Trackers.onServerStopped();
 			PerkEffects.onServerStopped();
+			Melee.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
 			BestiaryInfo.clearCache();
@@ -119,6 +120,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			}
 			MovementPerks.tick(server);
 			PerkEffects.tick();
+			Melee.tick();
 			Waypoints.tick(server);
 			// Last, so changes from the handlers above go out in the same packet
 			PamAttachments.flushAllProgress();
