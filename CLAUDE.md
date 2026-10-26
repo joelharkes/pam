@@ -16,7 +16,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
 - Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md)
 - Status: **0.4.0 released** (tag `v0.4.0`, Modrinth Alpha, first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
-  not tagged yet. Farming skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
+  not tagged yet. Farming skill/perks/milestones, Fishing skill/perks/milestones, Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
   what still needs a playtest is in the DESIGN.md playtest checklist.
 - Audience: the user plays this with their kids → fun first, no death penalty,
@@ -111,7 +111,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
 - `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
-  xp, extra harvests, Replant/Harvester/Rancher), `Archery` (arrow-hit xp, draw speed, arrow perks),
+  xp, extra harvests, Replant/Harvester/Rancher), `Archery` (arrow-hit xp, draw speed, arrow perks), `Fishing`
+  (catch xp, bite speed, fishing perks; treasure = item tag `fishing_treasure` or enchanted),
   `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier, what each tier unlocks (labels known/familiar/expert/master),
   assist kills (CombatTracker entries via `CombatTrackerAccessor`), Master double loot, collections; `BestiaryInfo`:
@@ -135,7 +136,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `mixin/`: FoodData (hunger multipliers), Player (break speed), LivingEntity (damage, Iron Stomach, Shadow Step visibility),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
-  MixinExtras `@WrapMethod`), Animal (breeding hook),
+  MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks),
   LivingEntity also speeds up bow/crossbow use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)

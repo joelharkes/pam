@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:nautilus_shell"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.angler.treasure.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.angler.treasure.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

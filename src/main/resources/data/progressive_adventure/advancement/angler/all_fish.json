@@ -1,0 +1,63 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "cod": {
+      "trigger": "minecraft:fishing_rod_hooked",
+      "conditions": {
+        "item": {
+          "items": "minecraft:cod"
+        }
+      }
+    },
+    "salmon": {
+      "trigger": "minecraft:fishing_rod_hooked",
+      "conditions": {
+        "item": {
+          "items": "minecraft:salmon"
+        }
+      }
+    },
+    "pufferfish": {
+      "trigger": "minecraft:fishing_rod_hooked",
+      "conditions": {
+        "item": {
+          "items": "minecraft:pufferfish"
+        }
+      }
+    },
+    "tropical_fish": {
+      "trigger": "minecraft:fishing_rod_hooked",
+      "conditions": {
+        "item": {
+          "items": "minecraft:tropical_fish"
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:tropical_fish"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.angler.all_fish.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.angler.all_fish.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "cod"
+    ],
+    [
+      "salmon"
+    ],
+    [
+      "pufferfish"
+    ],
+    [
+      "tropical_fish"
+    ]
+  ]
+}

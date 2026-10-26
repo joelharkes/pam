@@ -13,11 +13,17 @@
   and the damage bonus grows to +30% at Master and +35% at 500 kills (was +50% and +55%). Your kills are
   kept, so you may drop back a tier.
 - A new bestiary entry now shows a toast instead of a message above the hotbar.
+- **Fishing skill:** catch fish to level it up and get faster bites. New fishing perks: Keen Eye (a bell rings
+  when a fish bites, more time to reel in), Lucky (more treasure), Double Catch and Treasure Hunter (treasure
+  even in small ponds).
+- **2 new milestones** in the Adventure tab: Sunken Treasure (fish up a treasure) and Fish Collector (catch all
+  4 kinds of fish), ½ heart each.
 - **Character tab:** skills are shown in two columns to make room for new skills. Hover a skill to see how much
   xp you need for the next level and which perk it unlocks next.
 - **Swimming perks moved:** Deep Breath and Diver are now under Survival, Swimmer under Movement. Perks you
   own stay yours.
-- New settings: `masterDoubleLootChance`, `assistKills`. Ops: `/pam kills <mob> <count> [player]`.
+- New settings: `masterDoubleLootChance`, `assistKills`, `fishingMaxBiteBonus`, `fishingFishXp`, `fishingJunkXp`,
+  `fishingTreasureXp`, `keenEyeExtraTicks`, `luckyLuck`, `doubleCatchChance`. Ops: `/pam kills <mob> <count> [player]`.
 
 ## 0.4.0 (Alpha): first public release
 

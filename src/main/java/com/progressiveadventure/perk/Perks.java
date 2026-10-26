@@ -74,6 +74,11 @@ public final class Perks {
 	public static final Perk STEADY_AIM = register("steady_aim", PerkCategory.ARCHERY, Items.TARGET, 3, new SkillLevel(Skill.ARCHERY, 20), null);
 	public static final Perk RICOCHET = register("ricochet", PerkCategory.ARCHERY, Items.SLIME_BALL, 5, new SkillLevel(Skill.ARCHERY, 40), null);
 
+	public static final Perk KEEN_EYE = register("keen_eye", PerkCategory.FISHING, Items.BELL, 1, new SkillLevel(Skill.FISHING, 5), null);
+	public static final Perk LUCKY = register("lucky", PerkCategory.FISHING, Items.EMERALD, 2, new SkillLevel(Skill.FISHING, 10), null);
+	public static final Perk DOUBLE_CATCH = register("double_catch", PerkCategory.FISHING, Items.COD, 3, new SkillLevel(Skill.FISHING, 15), null);
+	public static final Perk TREASURE_HUNTER = register("treasure_hunter", PerkCategory.FISHING, Items.NAME_TAG, 4, new SkillLevel(Skill.FISHING, 25), null);
+
 	public static final Perk STURDY_WEAPON_1 = register("sturdy_weapon_1", PerkCategory.COMBAT, Items.STONE_SWORD, 1, new MobTypes(5), null);
 	public static final Perk STURDY_WEAPON_2 = register("sturdy_weapon_2", PerkCategory.COMBAT, Items.IRON_SWORD, 2, new MobTypes(15), "sturdy_weapon_1");
 	public static final Perk STURDY_WEAPON_3 = register("sturdy_weapon_3", PerkCategory.COMBAT, Items.DIAMOND_SWORD, 3, new MobTypes(25), "sturdy_weapon_2");

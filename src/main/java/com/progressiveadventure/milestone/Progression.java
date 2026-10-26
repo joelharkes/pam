@@ -40,6 +40,7 @@ public final class Progression {
 	private static final Identifier SWIMMER_MODIFIER = ProgressiveAdventure.id("perk_swimmer");
 	private static final Identifier DIVER_MODIFIER = ProgressiveAdventure.id("perk_diver");
 	private static final Identifier LONG_ARMS_MODIFIER = ProgressiveAdventure.id("perk_long_arms");
+	private static final Identifier LUCKY_MODIFIER = ProgressiveAdventure.id("perk_lucky");
 	private static final Identifier STEADY_STANCE_MODIFIER = ProgressiveAdventure.id("perk_steady_stance");
 
 	/** @param rank Adventure Rank = perk points earned from all advancements */
@@ -138,6 +139,8 @@ public final class Progression {
 				config.diverMiningBonus, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.LONG_ARMS, Attributes.BLOCK_INTERACTION_RANGE, LONG_ARMS_MODIFIER,
 				config.longArmsReachBonus, AttributeModifier.Operation.ADD_VALUE);
+		applyPerkModifier(player, Perks.LUCKY, Attributes.LUCK, LUCKY_MODIFIER,
+				config.luckyLuck, AttributeModifier.Operation.ADD_VALUE);
 		applyPerkModifier(player, Perks.STEADY_STANCE, Attributes.KNOCKBACK_RESISTANCE, STEADY_STANCE_MODIFIER,
 				config.steadyStanceKnockbackResistance, AttributeModifier.Operation.ADD_VALUE);
 

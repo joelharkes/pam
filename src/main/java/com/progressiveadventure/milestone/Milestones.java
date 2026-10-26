@@ -48,6 +48,9 @@ public final class Milestones {
 
 	public static final Milestone DIAMOND_TOOLS = pam("crafter/diamond_tools", 1, 0);
 
+	public static final Milestone TREASURE = pam("angler/treasure", 1, 0);
+	public static final Milestone ALL_FISH = pam("angler/all_fish", 1, 0);
+
 	// Bestiary collections: no hearts or stomach, they only add Adventure Rank. Not in ALL (that's the reward list).
 	public static final Milestone NIGHT_WATCH = pam("hunter/night_watch", 0, 0);
 	public static final Milestone OCEAN_DEEP = pam("hunter/ocean_deep", 0, 0);
@@ -84,7 +87,8 @@ public final class Milestones {
 			CROPS_3, CROPS_10, BREED_5,
 			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK,
 			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, ELITE,
-			DIAMOND_TOOLS), VANILLA.stream()).toList();
+			DIAMOND_TOOLS,
+			TREASURE, ALL_FISH), VANILLA.stream()).toList();
 
 	private static final Map<Identifier, Milestone> BY_ID = ALL.stream().collect(Collectors.toMap(Milestone::id, Function.identity()));
 

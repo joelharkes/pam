@@ -33,8 +33,8 @@ public final class Skills {
 
 	/**
 	 * The skill's bonus as a fraction. Tool skills: break speed, starting below vanilla at minSpeedBonus and
-	 * flattening towards maxSpeedBonus. Farming: extra harvest chance, Archery: draw speed, both starting at 0
-	 * (food and combat already have their own early penalties).
+	 * flattening towards maxSpeedBonus. Farming: extra harvest chance, Archery: draw speed, Fishing: bite speed,
+	 * all starting at 0 (food and combat already have their own early penalties, fishing is slow already).
 	 */
 	public static double bonus(Skill skill, int level) {
 		PamConfig config = PamConfig.get();
@@ -42,6 +42,7 @@ public final class Skills {
 		return switch (skill) {
 			case FARMING -> config.farmingMaxHarvestBonus * curve;
 			case ARCHERY -> config.archeryMaxDrawBonus * curve;
+			case FISHING -> config.fishingMaxBiteBonus * curve;
 			default -> config.minSpeedBonus + (config.maxSpeedBonus - config.minSpeedBonus) * curve;
 		};
 	}
@@ -51,6 +52,7 @@ public final class Skills {
 		String key = switch (skill) {
 			case FARMING -> "harvest";
 			case ARCHERY -> "draw";
+			case FISHING -> "bite";
 			default -> "speed";
 		};
 		return Component.translatable("skill_bonus.progressive_adventure." + key, formatBonus(skill, level));

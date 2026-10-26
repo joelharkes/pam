@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-25):** 0.4.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Archery skills, bestiary, mob unlocks, elites + traits, 87 perks in 10
+Mining/Woodcutting/Digging/Farming/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 91 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -64,7 +64,7 @@ ANY advancement (vanilla + PAM)
 skill levels / mob types / rank ──► unlock which perks you may buy
 ```
 
-- **Adventure Rank = perk points earned** (about 217 in total). Spending or resetting
+- **Adventure Rank = perk points earned** (about 220 in total). Spending or resetting
   perks never changes it, so buying a perk never makes the world harder and a reset
   can't make it easier.
 - **Milestones** are advancements with a heart/stomach reward: our own (Adventure tab)
@@ -107,7 +107,7 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Implemented: 24 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
+Implemented: 26 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
 
 | Category | Milestone (PAM tab)                        | Reward         |
 |----------|--------------------------------------------|----------------|
@@ -127,6 +127,8 @@ Implemented: 24 PAM milestones + 18 vanilla advancements with a reward (half hea
 | Hunter   | Defeat the Elder Guardian / the Wither     | 2 hearts each  |
 | Hunter   | Defeat an elite (Elite Slayer)             | ½ heart        |
 | Crafter  | Get a diamond pickaxe                      | ½ heart        |
+| Angler   | Fish up a treasure (Sunken Treasure)       | ½ heart        |
+| Angler   | Catch all 4 kinds of fish (Fish Collector) | ½ heart        |
 
 | Vanilla advancement                         | Reward   |
 |---------------------------------------------|----------|
@@ -135,7 +137,7 @@ Implemented: 24 PAM milestones + 18 vanilla advancements with a reward (half hea
 | Free the End                                | 2 hearts |
 | A Balanced Diet                             | stomach  |
 
-Totals: 26½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
+Totals: 27½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
 the cap) and 7 stomach upgrades (levels 0–7). 20 is our config cap, not a vanilla limit (vanilla
 max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
@@ -180,6 +182,7 @@ level 4 (~64 blocks) and cap near +60%.
 | Digging     | Shovel blocks                    | Break speed                      |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)    |
 | Archery     | Arrow hits on mobs, kills        | Bow/crossbow draw speed (see 3c) |
+| Fishing     | Catches (fish, junk, treasure)   | Bite speed (see 3d)              |
 
 - Level = floor(√(xp / 4)); bonus curve and numbers are in the config.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
@@ -244,6 +247,26 @@ level 4 (~64 blocks) and cap near +60%.
 | Ricochet | After hitting (or killing) a mob, a new arrow flies to the nearest other hostile mob within 8 blocks, with the same damage, fire and frost. Bounces once; can't be picked up | Archery 40 | 5 |
 
 Poison arrows were dropped: zombies and skeletons are immune, so it would look broken to kids.
+
+### 3d. Fishing skill
+
+- **XP per catch:** fish 4, junk 2, treasure 10 (catches are slow: Fishing 10 ≈ 100 catches, 25 ≈ 600).
+  Treasure = vanilla's treasure loot: name tag, saddle, nautilus shell, enchanted book (item tag
+  `progressive_adventure:fishing_treasure`) or an enchanted bow/rod. Hooking mobs or items gives nothing.
+- **Passive bonus:** bite speed, **+0% → +60%** with the usual curve. Starts at vanilla (no −20%): waiting is
+  already the slow part. The wait before a fish swims up is divided by (1 + bonus), on top of Lure.
+- AFK fish farms count (the player holds the rod), see Non-goals.
+
+| Perk | Effect | Requires | Cost |
+|---|---|---|---|
+| Keen Eye | A bell rings when a fish bites; +1s (20 ticks) to reel in (vanilla 1–2s) | Fishing 5 | 1 |
+| Lucky | +2 luck (vanilla attribute, like Luck of the Sea II): more treasure, less junk | Fishing 10 | 2 |
+| Double Catch | 25% chance a fish catch gives the fish twice | Fishing 15 | 3 |
+| Treasure Hunter | Treasure can be caught without open water (small ponds) | Fishing 25 | 4 |
+
+Implementation: `FishingHookMixin` changes the wait and the reel window (`Mth.nextInt` calls in
+`catchingFish`), the caught items (`retrieve`, before the advancement trigger, so Double Catch fish count)
+and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays an idea, with auto-smelt for Mining.
 
 ### 4. Bestiary: mob familiarity
 
@@ -315,7 +338,7 @@ after a few kills, and then gains are big early and flatten out:
 #### Mob unlocks by Rank (v0.3a)
 
 Overworld hostile mobs unlock one group at a time as Adventure Rank (points earned,
-~217 total, ~10 after a first session) goes up. Rank 20 is expected while still in the
+~220 total, ~10 after a first session) goes up. Rank 20 is expected while still in the
 Overworld (a few in-game days); everything is unlocked by Rank 50, so the world
 reaches vanilla danger fairly quickly.
 
@@ -420,8 +443,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 24 add 42, so ~217 Rank in total. Buying all
-  87 perks costs **206**, so early on you choose and owning (almost) everything is an endgame goal
+- Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
+  91 perks costs **216**, so early on you choose and owning (almost) everything is an endgame goal
   that needs nearly every advancement. Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -643,10 +666,6 @@ Players can suggest more through the GitHub issue forms.
   progression (same reason Archery has no damage perks), so the passive bonus should be something else, like
   attack speed. One Combat skill with weapon perk branches (decided 2026-10-26: one skill, the 7th) fits the
   two-column Character tab and uses the existing Combat perk category.
-- **Fishing skill (next, see decisions log 2026-10-26):** trained by catches (fish/junk 1, treasure 3); faster
-  bites from +0%. Perks: **Lucky** (more treasure, less junk; vanilla `luck` attribute), **Keen Eye** (bite shows
-  sooner, longer reel window), **Double Catch**, **Treasure Hunter** (treasure in small ponds). Milestones: catch a
-  treasure, catch all 4 fish (no vanilla advancement for either).
 - **Campfire Catch / Auto-smelt (2026-10-26):** fish come out cooked; a matching Mining perk that smelts ores.
   Left out of Fishing for now.
 
@@ -654,7 +673,7 @@ Players can suggest more through the GitHub issue forms.
 - More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
   cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 206 of ~217 Rank today).
+- More advancements in general = more Rank and perk points (perks cost 216 of ~220 Rank today).
 
 ### Food and hunger
 - **Well Fed (diet variety):** eating a varied diet gives a temporary buff (slower hunger drain, small regen);
@@ -859,10 +878,12 @@ Players can suggest more through the GitHub issue forms.
 - 2026-10-26: **Character tab in two columns** (room for 8 skills; 7 planned with Fishing and Combat). Rows show
   level, bar and bonus number only; "x / total" xp moved to a hover tooltip with the bonus in words, xp to the
   next level and the next perk the skill unlocks.
-- 2026-10-26: **Fishing skill** next: trained by catches, passive bonus = faster bites starting at vanilla
+- 2026-10-26: **Fishing skill** built (see 3d): trained by catches, passive bonus = faster bites starting at vanilla
   (+0%, not −20% like the other skills; waiting is already the slow part). Perks: Lucky, Keen Eye, Double
   Catch, Treasure Hunter. Campfire Catch (cooked fish) left out for now, with auto-smelt for Mining as a
-  matching idea.
+  matching idea. XP raised to fish 4 / junk 2 / treasure 10 since catches are slow (1 xp each would need
+  ~400 catches for level 10). Treasure Hunter at Fishing 25. Milestones Sunken Treasure (code-driven) and Fish
+  Collector (vanilla `fishing_rod_hooked` criteria, all four fish), ½ heart each, new Angler category.
 
 ## Playtest checklist
 
@@ -887,6 +908,10 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   rates, Excavator plane direction, Path Maker, Relic Sense near a desert pyramid or trail ruins,
   Sturdy Weapon III, Forester (sapling appears?), Clear Cut (drops OK incl. Orchard apples, neighbouring trees
   untouched), Flint Finder. Ore Sense was moved into `BlockSense` (recheck it still works).
+- **Fishing skill (2026-10-26):** cast a rod (a mixin failure would crash there). XP pace (Fishing 5 after ~25
+  catches?), bites noticeably faster at higher levels (test with `/pam skill fishing 30`). Keen Eye bell audible and
+  not annoying, Lucky more treasure, Double Catch, Treasure Hunter in a 1-block pond. Sunken Treasure and Fish
+  Collector granted. Character tab shows Fishing with the next-perk tooltip.
 - **Character tab, two columns (2026-10-26):** skills fit at the user's GUI scale, also with two rows of
   hearts? Hover tooltip readable (bonus, xp to next level, next perk)? Swimming perks now show under Survival
   (Deep Breath, Diver) and Movement (Swimmer).
@@ -956,4 +981,5 @@ override applied, typo warned).
 - **0.4.0 (tag `v0.4.0`, 2026-10-25):** first public release on Modrinth (Alpha), everything above.
   Not tagged separately: v0.2 and v0.3. What still needs a playtest is in the playtest checklist.
 - **Next:** work through the playtest checklist and Open questions (balance), then pick from
-  [Ideas](#ideas) (likely candidates: a Combat skill, Well Fed, more milestones).
+  [Ideas](#ideas) (likely candidates: a Combat skill, Well Fed, more milestones). Built since 0.4.0: bestiary
+  pages, two-column Character tab, Fishing skill.

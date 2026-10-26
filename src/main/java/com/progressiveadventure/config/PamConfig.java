@@ -63,6 +63,13 @@ public class PamConfig {
 	public int archeryHitXp = 3;
 	public int archeryKillXp = 2;
 
+	// Fishing: bite speed bonus uses the same curve as speedBonusCurve, but starts at 0 (+50% = two thirds of the
+	// wait). Xp per catch: treasure, else fish, else junk.
+	public double fishingMaxBiteBonus = 0.6;
+	public int fishingFishXp = 4;
+	public int fishingJunkXp = 2;
+	public int fishingTreasureXp = 10;
+
 	// Bestiary: damage modifier per kill threshold, sorted by kills
 	public List<FamiliarityTier> familiarityTiers = List.of(
 			new FamiliarityTier(0, -0.15, "unknown"),
@@ -130,6 +137,12 @@ public class PamConfig {
 	// Block reach is 4.5 by default
 	public double longArmsReachBonus = 1.5;
 	public double steadyStanceKnockbackResistance = 0.3;
+	// Keen Eye: extra ticks to reel in a bite (vanilla gives 20-40)
+	public int keenEyeExtraTicks = 20;
+	// Lucky: luck points, like Luck of the Sea levels (more treasure, less junk)
+	public double luckyLuck = 2.0;
+	// Double Catch: chance that a fish catch gives the fish twice
+	public double doubleCatchChance = 0.25;
 	// Defense perks: share of damage taken away, by tier
 	public List<Double> guardDamageReductions = List.of(0.15, 0.30);
 	public List<Double> toughHideDamageReductions = List.of(0.10, 0.20);
