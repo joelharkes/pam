@@ -14,7 +14,7 @@ import net.minecraft.util.FormattedCharSequence;
 import java.util.ArrayList;
 import java.util.List;
 
-/** The K screen: character overview, perks and bestiary in one tabbed window. */
+/** The K screen: character overview, perks, bestiary and achievements in one tabbed window. */
 public class AdventureScreen extends Screen {
 	static final int TEXT = 0xFFFFFFFF;
 	static final int TEXT_DIM = 0xFFAAAAAA;
@@ -31,7 +31,8 @@ public class AdventureScreen extends Screen {
 	private static final List<Component> TAB_TITLES = List.of(
 			Component.translatable("screen.progressive_adventure.tab.character"),
 			Component.translatable("screen.progressive_adventure.tab.perks"),
-			Component.translatable("screen.progressive_adventure.tab.bestiary"));
+			Component.translatable("screen.progressive_adventure.tab.bestiary"),
+			Component.translatable("screen.progressive_adventure.tab.achievements"));
 
 	/** Remembered between openings. */
 	private static int selectedTab = 0;
@@ -51,9 +52,10 @@ public class AdventureScreen extends Screen {
 	/** Called when leaving a world or server: a mob page from the last world shouldn't stay open in the next. */
 	public static void onDisconnect() {
 		BestiaryTab.forgetSelection();
+		AchievementsTab.forgetSelection();
 	}
 
-	private final List<AdventureTab> tabs = List.of(new CharacterTab(), new PerksTab(), new BestiaryTab());
+	private final List<AdventureTab> tabs = List.of(new CharacterTab(), new PerksTab(), new BestiaryTab(), new AchievementsTab());
 	private int left;
 	private int top;
 	private int panelWidth;
@@ -70,7 +72,7 @@ public class AdventureScreen extends Screen {
 		left = (width - panelWidth) / 2;
 		top = (height - panelHeight) / 2;
 
-		int tabWidth = (panelWidth - 16 - 2 * 4) / TAB_TITLES.size();
+		int tabWidth = (panelWidth - 16 - (TAB_TITLES.size() - 1) * 4) / TAB_TITLES.size();
 		for (int i = 0; i < TAB_TITLES.size(); i++) {
 			int index = i;
 			Button button = addRenderableWidget(Button.builder(TAB_TITLES.get(i), b -> selectTab(index))

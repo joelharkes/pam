@@ -679,7 +679,7 @@ Keep it simple and close to vanilla.
 
 - **Milestones:** our own "Adventure" tab in the vanilla advancement screen.
 - **Adventure screen:** one window opened with **K** (rebindable in Controls), using
-  vanilla's tab bar so it looks like the world-creation screen. Three tabs:
+  vanilla's tab bar so it looks like the world-creation screen. Four tabs:
 
 #### Character tab
 - **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 18"), available perk
@@ -738,6 +738,20 @@ Keep it simple and close to vanilla.
 
 ---
 
+#### Achievements tab
+- **Grid:** every advancement with a display except the tab roots (they give no Rank), one block each, under headings per
+  tab with a count (Milestones first, then vanilla's tabs, other mods' last). Scrollable; a button switches between All and
+  Not done. Vanilla's advancement screen stays as it is. Secret advancements show "?" until done, and have no tips to buy.
+- **Tip of the day:** free, the first tip of a random achievement that isn't done and whose parent is done, not saying which
+  achievement it belongs to. Changes once per in-game day; no "new tip" button, or you could click through them all for free.
+- **Page:** description, Rank it gives, tips, then progress for achievements with several parts ("31 / 40") and the names of
+  what's missing. Monsters Hunted only shows a count, so new mobs stay a surprise.
+- **Tips:** practical how-to text, 1 or more per achievement by how hard it is, written from the vanilla data files.
+  Bought in order with XP points (config `achievementTipCosts`, 10/30/75; later tips cost the last price), per player, kept for good.
+  All free to read once the achievement is done. Lang keys `achievement.progressive_adventure.tip.<namespace>.<path with dots>.<n>`;
+  the client counts which exist, so adding a tip needs no code, and an achievement without tips says "Nobody knows yet...".
+- The client only receives advancements near ones the player did, so the tab asks the server for the full list each time it opens.
+
 ## Ideas
 
 **The one place for everything not built yet.** When an idea comes up, add it here (with a date when
@@ -795,6 +809,7 @@ Players can suggest more through the GitHub issue forms.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
 
 ### UI
+- Pin one achievement as your current goal, shown on the Character tab.
 - Toasts instead of chat/action-bar messages for level-ups and Rank-ups (new bestiary entries have one).
 
 ---
@@ -1010,10 +1025,21 @@ Players can suggest more through the GitHub issue forms.
   Rank 10 in about 30, so skeletons came before the first night and before iron for a shield; the user met them before
   finding a first mine. Skeletons Rank 5 → 10, creepers 12 → 18 (skeleton elites follow, Rank 15). Rank points stay
   as they are: quick early rewards are fun. Bonus Heart I/II/III now Rank 5/10/20 (was 5/20/40): most valuable early.
+- 2026-10-31: **Achievements tab with paid tips.** Vanilla's screen makes it hard to see everything and its descriptions often
+  don't say how. One block per achievement, like the bestiary. Tips cost XP (points, like waypoints, so saving levels for
+  enchanting isn't punished) so help is the player's choice and doesn't make things too easy; the free tip of the day doesn't
+  name its achievement. Tip 1 also costs XP, because the free tip helps a player with none. Tips of done achievements are free.
+  Dropped: an in-character "Old Adventurer" (the user wants practical how-to text). Sample tips first; the rest get
+  researched when the user asks.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Achievements tab (2026-10-31):** grid and headings fit, scrolling and clicks hit the right block, Not done filter, `<`/`>` on a
+  page, missing-list names read well (Balanced Diet, Adventuring Time, cat variants), buying spends XP and the tip shows at once,
+  prices feel right, done achievements show tips for free, tip of the day stays the same all day. Only sample tips so far:
+  Sweet Dreams, Star Trader, Subspace Bubble, A Balanced Diet, Zombie Doctor, Waypoint. Star Trader tip 3 (villager on a
+  bubble column, trading distance) isn't tested in-game yet.
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
 - **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
@@ -1141,5 +1167,5 @@ override applied, typo warned).
 - **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
-- **Next:** work through the playtest checklist and Open questions (balance), then pick from
+- **Next:** after the Achievements tab playtest, research and write tips for every achievement (user asks when). Then work through the playtest checklist and Open questions (balance), then pick from
   [Ideas](#ideas) (likely candidates: Well Fed, more milestones).

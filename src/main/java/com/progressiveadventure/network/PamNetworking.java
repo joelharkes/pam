@@ -1,5 +1,6 @@
 package com.progressiveadventure.network;
 
+import com.progressiveadventure.achievement.Achievements;
 import com.progressiveadventure.bestiary.BestiaryInfo;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
@@ -33,6 +34,9 @@ public final class PamNetworking {
 		PayloadTypeRegistry.serverboundPlay().register(WaypointTeleportPayload.TYPE, WaypointTeleportPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointNamePayload.TYPE, OpenWaypointNamePayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(BestiaryInfoRequestPayload.TYPE, BestiaryInfoRequestPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(AchievementListRequestPayload.TYPE, AchievementListRequestPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(BuyTipPayload.TYPE, BuyTipPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(AchievementListPayload.TYPE, AchievementListPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(OpenWaypointListPayload.TYPE, OpenWaypointListPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(BestiaryInfoPayload.TYPE, BestiaryInfoPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(BestiaryDiscoveredPayload.TYPE, BestiaryDiscoveredPayload.CODEC);
@@ -48,6 +52,8 @@ public final class PamNetworking {
 				(payload, context) -> Waypoints.onTeleportRequest(context.player(), payload.from(), payload.target()));
 		ServerPlayNetworking.registerGlobalReceiver(BestiaryInfoRequestPayload.TYPE,
 				(payload, context) -> BestiaryInfo.onRequest(context.player(), payload.entityType()));
+		ServerPlayNetworking.registerGlobalReceiver(AchievementListRequestPayload.TYPE, (payload, context) -> Achievements.onRequest(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(BuyTipPayload.TYPE, (payload, context) -> Achievements.onBuyTip(context.player(), payload.advancement(), payload.tip()));
 	}
 
 	private static void buy(ServerPlayer player, String perkId) {

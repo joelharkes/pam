@@ -289,6 +289,9 @@ public class PamConfig {
 	// Pathfinder perk: share of the teleport cost taken away, by tier
 	public List<Double> pathfinderCostReductions = List.of(0.25, 0.5);
 
+	// Achievement tips: XP points (not levels) for the 1st, 2nd, 3rd tip of an achievement; further tips cost the last price
+	public List<Integer> achievementTipCosts = List.of(10, 30, 75);
+
 	public record FamiliarityTier(int kills, double damageModifier, String label) {
 	}
 

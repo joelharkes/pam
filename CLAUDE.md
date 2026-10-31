@@ -91,6 +91,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 
 ## Adding things
 
+- **Achievement tip:** lang key `achievement.progressive_adventure.tip.<namespace>.<path with dots>.<n>`, numbered from 1, cheap nudge first and near-answer last.
+  The tab counts the keys, no code needed. Check the conditions in the vanilla JSON, not from memory. Simple English.
 - **Bestiary text:** where-to-find hints and tips are lang keys `bestiary.progressive_adventure.where|tip.<namespace>.<mob>`;
   the page hides a missing tip and shows "Nobody knows yet..." for a missing hint.
 - **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under
@@ -107,7 +109,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `ProgressiveAdventure`: entrypoint, registers all events
 - `config/PamConfig`: all balance numbers (defaults in code). `config/progressive_adventure.json` holds only
   overrides; `config/progressive_adventure.defaults.json` is a reference rewritten every start, never read
-- `data/PlayerProgress`: immutable per-player record (kills, skill xp, foods, biomes, owned perks, elite kills and traits per mob)
+- `data/PlayerProgress`: immutable per-player record (kills, skill xp, foods, biomes, owned perks, elite kills and traits per mob, tips bought)
 - `data/ProgressionSnapshot`: server-derived values synced for the UI (rank, hearts, stomach, perk points)
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
@@ -133,9 +135,10 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
   `Cooldown` (per-player perk cooldowns, cleared on server stop)
-- `network/`: C2S payloads `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
+- `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
+- `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
-  `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
+  `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `AchievementListPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers, Steady Healing), Player (break speed, attack strength, Careful Sweep, Whirlwind, Ground Pound landing), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
@@ -149,7 +152,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (Double Jump, Mantle and Ground Pound: client moves itself, then tells the server); `ShieldBash` (attack click while
   blocking, read at the start of the client tick); client mixin on the lightmap
   (Cat's Eyes); `screen/AdventureScreen` with
-  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (grid + mob page, custom-drawn, simple Button tabs);
+  `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (grid + mob page, custom-drawn, simple Button tabs), `AchievementsTab` (grid + page, list from `AchievementsClient`);
   `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);
   `WaypointNameScreen`, `WaypointListScreen`
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
