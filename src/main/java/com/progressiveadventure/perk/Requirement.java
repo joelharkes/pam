@@ -28,16 +28,23 @@ public sealed interface Requirement {
 		}
 	}
 
-	record SkillLevel(Skill skill, int level) implements Requirement {
+	/** @param rank also needed Adventure Rank (0 = none), so a late perk can't be reached by grinding one skill early */
+	record SkillLevel(Skill skill, int level, int rank) implements Requirement {
+		public SkillLevel(Skill skill, int level) {
+			this(skill, level, 0);
+		}
+
 		@Override
 		public boolean isMet(PlayerProgress progress, ProgressionSnapshot snapshot) {
-			return Skills.level(progress.xpOf(skill.id)) >= level;
+			return Skills.level(progress.xpOf(skill.id)) >= level && snapshot.rank() >= rank;
 		}
 
 		@Override
 		public Component describe() {
-			return Component.translatable("requirement.progressive_adventure.skill",
-					Component.translatable("skill.progressive_adventure." + skill.id), level);
+			Component skillName = Component.translatable("skill.progressive_adventure." + skill.id);
+			return rank > 0
+					? Component.translatable("requirement.progressive_adventure.skill_rank", skillName, level, rank)
+					: Component.translatable("requirement.progressive_adventure.skill", skillName, level);
 		}
 	}
 

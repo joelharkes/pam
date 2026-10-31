@@ -141,7 +141,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `AchievementListPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
-- `mixin/`: FoodData (hunger multipliers, Steady Healing), Player (break speed, attack strength, Careful Sweep, Whirlwind, Ground Pound landing), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
+- `mixin/`: FoodData (hunger multipliers, Steady Healing, Quick Healing, Deep Reserves), Player (break speed, attack strength, Careful Sweep, Whirlwind, Ground Pound landing), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),

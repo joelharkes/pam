@@ -94,6 +94,8 @@ public final class Perks {
 	public static final Perk SUNDER = register("sunder", PerkCategory.MELEE, "axe", Items.DIAMOND_AXE, 3, new SkillLevel(Skill.MELEE, 20), null);
 	public static final Perk GROUND_POUND = register("ground_pound", PerkCategory.MELEE, "mace", Items.MACE, 3, new SkillLevel(Skill.MELEE, 15), null);
 	public static final Perk SHOCKWAVE = register("shockwave", PerkCategory.MELEE, "mace", Items.HEAVY_CORE, 4, new SkillLevel(Skill.MELEE, 30), null);
+	public static final Perk SHOCKWAVE_2 = register("shockwave_2", PerkCategory.MELEE, "mace", Items.BREEZE_ROD, 5, new SkillLevel(Skill.MELEE, 40), "shockwave");
+	public static final Perk SHOCKWAVE_3 = register("shockwave_3", PerkCategory.MELEE, "mace", Items.NETHER_STAR, 6, new SkillLevel(Skill.MELEE, 50, 25), "shockwave_2");
 	public static final Perk RUNNING_CHARGE = register("running_charge", PerkCategory.MELEE, "spear", Items.IRON_SPEAR, 2, new SkillLevel(Skill.MELEE, 6), null);
 	public static final Perk PINNING_JAB = register("pinning_jab", PerkCategory.MELEE, "spear", Items.COBWEB, 2, new SkillLevel(Skill.MELEE, 12), null);
 
@@ -126,6 +128,9 @@ public final class Perks {
 	public static final Perk SECOND_WIND = register("second_wind", PerkCategory.SURVIVAL, Items.GLISTERING_MELON_SLICE, 2, Requirement.NONE, null);
 	public static final Perk STEADY_HEALING_1 = register("steady_healing_1", PerkCategory.SURVIVAL, Items.BREAD, 2, Requirement.NONE, null);
 	public static final Perk STEADY_HEALING_2 = register("steady_healing_2", PerkCategory.SURVIVAL, Items.CAKE, 3, new Rank(10), "steady_healing_1");
+	public static final Perk QUICK_HEALING_1 = register("quick_healing_1", PerkCategory.SURVIVAL, Items.HONEY_BOTTLE, 2, new Rank(5), null);
+	public static final Perk QUICK_HEALING_2 = register("quick_healing_2", PerkCategory.SURVIVAL, Items.GHAST_TEAR, 3, new Rank(15), "quick_healing_1");
+	public static final Perk DEEP_RESERVES = register("deep_reserves", PerkCategory.SURVIVAL, Items.HAY_BLOCK, 3, new Rank(10), null);
 	public static final Perk HEARTY_KILL_1 = register("hearty_kill_1", PerkCategory.SURVIVAL, Items.COOKED_BEEF, 2, new MobTypes(10), null);
 	public static final Perk HEARTY_KILL_2 = register("hearty_kill_2", PerkCategory.SURVIVAL, Items.RABBIT_STEW, 3, new MobTypes(20), "hearty_kill_1");
 	public static final Perk HEARTY_KILL_3 = register("hearty_kill_3", PerkCategory.SURVIVAL, Items.GOLDEN_CARROT, 4, new MobTypes(30), "hearty_kill_2");
@@ -183,7 +188,7 @@ public final class Perks {
 		Perk next = null;
 		int nextLevel = Integer.MAX_VALUE;
 		for (Perk perk : BY_ID.values()) {
-			if (perk.requirement() instanceof SkillLevel(Skill required, int needed)
+			if (perk.requirement() instanceof SkillLevel(Skill required, int needed, int rank)
 					&& required == skill && needed > level && needed < nextLevel) {
 				next = perk;
 				nextLevel = needed;

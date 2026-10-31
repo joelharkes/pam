@@ -104,6 +104,10 @@ public class PamConfig {
 	public List<Double> sturdyChances = List.of(0.1, 0.2, 0.3);
 	// Steady Healing: less exhaustion from natural healing; stacks with the stomach multiplier
 	public List<Double> steadyHealingReductions = List.of(0.25, 0.5);
+	// Quick Healing: ticks per half heart of natural healing without saturation (vanilla 80)
+	public List<Integer> quickHealingIntervalTicks = List.of(60, 40);
+	// Deep Reserves: lowest food level (2 = one shank) that still heals without saturation (vanilla 18)
+	public int deepReservesMinFood = 14;
 	public List<Double> prospectorChances = List.of(0.1, 0.2);
 	public int timberMaxLogs = 64;
 	// Lumberjack: chopping a log also chops up to this many connected logs (Timber I)
@@ -131,8 +135,9 @@ public class PamConfig {
 	// Sunder: a fully charged axe hit lowers the mob's armor by this share for sunderSeconds
 	public double sunderArmorReduction = 0.5;
 	public int sunderSeconds = 5;
-	// Shockwave: share of vanilla's extra mace smash damage (from the fall) that the hostile mobs around take
-	public double shockwaveDamageRatio = 0.3;
+	// Shockwave: share of the mace hit (attack damage + vanilla's extra smash damage from the fall) that the hostile
+	// mobs around take
+	public List<Double> shockwaveDamageRatios = List.of(0.3, 0.65, 1.0);
 	// Running Charge: a player on foot counts this much faster for the spear charge (sprint ~5.6 blocks/s; the iron
 	// spear knocks riders off from 11)
 	public double runningChargeSpeedMultiplier = 1.75;

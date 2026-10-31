@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.MaceItem;
 import net.minecraft.world.level.block.LevelEvent;
@@ -119,13 +120,16 @@ public final class MeleeMoves {
 	}
 
 	private static void shockwave(ServerPlayer player, Entity except, Vec3 center, double fallDistance) {
-		if (shockwaving || !Perks.has(player, Perks.SHOCKWAVE) || !(player.level() instanceof ServerLevel level)) {
+		int tier = Perks.tier(player, Perks.SHOCKWAVE, Perks.SHOCKWAVE_2, Perks.SHOCKWAVE_3);
+		if (shockwaving || tier == 0 || !(player.level() instanceof ServerLevel level)) {
 			return;
 		}
-		float damage = (float) (smashBonus(fallDistance) * PamConfig.get().shockwaveDamageRatio);
-		if (damage <= 0) {
+		double bonus = smashBonus(fallDistance);
+		if (bonus <= 0) {
 			return;
 		}
+		float damage = (float) ((player.getAttributeValue(Attributes.ATTACK_DAMAGE) + bonus)
+				* PamConfig.listValue(PamConfig.get().shockwaveDamageRatios, tier - 1));
 		shockwaving = true; // never set off another shockwave from the shockwave's own hits
 		try {
 			for (Mob mob : hostileMobsAround(player, except, center)) {

@@ -301,7 +301,7 @@ perks, in Defense), d (mace and spear).
 | Axe | Heavy Swing | Fully charged axe hit: extra knockback (1.0) and Slowness II for 2 s | Melee 8 | 2 |
 | Axe | Sunder | Fully charged axe hit: the mob's armor −50% for 5 s (shield-break sound, crit sparks). The answer to elites in diamond gear | Melee 20 | 3 |
 | Mace | Ground Pound | Holding a mace in the air (at least 2 blocks up), press sneak: dive straight down (1.5 blocks/tick). No fall damage on landing; hostile mobs within 3.5 blocks are pushed away like by vanilla's smash | Melee 15 | 3 |
-| Mace | Shockwave | A mace smash that hits a mob, and a Ground Pound landing, also hurt the hostile mobs within 3.5 blocks for 30% of vanilla's fall bonus (e.g. 5 blocks: 16 → ~5 damage) | Melee 30 | 4 |
+| Mace | Shockwave I/II/III | A mace smash that hits a mob, and a Ground Pound landing, also hurt the hostile mobs within 3.5 blocks for 30/65/100% of a mace hit (attack damage + fall bonus, needs a fall of more than 1.5 blocks; e.g. 5 blocks: 22 → ~7/~14/22 damage) | Melee 30 / 40 / 50 + Rank 25 | 4/5/6 |
 | Spear | Running Charge | On foot, the spear charge counts your speed ×1.75 (sprint ≈ 5.6 → 9.8 blocks/s): more charge damage, and riders get knocked off (iron spear: 11) | Melee 6 | 2 |
 | Spear | Pinning Jab | Every hostile mob a jab hits gets Slowness II for 1.5 s | Melee 12 | 2 |
 
@@ -577,6 +577,8 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Survival    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
 | Survival    | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
 | Survival    | Steady Healing I/II | Natural healing costs 25% / 50% less hunger (stacks with the stomach) | — / Rank 10 | 2/3 |
+| Survival    | Quick Healing I/II  | Healing without saturation: half a heart every 3s / 2s (vanilla 4s). Same hunger per heart; starving stays at 4s | Rank 5 / 15 | 2/3 |
+| Survival    | Deep Reserves       | Healing without saturation works down to 7 food icons (vanilla 9) | Rank 10 | 3 |
 | Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
@@ -1021,6 +1023,12 @@ Players can suggest more through the GitHub issue forms.
   play. Sturdy I (tools and weapon) has no requirement, Sturdy II/III and Thrifty Quiver II/III are level 8/18, Sturdy
   Weapon II/III 10/20 mob types. Small perks moved to levels 3/5/6/8/12/13, strong ones stayed put, none got harder.
   Aim for 10–12 useful choices at Rank 10.
+- 2026-10-31: **Shockwave II/III** (Melee 40 / 50 + Rank 25, cost 5/6): 30/65/100% of a full mace hit, so tier III can
+  one-shot zombies from about 5 blocks late in the game (user: fine and fun). No cooldown for now; watch it in a
+  playtest. Setting `shockwaveDamageRatio` became the list `shockwaveDamageRatios`: **mention the rename in the next CHANGELOG.**
+- 2026-10-31: **Quick Healing I/II and Deep Reserves** (Survival). Natural healing without saturation was slow for two
+  reasons: the 4s timer, and it stops below 9 food icons (a full bar pays for only 1 to 1.5 hearts). So 3s / 2s plus a
+  perk that heals down to 7 icons. No 1s tier: too strong (user).
 - 2026-10-31: **Steady Healing I/II** (Survival): natural healing costs 25% / 50% less hunger, on top of the stomach
   multiplier. Free / Rank 10, cost 2/3.
 - 2026-10-31: **Later skeletons and creepers, earlier Bonus Hearts.** Dev saves reached Rank 5 in about 9 minutes and
@@ -1046,6 +1054,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   Checked against the Minecraft Wiki advancement guide on 2026-10-31. Still untested tricks: the armor stands in Mob Kabob (the wiki describes it from a
   development version), Star Trader's boat and lead, Two Birds' phantoms in boats, Great View's ender pearl.
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
+- **Shockwave II/III (2026-10-31):** damage feels right at each tier (5-block fall ~14 / 22), Shockwave III's requirement shows "Melee 50, Rank 25", Double Jump + dive at tier III isn't too strong without a cooldown.
+- **Quick Healing, Deep Reserves (2026-10-31):** half a heart every 3s / 2s, healing continues at 7 and 8 food icons with Deep Reserves, starving damage still every 4s, feels right but not too strong.
 - **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
   shield; the first nights don't feel empty. Bonus Hearts at Rank 5/10/20 don't make the early game too easy.
@@ -1151,7 +1161,7 @@ override applied, typo warned).
   only below some height); Ground Pound only protects the dive itself (fall distance from where it started);
   leave it as the reward for late perks (Rank 30, Melee 15).
 - [ ] Ground Pound may get too strong later (2026-10-26): Double Jump + dive is fun and fine now, but watch it with
-  Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatio`, a fall cap for the bonus.
+  Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatios`, a fall cap for the bonus.
 
 ## Roadmap
 

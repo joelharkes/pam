@@ -120,6 +120,10 @@ public final class Progression {
 		((FoodDataAccess) player.getFoodData()).pam$setMultipliers(hungerDrain,
 				(float) PamConfig.listValue(config.stomachSaturationMultipliers, status.stomach()),
 				steadyHealing > 0 ? 1f - (float) PamConfig.listValue(config.steadyHealingReductions, steadyHealing - 1) : 1f);
+		int quickHealing = Perks.tier(player, Perks.QUICK_HEALING_1, Perks.QUICK_HEALING_2);
+		((FoodDataAccess) player.getFoodData()).pam$setHealing(
+				quickHealing > 0 ? config.quickHealingIntervalTicks.get(Math.min(quickHealing, config.quickHealingIntervalTicks.size()) - 1) : FoodDataAccess.VANILLA_HEAL_INTERVAL,
+				Perks.has(player, Perks.DEEP_RESERVES) ? config.deepReservesMinFood : FoodDataAccess.VANILLA_HEAL_MIN_FOOD);
 
 		int deepBreath = Perks.tier(player, Perks.DEEP_BREATH_1, Perks.DEEP_BREATH_2, Perks.DEEP_BREATH_3);
 		applyModifier(player, deepBreath > 0, Attributes.OXYGEN_BONUS, DEEP_BREATH_MODIFIER,

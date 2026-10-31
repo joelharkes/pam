@@ -107,6 +107,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `FishingHookMixin` (bite speed, Keen Eye) | 1st and 3rd `Mth.nextInt` in `FishingHook.catchingFish` | the wait before a fish swims up, and the reel-in window |
 | `ProjectileWeaponItemMixin` (Thrifty Quiver) | every `EnchantmentHelper.processAmmoUse` in `useAmmo` (one in 26.2); the 2nd `ItemStack` argument of `useAmmo` | a single ammo-count call; the projectile stack |
 | `FoodDataMixin` (Steady Healing) | every `addExhaustion` in `FoodData.tick` (two in 26.2) | only the natural healing costs |
+| `FoodDataMixin` (Quick Healing, Deep Reserves) | 1st constant `80` and the constant `18` in `FoodData.tick` | the healing timer (the 2nd `80` is starving) and the food level for healing without saturation |
 | `PlayerMixin` Whirlwind | `getEntitiesOfClass` and `isAlliedTo` in `Player.doSweepAttack` | the sweep's target search and team filter; the 3-block distance check (Whirlwind's radius) |
 
 **Copies of vanilla rules (update by hand if vanilla changes):**
