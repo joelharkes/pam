@@ -809,7 +809,8 @@ Players can suggest more through the GitHub issue forms.
 - **Shrines/landmarks:** small custom structures with a challenge and a reward.
 
 ### UI
-- Pin one achievement as your current goal, shown on the Character tab.
+- Pin one achievement as your current goal, with what's left on the HUD (the mod Just Show Me Criteria does this).
+- Search box in the Achievements tab (the mod Advancements Search exists because people want this).
 - Toasts instead of chat/action-bar messages for level-ups and Rank-ups (new bestiary entries have one).
 
 ---
@@ -1031,6 +1032,8 @@ Players can suggest more through the GitHub issue forms.
   name its achievement. Tip 1 also costs XP, because the free tip helps a player with none. Tips of done achievements are free.
   Dropped: an in-character "Old Adventurer" (the user wants practical how-to text). Every achievement has tips: mostly 1 for easy ones and up to 3 for hard ones,
   secret ones 1 or 2 (readable once done).
+- 2026-10-31: **Tips checked against player guides.** Web research (mainly the Minecraft Wiki advancement guide) corrected about 40 achievements, e.g. Great View needs an
+  ender pearl, Sticky Situation needs no wall, Over-Overkill needs far less height. Ideas it gave are in Ideas > UI.
 
 ## Playtest checklist
 
@@ -1039,8 +1042,8 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   `<`/`>` on a page, missing-list names read well (Balanced Diet, Adventuring Time, cat variants), buying spends XP and the tip shows at
   once, prices feel right, done achievements show tips for free.
 - **Achievement tips (2026-10-31):** written from the game data, the mod's rules and general Minecraft knowledge; none tested in-game one by one.
-  Least sure: Star Trader tip 3 (villager on a bubble column), Great View tips (shulker heights), Uneasy Alliance (ghast into a portal),
-  Feels Like Home (strider through a portal), With Our Powers Combined tip 3, Over-Overkill (30 blocks with Density V), Sticky Situation (wall height).
+  Checked against the Minecraft Wiki advancement guide on 2026-10-31. Still untested tricks: the armor stands in Mob Kabob (the wiki describes it from a
+  development version), Star Trader's boat and lead, Two Birds' phantoms in boats, Great View's ender pearl.
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
 - **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
