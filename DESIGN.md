@@ -682,7 +682,7 @@ Keep it simple and close to vanilla.
   vanilla's tab bar so it looks like the world-creation screen. Three tabs:
 
 #### Character tab
-- **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 12"), available perk
+- **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 18"), available perk
   points, hearts (as heart icons) and stomach level. Details (what Rank is, hunger drain %) are in
   hover tooltips.
 - **Skills:** two columns of 4 rows (room for 8). Each skill: tool icon, name and level, xp bar to
