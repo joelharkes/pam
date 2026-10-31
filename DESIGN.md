@@ -1075,6 +1075,8 @@ Players can suggest more through the GitHub issue forms.
   filter, perk category. Closing and reopening the screen changes nothing, so a tip can be re-read after trying it. The screen reopens on the last tab.
 - 2026-10-31: **0.6.0 released** (tag `v0.6.0`, Alpha): Achievements tab and tips, elite maps, Shockwave II/III, Quick Healing, Deep Reserves, Steady Healing,
   later skeletons and creepers, earlier Bonus Hearts, skill perks spread over the levels. Released before these were playtested (user's call).
+- 2026-10-31: **0.7.0 released** (tag `v0.7.0`, Alpha): Keepsake I/II/III, Way Back, Faithful Friend, level-ups name new perks, install scripts.
+  Released before the perks and level-up message were playtested (user's call).
 - 2026-10-31: **Death is now the player's choice.** "No death penalty" wasn't fully true: vanilla's item drop stayed. The user's
   design: **Keepsake I/II/III** (armor / hotbar and offhand / everything, also XP, cost 1/2/3, free / Rank 5 / Rank 10), so kids can
   turn it off with cheap perks and seasoned players can skip them. Vanilla's drop stays the default. **Way Back** (5-minute trail to
