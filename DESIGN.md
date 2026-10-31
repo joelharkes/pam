@@ -413,15 +413,15 @@ after a few kills, and then gains are big early and flatten out:
 #### Mob unlocks by Rank (v0.3a)
 
 Overworld hostile mobs unlock one group at a time as Adventure Rank (points earned,
-~220 total, ~10 after a first session) goes up. Rank 20 is expected while still in the
+~220 total, ~10 after about half an hour of focused play) goes up. Rank 20 is expected while still in the
 Overworld (a few in-game days); everything is unlocked by Rank 50, so the world
 reaches vanilla danger fairly quickly.
 
 | Rank | New mobs                                         | Share of vanilla hostile spawns (roughly) |
 |------|--------------------------------------------------|------------------------|
 | 0    | Zombies (incl. husks, zombie villagers)          | ~⅙                     |
-| 5    | Skeletons (incl. strays, bogged, parched)        | ~⅓                     |
-| 12   | Creepers                                         | ~½                     |
+| 10   | Skeletons (incl. strays, bogged, parched)        | ~⅓                     |
+| 18   | Creepers                                         | ~½                     |
 | 20   | Spiders (incl. cave spiders), drowned            | ~⅔                     |
 | 30   | Endermen                                         |                        |
 | 40   | Slimes (incl. sulfur cubes)                      |                        |
@@ -436,14 +436,14 @@ reaches vanilla danger fairly quickly.
 - **Multiplayer:** the lowest rank among non-spectator players within 128 blocks of the
   spawn counts, so the world stays kid-friendly around a kid.
 - **Visible:** chat message when a group unlocks ("New danger: Creepers can now
-  appear!"), "Next: Creepers at Rank 12" on the Character tab (sent by the server, so
+  appear!"), "Next: Creepers at Rank 18" on the Character tab (sent by the server, so
   it's correct even with a changed server config), and in `/pam`.
 - **Untouched:** structure spawn lists (witch huts, outposts, monuments, fortresses),
   spawners, trial chambers, raids, spawn eggs, the Nether and End, phantoms, and mobs
   from other mods unless added to the config list.
 - Groups, ranks and mob ids are all in the config (`mobUnlocks`), plus an on/off switch.
 - **Creepers and health:** a point-blank creeper can kill even a vanilla 10-heart
-  player without armor. By Rank 12 players usually have a few extra hearts and some
+  player without armor. By Rank 18 players usually have a few extra hearts and some
   armor, and Blast Guard exists. Watch in playtests.
 
 #### Mobs get stronger: gear and elites (v0.3b)
@@ -458,7 +458,7 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
 **Elites ("Tough Zombie"):**
 - Mob types: zombies, husks, zombie villagers, drowned, skeletons, strays, bogged,
   parched, spiders, cave spiders, endermen, slimes. No creepers, witches or pillagers.
-- Start 5 ranks after the type unlocks (zombies at Rank 5, skeletons 10, creepers never,
+- Start 5 ranks after the type unlocks (zombies at Rank 5, skeletons 15, creepers never,
   spiders 25, ...): 2% of that type's spawns, +0.1% per rank, max 10%.
 - 20% bigger (vanilla `scale` attribute), +50% health, +25% damage, named (name shows
   when you look at it). They despawn like normal mobs.
@@ -570,7 +570,7 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Defense     | Fire Guard I/II     | 15% / 30% less damage from fire, lava, burning      | 5 / 10 mob types    | 2/3  |
 | Defense     | Tough Hide I/II     | 10% / 20% less damage from mob hits (melee)         | 5 / 10 mob types    | 2/3  |
 | Defense     | Steady Stance       | 30% knockback resistance                            | 10 mob types        | 2    |
-| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 20 / 40 | 3/4/5|
+| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 10 / 20 | 3/4/5|
 | Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
 | Survival    | Long Arms           | +1.5 blocks block reach                             | Rank 10             | 2    |
 | Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
@@ -1003,10 +1003,16 @@ Players can suggest more through the GitHub issue forms.
   Jump Boost still count).
 - 2026-10-26: **0.5.0 released** (tag `v0.5.0`, Alpha): Melee (slices a–d + shield perks), Fishing, trident Archery,
   bestiary pages/collections, two-column Character tab. Released before most of it was playtested (user's call).
+- 2026-10-31: **Later skeletons and creepers, earlier Bonus Hearts.** Dev saves reached Rank 5 in about 9 minutes and
+  Rank 10 in about 30, so skeletons came before the first night and before iron for a shield; the user met them before
+  finding a first mine. Skeletons Rank 5 → 10, creepers 12 → 18 (skeleton elites follow, Rank 15). Rank points stay
+  as they are: quick early rewards are fun. Bonus Heart I/II/III now Rank 5/10/20 (was 5/20/40): most valuable early.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
+  shield; the first nights don't feel empty. Bonus Hearts at Rank 5/10/20 don't make the early game too easy.
 - **Melee skill, slice a (2026-10-26):** XP pace (Melee 10 ≈ 50 zombies?), no XP from spam-clicked weak hits.
   Attack speed noticeable at higher levels (`/pam skill melee 30`): cooldown bar fills faster, also for axes.
   Wide Sweep: other mobs in a sweep clearly take more. Without Careful Sweep a sweep hits your dog (vanilla); with it,

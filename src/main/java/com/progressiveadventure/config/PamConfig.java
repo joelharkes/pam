@@ -208,8 +208,8 @@ public class PamConfig {
 	// among players within 128 blocks reaches its rank. Unlisted mobs (zombies, other mods) always spawn.
 	public boolean mobUnlocksEnabled = true;
 	public List<MobUnlock> mobUnlocks = List.of(
-			new MobUnlock("skeletons", 5, List.of("minecraft:skeleton", "minecraft:stray", "minecraft:bogged", "minecraft:parched")),
-			new MobUnlock("creepers", 12, List.of("minecraft:creeper")),
+			new MobUnlock("skeletons", 10, List.of("minecraft:skeleton", "minecraft:stray", "minecraft:bogged", "minecraft:parched")),
+			new MobUnlock("creepers", 18, List.of("minecraft:creeper")),
 			new MobUnlock("spiders", 20, List.of("minecraft:spider", "minecraft:cave_spider")),
 			new MobUnlock("drowned", 20, List.of("minecraft:drowned")),
 			new MobUnlock("endermen", 30, List.of("minecraft:enderman")),
