@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-26):** 0.5.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 111 perks in 10
+Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 116 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -192,7 +192,8 @@ level 4 (~64 blocks) and cap near +60%.
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
-- **Perks** at certain levels are the exciting part. Percentages alone feel flat.
+- **Perks** at certain levels are the exciting part. Percentages alone feel flat. The level-up message names
+  any perk that level just made available ("New perk: Replant"), unless another requirement is still missing.
 
 ### 3b. Farming skill
 
@@ -524,7 +525,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
-  111 perks costs **266**, so early on you choose and owning everything is out of reach until more milestones
+  116 perks costs **274**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -585,6 +586,9 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Survival    | Quick Healing I/II  | Healing without saturation: half a heart every 3s / 2s (vanilla 4s). Same hunger per heart; starving stays at 4s | Rank 5 / 15 | 2/3 |
 | Survival    | Deep Reserves       | Healing without saturation works down to 4 food icons (vanilla 9), so you eat less often and 2 cooked meals fill you up | Rank 10 | 3 |
 | Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
+| Survival    | Keepsake I/II/III   | On death you keep: your armor / also hotbar and offhand / everything, also XP. Curse of Vanishing still destroys items | — / Rank 5 / Rank 10 | 1/2/3 |
+| Survival    | Way Back            | After a death, a red trail (only you see it) points to the spot for 5 minutes, or until you are within 4 blocks. Chat gives the coordinates | — | 1 |
+| Survival    | Faithful Friend     | A tamed pet (wolf, cat, parrot...) that would die gets 2 hearts, Regeneration II and Resistance IV for 10s, teleports to you and sits down. Needs you online in the same dimension. `/kill` still kills. Not horses | — | 1 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
 | Movement    | Spring Step         | Jump strength +0.08 (~1.7 blocks, over fences)      | Rank 5              | 2    |
@@ -775,11 +779,14 @@ Players can suggest more through the GitHub issue forms.
 - More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
   cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 216 of ~220 Rank today).
+- More advancements in general = more Rank and perk points (perks cost 274 of ~220 Rank today).
+- **Playing together (2026-10-31):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
+  one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together.
 
 ### Food and hunger
-- **Well Fed (diet variety):** eating a varied diet gives a temporary buff (slower hunger drain, small regen);
-  eating the same food over and over gives less. Teaches kids to farm several crops, fits the Gourmet milestones.
+- **Well Fed (diet variety):** eating a varied diet gives a temporary buff (slower hunger drain, small regen).
+  Rewards only (2026-10-31): the earlier "same food gives less" part felt like a penalty on top of the early hunger.
+  Teaches kids to farm several crops, fits the Gourmet milestones.
 - Show the stomach level as a small icon next to the hunger bar.
 
 ### Perks
@@ -804,10 +811,23 @@ Players can suggest more through the GitHub issue forms.
   gold gear into a single nugget each, which feels poor for a whole piece; diamond and leather gear can't be
   recycled at all. Idea: a grindstone/recycling station that returns part of the ingots or diamonds (more for less
   worn gear), or salvaging into something useful.
-- Mob unlocks / elites in the Nether and End (vanilla spawns there for now).
+- Mob unlocks / elites in the Nether and End (vanilla spawns there for now). Elites alone would be enough
+  (2026-10-31): today those dimensions add no new elites or shards, and leaving their mobs unlocked is less work.
+- **An earlier elite trait (2026-10-31):** traits start at Rank 100 of ~220, so until then elites only differ by
+  gear. One mild trait around Rank 40–50, like Swift, would add variety much sooner.
+- **Wanted elites (2026-10-31, the user likes it, not now):** a named target ("Wanted: Grimbone the Tough Skeleton")
+  with a map to where it was last seen. More boss-like than normal elites: a lot of health, so it's worth teaming
+  up (the user's addition). Reuses elites, traits and maps. Rewards shards, XP and loot but no Rank, so Rank still
+  comes only from advancements. Could grow into the hunting requests parked for a quests feature.
 
 ### Waypoints
 - Teleport from anywhere (not only stone to stone), e.g. as a Pathfinder III tier.
+
+### Building
+- **Comfortable home (2026-10-31, the user likes motivating building):** nothing rewards building yet. When you
+  sleep, the mod counts nearby comfort blocks (lanterns, bookshelves, flowers, a jukebox) and gives a "Well Rested"
+  buff for the next day, like Valheim's comfort system. Scans only when you sleep, so it stays cheap. Could also
+  have a "Home Sweet Home" milestone.
 
 ### Exploration
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
@@ -1055,10 +1075,21 @@ Players can suggest more through the GitHub issue forms.
   filter, perk category. Closing and reopening the screen changes nothing, so a tip can be re-read after trying it. The screen reopens on the last tab.
 - 2026-10-31: **0.6.0 released** (tag `v0.6.0`, Alpha): Achievements tab and tips, elite maps, Shockwave II/III, Quick Healing, Deep Reserves, Steady Healing,
   later skeletons and creepers, earlier Bonus Hearts, skill perks spread over the levels. Released before these were playtested (user's call).
+- 2026-10-31: **Death is now the player's choice.** "No death penalty" wasn't fully true: vanilla's item drop stayed. The user's
+  design: **Keepsake I/II/III** (armor / hotbar and offhand / everything, also XP, cost 1/2/3, free / Rank 5 / Rank 10), so kids can
+  turn it off with cheap perks and seasoned players can skip them. Vanilla's drop stays the default. **Way Back** (5-minute trail to
+  where you died) is a 1-point perk rather than free, to match. **Faithful Friend** (1 point): a pet that would die faints and comes back to you. It teleports to
+  the owner, not home: the owner's chunk is always loaded, a bed's may not be, and a pet moved into an unloaded chunk could be lost.
+- 2026-10-31: **Level-ups name new perks** in the existing action-bar message, no new toast.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
+  screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
+- **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
+- **Faithful Friend (2026-10-31):** wolf at low health killed by a mob, in lava and by a fall: it teleports to you, sits with hearts around it, message readable. Right-click stands it up. `/kill` kills it. A pet with the owner in another dimension dies as in vanilla.
+- **New perk in level-up message (2026-10-31):** `/pam skill farming 5` shows "New perk: Replant"; long messages fit the action bar.
 - **Tab reset (2026-10-31):** clicking any tab button, also the current one, goes back to that tab's start (mob and achievement pages close, scroll, filter
   and perk category reset, click sound on the current tab). K or Esc and reopening keeps everything, including the scroll on an achievement page.
 - **Achievements tab (2026-10-31):** hover the Free tip button (tip of the day, same all day), scrolling and clicks hit the right block, Not done filter,

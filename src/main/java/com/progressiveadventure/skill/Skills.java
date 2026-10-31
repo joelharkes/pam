@@ -4,11 +4,14 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Progression;
+import com.progressiveadventure.perk.Perk;
+import com.progressiveadventure.perk.Perks;
 
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -108,9 +111,13 @@ public final class Skills {
 			Progression.apply(player); // attack speed is an attribute modifier
 		}
 		if (levelAfter > levelBefore) {
-			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.skill_level_up",
+			MutableComponent message = Component.translatable("message.progressive_adventure.skill_level_up",
 					Component.translatable("skill.progressive_adventure." + skill.id), levelAfter,
-					describeBonus(skill, levelAfter)).withStyle(ChatFormatting.GREEN));
+					describeBonus(skill, levelAfter)).withStyle(ChatFormatting.GREEN);
+			for (Perk perk : Perks.newlyAvailable(skill, levelBefore, levelAfter, progress, PamAttachments.snapshot(player))) {
+				message.append(Component.translatable("message.progressive_adventure.skill_new_perk", perk.name()).withStyle(ChatFormatting.GOLD));
+			}
+			player.sendOverlayMessage(message);
 			player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5f, 1.5f);
 		}
 	}

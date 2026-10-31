@@ -1,6 +1,7 @@
 package com.progressiveadventure.mixin;
 
 import com.progressiveadventure.bestiary.Bestiary;
+import com.progressiveadventure.perk.DeathPerks;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.perk.Perks;
@@ -86,6 +87,13 @@ public class LivingEntityMixin {
 			if (multiplier != 1) {
 				cir.setReturnValue(cir.getReturnValueD() * multiplier);
 			}
+		}
+	}
+
+	@Inject(method = "checkTotemDeathProtection", at = @At("RETURN"), cancellable = true)
+	private void pam$faithfulFriend(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+		if (!cir.getReturnValueZ() && DeathPerks.savePet((LivingEntity) (Object) this, source)) {
+			cir.setReturnValue(true);
 		}
 	}
 

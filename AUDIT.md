@@ -118,6 +118,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `MeleeMoves.SMASH_RADIUS` (3.5), `Melee.WHIRLWIND_RADIUS` (3) | mace smash knockback reach; sweep distance check |
 | `MeleeMoves.onLanding` | relies on `Block.fallOn` calling `causeFallDamage` on every landing |
 | `ShieldPerks.inParryWindow` | shield blocks only after `BlocksAttacks.blockDelayTicks` |
+| `DeathPerks.dropAllButKept`, `restoreKept` | `Inventory.dropAll`, the slot numbers (36-39 armor, 40 offhand) and the XP part of `ServerPlayer.transferInventoryXpAndScore` |
 | Client `ShieldBash` | `Minecraft.handleKeybinds` drops attack clicks while using an item (Fabric's start-of-tick runs first) |
 | `Melee.disarm` | skeletons switch to melee when their main hand changes (`AbstractSkeleton.setItemSlot`) |
 | `PlayerMixin.pam$rememberAttackStrength` | vanilla resets the attack strength in `onAttack()` before the hit lands |

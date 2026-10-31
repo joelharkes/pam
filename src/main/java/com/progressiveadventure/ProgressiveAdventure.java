@@ -9,6 +9,7 @@ import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
 import com.progressiveadventure.perk.Cooldown;
+import com.progressiveadventure.perk.DeathPerks;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.PerkEffects;
 import com.progressiveadventure.skill.Archery;
@@ -61,6 +62,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			Melee.onServerStopped();
 			MeleeMoves.onServerStopped();
 			Cooldown.onServerStopped();
+			DeathPerks.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
 			BestiaryInfo.clearCache();
@@ -74,7 +76,12 @@ public class ProgressiveAdventure implements ModInitializer {
 			Progression.apply(player);
 			Bestiary.checkCollections(player, PamAttachments.progress(player));
 		});
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> Progression.apply(newPlayer));
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			Progression.apply(newPlayer);
+			if (!alive) {
+				DeathPerks.onRespawn(newPlayer);
+			}
+		});
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof ServerPlayer player) {
@@ -124,6 +131,7 @@ public class ProgressiveAdventure implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTickCount() % 20 == 0) {
 				Trackers.tick(server);
+				DeathPerks.tick(server);
 			}
 			MovementPerks.tick(server);
 			PerkEffects.tick();

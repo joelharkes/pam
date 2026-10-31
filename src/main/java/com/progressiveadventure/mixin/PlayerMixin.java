@@ -3,6 +3,7 @@ package com.progressiveadventure.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.progressiveadventure.access.PlayerAttackAccess;
+import com.progressiveadventure.perk.DeathPerks;
 import com.progressiveadventure.skill.Melee;
 import com.progressiveadventure.skill.MeleeMoves;
 import com.progressiveadventure.skill.Skills;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,6 +50,22 @@ public abstract class PlayerMixin implements PlayerAttackAccess {
 	@Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
 	private void pam$applySkillSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
 		cir.setReturnValue(cir.getReturnValueF() * Skills.speedMultiplier((Player) (Object) this, state));
+	}
+
+	/** Keepsake: what the perk keeps isn't dropped. */
+	@WrapOperation(method = "dropEquipment", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;dropAll()V"))
+	private void pam$keepsakeDrop(Inventory inventory, Operation<Void> original) {
+		if (!((Object) this instanceof ServerPlayer player) || !DeathPerks.dropAllButKept(player)) {
+			original.call(inventory);
+		}
+	}
+
+	/** Keepsake III: no XP orbs, the XP stays with the player. */
+	@Inject(method = "getBaseExperienceReward", at = @At("RETURN"), cancellable = true)
+	private void pam$keepsakeXp(ServerLevel level, CallbackInfoReturnable<Integer> cir) {
+		if ((Object) this instanceof ServerPlayer player && DeathPerks.keepsXp(player)) {
+			cir.setReturnValue(0);
+		}
 	}
 
 	/** Ground Pound: the landing of a dive pushes mobs away instead of hurting the player. */

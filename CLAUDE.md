@@ -134,7 +134,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   durability, prospector, timber/lumberjack, forester, clear cut (delayed via a tick queue), flint finder, vein miner, excavator, archaeologist, orchard, bird's nest,
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
-  `Cooldown` (per-player perk cooldowns, cleared on server stop)
+  `Cooldown` (per-player perk cooldowns, cleared on server stop), `DeathPerks` (Keepsake, Way Back trail, Faithful Friend)
 - `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
@@ -142,7 +142,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite), `/pam elitemap <type>` (ops, gives an elite's map, shows search time),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers, Steady Healing, Quick Healing, Deep Reserves), Player (break speed, attack strength, Careful Sweep, Whirlwind, Ground Pound landing), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
-  PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
+  PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), ServerPlayer (Keepsake restore), BlockItem (placed blocks), ConsumeItemTrigger (food hook),
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks, Deflect), ThrownTrident (Loyal Trident), KineticWeapon/PiercingWeapon (spear charge and jab perks),

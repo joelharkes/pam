@@ -125,6 +125,11 @@ public class PamConfig {
 	public double archaeologistChance = 0.03;
 	public float secondWindHealthThreshold = 6f;
 	public int secondWindCooldownSeconds = 120;
+	// Way Back: how long the trail to where you died lasts (vanilla removes dropped items after 5 minutes)
+	public int wayBackSeconds = 300;
+	// Faithful Friend: health (2 = 1 heart) and how long Regeneration II and Resistance IV last when a pet is saved
+	public float faithfulFriendHealth = 4f;
+	public int faithfulFriendProtectSeconds = 10;
 	// Wide Sweep: added to the sweeping damage ratio (vanilla sweep = 1 + ratio x hit damage; Sweeping Edge III adds 0.75)
 	public List<Double> wideSweepRatios = List.of(0.25, 0.5);
 	// Disarm: chance per sword hit (at least meleeMinHitDamage) that the mob drops the item in its main hand

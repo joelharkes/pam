@@ -134,6 +134,11 @@ public final class Perks {
 	public static final Perk HEARTY_KILL_1 = register("hearty_kill_1", PerkCategory.SURVIVAL, Items.COOKED_BEEF, 2, new MobTypes(10), null);
 	public static final Perk HEARTY_KILL_2 = register("hearty_kill_2", PerkCategory.SURVIVAL, Items.RABBIT_STEW, 3, new MobTypes(20), "hearty_kill_1");
 	public static final Perk HEARTY_KILL_3 = register("hearty_kill_3", PerkCategory.SURVIVAL, Items.GOLDEN_CARROT, 4, new MobTypes(30), "hearty_kill_2");
+	public static final Perk KEEPSAKE_1 = register("keepsake_1", PerkCategory.SURVIVAL, Items.LEATHER_CHESTPLATE, 1, Requirement.NONE, null);
+	public static final Perk KEEPSAKE_2 = register("keepsake_2", PerkCategory.SURVIVAL, Items.CHEST, 2, new Rank(5), "keepsake_1");
+	public static final Perk KEEPSAKE_3 = register("keepsake_3", PerkCategory.SURVIVAL, Items.ENDER_CHEST, 3, new Rank(10), "keepsake_2");
+	public static final Perk WAY_BACK = register("way_back", PerkCategory.SURVIVAL, Items.RECOVERY_COMPASS, 1, Requirement.NONE, null);
+	public static final Perk FAITHFUL_FRIEND = register("faithful_friend", PerkCategory.SURVIVAL, Items.BONE, 1, Requirement.NONE, null);
 
 	public static final Perk FLEET_FOOT_1 = register("fleet_foot_1", PerkCategory.MOVEMENT, Items.SUGAR, 2, new Rank(10), null);
 	public static final Perk FLEET_FOOT_2 = register("fleet_foot_2", PerkCategory.MOVEMENT, Items.RABBIT_FOOT, 3, new Rank(25), "fleet_foot_1");
@@ -195,6 +200,21 @@ public final class Perks {
 			}
 		}
 		return next;
+	}
+
+	/** Perks this skill's level-up just made available: skill level reached, other requirements met, not owned yet. */
+	public static List<Perk> newlyAvailable(Skill skill, int levelBefore, int levelAfter, PlayerProgress progress, ProgressionSnapshot snapshot) {
+		List<Perk> result = new ArrayList<>();
+		for (Perk perk : BY_ID.values()) {
+			if (perk.requirement() instanceof SkillLevel(Skill required, int needed, int rank)
+					&& required == skill && needed > levelBefore && needed <= levelAfter) {
+				Status status = status(perk, progress, snapshot);
+				if (status == Status.BUYABLE || status == Status.TOO_EXPENSIVE) {
+					result.add(perk);
+				}
+			}
+		}
+		return result;
 	}
 
 	public static boolean has(Player player, Perk perk) {
