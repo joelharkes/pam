@@ -17,7 +17,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md). Its **Minecraft
   update checklist** lists the hooks that can break silently: go through it on every Minecraft update, and add to it
   when a new mixin targets a call by position (`ordinal`) or code copies a vanilla rule.
-- Status: **0.5.0 released** (tag `v0.5.0`, Modrinth Alpha; 0.4.0 was the first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
+- Status: **0.6.0 released** (tag `v0.6.0`, Modrinth Alpha; 0.4.0 was the first public release). **v0.1 tagged** (`v0.1.0`, playtested). **v0.2** (perks + Adventure screen) playtested,
   not tagged yet. Farming skill/perks/milestones, Fishing skill/perks/milestones, Melee skill (all 4 slices, shield perks in Defense), bestiary pages and collections, Defense perks, Deep Breath and Fleet Foot tiers,
   **v0.3a** mob unlocks, **v0.3b** mob gear + elites, **v0.3c** elite traits and **v0.4a** waypoints are implemented;
   what still needs a playtest is in the DESIGN.md playtest checklist.

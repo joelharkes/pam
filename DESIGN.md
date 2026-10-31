@@ -1053,6 +1053,8 @@ Players can suggest more through the GitHub issue forms.
   Not on the bestiary page: elite bonus loot isn't listed there. Search radius starts at vanilla's chest default of 50 chunks because the search can freeze the server.
 - 2026-10-31: **Tab buttons start fresh, K keeps your place.** Clicking a tab button (also the current one) resets that tab: detail page, scroll,
   filter, perk category. Closing and reopening the screen changes nothing, so a tip can be re-read after trying it. The screen reopens on the last tab.
+- 2026-10-31: **0.6.0 released** (tag `v0.6.0`, Alpha): Achievements tab and tips, elite maps, Shockwave II/III, Quick Healing, Deep Reserves, Steady Healing,
+  later skeletons and creepers, earlier Bonus Hearts, skill perks spread over the levels. Released before these were playtested (user's call).
 
 ## Playtest checklist
 
