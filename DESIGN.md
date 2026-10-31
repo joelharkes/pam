@@ -811,6 +811,7 @@ Players can suggest more through the GitHub issue forms.
 ### UI
 - Pin one achievement as your current goal, with what's left on the HUD (the mod Just Show Me Criteria does this).
 - Search box in the Achievements tab (the mod Advancements Search exists because people want this).
+- Hints that appear on their own while playing, e.g. near a relevant block (the mod Hintful Advancements teaches through jokes in extra advancements). Doubtful: buying a tip is a choice on purpose.
 - Toasts instead of chat/action-bar messages for level-ups and Rank-ups (new bestiary entries have one).
 
 ---
