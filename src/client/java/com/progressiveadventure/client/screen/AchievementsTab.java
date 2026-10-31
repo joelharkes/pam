@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Grid of every achievement, one block each, with a free unnamed tip of the day. Clicking a block opens its page: what it
+ * Grid of every achievement, one block each, with a free unnamed tip of the day on a hover button. Clicking a block opens its page: what it
  * asks, tips to buy with XP (free once it's done) and which parts are still missing.
  */
 class AchievementsTab implements AdventureTab {
@@ -36,6 +36,8 @@ class AchievementsTab implements AdventureTab {
 	private static final int SECTION_GAP = 6;
 	private static final int BUY_BUTTON_HEIGHT = 18;
 	private static final int SCROLL_STEP = 20;
+	private static final int FILTER_WIDTH = 90;
+	private static final int TIP_BUTTON_WIDTH = 60;
 
 	private static boolean notDoneOnly = false;
 	private static int gridScroll = 0;
@@ -80,12 +82,15 @@ class AchievementsTab implements AdventureTab {
 			screen.addTabWidget(Button.builder(Component.literal(">"), b -> step(1)).bounds(left + width - 20, top, 20, 18).build());
 			return;
 		}
+		// Only there to hover over: render shows the tip as its tooltip
+		screen.addTabWidget(Button.builder(Component.translatable("screen.progressive_adventure.achievements.daily_tip_button"), b -> {
+		}).bounds(left + width - FILTER_WIDTH - 2 - TIP_BUTTON_WIDTH, top, TIP_BUTTON_WIDTH, 18).build());
 		screen.addTabWidget(Button.builder(Component.translatable(notDoneOnly ? "screen.progressive_adventure.achievements.show_not_done"
 				: "screen.progressive_adventure.achievements.show_all"), b -> {
 					notDoneOnly = !notDoneOnly;
 					gridScroll = 0;
 					screen.refresh();
-				}).bounds(left + width - 90, top, 90, 18).build());
+				}).bounds(left + width - FILTER_WIDTH, top, FILTER_WIDTH, 18).build());
 	}
 
 	private void select(String id) {
@@ -196,7 +201,7 @@ class AchievementsTab implements AdventureTab {
 		}
 		graphics.text(font, Component.translatable("screen.progressive_adventure.achievements.done", done, total), left, top + 5, AdventureScreen.TEXT_GOLD);
 
-		viewTop = renderTipOfTheDay(graphics, font, list, left, top + HEADER_HEIGHT, width) + 4;
+		viewTop = top + HEADER_HEIGHT;
 		viewBottom = top + height;
 		int columns = Math.max(1, (width - 5) / CELL);
 
@@ -226,6 +231,11 @@ class AchievementsTab implements AdventureTab {
 		gridMaxScroll = Math.max(0, y + gridScroll - viewTop - (viewBottom - viewTop));
 		gridScroll = Math.min(gridScroll, gridMaxScroll);
 		scrollbar(graphics, left + width - 3, gridScroll, gridMaxScroll);
+
+		if (PerksTab.isInside(mouseX, mouseY, left + width - FILTER_WIDTH - 2 - TIP_BUTTON_WIDTH, top, TIP_BUTTON_WIDTH, 18)) {
+			AdventureScreen.wrappedTooltip(graphics, font, List.of(
+					Component.translatable("screen.progressive_adventure.achievements.daily_tip").withStyle(ChatFormatting.AQUA), dailyTip(list)), mouseX, mouseY);
+		}
 	}
 
 	private void cell(GuiGraphicsExtractor graphics, Font font, Entry entry, int x, int y, int mouseX, int mouseY) {
@@ -258,8 +268,8 @@ class AchievementsTab implements AdventureTab {
 		return lines;
 	}
 
-	/** A free first tip of something the player could do next, without saying what it's for. Same all in-game day. Returns the bottom. */
-	private static int renderTipOfTheDay(GuiGraphicsExtractor graphics, Font font, AchievementListPayload list, int left, int top, int width) {
+	/** A free first tip of something the player could do next, without saying what it's for. Same all in-game day. */
+	private static Component dailyTip(AchievementListPayload list) {
 		Minecraft minecraft = Minecraft.getInstance();
 		PlayerProgress progress = PamAttachments.progress(minecraft.player);
 		List<Entry> candidates = new ArrayList<>();
@@ -270,25 +280,12 @@ class AchievementsTab implements AdventureTab {
 				}
 			}
 		}
-		Component text;
 		if (candidates.isEmpty()) {
-			text = Component.translatable("screen.progressive_adventure.achievements.no_daily_tip");
-		} else {
-			long day = minecraft.level.getOverworldClockTime() / 24000L;
-			int index = Math.floorMod(Long.hashCode(day * 31 + minecraft.player.getUUID().hashCode()), candidates.size());
-			text = Component.translatable(tipKey(candidates.get(index), 1));
+			return Component.translatable("screen.progressive_adventure.achievements.no_daily_tip");
 		}
-		List<FormattedCharSequence> lines = font.split(text, width - 8);
-		int bottom = top + 15 + lines.size() * 10;
-		graphics.fill(left, top, left + width, bottom, 0xFF1C1C26);
-		graphics.outline(left, top, width, bottom - top, 0xFF3A3A48);
-		graphics.text(font, Component.translatable("screen.progressive_adventure.achievements.daily_tip"), left + 4, top + 3, AdventureScreen.TEXT_AQUA);
-		int y = top + 13;
-		for (FormattedCharSequence line : lines) {
-			graphics.text(font, line, left + 4, y, AdventureScreen.TEXT);
-			y += 10;
-		}
-		return bottom;
+		long day = minecraft.level.getOverworldClockTime() / 24000L;
+		int index = Math.floorMod(Long.hashCode(day * 31 + minecraft.player.getUUID().hashCode()), candidates.size());
+		return Component.translatable(tipKey(candidates.get(index), 1));
 	}
 
 	private void renderPage(GuiGraphicsExtractor graphics, Font font, AchievementListPayload list, Entry entry, int left, int top, int width, int height,

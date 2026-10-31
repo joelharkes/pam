@@ -742,7 +742,7 @@ Keep it simple and close to vanilla.
 - **Grid:** every advancement with a display except the tab roots (they give no Rank), one block each, under headings per
   tab with a count (Milestones first, then vanilla's tabs, other mods' last). Scrollable; a button switches between All and
   Not done. Vanilla's advancement screen stays as it is. Secret advancements show "?" until done, and have no tips to buy.
-- **Tip of the day:** free, the first tip of a random achievement that isn't done and whose parent is done, not saying which
+- **Tip of the day:** a "Free tip" button left of the filter shows it on hover (a box above the grid took too much room). Free, the first tip of a random achievement that isn't done and whose parent is done, not saying which
   achievement it belongs to. Changes once per in-game day; no "new tip" button, or you could click through them all for free.
 - **Page:** description, Rank it gives, tips, then progress for achievements with several parts ("31 / 40") and the names of
   what's missing. Monsters Hunted only shows a count, so new mobs stay a surprise.
@@ -1029,17 +1029,18 @@ Players can suggest more through the GitHub issue forms.
   don't say how. One block per achievement, like the bestiary. Tips cost XP (points, like waypoints, so saving levels for
   enchanting isn't punished) so help is the player's choice and doesn't make things too easy; the free tip of the day doesn't
   name its achievement. Tip 1 also costs XP, because the free tip helps a player with none. Tips of done achievements are free.
-  Dropped: an in-character "Old Adventurer" (the user wants practical how-to text). Sample tips first; the rest get
-  researched when the user asks.
+  Dropped: an in-character "Old Adventurer" (the user wants practical how-to text). Every achievement has tips: mostly 1 for easy ones and up to 3 for hard ones,
+  secret ones 1 or 2 (readable once done).
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
-- **Achievements tab (2026-10-31):** grid and headings fit, scrolling and clicks hit the right block, Not done filter, `<`/`>` on a
-  page, missing-list names read well (Balanced Diet, Adventuring Time, cat variants), buying spends XP and the tip shows at once,
-  prices feel right, done achievements show tips for free, tip of the day stays the same all day. Only sample tips so far:
-  Sweet Dreams, Star Trader, Subspace Bubble, A Balanced Diet, Zombie Doctor, Waypoint. Star Trader tip 3 (villager on a
-  bubble column, trading distance) isn't tested in-game yet.
+- **Achievements tab (2026-10-31):** hover the Free tip button (tip of the day, same all day), scrolling and clicks hit the right block, Not done filter,
+  `<`/`>` on a page, missing-list names read well (Balanced Diet, Adventuring Time, cat variants), buying spends XP and the tip shows at
+  once, prices feel right, done achievements show tips for free.
+- **Achievement tips (2026-10-31):** written from the game data, the mod's rules and general Minecraft knowledge; none tested in-game one by one.
+  Least sure: Star Trader tip 3 (villager on a bubble column), Great View tips (shulker heights), Uneasy Alliance (ghast into a portal),
+  Feels Like Home (strider through a portal), With Our Powers Combined tip 3, Over-Overkill (30 blocks with Density V), Sticky Situation (wall height).
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
 - **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
@@ -1167,5 +1168,5 @@ override applied, typo warned).
 - **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
-- **Next:** after the Achievements tab playtest, research and write tips for every achievement (user asks when). Then work through the playtest checklist and Open questions (balance), then pick from
+- **Next:** work through the playtest checklist and Open questions (balance), then pick from
   [Ideas](#ideas) (likely candidates: Well Fed, more milestones).
