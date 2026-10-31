@@ -1081,6 +1081,7 @@ Players can suggest more through the GitHub issue forms.
   where you died) is a 1-point perk rather than free, to match. **Faithful Friend** (1 point): a pet that would die faints and comes back to you. It teleports to
   the owner, not home: the owner's chunk is always loaded, a bed's may not be, and a pet moved into an unloaded chunk could be lost.
 - 2026-10-31: **Level-ups name new perks** in the existing action-bar message, no new toast.
+- 2026-10-31: One-command install scripts (`install.sh`, `install.ps1`) from GitHub releases. They install Fabric API but not Fabric Loader (that has its own installer and only gets a hint). A Fabric API jar for another Minecraft version is renamed to `.disabled`, not deleted.
 
 ## Playtest checklist
 

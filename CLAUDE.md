@@ -87,6 +87,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `README.md` is for players (GitHub). `docs/modrinth-description.md` is the same text with absolute
   `raw.githubusercontent.com` image links for the Modrinth page: update both together.
 - Screenshots in `docs/screenshots/` as JPG (quality 88) to keep the repo small.
+- `install.sh` (Linux/macOS) and `install.ps1` (Windows): one-command install from the newest GitHub release, including pre-releases; they read
+  `minecraft_version` and `fabric_api_version` from `gradle.properties` at that tag and need the jar name `progressive_adventure-<version>.jar`. Change both together.
 - Issue forms in `.github/ISSUE_TEMPLATE/` (bug, playtest feedback, perk/feature idea); `CONTRIBUTING.md`.
 
 ## Adding things

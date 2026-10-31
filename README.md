@@ -95,6 +95,12 @@ so friends at different progress levels can play together. Mob unlocks follow th
 2. Download [Fabric API](https://modrinth.com/mod/fabric-api).
 3. Put both jars and the PAM jar in your `mods` folder.
 
+Or let a script do steps 2 and 3. It puts the latest PAM and the right Fabric API in your `mods`
+folder, and running it again updates PAM. Open a terminal and paste:
+
+- **Windows** (PowerShell): `irm https://raw.githubusercontent.com/joelharkes/pam/main/install.ps1 | iex`
+- **Linux and macOS**: `curl -fsSL https://raw.githubusercontent.com/joelharkes/pam/main/install.sh | bash`
+
 PAM is needed **on both the client and the server**.
 
 ## Config
