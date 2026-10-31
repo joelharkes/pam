@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.0: Keepsakes and faithful friends
+
+### New
+
+- **Keepsake I/II/III** (Survival): keep things when you die. I keeps the armor you wear, II also your hotbar and
+  the item in your other hand, III everything, including your XP.
+- **Way Back** (Survival): after you die, a red trail shows the way back to the spot for 5 minutes. Only you can
+  see it.
+- **Faithful Friend** (Survival): when your pet would die, it faints and runs back to you instead, if you are in
+  the same dimension. It sits down to rest until you tell it to stand up.
+- **Install scripts:** one command puts the latest PAM and the right Fabric API in your mods folder. See the README.
+
+### Changes
+
+- **Level-ups name new perks:** when a skill level unlocks a perk, the level-up message tells you which one.
+
 ## 0.6.0: Achievements, tips and elite maps
 
 ### New
