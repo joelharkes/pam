@@ -490,6 +490,11 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
 - Bonus loot, player kills only: emerald 10% (1) → 50% (1–3) at Rank 100; enchanted book
   from Rank 40, 5% (level 5) → 25% (level 30); golden apple from Rank 80, 3% → 8%.
   Elites are only 2–10% of spawns, so this stays hard to farm, especially early.
+- Treasure and explorer maps: one roll per elite, 5% at Rank 15 → 15% at Rank 100 (×1.5 for trait elites). Then a
+  type by weight among those unlocked at the elite's rank: buried treasure (Rank 15, weight 4), trial chambers
+  (Rank 30, 5), ocean monument (Rank 45, 5), woodland mansion (Rank 70, 2). No first-map guarantee. If no structure
+  is within 50 chunks, one other type is tried, otherwise nothing drops. The map has vanilla's name, so you can see
+  the type before opening it. The structure search runs on the server thread; `/pam elitemap <type>` shows its time.
 - Waypoint Shards (see pillar 7).
 - Milestone "Elite Slayer": defeat an elite, ½ heart.
 - Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
@@ -797,8 +802,6 @@ Players can suggest more through the GitHub issue forms.
   gold gear into a single nugget each, which feels poor for a whole piece; diamond and leather gear can't be
   recycled at all. Idea: a grindstone/recycling station that returns part of the ingots or diamonds (more for less
   worn gear), or salvaging into something useful.
-- Elites drop treasure or explorer maps (the other half of the "mobs drop exploration helpers" idea; the first
-  half became Waypoint Shards).
 - Mob unlocks / elites in the Nether and End (vanilla spawns there for now).
 
 ### Waypoints
@@ -1044,6 +1047,8 @@ Players can suggest more through the GitHub issue forms.
   secret ones 1 or 2 (readable once done).
 - 2026-10-31: **Tips checked against player guides.** Web research (mainly the Minecraft Wiki advancement guide) corrected about 40 achievements, e.g. Great View needs an
   ender pearl, Sticky Situation needs no wall, Over-Overkill needs far less height. Ideas it gave are in Ideas > UI.
+- 2026-10-31: **Elites drop treasure and explorer maps.** About 1 in 10 elites, so it adds little to the drops (a map is a trip, not a resource). No guaranteed first map. Mansions from Rank 70 as a late challenge.
+  Not on the bestiary page: elite bonus loot isn't listed there. Search radius starts at vanilla's chest default of 50 chunks because the search can freeze the server.
 
 ## Playtest checklist
 
@@ -1117,6 +1122,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   line on the Character tab.
 - **Elites (v0.3b):** `/pam elite zombie` etc. Size, name on hover, gear by rank, drops only on
   player kill, XP, bonus loot, Elite Slayer milestone. Does normal-mob gear feel right?
+- **Elite maps:** `/pam elitemap buried_treasure|trial_chambers|ocean_monument|woodland_mansion`. Does the map lead to the structure, is the
+  name and icon right, and how long is the search (shown in chat), especially on a server and in new terrain? Are the
+  rates right, and do too many mansion maps fail at 50 chunks?
 - **Traits (v0.3c):** `/pam elite zombie frost` etc. Does each trait feel fair for kids?
 - **Waypoints (v0.4a):** `/pam elite zombie` → shard drop (first kill always). Craft a stone,
   turn it on (name screen, shard cost), particles + floating name, texture looks OK? Second stone

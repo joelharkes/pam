@@ -268,6 +268,16 @@ public class PamConfig {
 	public Ramp eliteBookChance = new Ramp(40, 0.05, 100, 0.25);
 	public Ramp eliteBookLevel = new Ramp(40, 5, 100, 30);
 	public Ramp eliteGoldenAppleChance = new Ramp(80, 0.03, 100, 0.08);
+	// Treasure and explorer maps: one roll per elite, then a type by weight among those unlocked at the elite's rank.
+	// If no structure is in range, one other type is tried, otherwise nothing drops. A bigger radius finds more but
+	// can freeze the server for longer (vanilla: 50 in chests, 100 in cartographer trades).
+	public Ramp eliteMapChance = new Ramp(15, 0.05, 100, 0.15);
+	public int eliteMapSearchRadiusChunks = 50;
+	public List<EliteMapDrop> eliteMaps = List.of(
+			new EliteMapDrop("buried_treasure", 15, 4),
+			new EliteMapDrop("trial_chambers", 30, 5),
+			new EliteMapDrop("ocean_monument", 45, 5),
+			new EliteMapDrop("woodland_mansion", 70, 2));
 	// Traits for high-rank elites: Swift, Frost, Blazing, Leaping, Summoner
 	public Ramp eliteTraitChance = new Ramp(100, 0.25, 160, 0.75);
 	public double traitLootMultiplier = 1.5;
@@ -319,6 +329,9 @@ public class PamConfig {
 	}
 
 	public record MobUnlock(String name, int rank, List<String> mobs) {
+	}
+
+	public record EliteMapDrop(String map, int rank, int weight) {
 	}
 
 	public static PamConfig get() {

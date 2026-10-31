@@ -18,6 +18,7 @@ import com.progressiveadventure.skill.Skill;
 import com.progressiveadventure.skill.Skills;
 import com.progressiveadventure.waypoint.Waypoint;
 import com.progressiveadventure.waypoint.Waypoints;
+import com.progressiveadventure.world.EliteMap;
 import com.progressiveadventure.world.EliteTrait;
 import com.progressiveadventure.world.Elites;
 import com.progressiveadventure.world.MobUnlocks;
@@ -33,6 +34,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -60,6 +62,12 @@ public final class PamCommand {
 										.suggests((context, builder) -> SharedSuggestionProvider.suggest(
 												Arrays.stream(EliteTrait.values()).map(trait -> trait.id), builder))
 										.executes(context -> spawnElite(context, StringArgumentType.getString(context, "trait"))))))
+				// Test helper for ops: get an elite's map right away; the message shows how long the search took
+				.then(Commands.literal("elitemap").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.argument("map", StringArgumentType.word())
+								.suggests((context, builder) -> SharedSuggestionProvider.suggest(
+										Arrays.stream(EliteMap.values()).map(map -> map.id), builder))
+								.executes(PamCommand::giveEliteMap)))
 				// Test helper for ops: set a skill level to try perks without levelling
 				.then(Commands.literal("skill").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 						.then(Commands.argument("skill", StringArgumentType.word())
@@ -158,6 +166,25 @@ public final class PamCommand {
 			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.elite.unknown"));
 			return 0;
 		}
+		return 1;
+	}
+
+	private static int giveEliteMap(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		ServerPlayer player = context.getSource().getPlayerOrException();
+		EliteMap map = EliteMap.byId(StringArgumentType.getString(context, "map"));
+		if (map == null) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.elitemap.unknown"));
+			return 0;
+		}
+		long start = System.nanoTime();
+		ItemStack stack = map.create(player.level(), player.blockPosition(), PamConfig.get().eliteMapSearchRadiusChunks);
+		long millis = (System.nanoTime() - start) / 1_000_000;
+		if (stack.isEmpty()) {
+			context.getSource().sendFailure(Component.translatable("command.progressive_adventure.elitemap.none", millis));
+			return 0;
+		}
+		player.getInventory().placeItemBackInInventory(stack);
+		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.elitemap.found", millis), false);
 		return 1;
 	}
 

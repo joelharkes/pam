@@ -126,6 +126,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `Milestones.VANILLA` + lang overrides | vanilla advancement ids and their description keys |
 | `Targets.isFriendly` | shulkers extend `AbstractGolem` |
 | `Bestiary.onKill` (Master double loot) | `LivingEntity.shouldDropLoot` = not a baby (and the `mobDrops` game rule) |
+| `EliteMap` | `ExplorationMapFunction` steps, and the structure tags, decorations, zoom and names in vanilla's loot tables and cartographer trades |
 
 **Also check:** vanilla mob list vs. the bestiary hint/tip lang keys and `mobUnlocks`; item tags used
 (`SWORDS`, `SPEARS`, `MACE_ENCHANTABLE`, `TRIDENT_ENCHANTABLE`, ore/log tags); `fishing_treasure` tag contents;

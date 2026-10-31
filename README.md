@@ -132,7 +132,7 @@ when you open a world to LAN, the settings of the server (the host) count.
 
 - `/pam`: shows your progress in chat.
 - `/pam bestiary`: lists your bestiary.
-- Ops only: `/pam elite <mob> [trait]`, `/pam skill <skill> <level> [player]`, `/pam kills <mob> <count> [player]`,
+- Ops only: `/pam elite <mob> [trait]`, `/pam elitemap <type>`, `/pam skill <skill> <level> [player]`, `/pam kills <mob> <count> [player]`,
   `/pam waypoint list|tp|remove`. These are for testing and server admins.
 
 ## Feedback and ideas

@@ -126,7 +126,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `world/MobUnlocks`: which hostile mobs may spawn naturally at a rank (lowest rank of nearby players),
   unlock messages, "next unlock" for the snapshot; `world/Elites`: extra gear on normal mobs, elites
   (persistent `ELITE_RANK` attachment on the mob), elite XP/loot/milestone; `world/EliteTrait`: traits
-  (persistent `ELITE_TRAIT`; Leaping goal re-added on every entity load since goals aren't saved)
+  (persistent `ELITE_TRAIT`; Leaping goal re-added on every entity load since goals aren't saved); `world/EliteMap`: treasure and explorer maps elites drop
 - `waypoint/`: `WaypointContent` (the mod's own items/blocks: shard, stone), `WaypointStoneBlock`
   (ACTIVE state = look only), `Waypoint` record, `Waypoints` (shared list as an Overworld attachment;
   turn on/rename/break, XP cost, charge-up, safe landing, pets, text-display name labels)
@@ -139,7 +139,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`; S2C `OpenWaypointNamePayload`,
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `AchievementListPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
-- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite),
+- `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite), `/pam elitemap <type>` (ops, gives an elite's map, shows search time),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
 - `mixin/`: FoodData (hunger multipliers, Steady Healing, Quick Healing, Deep Reserves), Player (break speed, attack strength, Careful Sweep, Whirlwind, Ground Pound landing), LivingEntity (damage, Iron Stomach, Shadow Step visibility, shield blocks for Parry/Deflect),
   PlayerAdvancements (advancement hook), PlayerList (flush pending progress on save/respawn), BlockItem (placed blocks), ConsumeItemTrigger (food hook),

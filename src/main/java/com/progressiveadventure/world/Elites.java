@@ -7,6 +7,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.waypoint.WaypointContent;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -267,6 +268,39 @@ public final class Elites {
 		if (random.nextDouble() < config.eliteGoldenAppleChance.at(rank) * lootBoost) {
 			entity.spawnAtLocation(level, new ItemStack(Items.GOLDEN_APPLE));
 		}
+		if (random.nextDouble() < config.eliteMapChance.at(rank) * lootBoost) {
+			ItemStack map = rollMap(level, entity.blockPosition(), rank, random);
+			if (!map.isEmpty()) {
+				entity.spawnAtLocation(level, map);
+			}
+		}
+	}
+
+	/** Picks a map type by weight; when its structure isn't in range, one other type gets a try. */
+	private static ItemStack rollMap(ServerLevel level, BlockPos pos, int rank, RandomSource random) {
+		PamConfig config = PamConfig.get();
+		List<PamConfig.EliteMapDrop> options = new ArrayList<>(config.eliteMaps.stream()
+				.filter(drop -> rank >= drop.rank() && drop.weight() > 0 && EliteMap.byId(drop.map()) != null).toList());
+		for (int attempt = 0; attempt < 2 && !options.isEmpty(); attempt++) {
+			PamConfig.EliteMapDrop drop = pickByWeight(options, random);
+			options.remove(drop);
+			ItemStack map = EliteMap.byId(drop.map()).create(level, pos, config.eliteMapSearchRadiusChunks);
+			if (!map.isEmpty()) {
+				return map;
+			}
+		}
+		return ItemStack.EMPTY;
+	}
+
+	private static PamConfig.EliteMapDrop pickByWeight(List<PamConfig.EliteMapDrop> options, RandomSource random) {
+		int roll = random.nextInt(options.stream().mapToInt(PamConfig.EliteMapDrop::weight).sum());
+		for (PamConfig.EliteMapDrop drop : options) {
+			roll -= drop.weight();
+			if (roll < 0) {
+				return drop;
+			}
+		}
+		throw new IllegalStateException("Roll is below the total weight");
 	}
 
 	/** Goals aren't saved, so Leaping is (re)added whenever an elite is loaded, including right after spawning. */
