@@ -107,7 +107,7 @@ public class PamConfig {
 	// Quick Healing: ticks per half heart of natural healing without saturation (vanilla 80)
 	public List<Integer> quickHealingIntervalTicks = List.of(60, 40);
 	// Deep Reserves: lowest food level (2 = one shank) that still heals without saturation (vanilla 18)
-	public int deepReservesMinFood = 14;
+	public int deepReservesMinFood = 8;
 	public List<Double> prospectorChances = List.of(0.1, 0.2);
 	public int timberMaxLogs = 64;
 	// Lumberjack: chopping a log also chops up to this many connected logs (Timber I)

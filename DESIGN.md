@@ -578,7 +578,7 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Survival    | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
 | Survival    | Steady Healing I/II | Natural healing costs 25% / 50% less hunger (stacks with the stomach) | — / Rank 10 | 2/3 |
 | Survival    | Quick Healing I/II  | Healing without saturation: half a heart every 3s / 2s (vanilla 4s). Same hunger per heart; starving stays at 4s | Rank 5 / 15 | 2/3 |
-| Survival    | Deep Reserves       | Healing without saturation works down to 7 food icons (vanilla 9) | Rank 10 | 3 |
+| Survival    | Deep Reserves       | Healing without saturation works down to 4 food icons (vanilla 9), so you eat less often and 2 cooked meals fill you up | Rank 10 | 3 |
 | Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
@@ -1028,7 +1028,8 @@ Players can suggest more through the GitHub issue forms.
   playtest. Setting `shockwaveDamageRatio` became the list `shockwaveDamageRatios`: **mention the rename in the next CHANGELOG.**
 - 2026-10-31: **Quick Healing I/II and Deep Reserves** (Survival). Natural healing without saturation was slow for two
   reasons: the 4s timer, and it stops below 9 food icons (a full bar pays for only 1 to 1.5 hearts). So 3s / 2s plus a
-  perk that heals down to 7 icons. No 1s tier: too strong (user).
+  perk that heals down to 4 icons (first 7, user wanted less eating: from 4 icons, 2 cooked chickens or steaks fill the
+  bar). No 1s tier: too strong (user).
 - 2026-10-31: **Steady Healing I/II** (Survival): natural healing costs 25% / 50% less hunger, on top of the stomach
   multiplier. Free / Rank 10, cost 2/3.
 - 2026-10-31: **Later skeletons and creepers, earlier Bonus Hearts.** Dev saves reached Rank 5 in about 9 minutes and
@@ -1055,7 +1056,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   development version), Star Trader's boat and lead, Two Birds' phantoms in boats, Great View's ender pearl.
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
 - **Shockwave II/III (2026-10-31):** damage feels right at each tier (5-block fall ~14 / 22), Shockwave III's requirement shows "Melee 50, Rank 25", Double Jump + dive at tier III isn't too strong without a cooldown.
-- **Quick Healing, Deep Reserves (2026-10-31):** half a heart every 3s / 2s, healing continues at 7 and 8 food icons with Deep Reserves, starving damage still every 4s, feels right but not too strong.
+- **Quick Healing, Deep Reserves (2026-10-31):** half a heart every 3s / 2s, healing continues down to 4 food icons with Deep Reserves and you eat clearly less often, starving damage still every 4s, feels right but not too strong.
 - **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
   shield; the first nights don't feel empty. Bonus Hearts at Rank 5/10/20 don't make the early game too easy.

@@ -158,7 +158,7 @@
   "perk.progressive_adventure.quick_healing_2": "Quick Healing II",
   "perk.progressive_adventure.quick_healing_2.description": "With a full stomach you heal half a heart every 2 seconds.",
   "perk.progressive_adventure.deep_reserves": "Deep Reserves",
-  "perk.progressive_adventure.deep_reserves.description": "You keep healing until your hunger bar drops below 7 food icons, instead of 9.",
+  "perk.progressive_adventure.deep_reserves.description": "You keep healing until your hunger bar drops below 4 food icons, instead of 9.",
   "perk.progressive_adventure.second_wind": "Second Wind",
   "perk.progressive_adventure.second_wind.description": "Dropping below 3 hearts gives you a burst of regeneration. Recharges after 2 minutes.",
   "perk.progressive_adventure.thrifty_quiver_1": "Thrifty Quiver I",
