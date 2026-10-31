@@ -34,7 +34,7 @@ bow draws and faster bites.
 
 ### Adventure Rank and perks
 Every advancement raises your **Adventure Rank**, and every Rank is a **perk point**. Spend them
-on **111 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
+on **116 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
 Press **K** to open the Adventure screen.
@@ -57,9 +57,13 @@ mob together, everyone who hit it gets the kill in their bestiary.
 On your first night only zombies come out. Skeletons, creepers, spiders, endermen and the rest
 unlock as your Adventure Rank goes up, and you get a chat message when a new mob type can
 appear. Later on, mobs start wearing gear, and rare **elite** mobs show up: bigger and tougher,
-with special traits and better loot.
+with special traits and better loot. Some elites drop a treasure or explorer map.
 
 ![Tough Zombie elite](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/tough_zombie.jpg)
+
+### Achievements and tips
+The Adventure screen shows every achievement in one grid, so you can see what's left. Stuck on one? Buy a tip with
+a bit of XP, or read the free tip of the day.
 
 ### Waypoints
 Elites can drop **Waypoint Shards**. Craft a **Waypoint Stone** (8 stone bricks around a

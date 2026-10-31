@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.6.0: Achievements, tips and elite maps
+
+### New
+
+- **Achievements tab:** see every achievement in one grid, with a filter for the ones you haven't done yet. Click
+  one to see what it needs.
+- **Achievement tips:** stuck? Buy a tip with XP (10, 30 and 75 XP points, not levels). Every achievement has
+  tips, and tips for achievements you've done are free. There's also a free tip of the day.
+- **Elite maps:** about 1 in 10 elites drops a treasure or explorer map. Buried treasure comes first, then trial
+  chambers, ocean monuments and, late in the game, woodland mansions.
+- **Shockwave II and III** (Melee): your mace smash hurts the mobs around you for 65% or even 100% of a mace hit.
+- **Quick Healing I/II** (Survival): with a full stomach you heal half a heart every 3 or 2 seconds, instead of
+  every 4.
+- **Deep Reserves** (Survival): you keep healing until your hunger bar drops below 4 food icons, instead of 9.
+- **Steady Healing I/II** (Survival): healing your hearts makes you 25% or 50% less hungry.
+
+### Changes
+
+- **Skeletons and creepers come later:** skeletons now arrive at Rank 10 (was 5) and creepers at Rank 18 (was 12).
+- **Bonus Hearts come earlier:** Bonus Heart I/II/III are now at Rank 5/10/20 (was 5/20/40).
+- **Perks unlock earlier:** the first Sturdy perk for each tool and weapon needs no skill level now, and many small
+  perks need a lower one. No perk got harder to get.
+- **Shockwave I** is a bit stronger: it now counts the whole mace hit, not only the extra damage from the fall.
+- **Adventure screen:** clicking a tab button takes you back to the start of that tab. Closing and reopening the
+  screen keeps your place.
+
+### For server admins
+
+- The setting `shockwaveDamageRatio` is now the list `shockwaveDamageRatios`. An old override of it no longer works,
+  and the mod warns about it at startup.
+- If you overrode `mobUnlocks`, you keep your own ranks.
+
 ## 0.5.0: Melee, Fishing and a bigger Bestiary
 
 ### New
