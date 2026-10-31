@@ -8,6 +8,10 @@ interface AdventureTab {
 	default void init(AdventureScreen screen, int left, int top, int width, int height) {
 	}
 
+	/** Clicked in the tab bar: back to how the tab first looks. Closing and reopening the screen keeps everything instead. */
+	default void reset() {
+	}
+
 	void render(GuiGraphicsExtractor graphics, int left, int top, int width, int height, int mouseX, int mouseY);
 
 	default boolean mouseClicked(double mouseX, double mouseY) {

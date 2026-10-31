@@ -43,11 +43,18 @@ class AchievementsTab implements AdventureTab {
 	private static int gridScroll = 0;
 	/** Id of the open page, or null for the grid. Remembered between openings (not between worlds). */
 	private static String selected = null;
+	private static int pageScroll = 0;
 
 	static void forgetSelection() {
 		notDoneOnly = false;
 		gridScroll = 0;
 		selected = null;
+		pageScroll = 0;
+	}
+
+	@Override
+	public void reset() {
+		forgetSelection();
 	}
 
 	private record Cell(String id, int x, int y) {
@@ -56,7 +63,6 @@ class AchievementsTab implements AdventureTab {
 	private final List<Cell> cells = new ArrayList<>();
 	private AdventureScreen screen;
 	private boolean requested;
-	private int pageScroll;
 	private int gridMaxScroll;
 	private int pageMaxScroll;
 	private int viewTop;

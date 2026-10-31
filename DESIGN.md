@@ -686,7 +686,9 @@ Keep it simple and close to vanilla.
 
 - **Milestones:** our own "Adventure" tab in the vanilla advancement screen.
 - **Adventure screen:** one window opened with **K** (rebindable in Controls), using
-  vanilla's tab bar so it looks like the world-creation screen. Four tabs:
+  vanilla's tab bar so it looks like the world-creation screen. Clicking a tab button, also the current
+  tab's, starts that tab fresh (detail page, scroll, filter, perk category). Closing and reopening keeps
+  everything as it was. Four tabs:
 
 #### Character tab
 - **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 18"), available perk
@@ -1049,10 +1051,14 @@ Players can suggest more through the GitHub issue forms.
   ender pearl, Sticky Situation needs no wall, Over-Overkill needs far less height. Ideas it gave are in Ideas > UI.
 - 2026-10-31: **Elites drop treasure and explorer maps.** About 1 in 10 elites, so it adds little to the drops (a map is a trip, not a resource). No guaranteed first map. Mansions from Rank 70 as a late challenge.
   Not on the bestiary page: elite bonus loot isn't listed there. Search radius starts at vanilla's chest default of 50 chunks because the search can freeze the server.
+- 2026-10-31: **Tab buttons start fresh, K keeps your place.** Clicking a tab button (also the current one) resets that tab: detail page, scroll,
+  filter, perk category. Closing and reopening the screen changes nothing, so a tip can be re-read after trying it. The screen reopens on the last tab.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Tab reset (2026-10-31):** clicking any tab button, also the current one, goes back to that tab's start (mob and achievement pages close, scroll, filter
+  and perk category reset, click sound on the current tab). K or Esc and reopening keeps everything, including the scroll on an achievement page.
 - **Achievements tab (2026-10-31):** hover the Free tip button (tip of the day, same all day), scrolling and clicks hit the right block, Not done filter,
   `<`/`>` on a page, missing-list names read well (Balanced Diet, Adventuring Time, cat variants), buying spends XP and the tip shows at
   once, prices feel right, done achievements show tips for free.

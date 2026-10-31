@@ -51,6 +51,12 @@ class PerksTab implements AdventureTab {
 	private int categoryLeft;
 
 	@Override
+	public void reset() {
+		selectedCategory = PerkCategory.MINING;
+		scroll = 0;
+	}
+
+	@Override
 	public void init(AdventureScreen screen, int left, int top, int width, int height) {
 		screen.addTabWidget(Button.builder(Component.translatable("screen.progressive_adventure.reset_perks"), b -> ClientPlayNetworking.send(new ResetPerksPayload()))
 				.bounds(left + width - 90, top, 90, 18)

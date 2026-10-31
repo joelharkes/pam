@@ -65,6 +65,11 @@ class BestiaryTab implements AdventureTab {
 		selected = -1;
 	}
 
+	@Override
+	public void reset() {
+		forgetSelection();
+	}
+
 	private record Entry(EntityType<?> type, ItemStack icon) {
 	}
 

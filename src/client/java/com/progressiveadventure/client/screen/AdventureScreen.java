@@ -60,6 +60,7 @@ public class AdventureScreen extends Screen {
 	private int top;
 	private int panelWidth;
 	private int panelHeight;
+	private Button selectedTabButton;
 
 	public AdventureScreen() {
 		super(Component.translatable("screen.progressive_adventure.title"));
@@ -79,12 +80,16 @@ public class AdventureScreen extends Screen {
 					.bounds(left + 8 + i * (tabWidth + 4), top + 5, tabWidth, 18)
 					.build());
 			button.active = i != selectedTab;
+			if (i == selectedTab) {
+				selectedTabButton = button;
+			}
 		}
 		tabs.get(selectedTab).init(this, contentLeft(), contentTop(), contentWidth(), contentHeight());
 	}
 
 	private void selectTab(int index) {
 		selectedTab = index;
+		tabs.get(index).reset();
 		rebuildWidgets();
 	}
 
@@ -125,6 +130,13 @@ public class AdventureScreen extends Screen {
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (super.mouseClicked(event, doubleClick)) {
+			return true;
+		}
+		// The current tab's button is greyed out to mark it, so it doesn't take the click itself
+		if (event.button() == 0 && PerksTab.isInside(event.x(), event.y(), selectedTabButton.getX(), selectedTabButton.getY(),
+				selectedTabButton.getWidth(), selectedTabButton.getHeight())) {
+			selectedTabButton.playDownSound(minecraft.getSoundManager());
+			selectTab(selectedTab);
 			return true;
 		}
 		return event.button() == 0 && tabs.get(selectedTab).mouseClicked(event.x(), event.y());
