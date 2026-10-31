@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-26):** 0.5.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 109 perks in 10
+Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 111 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -218,11 +218,11 @@ level 4 (~64 blocks) and cap near +60%.
 |---|---|---|---|
 | Light Step | You no longer trample farmland | — | 1 |
 | Replant | Right-click a grown crop to harvest and replant it | Farming 5 | 2 |
-| Sturdy Hoe I/II/III | 10/20/30% chance hoes use no durability | Farming 5/15/30 | 1/2/3 |
+| Sturdy Hoe I/II/III | 10/20/30% chance hoes use no durability | — / Farming 8 / 18 | 1/2/3 |
 | Bountiful Harvest I/II | 10%/20% chance of double crop drops | Farming 10/25 | 2/3 |
 | Harvester | Breaking or Replanting a grown crop with a hoe also does the grown crops in a 3×3 area | Farming 20 | 3 |
-| Rancher | 15% chance of twins when breeding | Farming 10 | 2 |
-| Green Thumb | 25% chance bone meal isn't used up | Farming 15 | 2 |
+| Rancher | 15% chance of twins when breeding | Farming 3 | 2 |
+| Green Thumb | 25% chance bone meal isn't used up | Farming 13 | 2 |
 
 **Farmer milestones:** harvest 3 different crops (stomach), harvest 10 different crops
 (½ heart), breed 5 different kinds of animals (½ heart).
@@ -241,13 +241,13 @@ level 4 (~64 blocks) and cap near +60%.
 
 | Perk | Effect | Requires | Cost |
 |---|---|---|---|
-| Thrifty Quiver I/II/III | 10/20/30% chance a shot uses no arrow (like Infinity: that arrow can't be picked up) | Archery 5/15/30 | 1/2/3 |
+| Thrifty Quiver I/II/III | 10/20/30% chance a shot uses no arrow (like Infinity: that arrow can't be picked up) | Archery 3/8/18 | 1/2/3 |
 | Fire Arrows | 15% chance the arrow is on fire | Archery 10 | 2 |
-| Frost Arrows | 15% chance the arrow slows the mob it hits (Slowness II, 3s), snowflake trail | Archery 10 | 2 |
+| Frost Arrows | 15% chance the arrow slows the mob it hits (Slowness II, 3s), snowflake trail | Archery 6 | 2 |
 | Piercing Shot | Arrows fly through 1 extra mob (stacks with the Piercing enchantment) | Archery 15 | 2 |
 | Steady Aim | Arrows turn up to 2°/tick toward the hostile mob nearest their path (15° cone, 20 blocks, in sight). Neutral mobs only when they target you; never animals, villagers, pets | Archery 20 | 3 |
 | Ricochet | After hitting (or killing) a mob, a new arrow flies to the nearest other hostile mob within 8 blocks, with the same damage, fire and frost. Bounces once; can't be picked up | Archery 40 | 5 |
-| Loyal Trident | Thrown tridents come back like Loyalty I (tridents that already have Loyalty keep theirs) | Archery 15 | 2 |
+| Loyal Trident | Thrown tridents come back like Loyalty I (tridents that already have Loyalty keep theirs) | Archery 13 | 2 |
 
 The arrow perks (Thrifty Quiver, Fire/Frost, Piercing Shot, Steady Aim, Ricochet) stay bows/crossbows only.
 
@@ -264,8 +264,8 @@ Poison arrows were dropped: zombies and skeletons are immune, so it would look b
 
 | Perk | Effect | Requires | Cost |
 |---|---|---|---|
-| Keen Eye | A bell rings when a fish bites; +1s (20 ticks) to reel in (vanilla 1–2s) | Fishing 5 | 1 |
-| Lucky | +2 luck (vanilla attribute, like Luck of the Sea II): more treasure, less junk | Fishing 10 | 2 |
+| Keen Eye | A bell rings when a fish bites; +1s (20 ticks) to reel in (vanilla 1–2s) | Fishing 3 | 1 |
+| Lucky | +2 luck (vanilla attribute, like Luck of the Sea II): more treasure, less junk | Fishing 8 | 2 |
 | Double Catch | 25% chance a fish catch gives the fish twice | Fishing 15 | 3 |
 | Treasure Hunter | Treasure can be caught without open water (small ponds) | Fishing 25 | 4 |
 
@@ -294,16 +294,16 @@ perks, in Defense), d (mace and spear).
 |---|---|---|---|---|
 | Any weapon | Quick Study | Kills count double towards familiarity | 5 mob types defeated | 2 |
 | Any weapon | Sturdy Weapon I/II/III | 10/20/30% chance swords, spears, maces and tridents use no durability (axes: Sturdy Axe) | 5 / 15 / 25 mob types | 1/2/3 |
-| Sword | Careful Sweep | Your sweep no longer hurts tamed pets, villagers or golems (not shulkers) | Melee 5 | 1 |
+| Sword | Careful Sweep | Your sweep no longer hurts tamed pets, villagers or golems (not shulkers) | Melee 3 | 1 |
 | Sword | Wide Sweep I/II | Sweep damage to the other mobs +25% / +50% of the hit (`sweeping_damage_ratio`, stacks with Sweeping Edge up to 1.0) | Melee 10 / 25 | 2/3 |
-| Sword | Whirlwind | A sweep while sneaking hits every hostile mob within 3 blocks around you (not only next to the target), ring of sweep particles + wind sound. Same sweep damage, so it needs Wide Sweep I | Melee 20, Wide Sweep I | 3 |
-| Sword | Disarm | 15% per sword hit: the mob's main-hand item drops next to it (skeletons then walk up and punch; zombies may pick it up again) | Melee 15 | 2 |
-| Axe | Heavy Swing | Fully charged axe hit: extra knockback (1.0) and Slowness II for 2 s | Melee 10 | 2 |
+| Sword | Whirlwind | A sweep while sneaking hits every hostile mob within 3 blocks around you (not only next to the target), ring of sweep particles + wind sound. Same sweep damage, so it needs Wide Sweep I | Melee 18, Wide Sweep I | 3 |
+| Sword | Disarm | 15% per sword hit: the mob's main-hand item drops next to it (skeletons then walk up and punch; zombies may pick it up again) | Melee 13 | 2 |
+| Axe | Heavy Swing | Fully charged axe hit: extra knockback (1.0) and Slowness II for 2 s | Melee 8 | 2 |
 | Axe | Sunder | Fully charged axe hit: the mob's armor −50% for 5 s (shield-break sound, crit sparks). The answer to elites in diamond gear | Melee 20 | 3 |
 | Mace | Ground Pound | Holding a mace in the air (at least 2 blocks up), press sneak: dive straight down (1.5 blocks/tick). No fall damage on landing; hostile mobs within 3.5 blocks are pushed away like by vanilla's smash | Melee 15 | 3 |
 | Mace | Shockwave | A mace smash that hits a mob, and a Ground Pound landing, also hurt the hostile mobs within 3.5 blocks for 30% of vanilla's fall bonus (e.g. 5 blocks: 16 → ~5 damage) | Melee 30 | 4 |
-| Spear | Running Charge | On foot, the spear charge counts your speed ×1.75 (sprint ≈ 5.6 → 9.8 blocks/s): more charge damage, and riders get knocked off (iron spear: 11) | Melee 10 | 2 |
-| Spear | Pinning Jab | Every hostile mob a jab hits gets Slowness II for 1.5 s | Melee 15 | 2 |
+| Spear | Running Charge | On foot, the spear charge counts your speed ×1.75 (sprint ≈ 5.6 → 9.8 blocks/s): more charge damage, and riders get knocked off (iron spear: 11) | Melee 6 | 2 |
+| Spear | Pinning Jab | Every hostile mob a jab hits gets Slowness II for 1.5 s | Melee 12 | 2 |
 
 - "Fully charged" = cooldown over 90%, like vanilla's crit/sweep check. Vanilla resets the strength before the hit
   lands, so `PlayerMixin` stores it at the start of `Player.attack` (`PlayerAttackAccess`).
@@ -519,7 +519,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
-  109 perks costs **261**, so early on you choose and owning everything is out of reach until more milestones
+  111 perks costs **266**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -540,29 +540,29 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 
 | Category    | Perk                | Effect                                              | Requires            | Cost |
 |-------------|---------------------|-----------------------------------------------------|---------------------|------|
-| Mining      | Sturdy Pickaxe I    | 10% chance pickaxes use no durability               | Mining 5            | 1    |
-| Mining      | Sturdy Pickaxe II   | 20% chance (replaces I)                             | Mining 15, perk I   | 2    |
-| Mining      | Sturdy Pickaxe III  | 30% chance                                          | Mining 30, perk II  | 3    |
+| Mining      | Sturdy Pickaxe I    | 10% chance pickaxes use no durability               | —                   | 1    |
+| Mining      | Sturdy Pickaxe II   | 20% chance (replaces I)                             | Mining 8, perk I    | 2    |
+| Mining      | Sturdy Pickaxe III  | 30% chance                                          | Mining 18, perk II  | 3    |
 | Mining      | Prospector I        | 10% chance of double ore drops                      | Mining 10           | 2    |
 | Mining      | Prospector II       | 20% chance                                          | Mining 25, perk I   | 3    |
 | Mining      | Ore Sense           | Holding a pickaxe: particle trail points at the nearest ore within 12 blocks, coloured by ore type, bigger when closer | Mining 40 | 4 |
 | Mining      | Treasure Sense      | Holding a pickaxe: white sparkle trail (every 2.5s) to the nearest diamond ore / ancient debris within 24 blocks; quiet amethyst chime once per block within 6 | Mining 50, Ore Sense | 5 |
 | Mining      | Vein Miner          | Mining an ore also mines up to 16 connected ores of the same kind (sneak = off) | Mining 30 | 4 |
-| Mining      | Cat's Eyes I/II     | 25% / 50% of Night Vision's brightening, always on  | Mining 15 / 35      | 2/3  |
-| Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | Woodcutting 5/15/30 | 1/2/3|
+| Mining      | Cat's Eyes I/II     | 25% / 50% of Night Vision's brightening, always on  | Mining 5 / 35       | 2/3  |
+| Woodcutting | Sturdy Axe I/II/III | Same as pickaxe, for axes                           | — / Woodcutting 8 / 18 | 1/2/3|
 | Woodcutting | Lumberjack          | Chopping a log also chops up to 6 connected logs (sneak = off) | Woodcutting 10 | 2 |
 | Woodcutting | Timber              | Chopping a log fells the whole tree (sneak = off)  | Woodcutting 25, Lumberjack | 4 |
-| Woodcutting | Forester            | Lumberjack/Timber plant the matching sapling where the bottom log stood | Woodcutting 15, Lumberjack | 2 |
+| Woodcutting | Forester            | Lumberjack/Timber plant the matching sapling where the bottom log stood | Woodcutting 13, Lumberjack | 2 |
 | Woodcutting | Clear Cut           | After Timber, the tree's leaves break at once (same drops as decay, Orchard applies) | Woodcutting 30, Timber | 2 |
-| Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.04% golden apple (any tree) | Woodcutting 5 | 2 |
-| Woodcutting | Bird's Nest         | 2% per natural log chopped with an axe: 1–2 of feather/egg/string/stick/seeds, 10% of nests also an emerald | Woodcutting 15 | 2 |
-| Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | Digging 5/15/30     | 1/2/3|
+| Woodcutting | Orchard             | Natural leaves you break: 5% apple, 0.04% golden apple (any tree) | Woodcutting 3 | 2 |
+| Woodcutting | Bird's Nest         | 2% per natural log chopped with an axe: 1–2 of feather/egg/string/stick/seeds, 10% of nests also an emerald | Woodcutting 6 | 2 |
+| Digging     | Sturdy Shovel I/II/III | Same, for shovels                                | — / Digging 8 / 18  | 1/2/3|
 | Digging     | Archaeologist       | 3% chance of a bonus find (flint, clay, bone, ...) from dirt, sand, gravel | Digging 10 | 2 |
-| Digging     | Flint Finder        | 30% chance of an extra flint from natural gravel    | Digging 5           | 1    |
-| Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single); each block uses durability | Digging 5 | 1 |
+| Digging     | Flint Finder        | 30% chance of an extra flint from natural gravel    | Digging 6           | 1    |
+| Digging     | Path Maker          | Making a path with a shovel flattens a 3×3 square (sneak = single); each block uses durability | Digging 3 | 1 |
 | Digging     | Relic Sense         | Holding a brush or shovel: trail to the nearest suspicious sand/gravel within 16 blocks | Digging 15 | 2 |
 | Digging     | Excavator           | Shovels dig a 3×3 square facing you (sneak = off)   | Digging 20          | 4    |
-| Melee       | Sturdy Weapon I/II/III | 10/20/30% chance swords, spears, maces, tridents use no durability | 5 / 15 / 25 mob types defeated | 1/2/3 |
+| Melee       | Sturdy Weapon I/II/III | 10/20/30% chance swords, spears, maces, tridents use no durability | — / 10 / 20 mob types defeated | 1/2/3 |
 | Melee       | Quick Study         | Kills count double towards familiarity              | 5 mob types defeated | 2   |
 | Defense     | Sturdy Armor I/II/III | 10/20/30% chance armor uses no durability       | 5 / 10 / 15 mob types defeated | 1/2/3 |
 | Defense     | Blast Guard I/II    | 15% / 30% less damage from explosions               | 5 / 10 mob types    | 2/3  |
@@ -576,6 +576,7 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
 | Survival    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
 | Survival    | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Survival    | Steady Healing I/II | Natural healing costs 25% / 50% less hunger (stacks with the stomach) | — / Rank 10 | 2/3 |
 | Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
@@ -759,10 +760,6 @@ Players can suggest more through the GitHub issue forms.
 - Show the stomach level as a small icon next to the hunger bar.
 
 ### Perks
-- **Lose less hunger when healing (2026-10-26, next session):** a Survival perk (maybe tiered) that makes natural
-  heart regeneration cost less hunger. Vanilla adds 6 exhaustion per half heart healed (both the fast saturation
-  heal and the normal one); the perk scales that down, e.g. −25% / −50%. Likely the same `FoodData` mixin as the
-  hunger multipliers. Check how it stacks with the stomach (Metabolism) multipliers.
 - A trail home (to bed/spawn), like the Sense perks.
 - Wall Slide.
 - Auto-smelt.
@@ -1003,6 +1000,12 @@ Players can suggest more through the GitHub issue forms.
   Jump Boost still count).
 - 2026-10-26: **0.5.0 released** (tag `v0.5.0`, Alpha): Melee (slices a–d + shield perks), Fishing, trident Archery,
   bestiary pages/collections, two-column Character tab. Released before most of it was playtested (user's call).
+- 2026-10-31: **Skill perks spread over the levels.** At Rank 10 with no skill levels almost nothing reflected how you
+  play. Sturdy I (tools and weapon) has no requirement, Sturdy II/III and Thrifty Quiver II/III are level 8/18, Sturdy
+  Weapon II/III 10/20 mob types. Small perks moved to levels 3/5/6/8/12/13, strong ones stayed put, none got harder.
+  Aim for 10–12 useful choices at Rank 10.
+- 2026-10-31: **Steady Healing I/II** (Survival): natural healing costs 25% / 50% less hunger, on top of the stomach
+  multiplier. Free / Rank 10, cost 2/3.
 - 2026-10-31: **Later skeletons and creepers, earlier Bonus Hearts.** Dev saves reached Rank 5 in about 9 minutes and
   Rank 10 in about 30, so skeletons came before the first night and before iron for a shield; the user met them before
   finding a first mine. Skeletons Rank 5 → 10, creepers 12 → 18 (skeleton elites follow, Rank 15). Rank points stay
@@ -1011,6 +1014,8 @@ Players can suggest more through the GitHub issue forms.
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
+- **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
 - **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
   shield; the first nights don't feel empty. Bonus Hearts at Rank 5/10/20 don't make the early game too easy.
 - **Melee skill, slice a (2026-10-26):** XP pace (Melee 10 ≈ 50 zombies?), no XP from spam-clicked weak hits.

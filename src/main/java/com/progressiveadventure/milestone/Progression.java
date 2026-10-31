@@ -116,8 +116,10 @@ public final class Progression {
 			player.setHealth(player.getMaxHealth());
 		}
 
+		int steadyHealing = Perks.tier(player, Perks.STEADY_HEALING_1, Perks.STEADY_HEALING_2);
 		((FoodDataAccess) player.getFoodData()).pam$setMultipliers(hungerDrain,
-				(float) PamConfig.listValue(config.stomachSaturationMultipliers, status.stomach()));
+				(float) PamConfig.listValue(config.stomachSaturationMultipliers, status.stomach()),
+				steadyHealing > 0 ? 1f - (float) PamConfig.listValue(config.steadyHealingReductions, steadyHealing - 1) : 1f);
 
 		int deepBreath = Perks.tier(player, Perks.DEEP_BREATH_1, Perks.DEEP_BREATH_2, Perks.DEEP_BREATH_3);
 		applyModifier(player, deepBreath > 0, Attributes.OXYGEN_BONUS, DEEP_BREATH_MODIFIER,

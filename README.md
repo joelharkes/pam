@@ -44,7 +44,7 @@ bow draws and faster bites.
 
 ### Adventure Rank and perks
 Every advancement raises your **Adventure Rank**, and every Rank is a **perk point**. Spend them
-on **109 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
+on **111 perks** in 10 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
 Press **K** to open the Adventure screen.

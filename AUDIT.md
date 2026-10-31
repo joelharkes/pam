@@ -106,6 +106,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `KineticWeaponMixin` (Running Charge) | 1st `Vec3.dot` in `KineticWeapon.damageEntities` | the attacker's speed (`attackerLookVector.dot(getMotion(livingEntity))`) |
 | `FishingHookMixin` (bite speed, Keen Eye) | 1st and 3rd `Mth.nextInt` in `FishingHook.catchingFish` | the wait before a fish swims up, and the reel-in window |
 | `ProjectileWeaponItemMixin` (Thrifty Quiver) | every `EnchantmentHelper.processAmmoUse` in `useAmmo` (one in 26.2); the 2nd `ItemStack` argument of `useAmmo` | a single ammo-count call; the projectile stack |
+| `FoodDataMixin` (Steady Healing) | every `addExhaustion` in `FoodData.tick` (two in 26.2) | only the natural healing costs |
 | `PlayerMixin` Whirlwind | `getEntitiesOfClass` and `isAlliedTo` in `Player.doSweepAttack` | the sweep's target search and team filter; the 3-block distance check (Whirlwind's radius) |
 
 **Copies of vanilla rules (update by hand if vanilla changes):**

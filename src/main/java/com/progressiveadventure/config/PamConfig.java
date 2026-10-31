@@ -102,6 +102,8 @@ public class PamConfig {
 
 	// Perk effects. Index = perk tier - 1.
 	public List<Double> sturdyChances = List.of(0.1, 0.2, 0.3);
+	// Steady Healing: less exhaustion from natural healing; stacks with the stomach multiplier
+	public List<Double> steadyHealingReductions = List.of(0.25, 0.5);
 	public List<Double> prospectorChances = List.of(0.1, 0.2);
 	public int timberMaxLogs = 64;
 	// Lumberjack: chopping a log also chops up to this many connected logs (Timber I)
