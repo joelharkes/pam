@@ -92,7 +92,8 @@ public class PamConfig {
 			new FamiliarityTier(500, 0.35, "master"));
 	// Master (tier label "master"): chance that a mob's normal loot drops a second time when you get the kill
 	public double masterDoubleLootChance = 0.5;
-	// Players who hurt a mob during the fight also get the bestiary kill (not only the one who landed the last hit)
+	// Players who hurt a mob during the fight also get the bestiary kill (not only the one who landed the last hit);
+	// on an elite also Elite Slayer and, with it, their guaranteed first shard
 	public boolean assistKills = true;
 
 	// Perks: points per completed advancement by frame

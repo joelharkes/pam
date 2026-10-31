@@ -103,16 +103,7 @@ public final class Bestiary {
 		if (killed instanceof Player) {
 			return;
 		}
-		Set<ServerPlayer> players = new LinkedHashSet<>();
-		players.add(killer);
-		if (PamConfig.get().assistKills) {
-			for (CombatEntry entry : ((CombatTrackerAccessor) killed.getCombatTracker()).pam$entries()) {
-				if (entry.source().getEntity() instanceof ServerPlayer player && player.level() == killed.level()) {
-					players.add(player);
-				}
-			}
-		}
-		players.forEach(player -> addKill(player, killed));
+		fighters(killer, killed).forEach(player -> addKill(player, killed));
 
 		// Only the one who landed the last hit, like vanilla loot
 		if (reached(PamAttachments.progress(killer).killsOf(key(killed.getType())), MASTER) && killed.level() instanceof ServerLevel level
@@ -120,6 +111,24 @@ public final class Bestiary {
 				&& level.getRandom().nextDouble() < PamConfig.get().masterDoubleLootChance) {
 			killed.getLootTable().ifPresent(lootTable -> killed.dropFromLootTable(level, source, true, lootTable));
 		}
+	}
+
+	/** The killer and, with assistKills, everyone who hurt the mob during the fight and is still online in its dimension. */
+	public static Set<ServerPlayer> fighters(ServerPlayer killer, LivingEntity killed) {
+		Set<ServerPlayer> players = new LinkedHashSet<>();
+		players.add(killer);
+		if (PamConfig.get().assistKills) {
+			for (CombatEntry entry : ((CombatTrackerAccessor) killed.getCombatTracker()).pam$entries()) {
+				if (entry.source().getEntity() instanceof ServerPlayer hitter) {
+					// The current player object: a hitter who died and respawned since has a new one
+					ServerPlayer player = killer.level().getServer().getPlayerList().getPlayer(hitter.getUUID());
+					if (player != null && player.level() == killed.level()) {
+						players.add(player);
+					}
+				}
+			}
+		}
+		return players;
 	}
 
 	private static void addKill(ServerPlayer player, LivingEntity killed) {

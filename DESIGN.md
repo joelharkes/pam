@@ -497,7 +497,8 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
   is within 50 chunks, one other type is tried, otherwise nothing drops. The map has vanilla's name, so you can see
   the type before opening it. The structure search runs on the server thread; `/pam elitemap <type>` shows its time.
 - Waypoint Shards (see pillar 7).
-- Milestone "Elite Slayer": defeat an elite, ½ heart.
+- Milestone "Elite Slayer": defeat an elite, ½ heart. Everyone who hit it gets the milestone (needs `assistKills`).
+  Bonus loot stays with the killer.
 - Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
 
 **Traits (v0.3c):** from Rank 100, an elite has a 25% → 75% (Rank 160) chance of one
@@ -654,7 +655,8 @@ places you've been.
 
 - **Shards:** only from elites, player kills only. Chance 25% → 50% at Rank 100 (×1.5 for
   trait elites). The **first elite a player kills always drops one** (checked via the Elite
-  Slayer milestone, no extra data).
+  Slayer milestone, no extra data). A helper who gets the milestone that way also gets their one
+  guaranteed shard, straight into their inventory. Random shard drops stay one roll per elite.
 - **Waypoint Stone:** crafted from 8 stone bricks around a compass. Right-click with enough
   shards in your inventory → name screen → it turns on (glows, soft particles, floating name).
   Your Nth stone costs N shards (`waypointShardCostBase` + `Step` × stones you own). Breaking
@@ -780,8 +782,13 @@ Players can suggest more through the GitHub issue forms.
   cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
 - More advancements in general = more Rank and perk points (perks cost 274 of ~220 Rank today).
-- **Playing together (2026-10-31):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
-  one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together.
+- **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
+  one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
+  (Guardian, Feed a Friend). Limits from the user: a solo player must not see things they can't unlock, and playing alone
+  must not feel underpowered. Open proposals: co-op content stays hidden until you first play near someone; no always-on
+  stat buffs for being near a friend.
+- **Group goals or random quests (2026-10-31, rejected for now):** a Family project ("100 wheat") needs a quest system
+  we don't have, and random quests without a story feel boring and useless.
 
 ### Food and hunger
 - **Well Fed (diet variety):** eating a varied diet gives a temporary buff (slower hunger drain, small regen).
@@ -1084,6 +1091,9 @@ Players can suggest more through the GitHub issue forms.
   the owner, not home: the owner's chunk is always loaded, a bed's may not be, and a pet moved into an unloaded chunk could be lost.
 - 2026-10-31: **Level-ups name new perks** in the existing action-bar message, no new toast.
 - 2026-10-31: One-command install scripts (`install.sh`, `install.ps1`) from GitHub releases. They install Fabric API but not Fabric Loader (that has its own installer and only gets a hint). A Fabric API jar for another Minecraft version is renamed to `.disabled`, not deleted.
+- 2026-10-31: **Elite Slayer goes to everyone who hit the elite**, with their guaranteed first shard, since that shard is tied to the milestone. Other loot and random shards stay
+  with the killer. **The lowest nearby Rank keeps setting elite spawns**, even though a parent near a kid sees fewer elites: the user prefers it for now.
+  Other co-op ideas (perks, Together milestones, Mentor) stay out for now.
 
 ## Playtest checklist
 
@@ -1091,6 +1101,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
 - **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
+- **Shared Elite Slayer (2026-10-31, needs two players):** both hit a `/pam elite zombie`. The helper gets the toast, Rank, ½ heart and one shard in their inventory; the killer's drops are unchanged. A second elite gives the helper no extra shard.
 - **Faithful Friend (2026-10-31):** wolf at low health killed by a mob, in lava and by a fall: it teleports to you, sits with hearts around it, message readable. Right-click stands it up. `/kill` kills it. A pet with the owner in another dimension dies as in vanilla.
 - **New perk in level-up message (2026-10-31):** `/pam skill farming 5` shows "New perk: Replant"; long messages fit the action bar.
 - **Tab reset (2026-10-31):** clicking any tab button, also the current one, goes back to that tab's start (mob and achievement pages close, scroll, filter

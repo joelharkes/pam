@@ -1,6 +1,7 @@
 package com.progressiveadventure.world;
 
 import com.progressiveadventure.ProgressiveAdventure;
+import com.progressiveadventure.bestiary.Bestiary;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.config.PamConfig.GearWeights;
 import com.progressiveadventure.data.PamAttachments;
@@ -249,6 +250,12 @@ public final class Elites {
 		// Checked before granting: the first elite a player kills always drops a shard
 		boolean firstElite = !Milestones.isDone(player, Milestones.ELITE);
 		Milestones.grant(player, Milestones.ELITE);
+		for (ServerPlayer helper : Bestiary.fighters(player, entity)) {
+			if (helper != player && !Milestones.isDone(helper, Milestones.ELITE)) {
+				Milestones.grant(helper, Milestones.ELITE);
+				giveFirstShard(helper, entity, level);
+			}
+		}
 
 		PamConfig config = PamConfig.get();
 		int rank = eliteRank(entity);
@@ -273,6 +280,16 @@ public final class Elites {
 			if (!map.isEmpty()) {
 				entity.spawnAtLocation(level, map);
 			}
+		}
+	}
+
+	/** A helper's first elite: straight into the inventory so the killer can't pick it up by accident. A dead helper's lands at the elite. */
+	private static void giveFirstShard(ServerPlayer helper, LivingEntity elite, ServerLevel level) {
+		ItemStack shard = new ItemStack(WaypointContent.WAYPOINT_SHARD);
+		if (helper.isAlive()) {
+			helper.getInventory().placeItemBackInInventory(shard);
+		} else {
+			elite.spawnAtLocation(level, shard);
 		}
 	}
 
