@@ -13,6 +13,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (what's built but unconfirmed, temporary test changes): [DESIGN.md](DESIGN.md). **All not-built ideas
   live in its single "Ideas" section**: add new ones there (not in the pillars), and move an idea's text
   into its pillar when it gets built.
+- Naming: [GLOSSARY.md](GLOSSARY.md) lists the words for things (Minecraft's vs ours, in-game vs code). Check it
+  before naming something; add new terms when you build them.
 - Performance review (fixed and open items): [PERFORMANCE.md](PERFORMANCE.md)
 - Code/design audit (bugs, smaller issues, doc drift; fixed and open items): [AUDIT.md](AUDIT.md). Its **Minecraft
   update checklist** lists the hooks that can break silently: go through it on every Minecraft update, and add to it
