@@ -138,6 +138,8 @@ when you open a world to LAN, the settings of the server (the host) count.
 - **Skill and bestiary settings:** if a server changes skill speed or bestiary settings, players
   whose own config doesn't match may see different numbers on the Adventure screen, and mining
   can feel slightly off. Give players the same settings, or leave these at their defaults.
+- **Fall damage:** with Double Jump (jump just before you land) or Ground Pound (with a mace) you can
+  avoid the damage of any fall, even a very long one. This may change in a later version.
 
 ## Commands
 

@@ -778,6 +778,10 @@ Players can suggest more through the GitHub issue forms.
   Left out of Fishing for now.
 
 ### Milestones and Rank
+- **Rank 30 gap (2026-11-09 playtest, next up):** Rank 30 comes at a good pace in the Overworld, then progress
+  stalls: the Nether is open, but the vanilla Overworld advancements left are mostly hard. Wanted: more milestones
+  and achievements for exploration that are hard but not too hard, to bridge Rank 30 to the Nether and beyond.
+  The list below is the starting point.
 - More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
   cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
@@ -795,6 +799,9 @@ Players can suggest more through the GitHub issue forms.
   Rewards only (2026-10-31): the earlier "same food gives less" part felt like a penalty on top of the early hunger.
   Teaches kids to farm several crops, fits the Gourmet milestones.
 - Show the stomach level as a small icon next to the hunger bar.
+- **Foods eaten list (2026-11-09 playtest):** it's hard to keep track of which foods you already ate for the Gourmet
+  milestones. Show them somewhere: on the Character tab (e.g. a tooltip on the stomach line, eaten and not yet
+  eaten) or with the perks. The data is already synced (`PlayerProgress` foods).
 
 ### Perks
 - A trail home (to bed/spawn), like the Sense perks.
@@ -1094,6 +1101,9 @@ Players can suggest more through the GitHub issue forms.
 - 2026-10-31: **Elite Slayer goes to everyone who hit the elite**, with their guaranteed first shard, since that shard is tied to the milestone. Other loot and random shards stay
   with the killer. **The lowest nearby Rank keeps setting elite spawns**, even though a parent near a kid sees fewer elites: the user prefers it for now.
   Other co-op ideas (perks, Together milestones, Mentor) stay out for now.
+- 2026-11-09: **Playtest feedback.** Balance feels good; Rank 30 is quite doable in the Overworld, after that progress stalls
+  (idea: more exploration milestones, see Ideas). Waypoint XP cost is fine, no change. Avoiding fall damage with Double Jump or
+  Ground Pound stays for now and is listed as a Known limitation (to improve later). Ground Pound's strength is fine for now.
 
 ## Playtest checklist
 
@@ -1204,7 +1214,8 @@ Confirmed 2026-10-26: the combat perks work well in a first playtest; Double Jum
 and its damage felt fine (exact perks tested not recorded, so the Melee items above stay open).
 Confirmed: Ore Sense, Replant, Harvester (requirements restored 2026-10-25). Clear Cut: leaves come down
 smoothly. Archery draw speed: very fast at level 80, but fair for the grind it takes. General testing over time:
-most things work well and feel good; balance needs more play time (see Open questions).
+most things work well and feel good; balance needs more play time (see Open questions). 2026-11-09: a longer
+playtest up to about Rank 30: balance feels good, waypoint XP cost fine.
 
 Dropped (never released, so no old saves to migrate): owners of the old single Deep Breath / Fleet Foot perk,
 owners of Timber without Lumberjack. Config overrides were checked on the dev server (empty file + defaults file,
@@ -1212,17 +1223,17 @@ override applied, typo warned).
 
 ## Open questions
 
-- [ ] Perk balance: costs and point budget (playtest).
+- [ ] Perk balance: costs and point budget (playtest; 2026-11-09: feels good up to about Rank 30).
 - [ ] Balance: hearts per milestone (early milestones give hearts quickly), Rank thresholds,
   elite chances, skill XP curves.
-- [ ] Waypoint XP cap (50, +20 across dimensions): maybe higher? Revisit after the playtest.
-- [ ] **Fall damage can be avoided completely (2026-10-26, design question, not fixing yet).** Double Jump resets
+- [ ] **Fall damage can be avoided completely (2026-10-26, design question, not fixing yet; 2026-11-09: fine for now,
+  listed as a Known limitation in README and the Modrinth description).** Double Jump resets
   fall distance (a jump just before landing cancels any fall), and Ground Pound with a mace cancels the landing
   damage of a dive started 2+ blocks up, even at the end of a huge fall. Together, a player with either perk never
   needs to fear heights. Fun, but it takes away a danger. Options: Double Jump only resets part of the fall (or
   only below some height); Ground Pound only protects the dive itself (fall distance from where it started);
   leave it as the reward for late perks (Rank 30, Melee 15).
-- [ ] Ground Pound may get too strong later (2026-10-26): Double Jump + dive is fun and fine now, but watch it with
+- [ ] Ground Pound may get too strong later (2026-10-26; 2026-11-09 playtest: still fine): Double Jump + dive is fun and fine now, but watch it with
   Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatios`, a fall cap for the bonus.
 
 ## Roadmap
@@ -1244,5 +1255,5 @@ override applied, typo warned).
 - **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
-- **Next:** work through the playtest checklist and Open questions (balance), then pick from
-  [Ideas](#ideas) (likely candidates: Well Fed, more milestones).
+- **Next:** milestones/achievements that bridge the gap after Rank 30 (Ideas > Milestones and Rank), the foods eaten
+  list, then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).
