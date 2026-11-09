@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_5",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "minecraft:igloo"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:snow_block"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.igloo.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.igloo.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

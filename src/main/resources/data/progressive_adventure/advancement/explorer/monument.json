@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/ocean_ruin",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "minecraft:monument"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:prismarine_bricks"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.monument.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.monument.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

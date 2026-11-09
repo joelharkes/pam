@@ -64,7 +64,7 @@ ANY advancement (vanilla + PAM)
 skill levels / mob types / rank ──► unlock which perks you may buy
 ```
 
-- **Adventure Rank = perk points earned** (about 220 in total). Spending or resetting
+- **Adventure Rank = perk points earned** (about 250 in total). Spending or resetting
   perks never changes it, so buying a perk never makes the world harder and a reset
   can't make it easier.
 - **Milestones** are advancements with a heart/stomach reward: our own (Adventure tab)
@@ -107,7 +107,7 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Implemented: 26 PAM milestones + 18 vanilla advancements with a reward (half hearts unless noted):
+Implemented: 29 PAM milestones + 20 vanilla advancements with a reward (half hearts unless noted):
 
 | Category | Milestone (PAM tab)                        | Reward         |
 |----------|--------------------------------------------|----------------|
@@ -123,6 +123,7 @@ Implemented: 26 PAM milestones + 18 vanilla advancements with a reward (half hea
 | Explorer | Turn on a Waypoint Stone                   | ½ heart        |
 | Explorer | Travel between two Waypoint Stones         | stomach        |
 | Explorer | Have 5 of your own Waypoint Stones on      | 1 heart        |
+| Explorer | Ocean Monument / Ancient City / Woodland Mansion (reach it) | ½ heart each |
 | Hunter   | Defeat 5 / 15 / 30 different mob types     | ½ / ½ / 1 heart|
 | Hunter   | Defeat the Elder Guardian / the Wither     | 2 hearts each  |
 | Hunter   | Defeat an elite (Elite Slayer)             | ½ heart        |
@@ -132,12 +133,12 @@ Implemented: 26 PAM milestones + 18 vanilla advancements with a reward (half hea
 
 | Vanilla advancement                         | Reward   |
 |---------------------------------------------|----------|
-| Sweet Dreams, What a Deal!, Isn't It Iron Pick, Diamonds!, Not Today Thank You, Enchanter, Best Friends Forever, Fishy Business, Local Brewery, A Terrible Fortress, Those Were the Days | ½ heart each |
+| Sweet Dreams, What a Deal!, Isn't It Iron Pick, Diamonds!, Not Today Thank You, Enchanter, Best Friends Forever, Fishy Business, Local Brewery, A Terrible Fortress, Those Were the Days, Eye Spy, Minecraft: Trial(s) Edition | ½ heart each |
 | We Need to Go Deeper, The End?, Zombie Doctor, Hero of the Village, The City at the End of the Game | 1 heart each |
 | Free the End                                | 2 hearts |
 | A Balanced Diet                             | stomach  |
 
-Totals: 27½ hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
+Totals: 30 hearts to earn (start 5, cap 20: 15 to earn, so there are many routes to
 the cap) and 7 stomach upgrades (levels 0–7). 20 is our config cap, not a vanilla limit (vanilla
 max_health goes to 1024); 20 hearts = two full rows on the HUD.
 
@@ -414,7 +415,7 @@ after a few kills, and then gains are big early and flatten out:
 #### Mob unlocks by Rank (v0.3a)
 
 Overworld hostile mobs unlock one group at a time as Adventure Rank (points earned,
-~220 total, ~10 after about half an hour of focused play) goes up. Rank 20 is expected while still in the
+~250 total, ~10 after about half an hour of focused play) goes up. Rank 20 is expected while still in the
 Overworld (a few in-game days); everything is unlocked by Rank 50, so the world
 reaches vanilla danger fairly quickly.
 
@@ -525,7 +526,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 26 milestones add 45, so ~220 Rank in total. Buying all
+- Budget: vanilla advancements give ~175 points, PAM's 46 advancements (milestones, collections, structures) add 76, so ~250 Rank in total (2026-11-09). Buying all
   116 perks costs **274**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
@@ -778,14 +779,11 @@ Players can suggest more through the GitHub issue forms.
   Left out of Fishing for now.
 
 ### Milestones and Rank
-- **Rank 30 gap (2026-11-09 playtest, next up):** Rank 30 comes at a good pace in the Overworld, then progress
-  stalls: the Nether is open, but the vanilla Overworld advancements left are mostly hard. Wanted: more milestones
-  and achievements for exploration that are hard but not too hard, to bridge Rank 30 to the Nether and beyond.
-  Decided: one named milestone per structure (no count milestone on top). The list below is the starting point.
-- More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
-  cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
+- **Rank 30 gap (2026-11-09 playtest):** Rank 30 comes at a good pace in the Overworld, then progress
+  stalls. The structure achievements (built 2026-11-09) are the first answer; playtest whether more is needed.
+- More milestones: raise a shield, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 274 of ~220 Rank today).
+- More advancements in general = more Rank and perk points (perks cost 274 of ~250 Rank today).
 - **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
   one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
   (Guardian, Feed a Friend). Limits from the user: a solo player must not see things they can't unlock, and playing alone
@@ -827,7 +825,7 @@ Players can suggest more through the GitHub issue forms.
   worn gear), or salvaging into something useful.
 - Mob unlocks / elites in the Nether and End (vanilla spawns there for now). Elites alone would be enough
   (2026-10-31): today those dimensions add no new elites or shards, and leaving their mobs unlocked is less work.
-- **An earlier elite trait (2026-10-31):** traits start at Rank 100 of ~220, so until then elites only differ by
+- **An earlier elite trait (2026-10-31):** traits start at Rank 100 of ~250, so until then elites only differ by
   gear. One mild trait around Rank 40–50, like Swift, would add variety much sooner.
 - **Wanted elites (2026-10-31, the user likes it, not now):** a named target ("Wanted: Grimbone the Tough Skeleton")
   with a map to where it was last seen. More boss-like than normal elites: a lot of health, so it's worth teaming
@@ -1107,8 +1105,13 @@ Players can suggest more through the GitHub issue forms.
   Confirmed in play: Quick Healing, Deep Reserves, Steady Healing (faster healing, but hunger drops quicker: a good trade), Shockwave, Rank pacing of spawns.
 - 2026-11-09: **Way Back works when bought after the death** (user: nice for kids, who buy it once they need it). Buying it within
   5 minutes of a death (vanilla's time-since-death stat) starts the trail for the time left, which matches item despawn.
-- 2026-11-09: **Gap after Rank 30: one named milestone per structure**, no "find N structures" counter (named + counter felt
-  double; named ones push you to explore each one). Rewards and the exact list still to decide.
+- 2026-11-09: **Gap after Rank 30: one named achievement per structure** (Explorer, Adventure tab), no "find N structures" counter
+  (named + counter felt double; named ones push you to explore each one). Ten easy ones are tasks with no reward (1 Rank each):
+  mineshaft, ruined portal, shipwreck, ocean ruin, desert pyramid, jungle temple, witch hut, igloo, pillager outpost, trail ruins.
+  Three hard ones are goals with ½ heart (most players are near the heart cap by then): ocean monument, ancient city (only reach it),
+  woodland mansion. Vanilla Eye Spy and Minecraft: Trial(s) Edition now also give ½ heart. Structures with their own vanilla
+  advancement (stronghold, trial chambers, fortress, bastion, end city) get no PAM one. Vanilla `location` trigger with a
+  `structures` predicate: you must stand inside a piece of the structure.
 - 2026-11-09: **Foods eaten list:** show only foods already eaten, never the ones still missing (finding them is the fun).
 
 ## Playtest checklist
@@ -1116,6 +1119,9 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
+- **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail
+  ruin dug into, inside the monument); not too early from far away. Tree in the Adventure tab looks tidy (most hang under Wanderer).
+  Tips readable. Eye Spy and Trial(s) Edition show "Reward: +½ heart" and give it.
 - **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
   2026-11-09: die without the perk, respawn, buy it: the trail starts with the minutes left; buying it 5+ minutes after a death does nothing.
 - **Shared Elite Slayer (2026-10-31, needs two players):** both hit a `/pam elite zombie`. The helper gets the toast, Rank, ½ heart and one shard in their inventory; the killer's drops are unchanged. A second elite gives the helper no extra shard.

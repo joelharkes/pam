@@ -38,6 +38,10 @@ public final class Milestones {
 	public static final Milestone WAYPOINT = pam("explorer/waypoint", 1, 0);
 	public static final Milestone FIRST_TRIP = pam("explorer/first_trip", 0, 1);
 	public static final Milestone NETWORK = pam("explorer/network", 2, 0);
+	// Structure finds: only the three hard ones give a reward, the others add Adventure Rank.
+	public static final Milestone MONUMENT = pam("explorer/monument", 1, 0);
+	public static final Milestone ANCIENT_CITY = pam("explorer/ancient_city", 1, 0);
+	public static final Milestone MANSION = pam("explorer/mansion", 1, 0);
 
 	public static final Milestone MOB_TYPES_5 = pam("hunter/mob_types_5", 1, 0);
 	public static final Milestone MOB_TYPES_15 = pam("hunter/mob_types_15", 1, 0);
@@ -72,6 +76,8 @@ public final class Milestones {
 			vanilla("story/cure_zombie_villager", 2, 0),
 			vanilla("story/enter_the_nether", 2, 0),
 			vanilla("story/enter_the_end", 2, 0),
+			vanilla("story/follow_ender_eye", 1, 0),
+			vanilla("adventure/minecraft_trials_edition", 1, 0),
 			vanilla("husbandry/tame_an_animal", 1, 0),
 			vanilla("husbandry/fishy_business", 1, 0),
 			vanilla("husbandry/balanced_diet", 0, 1),
@@ -85,7 +91,7 @@ public final class Milestones {
 			FIRST_NIGHT, IRON_ARMOR,
 			FIRST_FOOD, FOODS_3, FOODS_8, FOODS_15, FOODS_25,
 			CROPS_3, CROPS_10, BREED_5,
-			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK,
+			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK, MONUMENT, ANCIENT_CITY, MANSION,
 			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, ELITE,
 			DIAMOND_TOOLS,
 			TREASURE, ALL_FISH), VANILLA.stream()).toList();

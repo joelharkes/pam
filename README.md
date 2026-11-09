@@ -26,8 +26,10 @@ always shown on screen so it's clear what you've done and what's next.
 
 ### Hearts from milestones
 You start with **5 hearts**. Milestones give you more, up to **20 hearts**. Your first night,
-your first new food, finding a village, beating the Wither: **44 milestones** in total. 26 are
-in PAM's own **Adventure** advancement tab, and 18 are vanilla advancements that now give a reward too.
+your first new food, finding a village, beating the Wither: **49 milestones** in total. 29 are
+in PAM's own **Adventure** advancement tab, and 20 are vanilla advancements that now give a reward too.
+The Adventure tab also has an achievement for each kind of structure you can find, from mineshafts
+to woodland mansions.
 
 ![Milestone toast](docs/screenshots/advancement_first_bite.jpg)
 

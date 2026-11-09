@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_5",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "minecraft:trail_ruins"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:brush"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.trail_ruins.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.trail_ruins.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

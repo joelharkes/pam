@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_5",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "#minecraft:ruined_portal"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:crying_obsidian"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.ruined_portal.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.ruined_portal.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

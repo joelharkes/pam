@@ -1,0 +1,38 @@
+{
+  "parent": "progressive_adventure:explorer/mineshaft",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "minecraft:ancient_city"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:sculk_shrieker"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.ancient_city.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.ancient_city.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}
