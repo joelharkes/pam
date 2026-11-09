@@ -107,26 +107,20 @@ public final class Skills {
 		}
 	}
 
-	/** Xp for breaking a natural block with its skill's tool: rarer ores give more (see PamConfig.oreXpByOre). */
+	/** Xp for breaking a natural block with its skill's tool: rarer ores give more (see PamConfig.miningXpByBlock). */
 	static int blockXp(BlockState state) {
 		PamConfig config = PamConfig.get();
-		if (state.is(Blocks.DEEPSLATE)) {
-			return config.deepslateXp;
-		}
-		if (!state.is(ConventionalBlockTags.ORES)) {
-			return 1;
-		}
-		Integer byBlock = config.oreXpByOre.get(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
+		Integer byBlock = config.miningXpByBlock.get(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
 		if (byBlock != null) {
 			return byBlock;
 		}
-		for (Map.Entry<String, Integer> entry : config.oreXpByOre.entrySet()) {
+		for (Map.Entry<String, Integer> entry : config.miningXpByBlock.entrySet()) {
 			if (entry.getKey().startsWith("#")
 					&& state.is(TagKey.create(Registries.BLOCK, Identifier.parse(entry.getKey().substring(1))))) {
 				return entry.getValue();
 			}
 		}
-		return config.oreXp;
+		return state.is(ConventionalBlockTags.ORES) ? config.oreXp : 1;
 	}
 
 	public static void addXp(ServerPlayer player, Skill skill, int xp) {

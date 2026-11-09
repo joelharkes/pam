@@ -50,9 +50,13 @@ public class PamConfig {
 	public double minSpeedBonus = -0.2;
 	public double maxSpeedBonus = 0.6;
 	public double speedBonusCurve = 15.0;
-	// Mining xp: rarer ores give more. Keys are a block id or a block tag ("#c:ores/iron"); a block id wins over a
-	// tag. Ores in none of these (other mods) give oreXp. Natural deepslate gives deepslateXp, other blocks 1.
-	public Map<String, Integer> oreXpByOre = Map.ofEntries(
+	// Tool skill xp per block: rarer ores give more. Keys are a block id or a block tag ("#c:ores/iron"); a block id
+	// wins over a tag. Ores in none of these (other mods) give oreXp, other blocks 1. Deepslate and obsidian are slow
+	// to mine (obsidian is remembered when placed, so no place/break loops).
+	public Map<String, Integer> miningXpByBlock = Map.ofEntries(
+			Map.entry("minecraft:deepslate", 2),
+			Map.entry("minecraft:obsidian", 10),
+			Map.entry("minecraft:crying_obsidian", 10),
 			Map.entry("#c:ores/coal", 3),
 			Map.entry("#c:ores/copper", 3),
 			Map.entry("#c:ores/quartz", 3),
@@ -65,7 +69,6 @@ public class PamConfig {
 			Map.entry("#c:ores/diamond", 12),
 			Map.entry("#c:ores/netherite_scrap", 20));
 	public int oreXp = 3;
-	public int deepslateXp = 2;
 
 	// Farming: extra harvest chance uses the same curve as speedBonusCurve, but starts at 0
 	public double farmingMaxHarvestBonus = 0.5;

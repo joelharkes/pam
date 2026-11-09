@@ -26,7 +26,8 @@ public final class PlacedBlocks {
 
 	private static boolean isTracked(BlockState state) {
 		return state.is(BlockTags.LOGS) || state.is(ConventionalBlockTags.ORES) || state.is(Blocks.MELON) || state.is(Blocks.PUMPKIN)
-				|| state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS) || state.is(Blocks.BAMBOO);
+				|| state.is(Blocks.SUGAR_CANE) || state.is(Blocks.CACTUS) || state.is(Blocks.BAMBOO)
+				|| state.is(Blocks.OBSIDIAN) || state.is(Blocks.CRYING_OBSIDIAN);
 	}
 
 	public static void mark(Level level, BlockPos pos) {

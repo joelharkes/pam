@@ -198,7 +198,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   config for skill speed and familiarity tiers, so a server with changed values can show different numbers.
 - Client reads attachments with `getAttachedOrElse` (never create attachments client-side).
 - Register attachments with `AttachmentRegistry.create(id, builder -> ...)` (`builder()` is deprecated).
-- `PlacedBlocks` only remembers logs, ores and melon/pumpkin/cane/cactus/bamboo (mutable set per chunk,
+- `PlacedBlocks` only remembers logs, ores, obsidian and melon/pumpkin/cane/cactus/bamboo (mutable set per chunk,
   max 10k, not synced). Grown crops (age-based) give Farming xp even when player-planted; melons, pumpkins, cane, cactus
   and bamboo only when not player-placed.
 - The config file only holds overrides, so changing a default in `PamConfig` reaches everyone who didn't override
