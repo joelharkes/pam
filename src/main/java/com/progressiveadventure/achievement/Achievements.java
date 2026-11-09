@@ -34,6 +34,7 @@ public final class Achievements {
 	/** Heading order; other mods' tabs come last. */
 	private static final List<Identifier> TAB_ORDER = List.of(
 			ProgressiveAdventure.id("root"),
+			ProgressiveAdventure.id("skills/root"),
 			Identifier.withDefaultNamespace("story/root"),
 			Identifier.withDefaultNamespace("nether/root"),
 			Identifier.withDefaultNamespace("end/root"),

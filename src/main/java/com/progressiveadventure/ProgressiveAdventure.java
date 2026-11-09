@@ -80,6 +80,7 @@ public class ProgressiveAdventure implements ModInitializer {
 		ServerPlayerEvents.JOIN.register(player -> {
 			Progression.apply(player);
 			Bestiary.checkCollections(player, PamAttachments.progress(player));
+			Skills.checkAdvancements(player, PamAttachments.progress(player));
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			Progression.apply(newPlayer);

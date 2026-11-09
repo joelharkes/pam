@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:skills/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:crafting_table"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.skills.all_10.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.skills.all_10.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

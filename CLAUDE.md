@@ -118,7 +118,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
   from advancement progress and applies them; `Trackers`: foods, biomes, first night
-- `skill/`: `Skills` (levels, bonus curves, xp), tool skills (break speed), `Farming` (harvest/breeding
+- `skill/`: `Skills` (levels, bonus curves, xp, Skills tab advancements), tool skills (break speed), `Farming` (harvest/breeding
   xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, sword/axe perks), `MeleeMoves` (Ground Pound, Shockwave,
   spear perks), `Targets` (hostile/friendly filters shared by the combat perks),
   `Archery` (arrow/thrown-trident hit xp, draw speed incl. tridents, arrow perks), `Fishing`
@@ -164,7 +164,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);
   `WaypointNameScreen`, `WaypointListScreen`; `JournalClient` (map chunks and markers received this connection, requests, the
   texture for the map in your hand), `JournalScreen` (zoom, drag, markers), `JournalMarkerScreen`; client mixin `ItemInHandRendererMixin` (journal in hand like a map)
-- Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
+- Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/` (tabs: `root.json` = Adventure tab, `skills/root.json` = Skills tab;
+  a new tab's root goes in `Achievements.TAB_ORDER`)
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).
   26.x GUI: `GuiGraphicsExtractor`, `extractRenderState`, `minecraft.gui.setScreen(...)`.

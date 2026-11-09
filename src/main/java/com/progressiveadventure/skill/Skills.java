@@ -3,6 +3,7 @@ package com.progressiveadventure.skill;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
+import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
@@ -134,6 +135,7 @@ public final class Skills {
 			Progression.apply(player); // attack speed is an attribute modifier
 		}
 		if (levelAfter > levelBefore) {
+			checkAdvancements(player, progress);
 			MutableComponent message = Component.translatable("message.progressive_adventure.skill_level_up",
 					Component.translatable("skill.progressive_adventure." + skill.id), levelAfter,
 					describeBonus(skill, levelAfter)).withStyle(ChatFormatting.GREEN);
@@ -143,5 +145,20 @@ public final class Skills {
 			player.sendOverlayMessage(message);
 			player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5f, 1.5f);
 		}
+	}
+
+	/** Skills tab advancements. Also checked on join, for levels from before these existed. */
+	public static void checkAdvancements(ServerPlayer player, PlayerProgress progress) {
+		int lowest = Integer.MAX_VALUE;
+		for (Skill skill : Skill.values()) {
+			int level = level(progress.xpOf(skill.id));
+			lowest = Math.min(lowest, level);
+			for (int milestoneLevel : Milestones.SKILL_LEVELS) {
+				if (level >= milestoneLevel) {
+					Milestones.grant(player, Milestones.skillLevel(skill, milestoneLevel));
+				}
+			}
+		}
+		Milestones.checkThresholds(player, Milestones.ALL_SKILLS_THRESHOLDS, lowest);
 	}
 }

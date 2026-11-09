@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:skills/farming_15",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_hoe"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.skills.farming_30.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.skills.farming_30.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

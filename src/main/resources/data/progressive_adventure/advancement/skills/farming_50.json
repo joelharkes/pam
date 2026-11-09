@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:skills/farming_30",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:netherite_hoe"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.skills.farming_50.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.skills.farming_50.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

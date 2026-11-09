@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:skills/fishing_30",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:heart_of_the_sea"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.skills.fishing_50.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.skills.fishing_50.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

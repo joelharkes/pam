@@ -1,6 +1,7 @@
 package com.progressiveadventure.milestone;
 
 import com.progressiveadventure.ProgressiveAdventure;
+import com.progressiveadventure.skill.Skill;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.Identifier;
@@ -68,6 +69,10 @@ public final class Milestones {
 	public static final Milestone FIRST_MASTER = pam("hunter/first_master", 0, 0);
 	public static final Milestone ALL_TRAITS = pam("hunter/all_traits", 0, 0);
 
+	// Skills tab: rank only, like the collections. Per skill "skills/<skill>_<level>" at SKILL_LEVELS, see skillLevel.
+	public static final Milestone ALL_SKILLS_10 = pam("skills/all_10", 0, 0);
+	public static final Milestone ALL_SKILLS_25 = pam("skills/all_25", 0, 0);
+
 	// Vanilla advancements with a reward. Their descriptions are overridden in our lang file to show it.
 	public static final List<Milestone> VANILLA = List.of(
 			vanilla("adventure/sleep_in_bed", 1, 0),
@@ -116,6 +121,10 @@ public final class Milestones {
 	/** Turned-on stones you own. */
 	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK));
 	/** Explorer's Journal chunks you drew first. */
+	/** Per-skill levels. Never the same as an ALL_SKILLS level, so two never unlock at once. */
+	public static final List<Integer> SKILL_LEVELS = List.of(15, 30, 50);
+	/** The lowest of all skill levels. */
+	public static final List<Threshold> ALL_SKILLS_THRESHOLDS = List.of(new Threshold(10, ALL_SKILLS_10), new Threshold(25, ALL_SKILLS_25));
 	public static final List<Threshold> CHUNKS_DRAWN_THRESHOLDS = List.of(new Threshold(100, MAPMAKER), new Threshold(1000, CARTOGRAPHER));
 
 	public record Threshold(int count, Milestone milestone) {
@@ -130,6 +139,10 @@ public final class Milestones {
 
 	private static Milestone vanilla(String path, int halfHearts, int stomach) {
 		return new Milestone(Identifier.withDefaultNamespace(path), halfHearts, stomach);
+	}
+
+	public static Milestone skillLevel(Skill skill, int level) {
+		return pam("skills/" + skill.id + "_" + level, 0, 0);
 	}
 
 	public static Milestone byId(Identifier id) {

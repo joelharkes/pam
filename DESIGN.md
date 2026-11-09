@@ -197,6 +197,10 @@ level 4 (~64 blocks) and cap near +60%.
 - No skill XP from blocks the player placed (stops place/break loops). Only logs, ores, obsidian and
   melon/pumpkin/cane/cactus/bamboo are remembered (max 10,000 per chunk, oldest forgotten); placed
   dirt, stone, sand, gravel, leaves and planks count like natural blocks.
+- **Skills tab (advancements, rank only):** its own advancement tab. Per skill Journeyman at level 15 (task), Expert at
+  30 (goal), Master at 50 (challenge); Jack of All Trades (every skill 10, goal) and All-Rounder (every skill 25,
+  challenge). The all-skill levels are 10 and 25 so they never unlock together with a per-skill one. 47 rank in total,
+  all late. Checked on every level-up and on join (levels from before these existed count).
 - **Perks** at certain levels are the exciting part. Percentages alone feel flat. The level-up message names
   any perk that level just made available ("New perk: Replant"), unless another requirement is still missing.
 
@@ -547,7 +551,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09). Buying all
+- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), so ~302. Buying all
   131 perks costs **316**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
@@ -853,9 +857,32 @@ Players can suggest more through the GitHub issue forms.
 - **Rank 30 gap (2026-11-09 playtest):** Rank 30 comes at a good pace in the Overworld, then progress
   stalls. The structure achievements and the journal advancements (both 2026-11-09) fill it; the user is happy with
   them. Watch in longer play whether more is needed.
-- More milestones: raise a shield, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
+- **Harder advancements (2026-11-09, picked by the user; rank only, no hearts).** Rank 30 is easy, so these are goals and
+  challenges that come later or need skill, never more early tasks. Two advancements must never unlock at the same moment
+  (see decisions log). Picked, not built yet:
+  - **Walking** (Explorer): on-foot distance from vanilla stats (walk, sprint, swim, crouch; no horse, boat or elytra), so a
+    stuck kid can always earn rank by going on a trip: Stroll 5 km (task), Hiker 25 km (task), Far Walker 50 km (goal),
+    Long Road 100 km (goal), World Walker 250 km (challenge).
+  - **Spelunker:** visit a lush cave, a dripstone cave and the deep dark (goal).
+  - **Master Trader:** unlock a villager's master-level trade (goal). **Five Professions:** trade with 5 professions (task).
+  - **Max Power:** own a Sharpness V or Protection IV item (goal).
+  - **World Atlas:** 5,000 journal chunks drawn (challenge).
+  - **Grand Network:** 10 Waypoint Stones on (goal). **Long Jump:** one teleport of over 3,000 blocks (goal).
+  - **Bestiary:** Expert on 10 mob types (goal), Master on 5 (challenge), Elite Veteran 25 elites (goal), an elite of every
+    mob type that can be one (challenge). The user finds these a bit grindy, like the skill perks, but they're in.
+  - **Perfect Parry:** parry 25 attacks (goal).
+  - **Challenges tab** (its own tab, more can come later): Untouchable (10 hostile kills in one night without taking
+    damage, challenge), Soft Landing (fall 30+ blocks without damage, goal), Defused (kill 5 hissing creepers with none
+    exploding, goal), Steady Aim (10 arrow hits on mobs in a row without a miss, goal), Comeback (defeat a hostile mob on
+    your last heart, goal), Ghost (a whole night outside on the surface without taking damage or attacking, challenge),
+    Brave (defeat an elite wearing no armor, challenge), Not a Scratch (Ender Dragon or Wither without taking damage,
+    challenge), Clean Sweep (win a raid with no villager dying, challenge).
+  - **Later:** Shockwave Combo (3+ mobs with one Ground Pound/Shockwave; needs a mace, so late game anyway).
+  - **Rejected:** all structure advancements (each structure already has one), stand high and deep, Home Sweet Home (for
+    now), cake/suspicious stew, every fishing treasure (luck), highest stomach level (self-referencing: it would unlock
+    together with the last stomach milestone).
+- More milestones: raise a shield, buried treasure, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 316 of ~255 Rank today).
 - **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
   one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
   (Guardian, Feed a Friend). Limits from the user: a solo player must not see things they can't unlock, and playing alone
@@ -1247,6 +1274,9 @@ Players can suggest more through the GitHub issue forms.
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Skills tab (2026-11-09):** a new "Skills" tab in the advancement screen (L) and a "Skills" heading in the K screen's
+  Advancements tab. `/pam skill mining 15` gives "Miner" (normal), 30 "Expert Miner", 50 "Master Miner"; every skill at
+  10 gives Jack of All Trades, at 25 All-Rounder. Levels you already had count when you join. Never two toasts at once.
 - **Mining XP by ore rarity (2026-11-09):** a diamond or gold vein visibly moves the Mining bar on the Character tab,
   coal much less; mining deepslate fills it faster per block than stone. Natural obsidian gives XP, obsidian you
   placed yourself gives none. Does levelling deep feel better than near the surface?
@@ -1384,6 +1414,11 @@ override applied, typo warned).
   leave it as the reward for late perks (Rank 30, Melee 15).
 - [ ] Ground Pound may get too strong later (2026-10-26; 2026-11-09 playtest: still fine): Double Jump + dive is fun and fine now, but watch it with
   Shockwave and big falls (its damage grows with the fall). Knobs: `shockwaveDamageRatios`, a fall cap for the bonus.
+
+- 2026-11-09: **Harder advancements picked** (list in Ideas → Milestones and Rank). Rank only, and goals or challenges
+  that need skill or come late, because Rank 30 is already easy. **Rule: two advancements never unlock at the same
+  moment** ("just feels lame"), so no advancement that counts other advancements, and count thresholds must not line up
+  with an existing one. Skills and Challenges each get their own advancement tab. Skills tab built first (see 3).
 
 ## Roadmap
 

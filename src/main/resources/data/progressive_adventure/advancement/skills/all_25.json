@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:skills/all_10",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:beacon"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.skills.all_25.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.skills.all_25.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}
