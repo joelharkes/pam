@@ -136,7 +136,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   turn on/rename/break, XP cost, charge-up, safe landing, pets, text-display name labels)
 - `journal/`: Explorer's Journal: `JournalContent` (item + `JournalInk` component), `ExplorersJournalItem` (ink bar,
   refill by clicking items onto it, right-click opens the screen through a client hook), `JournalMap` (the one shared
-  Overworld map: packed map colours per chunk, an attachment), `Journals` (drawing every second, ink, answering map requests)
+  Overworld map: packed map colours per chunk, an attachment), `JournalMarker` (markers players place, shared), `Journals`
+  (drawing every second, ink and journal perks, answering map requests, markers incl. Waypoint Stones, bed, treasure)
 - `perk/`: `Perks` (definitions, costs, requirements, status), `PerkEffects` (server behaviour:
   durability, prospector, timber/lumberjack, forester, clear cut (delayed via a tick queue), flint finder, vein miner, excavator, archaeologist, orchard, bird's nest,
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
@@ -144,7 +145,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `Cooldown` (per-player perk cooldowns, cleared on server stop), `DeathPerks` (Keepsake, Way Back trail, Faithful Friend)
 - `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
-  `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`, `JournalMapRequestPayload`; S2C `JournalMapPayload`, `OpenWaypointNamePayload`,
+  `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`, `JournalMapRequestPayload`, `JournalMarkerEditPayload`; S2C `JournalMapPayload`, `JournalMarkersPayload`, `OpenWaypointNamePayload`,
   `OpenWaypointListPayload` open client screens, `BestiaryInfoPayload`, `AchievementListPayload`, `BestiaryDiscoveredPayload` (toast); server validates in `PamNetworking`
 - `command/PamCommand`: `/pam`, `/pam bestiary`, `/pam elite <mob> [trait]` (ops, spawns a test elite), `/pam elitemap <type>` (ops, gives an elite's map, shows search time),
   `/pam skill <skill> <level> [player]` (ops, sets a skill level for testing perks), `/pam kills <mob> <count> [player]` (ops, bestiary tiers), `/pam waypoint list|tp|remove` (ops)
@@ -161,7 +162,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (Cat's Eyes); `screen/AdventureScreen` with
   `CharacterTab`, `PerksTab` (scrollable list), `BestiaryTab` (grid + mob page, custom-drawn, simple Button tabs), `AchievementsTab` (grid + page, list from `AchievementsClient`);
   `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);
-  `WaypointNameScreen`, `WaypointListScreen`; `JournalClient` (map chunks received this connection), `JournalScreen`
+  `WaypointNameScreen`, `WaypointListScreen`; `JournalClient` (map chunks and markers received this connection, requests, the
+  texture for the map in your hand), `JournalScreen` (zoom, drag, markers), `JournalMarkerScreen`; client mixin `ItemInHandRendererMixin` (journal in hand like a map)
 - Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/`
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).

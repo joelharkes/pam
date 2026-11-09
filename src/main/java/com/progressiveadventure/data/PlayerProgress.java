@@ -26,9 +26,9 @@ import java.util.Set;
  */
 public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> skillXp, Set<String> foodsEaten, Set<String> biomes,
 		Set<String> perks, Set<String> crops, Set<String> bred, Map<String, Integer> eliteKills, Set<String> eliteTraits,
-		Map<String, Integer> tipsBought) {
+		Map<String, Integer> tipsBought, int chunksDrawn) {
 	public static final PlayerProgress EMPTY = new PlayerProgress(Map.of(), Map.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(),
-			Map.of(), Set.of(), Map.of());
+			Map.of(), Set.of(), Map.of(), 0);
 
 	private static final Codec<Set<String>> STRING_SET = Codec.STRING.listOf().xmap(Set::copyOf, List::copyOf);
 
@@ -42,7 +42,8 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 			STRING_SET.optionalFieldOf("bred", Set.of()).forGetter(PlayerProgress::bred),
 			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("elite_kills", Map.of()).forGetter(PlayerProgress::eliteKills),
 			STRING_SET.optionalFieldOf("elite_traits", Set.of()).forGetter(PlayerProgress::eliteTraits),
-			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("tips_bought", Map.of()).forGetter(PlayerProgress::tipsBought)
+			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("tips_bought", Map.of()).forGetter(PlayerProgress::tipsBought),
+			Codec.INT.optionalFieldOf("chunks_drawn", 0).forGetter(PlayerProgress::chunksDrawn)
 	).apply(instance, PlayerProgress::new));
 
 	public int killsOf(String entityType) {
@@ -66,37 +67,37 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 		copy.merge(entityType, amount, Integer::sum);
 		// A count of 0 (only from /pam kills) means not discovered, so it mustn't count as a defeated type
 		copy.remove(entityType, 0);
-		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(Map.copyOf(copy), skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withSkillXp(String skill, int amount) {
 		Map<String, Integer> copy = new HashMap<>(skillXp);
 		copy.merge(skill, amount, Integer::sum);
-		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, Map.copyOf(copy), foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withFood(String item) {
-		return new PlayerProgress(kills, skillXp, add(foodsEaten, item), biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, add(foodsEaten, item), biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withBiome(String biome) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, add(biomes, biome), perks, crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, add(biomes, biome), perks, crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withPerk(String perk) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, add(perks, perk), crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, add(perks, perk), crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withoutPerks() {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of(), crops, bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, Set.of(), crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withCrop(String crop) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, add(crops, crop), bred, eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, add(crops, crop), bred, eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withBred(String entityType) {
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, add(bred, entityType), eliteKills, eliteTraits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, add(bred, entityType), eliteKills, eliteTraits, tipsBought, chunksDrawn);
 	}
 
 	/** @param trait trait id, or null for an elite without one */
@@ -104,13 +105,18 @@ public record PlayerProgress(Map<String, Integer> kills, Map<String, Integer> sk
 		Map<String, Integer> copy = new HashMap<>(eliteKills);
 		copy.merge(entityType, 1, Integer::sum);
 		Set<String> traits = trait == null ? eliteTraits : add(eliteTraits, entityType + "/" + trait);
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, Map.copyOf(copy), traits, tipsBought);
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, Map.copyOf(copy), traits, tipsBought, chunksDrawn);
 	}
 
 	public PlayerProgress withTipBought(String advancement) {
 		Map<String, Integer> copy = new HashMap<>(tipsBought);
 		copy.merge(advancement, 1, Integer::sum);
-		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, Map.copyOf(copy));
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, Map.copyOf(copy), chunksDrawn);
+	}
+
+	/** Explorer's Journal chunks this player drew first (paid for); for the journal perks and milestones. */
+	public PlayerProgress withChunksDrawn(int amount) {
+		return new PlayerProgress(kills, skillXp, foodsEaten, biomes, perks, crops, bred, eliteKills, eliteTraits, tipsBought, chunksDrawn + amount);
 	}
 
 	private static Set<String> add(Set<String> set, String value) {

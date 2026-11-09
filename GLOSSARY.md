@@ -114,7 +114,8 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Ink | `JournalInk` (item component) | What drawing costs; refilled with coal, ink sacs or glow ink sacs. |
 | The map, shared map | `JournalMap` (`JOURNAL_MAP` attachment) | The one Overworld map all journals draw into and show. |
 | Drawn chunk | `JournalMap.isDrawn` | A chunk the journal has drawn; only new chunks cost ink. |
-| Marker | - (planned) | A named icon on the journal map, placed by you or automatically (bed, Waypoint Stones). |
+| Marker | `JournalMarker` (`JOURNAL_MARKERS` attachment), `JournalMarkersPayload` | A named icon on the journal map, placed by a player (shared), or shown automatically (Waypoint Stones; your bed and last death only for you). |
+| Chunks drawn | `PlayerProgress.chunksDrawn` | Chunks a player drew first (paid ink for). Unlocks the journal perks and advancements. |
 
 ## Open questions
 

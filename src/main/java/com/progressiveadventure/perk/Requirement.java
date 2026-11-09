@@ -60,6 +60,19 @@ public sealed interface Requirement {
 		}
 	}
 
+	/** Explorer's Journal chunks this player drew first. */
+	record ChunksDrawn(int count) implements Requirement {
+		@Override
+		public boolean isMet(PlayerProgress progress, ProgressionSnapshot snapshot) {
+			return progress.chunksDrawn() >= count;
+		}
+
+		@Override
+		public Component describe() {
+			return Component.translatable("requirement.progressive_adventure.chunks_drawn", count);
+		}
+	}
+
 	record Rank(int rank) implements Requirement {
 		@Override
 		public boolean isMet(PlayerProgress progress, ProgressionSnapshot snapshot) {

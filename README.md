@@ -47,7 +47,7 @@ bow draws and faster bites.
 
 ### Adventure rank and perks
 Every advancement raises your **adventure rank**, and every rank is a **perk point**. Spend them
-on **121 perks** in 12 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
+on **126 perks** in 12 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
 Press **K** to open the Adventure screen.
@@ -86,6 +86,13 @@ bit of XP. Pets come along.
 
 ![Waypoint Stone](docs/screenshots/see_home_waypoint.jpg)
 ![Waypoint destinations](docs/screenshots/waypoint_destinations.jpg)
+
+### Explorer's Journal
+Craft an **Explorer's Journal** (book, empty map and ink sac). While you carry it, it draws a map of where you walk:
+one map for the whole server, so everyone fills it in together, and a new journal shows it all again if you lose
+yours. Drawing new land costs **ink**: click ink sacs, glow ink sacs or coal onto the journal to refill it. Hold it
+to see the map in your hand, or right-click to open it: zoom, look around and put down your own markers ("Home",
+"Cool cave"). Carry a compass and the map shows which way you're looking. Perks make the ink last longer.
 
 ## Multiplayer
 
@@ -133,6 +140,8 @@ when you open a world to LAN, the settings of the server (the host) count.
 - **Removing PAM** from a world doesn't reset hearts: players keep the max health they had.
   An op can undo it per player with
   `/attribute <player> minecraft:max_health modifier remove progressive_adventure:milestone_hearts`.
+- **Explorer's Journal** only works in the Overworld for now. There is one map per server: on a
+  public server everyone with a journal can see all the land anyone drew, and all markers.
 - **Mob unlocks and elites** only change natural spawns in the Overworld. The Nether, the End,
   spawners, structures (like witch huts) and raids stay vanilla.
 - **Land-claim mods:** perks that break blocks (Timber, Vein Miner, ...) follow the normal

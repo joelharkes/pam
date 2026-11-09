@@ -109,6 +109,7 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `FoodDataMixin` (Steady Healing) | every `addExhaustion` in `FoodData.tick` (two in 26.2) | only the natural healing costs |
 | `FoodDataMixin` (Quick Healing, Deep Reserves) | 1st constant `80` and the constant `18` in `FoodData.tick` | the healing timer (the 2nd `80` is starving) and the food level for healing without saturation |
 | `PlayerMixin` Whirlwind | `getEntitiesOfClass` and `isAlliedTo` in `Player.doSweepAttack` | the sweep's target search and team filter; the 3-block distance check (Whirlwind's radius) |
+| Client `ItemInHandRendererMixin` (journal in hand) | every `ItemStack.has` in `ItemInHandRenderer.submitArmWithItem` (one in 26.2) | the "is this a map?" check (`has(MAP_ID)`) |
 
 **Copies of vanilla rules (update by hand if vanilla changes):**
 
@@ -127,6 +128,9 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `Milestones.VANILLA` + lang overrides | vanilla advancement ids and their description keys |
 | `Targets.isFriendly` | shulkers extend `AbstractGolem` |
 | `Bestiary.onKill` (Master double loot) | `LivingEntity.shouldDropLoot` = not a baby (and the `mobDrops` game rule) |
+| `Journals.drawChunk`, `surface` | `MapItem.update` colours at scale 1: surface search, fluid handling, water depth and height shading |
+| Client `ItemInHandRendererMixin.pam$renderJournal` | `ItemInHandRenderer.renderMap` transforms and background quad; `MapRenderer.render` decoration units (2 per pixel) |
+| `JournalClient.mapRotation` | the player rotation in `MapItemSavedData` (16 steps) |
 | `EliteMap` | `ExplorationMapFunction` steps, and the structure tags, decorations, zoom and names in vanilla's loot tables and cartographer trades |
 
 **Also check:** vanilla mob list vs. the bestiary hint/tip lang keys and `mobUnlocks`; item tags used

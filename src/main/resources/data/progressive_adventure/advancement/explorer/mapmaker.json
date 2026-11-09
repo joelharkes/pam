@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/journal",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:map"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.mapmaker.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.mapmaker.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

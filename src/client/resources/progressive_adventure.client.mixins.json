@@ -3,6 +3,7 @@
 	"package": "com.progressiveadventure.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
+		"ItemInHandRendererMixin",
 		"LightmapRenderStateExtractorMixin"
 	],
 	"injectors": {

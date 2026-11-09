@@ -304,6 +304,10 @@ public class PamConfig {
 			"minecraft:ink_sac", 16,
 			"minecraft:black_dye", 16,
 			"minecraft:glow_ink_sac", 32);
+	// Steady Hand perk: share of the ink cost taken away, by tier. Wide View: extra draw radius (chunks)
+	public List<Double> steadyHandInkReductions = List.of(0.25, 0.5, 0.7);
+	public int wideViewRadiusBonus = 1;
+	public int journalMaxMarkersPerPlayer = 50;
 
 	// Waypoints: elites drop shards (player kills only; the first elite a player kills always drops one).
 	public Ramp eliteShardChance = new Ramp(0, 0.25, 100, 0.5);

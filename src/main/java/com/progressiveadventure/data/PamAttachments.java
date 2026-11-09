@@ -3,6 +3,7 @@ package com.progressiveadventure.data;
 import com.mojang.serialization.Codec;
 import com.progressiveadventure.ProgressiveAdventure;
 import com.progressiveadventure.journal.JournalMap;
+import com.progressiveadventure.journal.JournalMarker;
 import com.progressiveadventure.waypoint.Waypoint;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -83,6 +84,12 @@ public final class PamAttachments {
 			ProgressiveAdventure.id("journal_map"), builder -> builder
 					.persistent(JournalMap.CODEC)
 					.initializer(JournalMap::new));
+
+	/** On the Overworld: markers players put on the journal map (shared, like the map). */
+	public static final AttachmentType<List<JournalMarker>> JOURNAL_MARKERS = AttachmentRegistry.create(
+			ProgressiveAdventure.id("journal_markers"), builder -> builder
+					.persistent(JournalMarker.CODEC.listOf())
+					.initializer(List::of));
 
 	/**
 	 * Server: progress changed this tick but not stored yet. Every setAttached sends the whole record to the client, so

@@ -1,0 +1,32 @@
+{
+  "parent": "progressive_adventure:root",
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "progressive_adventure:explorers_journal"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "progressive_adventure:explorers_journal"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.journal.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.journal.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "c"
+    ]
+  ]
+}

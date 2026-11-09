@@ -44,6 +44,8 @@ public final class PamNetworking {
 		PayloadTypeRegistry.clientboundPlay().register(BestiaryDiscoveredPayload.TYPE, BestiaryDiscoveredPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(JournalMapRequestPayload.TYPE, JournalMapRequestPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(JournalMapPayload.TYPE, JournalMapPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(JournalMarkersPayload.TYPE, JournalMarkersPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(JournalMarkerEditPayload.TYPE, JournalMarkerEditPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(BuyPerkPayload.TYPE, (payload, context) -> buy(context.player(), payload.perkId()));
 		ServerPlayNetworking.registerGlobalReceiver(ResetPerksPayload.TYPE, (payload, context) -> reset(context.player()));
@@ -58,7 +60,9 @@ public final class PamNetworking {
 				(payload, context) -> BestiaryInfo.onRequest(context.player(), payload.entityType()));
 		ServerPlayNetworking.registerGlobalReceiver(AchievementListRequestPayload.TYPE, (payload, context) -> Achievements.onRequest(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(JournalMapRequestPayload.TYPE,
-				(payload, context) -> Journals.onMapRequest(context.player(), payload.chunkX(), payload.chunkZ()));
+				(payload, context) -> Journals.onMapRequest(context.player(), payload.minChunkX(), payload.minChunkZ(), payload.maxChunkX(), payload.maxChunkZ()));
+		ServerPlayNetworking.registerGlobalReceiver(JournalMarkerEditPayload.TYPE, (payload, context) -> Journals.onMarkerEdit(
+				context.player(), payload.remove(), payload.id(), payload.x(), payload.z(), payload.name(), payload.icon()));
 		ServerPlayNetworking.registerGlobalReceiver(BuyTipPayload.TYPE, (payload, context) -> Achievements.onBuyTip(context.player(), payload.advancement(), payload.tip()));
 	}
 

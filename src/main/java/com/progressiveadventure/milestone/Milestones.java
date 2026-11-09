@@ -42,6 +42,10 @@ public final class Milestones {
 	public static final Milestone MONUMENT = pam("explorer/monument", 1, 0);
 	public static final Milestone ANCIENT_CITY = pam("explorer/ancient_city", 1, 0);
 	public static final Milestone MANSION = pam("explorer/mansion", 1, 0);
+	// Explorer's Journal: Cartographer is the hard one with a reward; Mapmaker and First Marker only add Adventure Rank
+	public static final Milestone CARTOGRAPHER = pam("explorer/cartographer", 1, 0);
+	public static final Milestone MAPMAKER = pam("explorer/mapmaker", 0, 0);
+	public static final Milestone FIRST_MARKER = pam("explorer/first_marker", 0, 0);
 
 	public static final Milestone MOB_TYPES_5 = pam("hunter/mob_types_5", 1, 0);
 	public static final Milestone MOB_TYPES_15 = pam("hunter/mob_types_15", 1, 0);
@@ -91,7 +95,7 @@ public final class Milestones {
 			FIRST_NIGHT, IRON_ARMOR,
 			FIRST_FOOD, FOODS_3, FOODS_8, FOODS_15, FOODS_25,
 			CROPS_3, CROPS_10, BREED_5,
-			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK, MONUMENT, ANCIENT_CITY, MANSION,
+			BIOMES_5, BIOMES_15, BIOMES_30, FIND_VILLAGE, WAYPOINT, FIRST_TRIP, NETWORK, MONUMENT, ANCIENT_CITY, MANSION, CARTOGRAPHER,
 			MOB_TYPES_5, MOB_TYPES_15, MOB_TYPES_30, ELDER_GUARDIAN, WITHER, ELITE,
 			DIAMOND_TOOLS,
 			TREASURE, ALL_FISH), VANILLA.stream()).toList();
@@ -111,6 +115,8 @@ public final class Milestones {
 			new Threshold(5, MOB_TYPES_5), new Threshold(15, MOB_TYPES_15), new Threshold(30, MOB_TYPES_30));
 	/** Turned-on stones you own. */
 	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK));
+	/** Explorer's Journal chunks you drew first. */
+	public static final List<Threshold> CHUNKS_DRAWN_THRESHOLDS = List.of(new Threshold(100, MAPMAKER), new Threshold(1000, CARTOGRAPHER));
 
 	public record Threshold(int count, Milestone milestone) {
 	}

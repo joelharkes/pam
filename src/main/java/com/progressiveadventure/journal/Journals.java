@@ -2,7 +2,12 @@ package com.progressiveadventure.journal;
 
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
+import com.progressiveadventure.data.PlayerProgress;
+import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.network.JournalMapPayload;
+import com.progressiveadventure.network.JournalMarkersPayload;
+import com.progressiveadventure.perk.Perks;
+import com.progressiveadventure.waypoint.Waypoint;
 
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 
@@ -11,18 +16,25 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Server side of the Explorer's Journal. Every second, each player in the Overworld who carries a journal draws the
@@ -41,8 +54,10 @@ import java.util.UUID;
  * vanilla's map (MapItem.update) at 1 pixel per block.
  */
 public final class Journals {
-	/** Chunks around the requested centre a client gets; must cover what the journal screen shows (128 blocks). */
-	public static final int VIEW_RADIUS_CHUNKS = 5;
+	/** Largest area (in chunks per side) one request may ask for; the journal screen at its widest zoom stays below it. */
+	public static final int MAX_REQUEST_CHUNKS = 96;
+	/** Chunks per map packet, so a big first look is split into packets well below the size limit. */
+	private static final int CHUNKS_PER_PACKET = 512;
 	private static final int DRAW_INTERVAL_TICKS = 20;
 	private static final int MIN_REQUEST_INTERVAL_TICKS = 5;
 
@@ -51,6 +66,10 @@ public final class Journals {
 	private static final Map<UUID, Integer> LAST_REQUEST = new HashMap<>();
 	/** Players who were told their journal is out of ink; told again only after it drew something. */
 	private static final Set<UUID> WARNED_EMPTY = new HashSet<>();
+	/** Per player: ink owed below one whole ink (Steady Hand makes a chunk cost less than 1). */
+	private static final Map<UUID, Double> INK_OWED = new HashMap<>();
+	/** Per player: hash of the markers last sent, so unchanged markers aren't sent every second. */
+	private static final Map<UUID, Integer> SENT_MARKERS = new HashMap<>();
 	/** Draw radius → its chunk offsets, nearest first. */
 	private static final Map<Integer, int[][]> OFFSETS = new HashMap<>();
 	private static int pass;
@@ -62,12 +81,16 @@ public final class Journals {
 		SENT.clear();
 		LAST_REQUEST.clear();
 		WARNED_EMPTY.clear();
+		INK_OWED.clear();
+		SENT_MARKERS.clear();
 	}
 
 	public static void onDisconnect(ServerPlayer player) {
 		SENT.remove(player.getUUID());
 		LAST_REQUEST.remove(player.getUUID());
 		WARNED_EMPTY.remove(player.getUUID());
+		INK_OWED.remove(player.getUUID());
+		SENT_MARKERS.remove(player.getUUID());
 	}
 
 	public static JournalMap map(MinecraftServer server) {
@@ -107,10 +130,14 @@ public final class Journals {
 		PamConfig config = PamConfig.get();
 		JournalMap map = map(level.getServer());
 		ChunkPos center = player.chunkPosition();
-		int[][] offsets = offsets(config.journalDrawRadius);
+		int[][] offsets = offsets(config.journalDrawRadius + (Perks.has(player, Perks.WIDE_VIEW) ? config.wideViewRadiusBonus : 0));
 		boolean free = player.hasInfiniteMaterials();
+		int steadyHand = Perks.tier(player, Perks.STEADY_HAND_1, Perks.STEADY_HAND_2, Perks.STEADY_HAND_3);
+		double costPerChunk = config.journalInkPerChunk * (steadyHand > 0 ? 1 - PamConfig.listValue(config.steadyHandInkReductions, steadyHand - 1) : 1);
 		JournalInk ink = ExplorersJournalItem.ink(journal);
 		int inkLeft = ink.ink();
+		double owed = INK_OWED.getOrDefault(player.getUUID(), 0.0);
+		int drawn = 0;
 		boolean ranOut = false;
 
 		for (int[] offset : offsets) {
@@ -124,18 +151,28 @@ public final class Journals {
 			if (chunk == null) {
 				continue;
 			}
-			if (!free && inkLeft < config.journalInkPerChunk) {
-				ranOut = true;
-				break;
+			if (!free) {
+				// Ink goes in whole units: a chunk that costs 0.75 takes 1 and leaves 0.25 credit (negative owed) for the next
+				int pay = (int) Math.ceil(owed + costPerChunk - 1e-9);
+				if (pay > inkLeft) {
+					ranOut = true;
+					break;
+				}
+				owed = owed + costPerChunk - pay;
+				inkLeft -= pay;
 			}
 			map.put(pos, drawChunk(level, chunk));
-			if (!free) {
-				inkLeft -= config.journalInkPerChunk;
-			}
+			drawn++;
 			WARNED_EMPTY.remove(player.getUUID());
 		}
+		INK_OWED.put(player.getUUID(), owed);
 		if (inkLeft != ink.ink()) {
 			journal.set(JournalContent.INK, new JournalInk(inkLeft, ink.max()));
+		}
+		if (drawn > 0) {
+			PlayerProgress progress = PamAttachments.progress(player).withChunksDrawn(drawn);
+			PamAttachments.setProgress(player, progress);
+			Milestones.checkThresholds(player, Milestones.CHUNKS_DRAWN_THRESHOLDS, progress.chunksDrawn());
 		}
 		if (ranOut && WARNED_EMPTY.add(player.getUUID())) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.journal.out_of_ink").withStyle(ChatFormatting.YELLOW));
@@ -233,35 +270,130 @@ public final class Journals {
 		return new Column(state.getMapColor(level, pos), y, waterDepth);
 	}
 
-	/** A client looks at its journal: send the drawn chunks around that it doesn't have in their latest version. */
-	public static void onMapRequest(ServerPlayer player, int chunkX, int chunkZ) {
+	/** A client looks at this area of its journal: send the drawn chunks there it doesn't have in their latest version, and the markers. */
+	public static void onMapRequest(ServerPlayer player, int minChunkX, int minChunkZ, int maxChunkX, int maxChunkZ) {
 		MinecraftServer server = player.level().getServer();
 		Integer last = LAST_REQUEST.get(player.getUUID());
 		if (last != null && server.getTickCount() - last < MIN_REQUEST_INTERVAL_TICKS) {
 			return;
 		}
 		LAST_REQUEST.put(player.getUUID(), server.getTickCount());
-		// Only with a journal, and only near where you are (no peeking at the whole map from elsewhere)
-		ChunkPos here = player.chunkPosition();
-		if (findJournal(player).isEmpty() || player.level() != server.overworld()
-				|| Math.abs(chunkX - here.x()) > VIEW_RADIUS_CHUNKS || Math.abs(chunkZ - here.z()) > VIEW_RADIUS_CHUNKS) {
+		// Only with a journal; the whole shared map may be looked at, but not all at once
+		if (findJournal(player).isEmpty() || maxChunkX < minChunkX || maxChunkZ < minChunkZ
+				|| maxChunkX - minChunkX >= MAX_REQUEST_CHUNKS || maxChunkZ - minChunkZ >= MAX_REQUEST_CHUNKS) {
 			return;
 		}
 		JournalMap map = map(server);
 		Long2IntOpenHashMap sent = SENT.computeIfAbsent(player.getUUID(), id -> new Long2IntOpenHashMap());
 		List<JournalMapPayload.Chunk> chunks = new ArrayList<>();
-		for (int dx = -VIEW_RADIUS_CHUNKS; dx <= VIEW_RADIUS_CHUNKS; dx++) {
-			for (int dz = -VIEW_RADIUS_CHUNKS; dz <= VIEW_RADIUS_CHUNKS; dz++) {
-				long pos = ChunkPos.pack(chunkX + dx, chunkZ + dz);
+		for (int x = minChunkX; x <= maxChunkX; x++) {
+			for (int z = minChunkZ; z <= maxChunkZ; z++) {
+				long pos = ChunkPos.pack(x, z);
 				int version = map.version(pos);
 				if (version != 0 && sent.get(pos) != version) {
 					sent.put(pos, version);
 					chunks.add(new JournalMapPayload.Chunk(pos, Arrays.copyOf(map.get(pos), JournalMap.CHUNK_PIXELS)));
+					if (chunks.size() == CHUNKS_PER_PACKET) {
+						ServerPlayNetworking.send(player, new JournalMapPayload(chunks));
+						chunks = new ArrayList<>();
+					}
 				}
 			}
 		}
 		if (!chunks.isEmpty()) {
 			ServerPlayNetworking.send(player, new JournalMapPayload(chunks));
 		}
+		sendMarkers(player);
+	}
+
+	private static void sendMarkers(ServerPlayer player) {
+		MinecraftServer server = player.level().getServer();
+		ServerLevel overworld = server.overworld();
+		boolean op = player.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER);
+		List<JournalMarkersPayload.Marker> markers = new ArrayList<>();
+		for (JournalMarker marker : overworld.getAttachedOrElse(PamAttachments.JOURNAL_MARKERS, List.of())) {
+			markers.add(new JournalMarkersPayload.Marker(marker.id(), JournalMarkersPayload.KIND_MARKER, marker.icon(), marker.name(),
+					marker.x(), marker.z(), marker.ownerName(), op || marker.owner().equals(player.getUUID())));
+		}
+		for (Waypoint waypoint : overworld.getAttachedOrElse(PamAttachments.WAYPOINTS, List.<Waypoint>of())) {
+			if (waypoint.dimension().equals(Level.OVERWORLD)) {
+				markers.add(new JournalMarkersPayload.Marker(waypoint.id(), JournalMarkersPayload.KIND_WAYPOINT, "", waypoint.name(),
+						waypoint.pos().getX(), waypoint.pos().getZ(), waypoint.ownerName(), false));
+			}
+		}
+		ServerPlayer.RespawnConfig respawn = player.getRespawnConfig();
+		if (respawn != null && respawn.respawnData().dimension().equals(Level.OVERWORLD)) {
+			BlockPos bed = respawn.respawnData().pos();
+			markers.add(new JournalMarkersPayload.Marker(new UUID(0, 0), JournalMarkersPayload.KIND_BED, "", "", bed.getX(), bed.getZ(), "", false));
+		}
+		if (Perks.has(player, Perks.TREASURE_MARKS)) {
+			addTreasureMarks(player, markers);
+		}
+		// Ids of automatic markers are fixed, so the hash only changes when something really changed
+		int hash = markers.hashCode();
+		Integer lastHash = SENT_MARKERS.put(player.getUUID(), hash);
+		if (lastHash == null || lastHash != hash) {
+			ServerPlayNetworking.send(player, new JournalMarkersPayload(markers));
+		}
+	}
+
+	/** Targets of treasure and explorer maps in the inventory (Treasure Marks perk). */
+	private static void addTreasureMarks(ServerPlayer player, List<JournalMarkersPayload.Marker> markers) {
+		Inventory inventory = player.getInventory();
+		for (int i = 0; i < inventory.getContainerSize(); i++) {
+			ItemStack stack = inventory.getItem(i);
+			if (!stack.has(DataComponents.MAP_ID)) {
+				continue;
+			}
+			MapItemSavedData data = MapItem.getSavedData(stack, player.level());
+			if (data == null || !data.dimension.equals(Level.OVERWORLD)) {
+				continue;
+			}
+			int scale = 1 << data.scale;
+			for (MapDecoration decoration : data.getDecorations()) {
+				if (!decoration.type().value().explorationMapElement() && !decoration.type().value().equals(MapDecorationTypes.RED_X.value())) {
+					continue;
+				}
+				// Decoration x/y are 2 units per map pixel, centred on the map
+				int x = data.centerX + decoration.x() * scale / 2;
+				int z = data.centerZ + decoration.y() * scale / 2;
+				String icon = decoration.type().value().assetId().getPath();
+				markers.add(new JournalMarkersPayload.Marker(new UUID(1, ((long) x << 32) ^ (z & 0xFFFFFFFFL)), JournalMarkersPayload.KIND_TREASURE,
+						icon, stack.getHoverName().getString(), x, z, "", false));
+			}
+		}
+	}
+
+	/** Adds or removes a marker on the shared map (from the journal screen). */
+	public static void onMarkerEdit(ServerPlayer player, boolean remove, UUID id, int x, int z, String name, String icon) {
+		if (findJournal(player).isEmpty()) {
+			return;
+		}
+		ServerLevel overworld = player.level().getServer().overworld();
+		List<JournalMarker> markers = overworld.getAttachedOrElse(PamAttachments.JOURNAL_MARKERS, List.of());
+		if (remove) {
+			boolean op = player.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER);
+			List<JournalMarker> kept = markers.stream().filter(m -> !(m.id().equals(id) && (op || m.owner().equals(player.getUUID())))).toList();
+			if (kept.size() != markers.size()) {
+				overworld.setAttached(PamAttachments.JOURNAL_MARKERS, kept);
+				sendMarkers(player);
+			}
+			return;
+		}
+		String cleanName = JournalMarker.cleanName(name);
+		long owned = markers.stream().filter(m -> m.owner().equals(player.getUUID())).count();
+		// Only on drawn land, so markers stay where the map is
+		if (cleanName.isEmpty() || !JournalMarker.ICONS.contains(icon) || !map(player.level().getServer()).isDrawn(ChunkPos.pack(x >> 4, z >> 4))) {
+			return;
+		}
+		if (owned >= PamConfig.get().journalMaxMarkersPerPlayer) {
+			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.journal.too_many_markers",
+					PamConfig.get().journalMaxMarkersPerPlayer).withStyle(ChatFormatting.YELLOW));
+			return;
+		}
+		JournalMarker marker = new JournalMarker(UUID.randomUUID(), cleanName, x, z, icon, player.getUUID(), player.getName().getString());
+		overworld.setAttached(PamAttachments.JOURNAL_MARKERS, Stream.concat(markers.stream(), Stream.of(marker)).toList());
+		Milestones.grant(player, Milestones.FIRST_MARKER);
+		sendMarkers(player);
 	}
 }

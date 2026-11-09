@@ -107,7 +107,7 @@ What makes a good milestone:
 - ❌ Pure grind ("break 10,000 stone", "walk 100 km").
 - ❌ Luck-only or tedious (rare drops, full collections of everything).
 
-Implemented: 29 PAM milestones + 20 vanilla advancements with a reward (half hearts unless noted):
+Implemented: 30 PAM milestones + 20 vanilla advancements with a reward (half hearts unless noted):
 
 | Category | Milestone (PAM tab)                        | Reward         |
 |----------|--------------------------------------------|----------------|
@@ -124,6 +124,7 @@ Implemented: 29 PAM milestones + 20 vanilla advancements with a reward (half hea
 | Explorer | Travel between two Waypoint Stones         | stomach        |
 | Explorer | Have 5 of your own Waypoint Stones on      | 1 heart        |
 | Explorer | Ocean Monument / Ancient City / Woodland Mansion (reach it) | ½ heart each |
+| Explorer | Draw 1000 chunks in your Explorer's Journal (Cartographer) | ½ heart |
 | Hunter   | Defeat 5 / 15 / 30 different mob types     | ½ / ½ / 1 heart|
 | Hunter   | Defeat the Elder Guardian / the Wither     | 2 hearts each  |
 | Hunter   | Defeat an elite (Elite Slayer)             | ½ heart        |
@@ -526,8 +527,8 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 46 advancements (milestones, collections, structures) add 76, so ~250 Rank in total (2026-11-09). Buying all
-  116 perks costs **274**, so early on you choose and owning everything is out of reach until more milestones
+- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09). Buying all
+  126 perks costs **303**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -602,6 +603,9 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Movement    | Mantle              | Jump against a wall up to 2 blocks high while walking forward: pull yourself up | Rank 15 | 3 |
 | Movement    | Double Jump         | One extra jump in the air (not while wearing an elytra) | Rank 30         | 4    |
 | Exploration | Pathfinder I/II     | Waypoint trips cost 25% / 50% less XP               | Rank 15 / 35        | 2/3  |
+| Exploration | Steady Hand I/II/III | Explorer's Journal uses 25% / 50% / 70% less ink   | 100 / 500 / 1500 chunks drawn | 1/2/3 |
+| Exploration | Wide View           | Journal draws 3 chunks around you instead of 2      | 300 chunks drawn    | 2    |
+| Exploration | Treasure Marks      | Treasure/explorer maps in your inventory show their target on the journal | Rank 15 | 2 |
 | Movement    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
 
 Implementation notes:
@@ -687,7 +691,7 @@ places you've been.
 - Storage: one shared list on the Overworld (Fabric world attachment). The floating name is a
   text display entity; orphaned ones are removed when they load.
 
-### 8. Explorer's Journal: a map you draw by walking (slice 1)
+### 8. Explorer's Journal: a map you draw by walking
 
 Helps kids learn to find their way: the map only shows where someone has been, north is always up, and drawing costs
 ink, so exploring has a small price and squids get an extra use. (The idea came from the Antique Atlas mod; the name
@@ -707,10 +711,33 @@ is ours.)
   an item onto the journal in your inventory, like a bundle: coal or charcoal +4, ink sac or black dye +16, glow ink
   sac +32 (`journalInkRefills`), up to `journalMaxInk` (128). Left-click adds as many as fit, right-click one; ink is
   never wasted (an item that doesn't fit completely stays). Out of ink: one action-bar message until it draws again.
-- **Looking:** right-click opens the journal screen: 128×128 blocks around you on vanilla's map paper, north up,
-  N/E/S/W on the edges, you as a red dot, ink below. The game doesn't pause; the map updates while open (the client
-  asks every second, the server only sends chunks that changed since it last sent them to that player, only near the
-  player and only with a journal). Outside the Overworld it says the journal only works there.
+- **In your hand:** like a vanilla map (both hands when the other one is empty), 128×128 blocks around you, with the
+  markers in that area. Outside the Overworld only the paper shows.
+- **Journal screen** (right-click): the map on vanilla's map paper, north up, N/E/S/W on the edges, ink and a hint
+  line below. Scroll to zoom (½, 1, 2 or 4 screen pixels per block; it remembers the zoom), drag to move, "Back to
+  me" follows you again. The game doesn't pause and the map updates while open. Outside the Overworld it says the
+  journal only works there.
+- **You:** with a **compass in your inventory** you're vanilla's player arrow pointing where you look, otherwise
+  vanilla's white dot. A small reason to carry one more item.
+- **Markers** (shared, like the map): right-click a drawn spot → name (max 24 letters) and one of 9 icons (vanilla's
+  X and 8 banner colours). Names show under markers at zoom 1 and closer. Right-click your own marker to remove it
+  (ops can remove any). At most `journalMaxMarkersPerPlayer` (50) per player. Only on drawn land. Also shown, with
+  vanilla map icons: Waypoint Stones (blue, with their name), your bed or respawn point (red, only yours), where you
+  last died (red triangle, only yours, from vanilla's last death location). Hover a marker for its name, owner and
+  "120 blocks north-east" (distance and direction from you, to practise reading directions).
+- **Network:** the client asks for the area it shows (in hand: around you; screen: the visible area, up to 96×96
+  chunks) every second and right away when it changes; the server only sends chunks that changed since it last sent
+  them to that player, in packets of at most 512 chunks, and the markers only when they changed. Only with a journal in
+  your inventory; any part of the shared map may be looked at.
+- **Perks** (Exploration, "Explorer's Journal" heading; Pathfinder is under "Waypoints"): Steady Hand I/II/III (ink
+  costs 25% / 50% / 70% less; needs 100 / 500 / 1500 chunks drawn; 1/2/3 points); Wide View (draws 3 chunks around you
+  instead of 2; 300 chunks drawn; 2 points); Treasure Marks (treasure and explorer maps in your inventory show their
+  target on the journal; Rank 15, when elites start dropping maps; 2 points). "Chunks drawn" = chunks you drew first
+  (paid for), stored per player (`PlayerProgress.chunksDrawn`), so these perks are earned by doing. Steady Hand pays
+  whole ink and keeps the rest as credit, so ¾ ink per chunk is exactly 3 ink for 4 chunks.
+- **Advancements** (Explorer): Dear Diary (make a journal, task), Mapmaker (100 chunks drawn, task), Cartographer (1000
+  chunks drawn, goal, ½ heart), X Marks the Spot (first marker, task). Only Cartographer has a reward, like the hard
+  structure finds.
 
 ## UI
 
@@ -806,7 +833,7 @@ Players can suggest more through the GitHub issue forms.
   stalls. The structure achievements (built 2026-11-09) are the first answer; playtest whether more is needed.
 - More milestones: raise a shield, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 274 of ~250 Rank today).
+- More advancements in general = more Rank and perk points (perks cost 303 of ~255 Rank today).
 - **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
   one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
   (Guardian, Feed a Friend). Limits from the user: a solo player must not see things they can't unlock, and playing alone
@@ -862,13 +889,10 @@ Players can suggest more through the GitHub issue forms.
   have a "Home Sweet Home" milestone.
 
 ### Exploration
-- **Explorer's Journal, next slices (2026-11-09):** slice 1 is built (see pillar 8). Slice 2: full-screen map with zoom
-  and drag; **with a compass in your inventory** your marker shows which way you are looking (otherwise a dot), so you
-  carry one more item for a small bonus; markers (your own with a name + icon, plus bed, Waypoint Stones, last death;
-  structures only once seen); the map shown when held in hand, like a vanilla map. Slice 3: perks in the Exploration
-  category (Steady Hand I/II/III: ink costs 25% / 50% / 70% less; wider draw radius; elite maps as markers) and
-  milestones (first journal, chunks drawn, markers). Later: Nether and caves, drawn as a slice at your height and
-  stored per height band (how Xaero's and JourneyMap do it), e.g. as a perk or with glow ink.
+- **Explorer's Journal, later (2026-11-09):** Nether and caves, drawn as a slice at your height and stored per height
+  band (how Xaero's and JourneyMap do it), e.g. as a perk or with glow ink. Structures on the map once someone has seen
+  them (left out of slice 2: needs "seen" detection). Other players on the map (not asked for; think about privacy on
+  public servers). Revisit losing the journal on death (the user wants to look at it again later).
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
   bonus heart.
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
@@ -1147,6 +1171,14 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
   item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
   replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
+- 2026-11-09: **Explorer's Journal slices 2 and 3 built** (user: "build slice 2 and 3, then I test the full package").
+  Choices made without asking, to check in the playtest: markers are shared like the map (only the owner or an op
+  removes one), 50 per player, only on drawn land, 9 vanilla icons; bed and last death are personal markers; hover shows
+  distance + direction ("120 blocks north-east") to practise directions; zoom ½-4 pixels per block, remembered; the
+  screen may look at any part of the shared map. Perks: Steady Hand and Wide View need chunks drawn (new per-player
+  counter, earned by doing), Treasure Marks needs Rank 15 (when elites start dropping maps). Milestones: only
+  Cartographer (1000 chunks) gives ½ heart; Dear Diary, Mapmaker and X Marks the Spot add Rank only. Structures on the
+  map, the Nether and caves stay for later.
 - 2026-11-09: **Explorer's Journal slice 1 built** (proposal accepted: item, ink, shared map, screen first; compass, markers,
   zoom, held-in-hand view in slice 2; perks and milestones in slice 3). Right-click opens a screen for now instead of the
   map in your hand (that's slice 2). Ink starts at 16 (the ink sac in the recipe), only the first journal in your
@@ -1171,13 +1203,23 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Explorer's Journal (2026-11-09):** craft one (book + empty map + ink sac): 16 ink, blue bar. Walk around: chunks get
-  drawn and ink goes down (about 25 for the first spot); walking back over drawn land costs nothing. Right-click: the map
-  around you, north up, red dot in the middle, updates as you walk; place a block and it shows up within a few seconds.
-  Click ink sacs / glow ink / coal onto it in the inventory: left adds as many as fit, right one; when full it refuses.
-  Empty: one "out of ink" message, the map stops growing. Two players: what one draws shows up in the other's journal.
-  Lose the journal and craft a new one: the map is still there. Nether: "only works in the Overworld". Check the colours
-  look like a vanilla map and the screen size is OK on your monitor.
+- **Explorer's Journal (2026-11-09), slice 1:** craft one (book + empty map + ink sac): 16 ink, blue bar, "Dear Diary"
+  advancement. Walk around: chunks get drawn and ink goes down (about 25 for the first spot); walking back over drawn land
+  costs nothing. Place a block: it shows up within a few seconds. Click ink sacs / glow ink / coal onto it in the
+  inventory: left adds as many as fit, right one; when full it refuses. Empty: one "out of ink" message, the map stops
+  growing. Two players: what one draws shows up in the other's journal. Lose the journal and craft a new one: the map is
+  still there. Do the colours look like a vanilla map? Does 1 ink per chunk feel right?
+- **Explorer's Journal, slice 2:** hold it: the map in your hand like a vanilla map (one hand and both hands), the client
+  doesn't crash at startup (new client mixin). Right-click: the screen fits your monitor; scroll zooms, drag moves,
+  "Back to me" follows you again. Compass in inventory: arrow turns with you (also in your hand); without: white dot.
+  Right-click a drawn spot: name + icon, the marker shows (also for the other player), its name under it; right-click it
+  again removes it; right-click undrawn land shows a message. Your bed, Waypoint Stones and last death show; hover says
+  "N blocks north-east" in the right direction. Nether: "only works in the Overworld".
+- **Explorer's Journal, slice 3:** Perks tab Exploration has "Waypoints" and "Explorer's Journal" headings; Steady Hand,
+  Wide View locked until enough chunks drawn (test: walk, or creative + a fresh world). Steady Hand I: ink drops 3 per 4
+  chunks. Wide View: a wider drawn area. Treasure Marks: carry a treasure or explorer map (`/pam elitemap`) and its
+  target shows on the journal. Mapmaker at 100 chunks, Cartographer at 1000 (½ heart), X Marks the Spot on the first
+  marker; the Advancements tab shows them with tips.
 - **Screenshots (2026-11-09):** retake the Movement perks screenshot (Perks tab layout changed) and `tough_zombie.jpg` (now "Elite Zombie"; rename the file in README + Modrinth too).
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
@@ -1325,6 +1367,7 @@ override applied, typo warned).
 - **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
-- **Explorer's Journal slice 1 (2026-11-09):** item, ink, shared map drawing, journal screen. Slices 2 and 3 in Ideas.
+- **Explorer's Journal (2026-11-09):** item, ink, shared map drawing, journal screen with zoom and markers, map in
+  your hand, compass arrow, Steady Hand / Wide View / Treasure Marks perks, 4 advancements. Nether and caves later.
 - **Next:** milestones/achievements that bridge the gap after Rank 30 (Ideas > Milestones and Rank), the foods eaten
   list (both built 2026-11-09, to playtest), then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).

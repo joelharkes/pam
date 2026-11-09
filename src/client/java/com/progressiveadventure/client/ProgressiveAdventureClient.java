@@ -40,6 +40,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
 			BlockSense.tick(minecraft);
 			AirMoves.tick(minecraft);
+			JournalClient.tick(minecraft);
 			while (openScreen.consumeClick()) {
 				if (minecraft.player != null && minecraft.gui.screen() == null) {
 					minecraft.gui.setScreen(new AdventureScreen());

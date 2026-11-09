@@ -4,6 +4,7 @@ import com.progressiveadventure.ProgressiveAdventure;
 import com.progressiveadventure.config.PamConfig;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -36,6 +37,7 @@ public final class JournalContent {
 	}
 
 	public static void init() {
+		ItemComponentTooltipProviderRegistry.addLast(INK);
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> output.insertAfter(Items.MAP, EXPLORERS_JOURNAL));
 	}
 }

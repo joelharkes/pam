@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/journal",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:red_banner"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.first_marker.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.first_marker.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -2,9 +2,7 @@ package com.progressiveadventure.journal;
 
 import com.progressiveadventure.config.PamConfig;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,11 +13,7 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
-
-import java.util.function.Consumer;
 
 /**
  * Draws the shared map while it's in your inventory (see {@link Journals}); right-click to look at it. Click ink sacs,
@@ -80,13 +74,5 @@ public class ExplorersJournalItem extends Item {
 	@Override
 	public int getBarColor(ItemStack stack) {
 		return ink(stack).ink() > 0 ? 0x3F76E4 : 0xFF5555;
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-		JournalInk ink = ink(stack);
-		builder.accept(Component.translatable("item.progressive_adventure.explorers_journal.ink", ink.ink(), ink.max())
-				.withStyle(ink.ink() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
-		builder.accept(Component.translatable("item.progressive_adventure.explorers_journal.refill").withStyle(ChatFormatting.GRAY));
 	}
 }
