@@ -893,6 +893,8 @@ Players can suggest more through the GitHub issue forms.
   band (how Xaero's and JourneyMap do it), e.g. as a perk or with glow ink. Structures on the map once someone has seen
   them (left out of slice 2: needs "seen" detection). Other players on the map (not asked for; think about privacy on
   public servers). Revisit losing the journal on death (the user wants to look at it again later).
+- **Journal in hand gets in the way (2026-11-09 playtest, left as is):** looking down shows the map, like a vanilla map.
+  Options if it bothers: only show it in the off-hand, or a smaller map in one hand.
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
   bonus heart.
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
@@ -1171,6 +1173,9 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
   item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
   replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
+- 2026-11-09: **Journal playtest:** the map looks good and works well; ink cost feels good ("you can't endlessly explore,
+  it pushes you to restock, and in co-op you share"), no change. The map in your hand shows when you look down (vanilla
+  map behaviour): nice but sometimes in the way, left as is for now (see Ideas).
 - 2026-11-09: **Journal recipe stays book + empty map + ink sac** (user: the compass and map make it a bit hard to get,
   but not too hard, which helps). Our recipes now show in the recipe book (recipe unlock advancements, no Rank).
 - 2026-11-09: **Explorer's Journal slices 2 and 3 built** (user: "build slice 2 and 3, then I test the full package").
@@ -1205,18 +1210,12 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Explorer's Journal (2026-11-09), slice 1:** craft one (book + empty map + ink sac; shows in the recipe book once you
-  hold a map, book or ink sac): 16 ink, blue bar, "Dear Diary" advancement. Walk around: chunks get drawn and ink goes down (about 25 for the first spot); walking back over drawn land
-  costs nothing. Place a block: it shows up within a few seconds. Click ink sacs / glow ink / coal onto it in the
-  inventory: left adds as many as fit, right one; when full it refuses. Empty: one "out of ink" message, the map stops
-  growing. Two players: what one draws shows up in the other's journal. Lose the journal and craft a new one: the map is
-  still there. Do the colours look like a vanilla map? Does 1 ink per chunk feel right?
-- **Explorer's Journal, slice 2:** hold it: the map in your hand like a vanilla map (one hand and both hands), the client
-  doesn't crash at startup (new client mixin). Right-click: the screen fits your monitor; scroll zooms, drag moves,
-  "Back to me" follows you again. Compass in inventory: arrow turns with you (also in your hand); without: white dot.
-  Right-click a drawn spot: name + icon, the marker shows (also for the other player), its name under it; right-click it
-  again removes it; right-click undrawn land shows a message. Your bed, Waypoint Stones and last death show; hover says
-  "N blocks north-east" in the right direction. Nether: "only works in the Overworld".
+- **Explorer's Journal (2026-11-09), still to check:** (confirmed: the map, drawing, the map in your hand, ink cost)
+  recipe book shows the journal once you hold a map, book or ink sac; refilling (left adds as many as fit, right one,
+  refuses when full); "out of ink" message; two players see each other's drawing and markers; a new journal shows the
+  old map. Screen: scroll zooms, drag moves, "Back to me"; compass arrow turns with you (also in your hand), without a
+  compass a white dot. Markers: right-click a drawn spot, name + icon, name under it, right-click removes it, undrawn
+  land shows a message; bed, Waypoint Stones and last death show; hover says "N blocks north-east" in the right direction.
 - **Explorer's Journal, slice 3:** Perks tab Exploration has "Waypoints" and "Explorer's Journal" headings; Steady Hand,
   Wide View locked until enough chunks drawn (`/pam chunks 1500` to test). Steady Hand I: ink drops 3 per 4
   chunks. Wide View: a wider drawn area. Treasure Marks: carry a treasure or explorer map (`/pam elitemap`) and its
