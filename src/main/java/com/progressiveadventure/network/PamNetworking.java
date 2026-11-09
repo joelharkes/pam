@@ -5,6 +5,7 @@ import com.progressiveadventure.bestiary.BestiaryInfo;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
 import com.progressiveadventure.milestone.Progression;
+import com.progressiveadventure.perk.DeathPerks;
 import com.progressiveadventure.perk.MovementPerks;
 import com.progressiveadventure.perk.Perk;
 import com.progressiveadventure.perk.Perks;
@@ -64,6 +65,9 @@ public final class PamNetworking {
 		}
 		PamAttachments.setProgress(player, progress.withPerk(perk.id()));
 		Progression.apply(player);
+		if (perk == Perks.WAY_BACK) {
+			DeathPerks.onWayBackBought(player);
+		}
 		player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.6f, 1.2f);
 	}
 

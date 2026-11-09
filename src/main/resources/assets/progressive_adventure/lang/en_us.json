@@ -168,7 +168,7 @@
   "perk.progressive_adventure.keepsake_3": "Keepsake III",
   "perk.progressive_adventure.keepsake_3.description": "When you die, you lose nothing: you keep all your items and your XP.",
   "perk.progressive_adventure.way_back": "Way Back",
-  "perk.progressive_adventure.way_back.description": "After you die, a red trail shows the way back to the spot for 5 minutes.",
+  "perk.progressive_adventure.way_back.description": "After you die, a red trail shows the way back to the spot for 5 minutes. Works even if you get this perk just after dying.",
   "perk.progressive_adventure.faithful_friend": "Faithful Friend",
   "perk.progressive_adventure.faithful_friend.description": "When your pet would die, it faints and runs back to you instead, if you are in the same dimension. It sits down to rest until you tell it to stand up.",
   "message.progressive_adventure.skill_new_perk": " New perk: %s",

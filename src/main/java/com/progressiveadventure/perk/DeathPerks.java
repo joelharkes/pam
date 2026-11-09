@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -100,15 +101,28 @@ public final class DeathPerks {
 	}
 
 	public static void onRespawn(ServerPlayer player) {
-		if (!Perks.has(player, Perks.WAY_BACK) || player.getLastDeathLocation().isEmpty()) {
+		if (Perks.has(player, Perks.WAY_BACK)) {
+			startTrail(player, PamConfig.get().wayBackSeconds * 20L);
+		}
+	}
+
+	/** Buying Way Back soon after a death still shows the trail, for the time that's left. */
+	public static void onWayBackBought(ServerPlayer player) {
+		long ticksLeft = PamConfig.get().wayBackSeconds * 20L - player.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH));
+		if (player.isAlive() && ticksLeft > 0) {
+			startTrail(player, ticksLeft);
+		}
+	}
+
+	private static void startTrail(ServerPlayer player, long ticks) {
+		if (player.getLastDeathLocation().isEmpty()) {
 			return;
 		}
-		int seconds = PamConfig.get().wayBackSeconds;
-		TRAIL_ENDS.put(player.getUUID(), player.level().getServer().overworld().getGameTime() + seconds * 20L);
+		TRAIL_ENDS.put(player.getUUID(), player.level().getServer().overworld().getGameTime() + ticks);
 		GlobalPos death = player.getLastDeathLocation().get();
 		String key = death.dimension() == player.level().dimension() ? "way_back" : "way_back_other_dimension";
 		player.sendSystemMessage(Component.translatable("message.progressive_adventure." + key,
-				death.pos().getX(), death.pos().getY(), death.pos().getZ(), Math.round(seconds / 60f)));
+				death.pos().getX(), death.pos().getY(), death.pos().getZ(), Math.max(1, Math.round(ticks / 1200f))));
 	}
 
 	/** Runs once per second. */

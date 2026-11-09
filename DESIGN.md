@@ -588,7 +588,7 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Survival    | Deep Reserves       | Healing without saturation works down to 4 food icons (vanilla 9), so you eat less often and 2 cooked meals fill you up | Rank 10 | 3 |
 | Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Survival    | Keepsake I/II/III   | On death you keep: your armor / also hotbar and offhand / everything, also XP. Curse of Vanishing still destroys items | — / Rank 5 / Rank 10 | 1/2/3 |
-| Survival    | Way Back            | After a death, a red trail (only you see it) points to the spot for 5 minutes, or until you are within 4 blocks. Chat gives the coordinates | — | 1 |
+| Survival    | Way Back            | After a death, a red trail (only you see it) points to the spot for 5 minutes, or until you are within 4 blocks. Chat gives the coordinates. Buying it within 5 minutes of a death starts the trail for the time left | — | 1 |
 | Survival    | Faithful Friend     | A tamed pet (wolf, cat, parrot...) that would die gets 2 hearts, Regeneration II and Resistance IV for 10s, teleports to you and sits down. Needs you online in the same dimension. `/kill` still kills. Not horses | — | 1 |
 | Movement    | Fleet Foot I/II/III | +5% / +10% / +15% movement speed                    | Rank 10 / 25 / 40   | 2/3/4|
 | Movement    | Soft Landing        | Fall 3 more blocks before taking damage             | —                   | 2    |
@@ -781,7 +781,7 @@ Players can suggest more through the GitHub issue forms.
 - **Rank 30 gap (2026-11-09 playtest, next up):** Rank 30 comes at a good pace in the Overworld, then progress
   stalls: the Nether is open, but the vanilla Overworld advancements left are mostly hard. Wanted: more milestones
   and achievements for exploration that are hard but not too hard, to bridge Rank 30 to the Nether and beyond.
-  The list below is the starting point.
+  Decided: one named milestone per structure (no count milestone on top). The list below is the starting point.
 - More milestones: raise a shield, desert/jungle temple, shipwreck or ocean ruin, reach Y=0 / lush or deep dark
   cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
@@ -799,9 +799,9 @@ Players can suggest more through the GitHub issue forms.
   Rewards only (2026-10-31): the earlier "same food gives less" part felt like a penalty on top of the early hunger.
   Teaches kids to farm several crops, fits the Gourmet milestones.
 - Show the stomach level as a small icon next to the hunger bar.
-- **Foods eaten list (2026-11-09 playtest):** it's hard to keep track of which foods you already ate for the Gourmet
-  milestones. Show them somewhere: on the Character tab (e.g. a tooltip on the stomach line, eaten and not yet
-  eaten) or with the perks. The data is already synced (`PlayerProgress` foods).
+- **Foods eaten list (2026-11-09 playtest, decided):** it's hard to keep track of which foods you already ate for the Gourmet
+  milestones. Tooltip on the Character tab's stomach line: foods eaten and how many until the next Gourmet milestone.
+  Never list the foods not eaten yet. The data is already synced (`PlayerProgress` foods).
 
 ### Perks
 - A trail home (to bed/spawn), like the Sense perks.
@@ -1104,6 +1104,12 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Playtest feedback.** Balance feels good; Rank 30 is quite doable in the Overworld, after that progress stalls
   (idea: more exploration milestones, see Ideas). Waypoint XP cost is fine, no change. Avoiding fall damage with Double Jump or
   Ground Pound stays for now and is listed as a Known limitation (to improve later). Ground Pound's strength is fine for now.
+  Confirmed in play: Quick Healing, Deep Reserves, Steady Healing (faster healing, but hunger drops quicker: a good trade), Shockwave, Rank pacing of spawns.
+- 2026-11-09: **Way Back works when bought after the death** (user: nice for kids, who buy it once they need it). Buying it within
+  5 minutes of a death (vanilla's time-since-death stat) starts the trail for the time left, which matches item despawn.
+- 2026-11-09: **Gap after Rank 30: one named milestone per structure**, no "find N structures" counter (named + counter felt
+  double; named ones push you to explore each one). Rewards and the exact list still to decide.
+- 2026-11-09: **Foods eaten list:** show only foods already eaten, never the ones still missing (finding them is the fun).
 
 ## Playtest checklist
 
@@ -1111,6 +1117,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
 - **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
+  2026-11-09: die without the perk, respawn, buy it: the trail starts with the minutes left; buying it 5+ minutes after a death does nothing.
 - **Shared Elite Slayer (2026-10-31, needs two players):** both hit a `/pam elite zombie`. The helper gets the toast, Rank, ½ heart and one shard in their inventory; the killer's drops are unchanged. A second elite gives the helper no extra shard.
 - **Faithful Friend (2026-10-31):** wolf at low health killed by a mob, in lava and by a fall: it teleports to you, sits with hearts around it, message readable. Right-click stands it up. `/kill` kills it. A pet with the owner in another dimension dies as in vanilla.
 - **New perk in level-up message (2026-10-31):** `/pam skill farming 5` shows "New perk: Replant"; long messages fit the action bar.
@@ -1123,11 +1130,6 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   Checked against the Minecraft Wiki advancement guide on 2026-10-31. Still untested tricks: the armor stands in Mob Kabob (the wiki describes it from a
   development version), Star Trader's boat and lead, Two Birds' phantoms in boats, Great View's ender pearl.
 - **Skill perk spread (2026-10-31):** a new world gets a perk from each skill often enough, with no long wait.
-- **Shockwave II/III (2026-10-31):** damage feels right at each tier (5-block fall ~14 / 22), Shockwave III's requirement shows "Melee 50, Rank 25", Double Jump + dive at tier III isn't too strong without a cooldown.
-- **Quick Healing, Deep Reserves (2026-10-31):** half a heart every 3s / 2s, healing continues down to 4 food icons with Deep Reserves and you eat clearly less often, starving damage still every 4s, feels right but not too strong.
-- **Steady Healing (2026-10-31):** hunger clearly drops slower while healing with the perk (Survival list, no missing text).
-- **Rank pacing (2026-10-31):** skeletons (Rank 10) and creepers (Rank 18) no longer arrive before you have iron and a
-  shield; the first nights don't feel empty. Bonus Hearts at Rank 5/10/20 don't make the early game too easy.
 - **Melee skill, slice a (2026-10-26):** XP pace (Melee 10 ≈ 50 zombies?), no XP from spam-clicked weak hits.
   Attack speed noticeable at higher levels (`/pam skill melee 30`): cooldown bar fills faster, also for axes.
   Wide Sweep: other mobs in a sweep clearly take more. Without Careful Sweep a sweep hits your dog (vanilla); with it,
