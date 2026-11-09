@@ -104,7 +104,8 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | Hook | Picks | Check that it's still |
 |---|---|---|
 | `KineticWeaponMixin` (Running Charge) | 1st `Vec3.dot` in `KineticWeapon.damageEntities` | the attacker's speed (`attackerLookVector.dot(getMotion(livingEntity))`) |
-| `FishingHookMixin` (bite speed, Keen Eye) | 1st and 3rd `Mth.nextInt` in `FishingHook.catchingFish` | the wait before a fish swims up, and the reel-in window |
+| `FishingHookMixin` (bite speed, Keen Eye, Sea's Favor) | 1st, 2nd and 3rd `Mth.nextInt` in `FishingHook.catchingFish` | the reel-in window, the swim-up and the wait before a fish swims up |
+| `FishingHookMixin` (Campfire Catch) | the `ItemEntity` created in `FishingHook.retrieve` | must stay after the `fishing_rod_hooked` trigger, or Fish Collector never sees raw fish |
 | `ProjectileWeaponItemMixin` (Thrifty Quiver) | every `EnchantmentHelper.processAmmoUse` in `useAmmo` (one in 26.2); the 2nd `ItemStack` argument of `useAmmo` | a single ammo-count call; the projectile stack |
 | `FoodDataMixin` (Steady Healing) | every `addExhaustion` in `FoodData.tick` (two in 26.2) | only the natural healing costs |
 | `FoodDataMixin` (Quick Healing, Deep Reserves) | 1st constant `80` and the constant `18` in `FoodData.tick` | the healing timer (the 2nd `80` is starving) and the food level for healing without saturation |

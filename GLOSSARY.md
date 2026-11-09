@@ -72,6 +72,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Tier (I, II, III) | `_1`, `_2`, `_3` id suffix | Stronger versions of one perk. Roman numerals in game, a higher tier replaces the lower one. |
 | Category | `PerkCategory` | A tile in the Perks tab: one per skill, plus Defense, Health, Survival, Movement, Exploration. |
 | Group | perk `group` | A heading inside a category (Melee's weapons, Defense's Shield). |
+| Riches find, Message in a Bottle | `Fishing.rollRiches`, config `sunkenRiches` | Sunken Riches perks: an extra item fished up next to the catch. A Message in a Bottle is a riches find that is a map. |
 | Requirement | `Requirement` | What you need first: a Rank, a skill level or a number of mob types. |
 | Prerequisite | `prerequisite` | The perk you must own first (usually the tier below). |
 | Owned, buyable, too expensive, locked | `Perks.Status` | The states of a perk row. |

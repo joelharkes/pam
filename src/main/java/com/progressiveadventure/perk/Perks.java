@@ -80,6 +80,11 @@ public final class Perks {
 	public static final Perk LUCKY = register("lucky", PerkCategory.FISHING, Items.EMERALD, 2, new SkillLevel(Skill.FISHING, 8), null);
 	public static final Perk DOUBLE_CATCH = register("double_catch", PerkCategory.FISHING, Items.COD, 3, new SkillLevel(Skill.FISHING, 15), null);
 	public static final Perk TREASURE_HUNTER = register("treasure_hunter", PerkCategory.FISHING, Items.NAME_TAG, 4, new SkillLevel(Skill.FISHING, 25), null);
+	public static final Perk CAMPFIRE_CATCH = register("campfire_catch", PerkCategory.FISHING, Items.CAMPFIRE, 1, new SkillLevel(Skill.FISHING, 5), null);
+	public static final Perk SUNKEN_RICHES_1 = register("sunken_riches_1", PerkCategory.FISHING, Items.GOLD_INGOT, 2, new SkillLevel(Skill.FISHING, 10), null);
+	public static final Perk SUNKEN_RICHES_2 = register("sunken_riches_2", PerkCategory.FISHING, Items.AMETHYST_SHARD, 3, new SkillLevel(Skill.FISHING, 20), "sunken_riches_1");
+	public static final Perk SUNKEN_RICHES_3 = register("sunken_riches_3", PerkCategory.FISHING, Items.HEART_OF_THE_SEA, 4, new SkillLevel(Skill.FISHING, 35), "sunken_riches_2");
+	public static final Perk SEAS_FAVOR = register("seas_favor", PerkCategory.FISHING, Items.CONDUIT, 3, new SkillLevel(Skill.FISHING, 50), "sunken_riches_1");
 
 	// Melee: grouped by weapon in the perk list (perks without a weapon first)
 	public static final Perk QUICK_STUDY = register("quick_study", PerkCategory.MELEE, "general", Items.WRITABLE_BOOK, 2, new MobTypes(5), null);

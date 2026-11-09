@@ -122,7 +122,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, sword/axe perks), `MeleeMoves` (Ground Pound, Shockwave,
   spear perks), `Targets` (hostile/friendly filters shared by the combat perks),
   `Archery` (arrow/thrown-trident hit xp, draw speed incl. tridents, arrow perks), `Fishing`
-  (catch xp, bite speed, fishing perks; treasure = item tag `fishing_treasure` or enchanted),
+  (catch xp, bite speed, fishing perks incl. Sunken Riches finds from config `sunkenRiches`; treasure = item tag `fishing_treasure` or enchanted),
   `PlacedBlocks` anti-cheese
 - `bestiary/Bestiary`: familiarity tiers → damage multiplier, what each tier unlocks (labels known/familiar/expert/master),
   assist kills (CombatTracker entries via `CombatTrackerAccessor`), Master double loot, collections; `BestiaryInfo`:

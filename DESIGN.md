@@ -4,7 +4,7 @@
 > The pillars describe what is **built**; everything not built yet lives in [Ideas](#ideas).
 
 **Status (2026-10-26):** 0.5.0 released (Modrinth Alpha). All 7 pillars are built: hearts, metabolism,
-Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 116 perks in 10
+Mining/Woodcutting/Digging/Farming/Melee/Archery/Fishing skills, bestiary, mob unlocks, elites + traits, 131 perks in 10
 categories, the Adventure screen and waypoints. Much of it still needs a playtest: see the
 [playtest checklist](#playtest-checklist).
 
@@ -258,9 +258,12 @@ Poison arrows were dropped: zombies and skeletons are immune, so it would look b
 
 ### 3d. Fishing skill
 
-- **XP per catch:** fish 4, junk 2, treasure 10 (catches are slow: Fishing 10 ≈ 100 catches, 25 ≈ 600).
-  Treasure = vanilla's treasure loot: name tag, saddle, nautilus shell, enchanted book (item tag
-  `progressive_adventure:fishing_treasure`) or an enchanted bow/rod. Hooking mobs or items gives nothing.
+- **XP per catch:** fish 4, junk 2, treasure 10 (catches are slow: Fishing 10 ≈ 100 catches, 25 ≈ 600,
+  35 ≈ 1,150, 50 ≈ 2,350). Treasure = vanilla's treasure loot: name tag, saddle, nautilus shell, enchanted book (item tag
+  `progressive_adventure:fishing_treasure`) or an enchanted bow/rod, or a Sunken Riches find. Hooking mobs or items gives nothing.
+- **Pace (computed, not timed; +1.5s per catch to reel in and cast):** vanilla no Lure ~21s per catch, Fishing 50 no
+  Lure ~15s, vanilla Lure III ~8.5s, Fishing 50 + Lure III ~4.5s (the 1–4s swim-up is then the floor), + Sea's Favor
+  ~3s. Rain is ~20% faster. Fishing 50 takes ~5 hours with Lure III, 10+ without.
 - **Passive bonus:** bite speed, **+0% → +60%** with the usual curve. Starts at vanilla (no −20%): waiting is
   already the slow part. The wait before a fish swims up is divided by (1 + bonus), on top of Lure.
 - AFK fish farms count (the player holds the rod), see Non-goals.
@@ -270,11 +273,25 @@ Poison arrows were dropped: zombies and skeletons are immune, so it would look b
 | Keen Eye | A bell rings when a fish bites; +1s (20 ticks) to reel in (vanilla 1–2s) | Fishing 3 | 1 |
 | Lucky | +2 luck (vanilla attribute, like Luck of the Sea II): more treasure, less junk | Fishing 8 | 2 |
 | Double Catch | 25% chance a fish catch gives the fish twice | Fishing 15 | 3 |
-| Treasure Hunter | Treasure can be caught without open water (small ponds) | Fishing 25 | 4 |
+| Treasure Hunter | Treasure can be caught without open water (small ponds); also riches finds | Fishing 25 | 4 |
+| Campfire Catch | Cod and salmon come out cooked | Fishing 5 | 1 |
+| Sunken Riches I | 8% of catches in open water add a riches find: iron, emeralds, gold, Bottles o' Enchanting, glow ink | Fishing 10 | 2 |
+| Sunken Riches II | Adds amethyst, Message in a Bottle (map), diamond, Waypoint Shard, music disc | Fishing 20, Riches I | 3 |
+| Sunken Riches III | Adds Heart of the Sea, 4 trim templates (coast, tide, wild, wayfinder), enchanted golden apple | Fishing 35, Riches II | 4 |
+| Sea's Favor | Riches chance 8% → 15%; fish swim up to the hook in half the time | Fishing 50, Riches I | 3 |
 
-Implementation: `FishingHookMixin` changes the wait and the reel window (`Mth.nextInt` calls in
-`catchingFish`), the caught items (`retrieve`, before the advancement trigger, so Double Catch fish count)
-and `isOpenWaterFishing` (Treasure Hunter). Campfire Catch (cooked fish) stays an idea, with auto-smelt for Mining.
+**Sunken Riches:** the list is `sunkenRiches` in config (item id, `#tag` for a random item of a tag, or `map`; tier,
+weight, count). A find picks by weight among the entries of the tiers owned, so the common things stay common
+and the best ones rare (Riches III: Heart of the Sea ~1.7% of finds). A find is an extra item next to the catch, gives
+treasure xp (10), counts as treasure for Sunken Treasure, plays a chime and shows "Sunken riches: Diamond!". Same open-water
+rule as treasure, so Treasure Hunter covers it too (AFK farms in small pools get none without it).
+**Message in a Bottle** = a map picked like elite maps at the player's Rank (buried treasure from Rank 15, mansions
+from 70); with no structure in range, one other entry gets a try.
+
+Implementation: `FishingHookMixin` changes the wait, the swim-up (Sea's Favor) and the reel window (`Mth.nextInt` calls in
+`catchingFish`), the caught items (`retrieve`, before the advancement trigger, so Double Catch fish and riches count),
+`isOpenWaterFishing` (Treasure Hunter) and the dropped item stacks (`ItemEntity` in `retrieve`, after the trigger:
+Campfire Catch, so Fish Collector still sees raw cod and salmon).
 
 ### 3e. Melee skill
 
@@ -528,7 +545,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
 - Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09). Buying all
-  126 perks costs **303**, so early on you choose and owning everything is out of reach until more milestones
+  131 perks costs **316**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
 
@@ -658,7 +675,7 @@ Elites drop **Waypoint Shards**; shards turn on **Waypoint Stones**; you travel 
 for XP. Rewards fighting elites and exploring far away, and leaves a visible network of
 places you've been.
 
-- **Shards:** only from elites, player kills only. Chance 25% → 50% at Rank 100 (×1.5 for
+- **Shards:** from elites, player kills only (and rarely as a Sunken Riches II find, see 3d). Chance 25% → 50% at Rank 100 (×1.5 for
   trait elites). The **first elite a player kills always drops one** (checked via the Elite
   Slayer milestone, no extra data). A helper who gets the milestone that way also gets their one
   guaranteed shard, straight into their inventory. Random shard drops stay one roll per elite.
@@ -825,8 +842,9 @@ it's new); when it gets built, move its description into the pillars above and l
 Players can suggest more through the GitHub issue forms.
 
 ### New skills
-- **Campfire Catch / Auto-smelt (2026-10-26):** fish come out cooked; a matching Mining perk that smelts ores.
-  Left out of Fishing for now.
+- **Auto-smelt (2026-10-26):** a Mining perk that smelts ores (Campfire Catch for fish was built 2026-11-09).
+- **Lava Fishing (2026-11-09):** a late Fishing perk to fish in lava in the Nether (magma cream, quartz, gold nuggets,
+  blaze rods, rarely netherite scrap). The hook has to survive lava and wait for bites there: the most work, so later.
 
 ### Milestones and Rank
 - **Rank 30 gap (2026-11-09 playtest):** Rank 30 comes at a good pace in the Overworld, then progress
@@ -834,7 +852,7 @@ Players can suggest more through the GitHub issue forms.
   them. Watch in longer play whether more is needed.
 - More milestones: raise a shield, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
-- More advancements in general = more Rank and perk points (perks cost 303 of ~255 Rank today).
+- More advancements in general = more Rank and perk points (perks cost 316 of ~255 Rank today).
 - **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
   one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
   (Guardian, Feed a Friend). Limits from the user: a solo player must not see things they can't unlock, and playing alone
@@ -1211,10 +1229,19 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **"Elite" everywhere** in game text instead of "Tough" (mob names "Elite Zombie", bestiary section "Elites"),
   so it matches Elite Slayer and the perk Tough Hide no longer clashes. Elite names are translated when shown, so existing
   elites change too. The Rank tooltip keeps "normal / goal / challenge" (vanilla's "task" is never shown to players).
+- 2026-11-09: **Fishing perks round 2:** Campfire Catch (Fishing 5), Sunken Riches I/II/III (10/20/35) and Sea's Favor
+  (50), see 3d. The user wanted treasure split into tiers so rare great things are possible while something special
+  still comes often. Riches follow the open-water rule (Treasure Hunter covers them), 8% → 15% with Sea's Favor, which
+  also halves the swim-up (beats the Lure III floor). A find gives treasure xp. Messages in a bottle use elite map rank
+  rules. Waypoint Shards are now also a rare riches find (no longer elites only). Lava Fishing went to Ideas.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Fishing perks round 2 (2026-11-09):** test with `/pam skill fishing 50`. Campfire Catch gives cooked cod/salmon
+  and Fish Collector still counts raw ones; Sunken Riches finds (about 1 in 12 catches in open water, none in a small
+  pond without Treasure Hunter) with chime and message; a Message in a Bottle map leads somewhere; Sea's Favor bites
+  feel faster. Does 8% feel special but not too often?
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
 - **Explorer's Journal (2026-11-09), still to check:** (confirmed: the map, drawing, the map in your hand, ink cost, the

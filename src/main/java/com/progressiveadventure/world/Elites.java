@@ -293,8 +293,8 @@ public final class Elites {
 		}
 	}
 
-	/** Picks a map type by weight; when its structure isn't in range, one other type gets a try. */
-	private static ItemStack rollMap(ServerLevel level, BlockPos pos, int rank, RandomSource random) {
+	/** Picks a map type by weight; when its structure isn't in range, one other type gets a try. Also Message in a Bottle. */
+	public static ItemStack rollMap(ServerLevel level, BlockPos pos, int rank, RandomSource random) {
 		PamConfig config = PamConfig.get();
 		List<PamConfig.EliteMapDrop> options = new ArrayList<>(config.eliteMaps.stream()
 				.filter(drop -> rank >= drop.rank() && drop.weight() > 0 && EliteMap.byId(drop.map()) != null).toList());

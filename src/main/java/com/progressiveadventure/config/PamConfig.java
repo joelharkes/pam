@@ -197,6 +197,30 @@ public class PamConfig {
 	public double luckyLuck = 2.0;
 	// Double Catch: chance that a fish catch gives the fish twice
 	public double doubleCatchChance = 0.25;
+	// Sunken Riches: chance per catch (open water, or anywhere with Treasure Hunter) of an extra find from the riches
+	// list; Sea's Favor raises it and multiplies the time a fish takes to swim up to the hook (vanilla 1-4s)
+	public double sunkenRichesChance = 0.08;
+	public double seasFavorRichesChance = 0.15;
+	public double seasFavorSwimUpMultiplier = 0.5;
+	// The riches list: each find picks by weight among the entries of the tiers owned. Item id, "#" + item tag
+	// (a random item of the tag), or "map" (Message in a Bottle: a map picked like elite maps, at the player's rank)
+	public List<RichesDrop> sunkenRiches = List.of(
+			new RichesDrop("minecraft:iron_ingot", 1, 20, 2, 4),
+			new RichesDrop("minecraft:emerald", 1, 20, 1, 3),
+			new RichesDrop("minecraft:gold_ingot", 1, 15, 1, 3),
+			new RichesDrop("minecraft:experience_bottle", 1, 15, 1, 3),
+			new RichesDrop("minecraft:glow_ink_sac", 1, 10, 1, 2),
+			new RichesDrop("minecraft:amethyst_shard", 2, 10, 2, 4),
+			new RichesDrop("map", 2, 6, 1, 1),
+			new RichesDrop("minecraft:diamond", 2, 6, 1, 1),
+			new RichesDrop("progressive_adventure:waypoint_shard", 2, 4, 1, 1),
+			new RichesDrop("#minecraft:creeper_drop_music_discs", 2, 4, 1, 1),
+			new RichesDrop("minecraft:heart_of_the_sea", 3, 2, 1, 1),
+			new RichesDrop("minecraft:coast_armor_trim_smithing_template", 3, 1, 1, 1),
+			new RichesDrop("minecraft:tide_armor_trim_smithing_template", 3, 1, 1, 1),
+			new RichesDrop("minecraft:wild_armor_trim_smithing_template", 3, 1, 1, 1),
+			new RichesDrop("minecraft:wayfinder_armor_trim_smithing_template", 3, 1, 1, 1),
+			new RichesDrop("minecraft:enchanted_golden_apple", 3, 1, 1, 1));
 	// Defense perks: share of damage taken away, by tier
 	public List<Double> guardDamageReductions = List.of(0.15, 0.30);
 	public List<Double> toughHideDamageReductions = List.of(0.10, 0.20);
@@ -355,6 +379,9 @@ public class PamConfig {
 	}
 
 	public record EliteMapDrop(String map, int rank, int weight) {
+	}
+
+	public record RichesDrop(String item, int tier, int weight, int min, int max) {
 	}
 
 	public static PamConfig get() {
