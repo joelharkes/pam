@@ -6,6 +6,9 @@ something new; add the term when you build it.
 - **In game** is what players read (lang file). Simple English, for kids.
 - **In code** is the class, field or id. It may differ from the in-game word (see the notes).
 - Minecraft's own words win: when vanilla already has a name for something, use that one and don't invent a synonym.
+- **Capitals in game text:** our terms are written lowercase in a sentence ("at a higher rank", "your adventure
+  rank"), with only the first letter capital at the start of a sentence or label ("Adventure rank: 12", "Rank 10").
+  Names of things you can hold or place stay capitalised (Waypoint Stone), like vanilla items.
 
 ## Minecraft terms (vanilla)
 
@@ -13,7 +16,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 
 | In game | In code | Meaning |
 |---|---|---|
-| Advancement | `AdvancementHolder`, `advancement/*.json` | Vanilla's goal system (the L screen). Ours are advancements too, in our own tab. |
+| Advancement | `AdvancementHolder`, `advancement/*.json` | Vanilla's goal system (the L screen). Ours are advancements too, in our own tab. Never "achievement" in game text. |
 | Advancement tab | root advancement (`root.json`) | One tree in the L screen: Minecraft, Nether, The End, Adventure, Husbandry, and ours. |
 | Task / Goal / Challenge | `AdvancementType` (`frame` in JSON) | The three kinds of advancement (round, rounded, spiky frame). Worth 1 / 2 / 3 Rank. |
 | Criterion | `criteria` | One condition of an advancement. Code-driven ones have one `minecraft:impossible` criterion named `granted`. |
@@ -41,7 +44,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 
 | In game | In code | Meaning |
 |---|---|---|
-| Adventure Rank, Rank | `ProgressionSnapshot.rank`, `Progression` | Sum of all completed advancements: task 1, goal 2, challenge 3. Always capital **R**. Derived, never stored. |
+| adventure rank, rank | `ProgressionSnapshot.rank`, `Progression` | Sum of all completed advancements: task 1, goal 2, challenge 3. Lowercase in a sentence (see Capitals above). Derived, never stored. Docs for us (DESIGN.md, CLAUDE.md) may write Rank. |
 | Perk points | `Perks.pointsAvailable` | Rank minus the cost of the perks you own. "N perk points", not "skill points". |
 | Milestone | `Milestones` entry with a reward | An advancement that gives hearts or a stomach upgrade. Ours (our tab) or vanilla ones in `Milestones.VANILLA`. Its description ends in "Reward: ...". |
 | Reward | lang "Reward: ..." line | What a milestone gives: "+½ heart", "+1 heart", "stomach upgrade". |
@@ -49,7 +52,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Bonus heart | Bonus Heart perk | A heart from a perk, on top of milestone hearts (ignores the heart cap). |
 | Heart cap | config | The most hearts milestones can give. |
 | Adventure screen | `AdventureScreen` | The K screen, with the tabs Character, Perks, Bestiary, Achievements. |
-| Achievements tab | `AchievementsTab`, `Achievements` | Our list of every advancement with progress and tips. "Achievement" is only the tab's name, see the open questions. |
+| Advancements tab | `AchievementsTab`, `Achievements` | Our list of every advancement with progress and tips. The code (and older docs) still say "achievements"; game text says advancements. Our own tab's heading there is "Progressive Adventure". |
 | Tip, free tip | `BuyTipPayload`, lang `...tip.<id>.<n>` | A hint for an advancement, bought with XP (free once it's done). The Free tip button shows a tip of the day. |
 
 ### Skills
@@ -84,7 +87,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Familiarity | `FamiliarityTier` | How well you know a mob, from kills: Unknown, Unfamiliar, Known, Familiar, Expert, Master. Gives a damage bonus against it. |
 | Kills | `PlayerProgress` kills | Mobs you defeated, per type. In descriptions say "defeat". "kill" is fine in short labels. |
 | Assist kill | `assistKills` | A kill that counts for everyone who hit the mob, not only the last hit. Not shown by name in game. |
-| Mob types | kill count per `EntityType` | How many different mobs you defeated. In game text: "kinds of mobs" / "mob types" (see the open questions). |
+| Mob types | kill count per `EntityType` | How many different mobs you defeated: "Defeat 5 different mob types". Not "kinds of mobs". |
 | Collection | `Bestiary.Collection` | A set of mobs (Night Watch, Ocean Deep, Raiders...); defeating all gives an advancement. |
 | Mob unlock, "appears from Rank N" | `MobUnlocks` | A hostile mob only spawns naturally once the lowest Rank nearby is high enough. Chat: "New danger". |
 | Tough mob (in game), elite (in code) | `Elites`, `ELITE_RANK` | A rare stronger mob with better gear, XP and loot, named "Tough Zombie". |
@@ -119,12 +122,4 @@ Places where we don't use one word consistently yet. Decide, fix, then remove th
 1. **Elite vs Tough.** Code and docs say elite; game text says "Tough monster" and "Tough ones", but the milestone is
    called **Elite Slayer**. The perk Tough Hide also uses "Tough" for something else. Suggestion: "Tough" everywhere in
    game text (rename Elite Slayer, e.g. "Tough Fight"), "elite" stays in code and docs.
-2. **Milestone.** In code, `Milestones` also holds advancements with no reward (collections, structure finds), and
-   the Achievements tab calls our whole tab "Milestones". By the definition above only rewarding ones are milestones.
-   Suggestion: rename the tab heading to "Progressive Adventure"; the code name can stay.
-3. **Achievement vs advancement.** Our tab is "Achievements", the Rank tooltips say "advancement", the vanilla screen
-   says "Advancements". Suggestion: pick one word for all our game text.
-4. **"normal" vs "task".** The Rank tooltip says "normal +1, goal +2, challenge +3"; vanilla calls it a task.
-5. **"kinds of mobs" vs "mob types".** Milestone descriptions say "kinds of mobs", the Character tab and perk
-   requirements say "mob types".
-6. **"rank" in lowercase** in the Rank tooltip ("raises your rank").
+2. **"normal" vs "task".** The Rank tooltip says "normal +1, goal +2, challenge +3"; vanilla calls it a task.

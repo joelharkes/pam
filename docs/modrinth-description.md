@@ -18,7 +18,7 @@ always shown on screen so it's clear what you've done and what's next.
 You start with **5 hearts**. Milestones give you more, up to **20 hearts**. Your first night,
 your first new food, finding a village, beating the Wither: **49 milestones** in total. 29 are
 in PAM's own **Adventure** advancement tab, and 20 are vanilla advancements that now give a reward too.
-The Adventure tab also has an achievement for each kind of structure you can find, from mineshafts
+The Adventure tab also has an advancement for each kind of structure you can find, from mineshafts
 to woodland mansions.
 
 ![Milestone toast](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/advancement_first_bite.jpg)
@@ -35,8 +35,8 @@ bow draws and faster bites.
 
 ![Woodcutting level up](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/woodcutting_level_1.jpg)
 
-### Adventure Rank and perks
-Every advancement raises your **Adventure Rank**, and every Rank is a **perk point**. Spend them
+### Adventure rank and perks
+Every advancement raises your **adventure rank**, and every rank is a **perk point**. Spend them
 on **121 perks** in 12 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
@@ -50,7 +50,7 @@ Press **K** to open the Adventure screen.
 Every mob type you defeat goes in your bestiary. The more of a mob you've beaten, the more
 damage you deal to it. Click a mob to open its page: where to find it, and as you get to know it
 better its stats and a tip, what it drops, and at Master a chance of double loot. Collect sets of
-mobs (night monsters, Nether, End, raiders, ocean) for extra Adventure Rank. When friends fight a
+mobs (night monsters, Nether, End, raiders, ocean) for extra adventure rank. When friends fight a
 mob together, everyone who hit it gets the kill in their bestiary. On an elite, they also get the
 Elite Slayer milestone and, the first time, a Waypoint Shard.
 
@@ -59,14 +59,14 @@ Elite Slayer milestone and, the first time, a Waypoint Shard.
 
 ### The world opens up as you grow
 On your first night only zombies come out. Skeletons, creepers, spiders, endermen and the rest
-unlock as your Adventure Rank goes up, and you get a chat message when a new mob type can
+unlock as your adventure rank goes up, and you get a chat message when a new mob type can
 appear. Later on, mobs start wearing gear, and rare **elite** mobs show up: bigger and tougher,
 with special traits and better loot. Some elites drop a treasure or explorer map.
 
 ![Tough Zombie elite](https://raw.githubusercontent.com/joelharkes/pam/main/docs/screenshots/tough_zombie.jpg)
 
-### Achievements and tips
-The Adventure screen shows every achievement in one grid, so you can see what's left. Stuck on one? Buy a tip with
+### Advancements and tips
+The Adventure screen shows every advancement in one grid, so you can see what's left. Stuck on one? Buy a tip with
 a bit of XP, or read the free tip of the day.
 
 ### Waypoints

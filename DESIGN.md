@@ -1133,6 +1133,11 @@ Players can suggest more through the GitHub issue forms.
   16), name as a heading and tooltip, gold dot where a perk can be bought. **Survival split** into Health and Survival;
   **Exploration** category for Pathfinder and later the Atlas perks. Perk ids don't change, so nobody loses a perk.
 - 2026-11-09: **Perks tab icon grid confirmed** in the user's playtest ("the perks and icons look really good").
+- 2026-11-09: **Naming ([GLOSSARY.md](GLOSSARY.md)).** Game text says **advancements** (like vanilla), never achievements: the
+  Adventure screen tab is now "Advancements" (code keeps `Achievements*`). Our group heading there is "Progressive Adventure"
+  instead of "Milestones" (many of ours give no reward). "Mob types", not "kinds of mobs". **rank is lowercase** in game text,
+  capital only at the start of a sentence or label ("Adventure rank: 12", "Spiders appear from rank 20"); README and the
+  Modrinth text follow. Still open: elite vs Tough, "normal" vs "task".
 
 ## Playtest checklist
 
