@@ -1171,6 +1171,8 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
   item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
   replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
+- 2026-11-09: **Journal recipe stays book + empty map + ink sac** (user: the compass and map make it a bit hard to get,
+  but not too hard, which helps). Our recipes now show in the recipe book (recipe unlock advancements, no Rank).
 - 2026-11-09: **Explorer's Journal slices 2 and 3 built** (user: "build slice 2 and 3, then I test the full package").
   Choices made without asking, to check in the playtest: markers are shared like the map (only the owner or an op
   removes one), 50 per player, only on drawn land, 9 vanilla icons; bed and last death are personal markers; hover shows
