@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/quick_hands",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:mace"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.shockwave_combo.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.shockwave_combo.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/right_back_at_you",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:arrow"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.payback.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.payback.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

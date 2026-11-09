@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/payback",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:spectral_arrow"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.arrow_wall.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.arrow_wall.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

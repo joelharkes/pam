@@ -95,6 +95,15 @@ public final class Milestones {
 	public static final Milestone NOT_A_SCRATCH = pam("challenges/not_a_scratch", 0, 0);
 	public static final Milestone SAFE_AND_SOUND = pam("challenges/safe_and_sound", 0, 0);
 	public static final Milestone PERFECT_PARRY = pam("challenges/perfect_parry", 0, 0);
+	public static final Milestone RIGHT_BACK_AT_YOU = pam("challenges/right_back_at_you", 0, 0);
+	public static final Milestone PAYBACK = pam("challenges/payback", 0, 0);
+	public static final Milestone ARROW_WALL = pam("challenges/arrow_wall", 0, 0);
+	public static final Milestone BARE_KNUCKLES = pam("challenges/bare_knuckles", 0, 0);
+	public static final Milestone TWO_FOR_ONE = pam("challenges/two_for_one", 0, 0);
+	public static final Milestone QUICK_HANDS = pam("challenges/quick_hands", 0, 0);
+	public static final Milestone SHOCKWAVE_COMBO = pam("challenges/shockwave_combo", 0, 0);
+	public static final Milestone TRICK_SHOT = pam("challenges/trick_shot", 0, 0);
+	public static final Milestone SKEWERED = pam("challenges/skewered", 0, 0);
 
 	// Skills tab: rank only, like the collections. Per skill "skills/<skill>_<level>" at SKILL_LEVELS, see skillLevel.
 	public static final Milestone ALL_SKILLS_10 = pam("skills/all_10", 0, 0);

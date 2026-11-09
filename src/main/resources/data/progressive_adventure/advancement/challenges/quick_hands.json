@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/two_for_one",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_sword"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.quick_hands.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.quick_hands.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -1,5 +1,6 @@
 package com.progressiveadventure.skill;
 
+import com.progressiveadventure.challenge.Challenges;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.perk.Perks;
 
@@ -131,13 +132,17 @@ public final class MeleeMoves {
 		float damage = (float) ((player.getAttributeValue(Attributes.ATTACK_DAMAGE) + bonus)
 				* PamConfig.listValue(PamConfig.get().shockwaveDamageRatios, tier - 1));
 		shockwaving = true; // never set off another shockwave from the shockwave's own hits
+		int hits = except instanceof Mob ? 1 : 0;
 		try {
 			for (Mob mob : hostileMobsAround(player, except, center)) {
-				mob.hurtServer(level, player.damageSources().playerAttack(player), damage);
+				if (mob.hurtServer(level, player.damageSources().playerAttack(player), damage)) {
+					hits++;
+				}
 			}
 		} finally {
 			shockwaving = false;
 		}
+		Challenges.onShockwave(player, hits);
 	}
 
 	/** Vanilla's extra mace smash damage for a fall (MaceItem.getAttackDamageBonus, without enchantments). */

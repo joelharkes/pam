@@ -97,6 +97,7 @@ public final class ShieldPerks {
 		arrow.setOwner(player);
 		arrow.setDeltaMovement(aim.scale(speed));
 		arrow.needsSync = true;
+		Challenges.onDeflect(player, arrow, shooter);
 	}
 
 	/** Shield Bash: the client saw an attack click while blocking. Pushes hostile mobs in front of the player away. */

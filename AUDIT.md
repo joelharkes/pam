@@ -139,6 +139,8 @@ server (`runServer`) and client, then re-read the vanilla code marked "re-read".
 | `JournalClient.mapRotation` | the player rotation in `MapItemSavedData` (16 steps) |
 | `Challenges` (Nailed the Landing) | fall damage is dealt before the landing tick is seen (so it spoils the fall); top fall speed under 5 blocks per tick (more = teleport) |
 | `Challenges` (Ghost, Untouchable) | night = `isDarkOutside()` (when beds work, about 545 s), Ghost needs 400 s of it |
+| `Challenges.onKill` (Two for One) | a sword's sweep kills land in the same tick as the main hit (`Player.attack`) |
+| `Challenges.beforeDeath` (Bare Knuckles) | Fabric's `ALLOW_DEATH` runs before `die()`, so vanilla's kill triggers haven't fired yet |
 | `Trackers.trackWalking` | the on-foot `*_ONE_CM` statistics (a new way to walk would need adding) |
 | `EliteMap` | `ExplorationMapFunction` steps, and the structure tags, decorations, zoom and names in vanilla's loot tables and cartographer trades |
 

@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/perfect_parry",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:skeleton_skull"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.right_back_at_you.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.right_back_at_you.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

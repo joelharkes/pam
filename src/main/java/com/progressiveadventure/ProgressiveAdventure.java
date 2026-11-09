@@ -93,12 +93,16 @@ public class ProgressiveAdventure implements ModInitializer {
 			}
 		});
 
+		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
+			Challenges.beforeDeath(entity, source);
+			return true;
+		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof ServerPlayer player) {
 				Trackers.onDeath(player);
-				Challenges.onPlayerHurt(player);
+				Challenges.onPlayerHurt(player, source);
 			} else if (source.getEntity() instanceof ServerPlayer player) {
-				Challenges.onKill(player, entity);
+				Challenges.onKill(player, entity, source);
 				Bestiary.onKill(player, entity, source);
 				PerkEffects.onKill(player, entity);
 				Archery.onKill(entity, source);
@@ -113,7 +117,7 @@ public class ProgressiveAdventure implements ModInitializer {
 				PerkEffects.onDamaged(player);
 				if (damageTaken > 0) {
 					Waypoints.onDamaged(player);
-					Challenges.onPlayerHurt(player);
+					Challenges.onPlayerHurt(player, source);
 				}
 			}
 			if (source.getEntity() instanceof ServerPlayer attacker && attacker != entity) {

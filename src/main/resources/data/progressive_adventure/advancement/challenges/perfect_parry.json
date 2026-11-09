@@ -1,5 +1,5 @@
 {
-  "parent": "progressive_adventure:challenges/comeback",
+  "parent": "progressive_adventure:challenges/root",
   "criteria": {
     "granted": {
       "trigger": "minecraft:impossible"

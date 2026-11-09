@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/sharpshooter",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:crossbow"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.skewered.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.skewered.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

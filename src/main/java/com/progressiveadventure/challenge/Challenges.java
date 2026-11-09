@@ -5,6 +5,7 @@ import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.world.Elites;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -15,20 +16,28 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.Difficulty;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +47,8 @@ import java.util.WeakHashMap;
 
 /**
  * The Challenges tab: advancements for doing something well rather than often. Progress is per player and in memory
- * (a night, a fall, a streak), except creepers defused and attacks parried, statistics so they survive logging out.
+ * (a night, a fall, a streak), except the counts over any time (creepers defused, attacks parried, deflected kills): those
+ * are statistics, so they survive logging out.
  */
 public final class Challenges {
 	private static final int UNTOUCHABLE_KILLS = 10;
@@ -48,6 +58,12 @@ public final class Challenges {
 	private static final int DEFUSED_CREEPERS = 5;
 	private static final int SHARPSHOOTER_HITS = 10;
 	private static final int PERFECT_PARRIES = 25;
+	private static final int ARROW_WALL_DEFLECTS = 5;
+	private static final int PAYBACK_KILLS = 10;
+	private static final int QUICK_HANDS_KILLS = 5;
+	private static final int QUICK_HANDS_TICKS = 10 * 20;
+	private static final int SKEWERED_HITS = 3;
+	private static final int SHOCKWAVE_COMBO_HITS = 3;
 	/** Seconds outside, of the roughly 545 a night lasts (dark = when beds work): sleeping through it or joining late doesn't count. */
 	private static final int GHOST_SECONDS = 400;
 	/** Sky light at the feet from this level counts as outside: open sky gives 15, under a roof it drops off fast. */
@@ -55,10 +71,14 @@ public final class Challenges {
 
 	public static final Identifier CREEPERS_DEFUSED = ProgressiveAdventure.id("creepers_defused");
 	public static final Identifier ATTACKS_PARRIED = ProgressiveAdventure.id("attacks_parried");
+	public static final Identifier DEFLECTED_KILLS = ProgressiveAdventure.id("deflected_kills");
+	private static final Identifier FIRST_KILL_ADVANCEMENT = Identifier.withDefaultNamespace("adventure/kill_a_mob");
 
 	private static final Map<UUID, State> STATES = new HashMap<>();
-	/** Arrows that hit a mob: a piercing arrow landing in the ground afterwards isn't a miss. */
-	private static final Set<AbstractArrow> HIT_ARROWS = Collections.newSetFromMap(new WeakHashMap<>());
+	/** Mobs each arrow hit (Skewered); an arrow that hit one landing in the ground afterwards isn't a miss. */
+	private static final Map<AbstractArrow, Integer> ARROW_HITS = new WeakHashMap<>();
+	/** Deflected arrows and who shot them first: Deflect makes the player the owner. */
+	private static final Map<AbstractArrow, UUID> DEFLECTED = new WeakHashMap<>();
 	/** Raids where a villager died. Forgotten on restart (raids are loaded as new objects), which only makes it easier. */
 	private static final Set<Raid> VILLAGER_DIED = Collections.newSetFromMap(new WeakHashMap<>());
 	private static boolean wasDark;
@@ -75,6 +95,13 @@ public final class Challenges {
 		double lastY;
 		ResourceKey<Level> lastLevel;
 		int arrowStreak;
+		int deflectStreak;
+		/** Server ticks of recent monster kills (Quick Hands). */
+		final Deque<Integer> killTicks = new ArrayDeque<>();
+		int sweepTick = -1;
+		int sweepKills;
+		/** Set just before a death this player caused, when they had never defeated a monster before. */
+		boolean firstKill;
 		/** Ender Dragons and Withers this player hit, and whether they've been unhurt since their first hit. */
 		final Map<UUID, Boolean> bosses = new HashMap<>();
 	}
@@ -83,7 +110,7 @@ public final class Challenges {
 	}
 
 	public static void init() {
-		for (Identifier stat : List.of(CREEPERS_DEFUSED, ATTACKS_PARRIED)) {
+		for (Identifier stat : List.of(CREEPERS_DEFUSED, ATTACKS_PARRIED, DEFLECTED_KILLS)) {
 			Registry.register(BuiltInRegistries.CUSTOM_STAT, stat, stat);
 			Stats.CUSTOM.get(stat, StatFormatter.DEFAULT);
 		}
@@ -180,9 +207,12 @@ public final class Challenges {
 	}
 
 	/** Damage that got through (or death). Fall damage arrives before the landing is seen, so it spoils the fall. */
-	public static void onPlayerHurt(ServerPlayer player) {
+	public static void onPlayerHurt(ServerPlayer player, DamageSource source) {
 		State state = state(player);
 		state.fallSpoiled = true;
+		if (source.getDirectEntity() instanceof AbstractArrow) {
+			state.deflectStreak = 0;
+		}
 		if (isNight(player)) {
 			state.hurtTonight = true;
 			state.ghostFailed = true;
@@ -201,12 +231,60 @@ public final class Challenges {
 		}
 	}
 
-	public static void onKill(ServerPlayer player, LivingEntity victim) {
+	/**
+	 * Just before a death (before vanilla's kill triggers): remembers whether this is the player's first monster ever,
+	 * so Bare Knuckles never unlocks together with vanilla's Monster Hunter.
+	 */
+	public static void beforeDeath(LivingEntity entity, DamageSource source) {
+		if (source.getEntity() instanceof ServerPlayer player && entity instanceof Enemy) {
+			AdvancementHolder firstKill = player.level().getServer().getAdvancements().get(FIRST_KILL_ADVANCEMENT);
+			state(player).firstKill = firstKill != null && !player.getAdvancements().getOrStartProgress(firstKill).isDone();
+		}
+	}
+
+	public static void onKill(ServerPlayer player, LivingEntity victim, DamageSource source) {
 		onAttack(player, victim);
+		State state = state(player);
+		boolean firstKill = state.firstKill;
+		state.firstKill = false;
 		if (!canEarn(player) || !(victim instanceof Enemy)) {
 			return;
 		}
-		State state = state(player);
+		int tick = player.level().getServer().getTickCount();
+		boolean melee = source.getDirectEntity() == player;
+		if (melee && player.getMainHandItem().isEmpty() && victim instanceof Zombie && !firstKill) {
+			Milestones.grant(player, Milestones.BARE_KNUCKLES);
+		}
+		// A sweep hits every mob in the same attack, so its kills land in the same tick
+		if (melee && player.getMainHandItem().is(ItemTags.SWORDS)) {
+			state.sweepKills = state.sweepTick == tick ? state.sweepKills + 1 : 1;
+			state.sweepTick = tick;
+			if (state.sweepKills >= 2) {
+				Milestones.grant(player, Milestones.TWO_FOR_ONE);
+			}
+		}
+		state.killTicks.addLast(tick);
+		while (tick - state.killTicks.getFirst() > QUICK_HANDS_TICKS) {
+			state.killTicks.removeFirst();
+		}
+		if (state.killTicks.size() >= QUICK_HANDS_KILLS) {
+			Milestones.grant(player, Milestones.QUICK_HANDS);
+		}
+		if (source.getDirectEntity() instanceof AbstractArrow arrow) {
+			if (victim instanceof Phantom || victim instanceof Blaze || victim instanceof Ghast) {
+				Milestones.grant(player, Milestones.TRICK_SHOT);
+			}
+			UUID shooter = DEFLECTED.get(arrow);
+			if (shooter != null) {
+				if (shooter.equals(victim.getUUID())) {
+					Milestones.grant(player, Milestones.RIGHT_BACK_AT_YOU);
+				}
+				player.awardStat(DEFLECTED_KILLS);
+				if (player.getStats().getValue(Stats.CUSTOM.get(DEFLECTED_KILLS)) >= PAYBACK_KILLS) {
+					Milestones.grant(player, Milestones.PAYBACK);
+				}
+			}
+		}
 		if (player.getHealth() <= 2) {
 			Milestones.grant(player, Milestones.COMEBACK);
 		}
@@ -268,8 +346,25 @@ public final class Challenges {
 		}
 	}
 
+	/** From ShieldPerks, when Deflect sends an arrow back at its shooter. */
+	public static void onDeflect(ServerPlayer player, AbstractArrow arrow, LivingEntity shooter) {
+		DEFLECTED.put(arrow, shooter.getUUID());
+		if (canEarn(player) && ++state(player).deflectStreak >= ARROW_WALL_DEFLECTS) {
+			Milestones.grant(player, Milestones.ARROW_WALL);
+		}
+	}
+
+	/** From MeleeMoves: mobs hurt by one mace smash, counting the one it landed on. */
+	public static void onShockwave(ServerPlayer player, int hits) {
+		if (hits >= SHOCKWAVE_COMBO_HITS && canEarn(player)) {
+			Milestones.grant(player, Milestones.SHOCKWAVE_COMBO);
+		}
+	}
+
 	public static void onArrowHit(ServerPlayer player, AbstractArrow arrow) {
-		HIT_ARROWS.add(arrow);
+		if (ARROW_HITS.merge(arrow, 1, Integer::sum) >= SKEWERED_HITS) {
+			Milestones.grant(player, Milestones.SKEWERED);
+		}
 		if (++state(player).arrowStreak >= SHARPSHOOTER_HITS) {
 			Milestones.grant(player, Milestones.SHARPSHOOTER);
 		}
@@ -277,7 +372,7 @@ public final class Challenges {
 
 	/** From AbstractArrowMixin. Ricochet's extra arrows don't count: the player didn't aim them. */
 	public static void onArrowHitBlock(AbstractArrow arrow) {
-		if (arrow.getOwner() instanceof ServerPlayer player && !HIT_ARROWS.contains(arrow)
+		if (arrow.getOwner() instanceof ServerPlayer player && !ARROW_HITS.containsKey(arrow)
 				&& !arrow.hasAttached(PamAttachments.RICOCHET_ARROW)) {
 			state(player).arrowStreak = 0;
 		}

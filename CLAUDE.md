@@ -146,7 +146,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
   `Cooldown` (per-player perk cooldowns, cleared on server stop), `DeathPerks` (Keepsake, Way Back trail, Faithful Friend)
 - `challenge/Challenges`: Challenges tab (per-player state in memory: a night, a fall, an arrow streak, boss fights;
-  creepers defused and attacks parried are custom statistics registered in `init`)
+  counts over any time (creepers defused, attacks parried, deflected kills) are custom statistics registered in `init`)
 - `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`, `JournalMapRequestPayload`, `JournalMarkerEditPayload`; S2C `JournalMapPayload`, `JournalMarkersPayload`, `OpenWaypointNamePayload`,

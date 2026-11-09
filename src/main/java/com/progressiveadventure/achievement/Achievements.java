@@ -65,9 +65,9 @@ public final class Achievements {
 			"hunter/raiders", "hunter/ocean_deep", "hunter/nether_hunter", "hunter/end_hunter",
 			"hunter/mob_types_30", "hunter/first_master", "hunter/elder_guardian", "hunter/wither",
 			"hunter/elite_types", "hunter/all_traits",
-			// Challenges tab: one branch per kind, easiest first
-			"challenges/nailed_the_landing", "challenges/defused", "challenges/sharpshooter", "challenges/safe_and_sound",
-			"challenges/perfect_parry", "challenges/untouchable"),
+			// Challenges tab: one branch per kind (movement, melee, danger, archery, shield, village), each a chain from easy to hard
+			"challenges/nailed_the_landing", "challenges/bare_knuckles", "challenges/defused", "challenges/trick_shot",
+			"challenges/perfect_parry", "challenges/safe_and_sound"),
 			// Skills tab: in Character tab order, all skills last
 			Arrays.stream(Skill.values()).map(skill -> "skills/" + skill.id + "_" + Milestones.SKILL_LEVELS.getFirst()),
 			Stream.of("skills/all_10"))

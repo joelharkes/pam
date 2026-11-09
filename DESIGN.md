@@ -551,7 +551,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), walking 9, the Challenges tab 25 and the other harder ones 19, so ~355. Buying all
+- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), walking 9, the Challenges tab 45 and the other harder ones 19, so ~375. Buying all
   131 perks costs **316**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
@@ -769,9 +769,9 @@ is ours.)
   water; no horse, boat, elytra, climbing or falling), checked every second, so distance from before counts. A stuck kid can
   always earn rank by going on a trip: Stroll 5 km (normal), Hiker 25 km (normal), Far Walker 50 km (goal), Long Road
   100 km (goal), World Walker 250 km (challenge). 9 rank.
-- **Challenges tab** (its own advancement tab, `challenge/Challenges`): doing something well, not often. 23 rank. Nothing
+- **Challenges tab** (its own advancement tab, `challenge/Challenges`): doing something well, not often. 45 rank. Nothing
   counts in creative or spectator. Progress is in memory per player (gone on logout or restart), except creepers defused,
-  which is a statistic (`Creepers Defused` in vanilla's statistics screen).
+  attacks parried and deflected kills, which are statistics (vanilla's statistics screen).
   - **Untouchable** (challenge): 10 kills of monsters (`Enemy`) in the Overworld in one night (dark = when beds work)
     before you get hurt that night.
   - **Nailed the Landing** (goal): from the highest point since you last stood, swam, climbed, rode or flew (elytra too),
@@ -788,8 +788,24 @@ is ours.)
   - **Safe and Sound** (challenge): you're a hero of a won raid and no villager died within 96 blocks of it (vanilla's
     raid search). A restart during a raid forgets deaths so far.
   - **Perfect Parry** (goal): 25 melee attacks parried with the Parry perk, over any time (statistic `Attacks Parried`).
-  - **Tree:** one branch per kind, easiest first: Nailed the Landing → Ghost; Defused → Comeback → (Perfect Parry,
-    Untouchable → Brave → Not a Scratch); Sharpshooter; Safe and Sound. More challenges join a branch.
+  - **Right Back at You** (goal): a mob killed by its own arrow after Deflect sent it back (the shooter is remembered,
+    Deflect makes the player the arrow's owner). **Payback** (goal): 10 kills with deflected arrows, over any time
+    (statistic `Deflected Kills`). **Arrow Wall** (challenge, harder than Payback: the timing must be right every time):
+    5 deflects in a row; an arrow that hurts you resets it.
+  - **Bare Knuckles** (goal): the killing blow on a zombie (any `Zombie`, so husks and drowned too) with an empty hand. Not
+    on your very first monster ever (checked just before the death, before vanilla's triggers), so it never comes with
+    vanilla's Monster Hunter.
+  - **Two for One** (goal): 2 monsters killed by sword hits in the same tick (one swing and its sweep). Sword only, so it
+    can't come from the same mace smash as Shockwave Combo. Sweep damage is small without Sweeping Edge or Wide Sweep.
+  - **Quick Hands** (goal): 5 monster kills within 10 seconds.
+  - **Shockwave Combo** (challenge): one mace smash or Ground Pound shockwave hurts 3+ monsters (the one hit counts; needs
+    the Shockwave perk).
+  - **Trick Shot** (goal): a phantom, blaze or ghast killed by an arrow. **Skewered** (goal): one arrow hits 3 mobs
+    (Piercing Shot or a Piercing crossbow).
+  - **Tree:** one branch per kind, each a chain from easy to hard: movement (Nailed the Landing → Ghost), melee (Bare
+    Knuckles → Two for One → Quick Hands → Shockwave Combo), danger (Defused → Comeback → Untouchable → Brave → Not a
+    Scratch), archery (Trick Shot → Sharpshooter → Skewered), shield (Perfect Parry → Right Back at You → Payback → Arrow
+    Wall), village (Safe and Sound). More challenges join a branch.
   - Known overlaps with the never-two-at-once rule: a first raid, dragon or Wither won perfectly also gives the vanilla
     or PAM advancement for it at the same moment (accepted for now: different achievements, not one counting the other).
 - **Other harder advancements** (Adventure tab, rank only): **Spelunker** (goal, after Traveler: lush caves, dripstone caves
@@ -906,7 +922,6 @@ Players can suggest more through the GitHub issue forms.
   challenges that come later or need skill, never more early tasks. Two advancements must never unlock at the same moment
   (see decisions log). All built (Skills tab in 3, the rest in 8b) except:
   - **More challenges** for the Challenges tab as they come up.
-  - **Later:** Shockwave Combo (3+ mobs with one Ground Pound/Shockwave; needs a mace, so late game anyway).
   - **Rejected:** all structure advancements (each structure already has one), stand high and deep, Home Sweet Home (for
     now), cake/suspicious stew, every fishing treasure (luck), highest stomach level (self-referencing: it would unlock
     together with the last stomach milestone), bestiary Expert on 10 / Master on 5 / 25 elites (the first-discovery
@@ -1304,6 +1319,10 @@ Players can suggest more through the GitHub issue forms.
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Challenges round 2 (2026-11-10):** the Challenges tab in branches (movement, melee, danger, archery, shield, village).
+  Bare Knuckles (fists on a zombie, not your first monster ever), Two for One (needs a weakened second monster or Wide
+  Sweep), Quick Hands, Shockwave Combo (`/pam skill melee 30`, Shockwave perk, mace), Trick Shot, Skewered, Right Back at
+  You / Payback / Arrow Wall (Deflect perk, skeletons; "Deflected Kills" in statistics).
 - **Advancement order and the last harder advancements (2026-11-10):** the K screen's Advancements tab starts with Made It
   to Morning, then food, farming, exploring, hunting; Challenges grouped by kind (L screen: branches). Spelunker, Shopping
   Trip (`/summon villager` with a job, trade 5 jobs), Master Trader, Max Power (anvil two Sharpness IV books), World
@@ -1470,6 +1489,10 @@ override applied, typo warned).
   grouped by kind (branches), not by difficulty; hard non-skill ones stay in their own category (World Atlas in
   Explorer). Perfect Parry joined the Challenges tab. The K screen lists siblings in a hand-made order (earlier first,
   related together) instead of alphabetically.
+- 2026-11-10: **Challenges round 2:** Deflect challenges (Right Back at You, Payback 10 as a goal, Arrow Wall 5 in a row as
+  the challenge: the user finds the timing harder than the count), Bare Knuckles, Two for One, Quick Hands, Trick Shot,
+  Skewered, and Shockwave Combo now ("later" meant late game, not build later). Vanilla's "Return to Sender" name is
+  taken, so Right Back at You. Challenges are branches by kind, each a chain from easy to hard.
 
 ## Roadmap
 
