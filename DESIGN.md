@@ -457,7 +457,7 @@ mob unlocks), so the world stays kid-friendly around a kid playing near a parent
 extra armor pieces, on top of vanilla's own: 0% at Rank 10 → 25% at Rank 100. Material
 leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla drop chances.
 
-**Elites ("Tough Zombie"):**
+**Elites ("Elite Zombie"):**
 - Mob types: zombies, husks, zombie villagers, drowned, skeletons, strays, bogged,
   parched, spiders, cave spiders, endermen, slimes. No creepers, witches or pillagers.
 - Start 5 ranks after the type unlocks (zombies at Rank 5, skeletons 15, creepers never,
@@ -503,7 +503,7 @@ leather → chainmail (Rank 30) → iron (Rank 60). No stat changes; vanilla dro
 - Test command for ops: `/pam elite <mob>` spawns an elite at your rank.
 
 **Traits (v0.3c):** from Rank 100, an elite has a 25% → 75% (Rank 160) chance of one
-random trait, shown in its name instead of "Tough":
+random trait, shown in its name instead of "Elite":
 
 | Trait    | Effect |
 |----------|--------|
@@ -740,7 +740,7 @@ Keep it simple and close to vanilla.
   mobs, to see where to find them).
 - Mob page: Back and </> buttons; left a model box (big "?" when undiscovered: GUI entity rendering forces full
   brightness, so no black silhouette) with kills, familiarity, next tier and the Master bonus; right the
-  sections Where to find, Stats, Tips, Drops, Tough ones. Locked sections say "Locked: reach Known (5 kills)".
+  sections Where to find, Stats, Tips, Drops, Elites. Locked sections say "Locked: reach Known (5 kills)".
 - Tile border colour by tier (dark grey for Unknown/Unfamiliar → light grey Known → green Familiar →
   aqua Expert → gold Master).
 
@@ -822,7 +822,7 @@ Players can suggest more through the GitHub issue forms.
   (2026-10-31): today those dimensions add no new elites or shards, and leaving their mobs unlocked is less work.
 - **An earlier elite trait (2026-10-31):** traits start at Rank 100 of ~250, so until then elites only differ by
   gear. One mild trait around Rank 40–50, like Swift, would add variety much sooner.
-- **Wanted elites (2026-10-31, the user likes it, not now):** a named target ("Wanted: Grimbone the Tough Skeleton")
+- **Wanted elites (2026-10-31, the user likes it, not now):** a named target ("Wanted: Grimbone the Elite Skeleton")
   with a map to where it was last seen. More boss-like than normal elites: a lot of health, so it's worth teaming
   up (the user's addition). Reuses elites, traits and maps. Rewards shards, XP and loot but no Rank, so Rank still
   comes only from advancements. Could grow into the hunting requests parked for a quests feature.
@@ -1137,14 +1137,17 @@ Players can suggest more through the GitHub issue forms.
   Adventure screen tab is now "Advancements" (code keeps `Achievements*`). Our group heading there is "Progressive Adventure"
   instead of "Milestones" (many of ours give no reward). "Mob types", not "kinds of mobs". **rank is lowercase** in game text,
   capital only at the start of a sentence or label ("Adventure rank: 12", "Spiders appear from rank 20"); README and the
-  Modrinth text follow. Still open: elite vs Tough, "normal" vs "task".
+  Modrinth text follow.
+- 2026-11-09: **"Elite" everywhere** in game text instead of "Tough" (mob names "Elite Zombie", bestiary section "Elites"),
+  so it matches Elite Slayer and the perk Tough Hide no longer clashes. Elite names are translated when shown, so existing
+  elites change too. The Rank tooltip keeps "normal / goal / challenge" (vanilla's "task" is never shown to players).
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Screenshots (2026-11-09):** retake the Movement perks screenshot (README + Modrinth), the Perks tab layout changed.
+- **Screenshots (2026-11-09):** retake the Movement perks screenshot (Perks tab layout changed) and `tough_zombie.jpg` (now "Elite Zombie"; rename the file in README + Modrinth too).
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
 - **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail

@@ -18,7 +18,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 |---|---|---|
 | Advancement | `AdvancementHolder`, `advancement/*.json` | Vanilla's goal system (the L screen). Ours are advancements too, in our own tab. Never "achievement" in game text. |
 | Advancement tab | root advancement (`root.json`) | One tree in the L screen: Minecraft, Nether, The End, Adventure, Husbandry, and ours. |
-| Task / Goal / Challenge | `AdvancementType` (`frame` in JSON) | The three kinds of advancement (round, rounded, spiky frame). Worth 1 / 2 / 3 Rank. |
+| Normal / Goal / Challenge | `AdvancementType` TASK / GOAL / CHALLENGE | The three kinds of advancement (square, rounded, spiky frame). Worth 1 / 2 / 3 rank. Vanilla calls the first a "task" only in code and JSON; players never see that word, so game text says "normal". |
 | Criterion | `criteria` | One condition of an advancement. Code-driven ones have one `minecraft:impossible` criterion named `granted`. |
 | Toast | `Toast` | The pop-up in the top right (advancement done, new bestiary entry). |
 | Hearts, health | `max_health` attribute | Red hearts. 1 heart = 2 health points. "½ heart" in text. |
@@ -90,17 +90,17 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Mob types | kill count per `EntityType` | How many different mobs you defeated: "Defeat 5 different mob types". Not "kinds of mobs". |
 | Collection | `Bestiary.Collection` | A set of mobs (Night Watch, Ocean Deep, Raiders...); defeating all gives an advancement. |
 | Mob unlock, "appears from Rank N" | `MobUnlocks` | A hostile mob only spawns naturally once the lowest Rank nearby is high enough. Chat: "New danger". |
-| Tough mob (in game), elite (in code) | `Elites`, `ELITE_RANK` | A rare stronger mob with better gear, XP and loot, named "Tough Zombie". |
-| Trait | `EliteTrait` | An extra power on a Tough mob (shown in its name instead of "Tough"). |
-| Gear | `Elites` | Extra armor and weapons. Normal mobs can get some too; Tough mobs always have it. |
-| Elite map | `EliteMap` | A treasure or explorer map that Tough mobs can drop. |
+| Elite | `Elites`, `ELITE_RANK` | A rare stronger mob with better gear, XP and loot, named "Elite Zombie". Not "Tough". |
+| Trait | `EliteTrait` | An extra power on an elite (shown in its name instead of "Elite"). |
+| Gear | `Elites` | Extra armor and weapons. Normal mobs can get some too; elites always have it. |
+| Elite map | `EliteMap` | A treasure or explorer map that elites can drop. |
 
 ### Waypoints
 
 | In game | In code | Meaning |
 |---|---|---|
 | Waypoint Stone | `WaypointStoneBlock` | Block you turn on and travel between. Always both words, capitalised. |
-| Waypoint Shard | `WaypointContent` | Dropped by Tough mobs, used to turn on a stone. |
+| Waypoint Shard | `WaypointContent` | Dropped by elites, used to turn on a stone. |
 | Turn on (a stone) | ACTIVE state | Not "activate" in game text. |
 | Owner | `Waypoint.owner` | The player who turned the stone on. |
 | Trip | `WaypointTeleportPayload` | Travelling from one stone to another. Not "teleport" in game text. |
@@ -117,9 +117,4 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 
 ## Open questions
 
-Places where we don't use one word consistently yet. Decide, fix, then remove the line.
-
-1. **Elite vs Tough.** Code and docs say elite; game text says "Tough monster" and "Tough ones", but the milestone is
-   called **Elite Slayer**. The perk Tough Hide also uses "Tough" for something else. Suggestion: "Tough" everywhere in
-   game text (rename Elite Slayer, e.g. "Tough Fight"), "elite" stays in code and docs.
-2. **"normal" vs "task".** The Rank tooltip says "normal +1, goal +2, challenge +3"; vanilla calls it a task.
+Places where we don't use one word consistently yet. Decide, fix, then remove the line. None right now.

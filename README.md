@@ -73,7 +73,7 @@ unlock as your adventure rank goes up, and you get a chat message when a new mob
 appear. Later on, mobs start wearing gear, and rare **elite** mobs show up: bigger and tougher,
 with special traits and better loot. Some elites drop a treasure or explorer map.
 
-![Tough Zombie elite](docs/screenshots/tough_zombie.jpg)
+![Elite Zombie](docs/screenshots/tough_zombie.jpg)
 
 ### Advancements and tips
 The Adventure screen shows every advancement in one grid, so you can see what's left. Stuck on one? Buy a tip with
