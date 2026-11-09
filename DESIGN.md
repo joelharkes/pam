@@ -830,7 +830,8 @@ Players can suggest more through the GitHub issue forms.
 
 ### Milestones and Rank
 - **Rank 30 gap (2026-11-09 playtest):** Rank 30 comes at a good pace in the Overworld, then progress
-  stalls. The structure achievements (built 2026-11-09) are the first answer; playtest whether more is needed.
+  stalls. The structure achievements and the journal advancements (both 2026-11-09) fill it; the user is happy with
+  them. Watch in longer play whether more is needed.
 - More milestones: raise a shield, reach Y=0 / lush or deep dark cave, mountain peak, buried treasure, cake or suspicious stew, 5 villager professions. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
 - More advancements in general = more Rank and perk points (perks cost 303 of ~255 Rank today).
@@ -1174,6 +1175,8 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
   item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
   replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
+- 2026-11-09: **Playtest: journal perks, journal advancements and structure advancements confirmed** ("perks look good",
+  the extra advancements and the named structure ones help). Markers: shared, only the owner (or an op) removes one, as built.
 - 2026-11-09: **Journal playtest:** the map looks good and works well; ink cost feels good ("you can't endlessly explore,
   it pushes you to restock, and in co-op you share"), no change. The map in your hand shows when you look down (vanilla
   map behaviour): nice but sometimes in the way, left as is for now (see Ideas).
@@ -1217,17 +1220,9 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   and can't remove each other's markers; a new journal shows the old map. "Back to me"; compass arrow turns with you (also
   in your hand), without a compass a white dot. Right-click your marker removes it, undrawn land shows a message; bed,
   Waypoint Stones and last death show; hover says "N blocks north-east" in the right direction.
-- **Explorer's Journal, slice 3:** Perks tab Exploration has "Waypoints" and "Explorer's Journal" headings; Steady Hand,
-  Wide View locked until enough chunks drawn (`/pam chunks 1500` to test). Steady Hand I: ink drops 3 per 4
-  chunks. Wide View: a wider drawn area. Treasure Marks: carry a treasure or explorer map (`/pam elitemap`) and its
-  target shows on the journal. Mapmaker at 100 chunks, Cartographer at 1000 (½ heart), X Marks the Spot on the first
-  marker; the Advancements tab shows them with tips.
 - **Screenshots (2026-11-09):** retake the Movement perks screenshot (Perks tab layout changed) and `tough_zombie.jpg` (now "Elite Zombie"; rename the file in README + Modrinth too).
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
-- **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail
-  ruin dug into, inside the monument); not too early from far away. Tree in the Adventure tab looks tidy (most hang under Wanderer).
-  Tips readable. Eye Spy and Trial(s) Edition show "Reward: +½ heart" and give it.
 - **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
   2026-11-09: die without the perk, respawn, buy it: the trail starts with the minutes left; buying it 5+ minutes after a death does nothing.
 - **Shared Elite Slayer (2026-10-31, needs two players):** both hit a `/pam elite zombie`. The helper gets the toast, Rank, ½ heart and one shard in their inventory; the killer's drops are unchanged. A second elite gives the helper no extra shard.
@@ -1371,5 +1366,5 @@ override applied, typo warned).
   the playtest checklist (user's call).
 - **Explorer's Journal (2026-11-09):** item, ink, shared map drawing, journal screen with zoom and markers, map in
   your hand, compass arrow, Steady Hand / Wide View / Treasure Marks perks, 4 advancements. Nether and caves later.
-- **Next:** milestones/achievements that bridge the gap after Rank 30 (Ideas > Milestones and Rank), the foods eaten
-  list (both built 2026-11-09, to playtest), then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).
+- **Next:** the foods eaten list (built 2026-11-09, to playtest), the rest of the playtest checklist, then other
+  [Ideas](#ideas) (e.g. Well Fed). Structure and journal advancements for the Rank 30 gap are confirmed.
