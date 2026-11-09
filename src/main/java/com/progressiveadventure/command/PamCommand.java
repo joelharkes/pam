@@ -12,6 +12,7 @@ import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.config.PamConfig.FamiliarityTier;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.data.PlayerProgress;
+import com.progressiveadventure.milestone.Milestones;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.perk.Perks;
 import com.progressiveadventure.skill.Skill;
@@ -84,6 +85,12 @@ public final class PamCommand {
 										.executes(context -> setKills(context, context.getSource().getPlayerOrException()))
 										.then(Commands.argument("player", EntityArgument.player())
 												.executes(context -> setKills(context, EntityArgument.getPlayer(context, "player")))))))
+				// Test helper for ops: set Explorer's Journal chunks drawn, to try the journal perks and advancements
+				.then(Commands.literal("chunks").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(Commands.argument("count", IntegerArgumentType.integer(0, 100000))
+								.executes(context -> setChunksDrawn(context, context.getSource().getPlayerOrException()))
+								.then(Commands.argument("player", EntityArgument.player())
+										.executes(context -> setChunksDrawn(context, EntityArgument.getPlayer(context, "player"))))))
 				// Waypoint tools for ops: list all, travel for free, remove one (turns the stone off, drops its shards)
 				.then(Commands.literal("waypoint").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 						.then(Commands.literal("list").executes(PamCommand::listWaypoints))
@@ -154,6 +161,16 @@ public final class PamCommand {
 		Bestiary.setKills(target, type, count);
 		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.kills_set",
 				target.getDisplayName(), type.getDescription(), count), true);
+		return 1;
+	}
+
+	private static int setChunksDrawn(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+		int count = IntegerArgumentType.getInteger(context, "count");
+		PlayerProgress progress = PamAttachments.progress(target);
+		progress = progress.withChunksDrawn(count - progress.chunksDrawn());
+		PamAttachments.setProgress(target, progress);
+		Milestones.checkThresholds(target, Milestones.CHUNKS_DRAWN_THRESHOLDS, progress.chunksDrawn());
+		context.getSource().sendSuccess(() -> Component.translatable("command.progressive_adventure.chunks_set", target.getDisplayName(), count), true);
 		return 1;
 	}
 

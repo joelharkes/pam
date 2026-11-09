@@ -1216,7 +1216,7 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   again removes it; right-click undrawn land shows a message. Your bed, Waypoint Stones and last death show; hover says
   "N blocks north-east" in the right direction. Nether: "only works in the Overworld".
 - **Explorer's Journal, slice 3:** Perks tab Exploration has "Waypoints" and "Explorer's Journal" headings; Steady Hand,
-  Wide View locked until enough chunks drawn (test: walk, or creative + a fresh world). Steady Hand I: ink drops 3 per 4
+  Wide View locked until enough chunks drawn (`/pam chunks 1500` to test). Steady Hand I: ink drops 3 per 4
   chunks. Wide View: a wider drawn area. Treasure Marks: carry a treasure or explorer map (`/pam elitemap`) and its
   target shows on the journal. Mapmaker at 100 chunks, Cartographer at 1000 (½ heart), X Marks the Spot on the first
   marker; the Advancements tab shows them with tips.

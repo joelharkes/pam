@@ -1023,6 +1023,7 @@
   "command.progressive_adventure.skill_set": "Set %s's %s to level %s",
   "command.progressive_adventure.skill_set.unknown": "Unknown skill: %s",
   "command.progressive_adventure.kills_set": "Set %s's %s kills to %s",
+  "command.progressive_adventure.chunks_set": "Set %s's journal chunks drawn to %s",
   "command.progressive_adventure.kills_set.unknown": "Unknown mob: %s",
   "entity.progressive_adventure.elite.swift": "Swift %s",
   "entity.progressive_adventure.elite.frost": "Frost %s",
