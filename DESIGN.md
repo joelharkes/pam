@@ -1210,12 +1210,12 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Explorer's Journal (2026-11-09), still to check:** (confirmed: the map, drawing, the map in your hand, ink cost)
-  recipe book shows the journal once you hold a map, book or ink sac; refilling (left adds as many as fit, right one,
-  refuses when full); "out of ink" message; two players see each other's drawing and markers; a new journal shows the
-  old map. Screen: scroll zooms, drag moves, "Back to me"; compass arrow turns with you (also in your hand), without a
-  compass a white dot. Markers: right-click a drawn spot, name + icon, name under it, right-click removes it, undrawn
-  land shows a message; bed, Waypoint Stones and last death show; hover says "N blocks north-east" in the right direction.
+- **Explorer's Journal (2026-11-09), still to check:** (confirmed: the map, drawing, the map in your hand, ink cost, the
+  out-of-ink message, zoom, drag, placing a marker) recipe book shows the journal once you hold a map, book or ink sac;
+  refilling (left adds as many as fit, right one, refuses when full); two players see each other's drawing and markers,
+  and can't remove each other's markers; a new journal shows the old map. "Back to me"; compass arrow turns with you (also
+  in your hand), without a compass a white dot. Right-click your marker removes it, undrawn land shows a message; bed,
+  Waypoint Stones and last death show; hover says "N blocks north-east" in the right direction.
 - **Explorer's Journal, slice 3:** Perks tab Exploration has "Waypoints" and "Explorer's Journal" headings; Steady Hand,
   Wide View locked until enough chunks drawn (`/pam chunks 1500` to test). Steady Hand I: ink drops 3 per 4
   chunks. Wide View: a wider drawn area. Treasure Marks: carry a treasure or explorer map (`/pam elitemap`) and its
