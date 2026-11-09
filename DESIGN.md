@@ -179,7 +179,7 @@ level 4 (~64 blocks) and cap near +60%.
 
 | Skill       | Trained by                       | Passive bonus                    |
 |-------------|----------------------------------|----------------------------------|
-| Mining      | Pickaxe blocks (ores give 3 XP)  | Break speed                      |
+| Mining      | Pickaxe blocks, rarer ores more  | Break speed                      |
 | Woodcutting | Axe blocks                       | Break speed                      |
 | Digging     | Shovel blocks                    | Break speed                      |
 | Farming     | Harvesting grown crops, breeding | Extra harvest chance (see 3b)    |
@@ -188,6 +188,9 @@ level 4 (~64 blocks) and cap near +60%.
 | Fishing     | Catches (fish, junk, treasure)   | Bite speed (see 3d)              |
 
 - Level = floor(√(xp / 4)); bonus curve and numbers are in the config.
+- Mining XP by block: stone and others 1, natural deepslate 2 (takes twice as long to mine), ores by rarity: coal, copper,
+  nether quartz and nether gold 3, iron, redstone and lapis 5, gold 8, emerald 10, diamond 12, ancient debris 20, other
+  mods' ores 3. So going deep for rare ores levels Mining faster than tunnelling near the surface.
 - Farm blocks (crops, melons, pumpkins, cocoa, cane, cactus, bamboo) only train Farming, even
   though vanilla lets an axe mine some of them.
 - The Character tab shows skills in two columns of 4 rows: 8 fit (7 used).
@@ -1234,10 +1237,17 @@ Players can suggest more through the GitHub issue forms.
   still comes often. Riches follow the open-water rule (Treasure Hunter covers them), 8% → 15% with Sea's Favor, which
   also halves the swim-up (beats the Lure III floor). A find gives treasure xp. Messages in a bottle use elite map rank
   rules. Waypoint Shards are now also a rare riches find (no longer elites only). Lava Fishing went to Ideas.
+- 2026-11-09: **Mining XP by ore rarity:** a flat 3 XP per ore plus 1 per stone meant strip-mining coal and copper near
+  the surface levelled as fast as going deep for diamonds. Now coal/copper/quartz/nether gold 3, iron/redstone/lapis 5
+  (redstone and lapis aren't rare deep down), gold 8, emerald 10, diamond 12, ancient debris 20; natural deepslate 2.
+  Config `oreXpByOre` (block id or `#tag`), `deepslateXp`; `oreXp` stays as the fallback for other mods' ores. No
+  message per ore (would show too often, and no other skill does it). Level curve unchanged until a playtest says otherwise.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Mining XP by ore rarity (2026-11-09):** a diamond or gold vein visibly moves the Mining bar on the Character tab,
+  coal much less; mining deepslate fills it faster per block than stone. Does levelling deep feel better than near the surface?
 - **Fishing perks round 2 (2026-11-09):** test with `/pam skill fishing 50`. Campfire Catch gives cooked cod/salmon
   and Fish Collector still counts raw ones; Sunken Riches finds (about 1 in 12 catches in open water, none in a small
   pond without Treasure Hunter) with chime and message; a Message in a Bottle map leads somewhere; Sea's Favor bites

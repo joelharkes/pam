@@ -10,14 +10,21 @@ import com.progressiveadventure.perk.Perks;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Map;
 
 public final class Skills {
 	private Skills() {
@@ -96,8 +103,30 @@ public final class Skills {
 	public static void onBlockBroken(ServerPlayer player, BlockState state) {
 		Skill skill = skillFor(player.getMainHandItem(), state);
 		if (skill != null) {
-			addXp(player, skill, state.is(ConventionalBlockTags.ORES) ? PamConfig.get().oreXp : 1);
+			addXp(player, skill, blockXp(state));
 		}
+	}
+
+	/** Xp for breaking a natural block with its skill's tool: rarer ores give more (see PamConfig.oreXpByOre). */
+	static int blockXp(BlockState state) {
+		PamConfig config = PamConfig.get();
+		if (state.is(Blocks.DEEPSLATE)) {
+			return config.deepslateXp;
+		}
+		if (!state.is(ConventionalBlockTags.ORES)) {
+			return 1;
+		}
+		Integer byBlock = config.oreXpByOre.get(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
+		if (byBlock != null) {
+			return byBlock;
+		}
+		for (Map.Entry<String, Integer> entry : config.oreXpByOre.entrySet()) {
+			if (entry.getKey().startsWith("#")
+					&& state.is(TagKey.create(Registries.BLOCK, Identifier.parse(entry.getKey().substring(1))))) {
+				return entry.getValue();
+			}
+		}
+		return config.oreXp;
 	}
 
 	public static void addXp(ServerPlayer player, Skill skill, int xp) {
