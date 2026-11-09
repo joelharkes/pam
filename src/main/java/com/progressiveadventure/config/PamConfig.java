@@ -292,6 +292,19 @@ public class PamConfig {
 	public float blazingFireSeconds = 4f;
 	public int summonerHelpers = 2;
 
+	// Explorer's Journal: draws the chunks within this radius (in chunks) around a player who carries one. Each chunk
+	// drawn for the first time costs ink; redrawing is free. Refills: item id → ink per item.
+	public int journalDrawRadius = 2;
+	public int journalInkPerChunk = 1;
+	public int journalMaxInk = 128;
+	public int journalStartInk = 16;
+	public Map<String, Integer> journalInkRefills = Map.of(
+			"minecraft:coal", 4,
+			"minecraft:charcoal", 4,
+			"minecraft:ink_sac", 16,
+			"minecraft:black_dye", 16,
+			"minecraft:glow_ink_sac", 32);
+
 	// Waypoints: elites drop shards (player kills only; the first elite a player kills always drops one).
 	public Ramp eliteShardChance = new Ramp(0, 0.25, 100, 0.5);
 	// Turning on a stone costs base + step × (stones you already own) shards; breaking it gives them back

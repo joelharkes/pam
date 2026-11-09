@@ -687,6 +687,31 @@ places you've been.
 - Storage: one shared list on the Overworld (Fabric world attachment). The floating name is a
   text display entity; orphaned ones are removed when they load.
 
+### 8. Explorer's Journal: a map you draw by walking (slice 1)
+
+Helps kids learn to find their way: the map only shows where someone has been, north is always up, and drawing costs
+ink, so exploring has a small price and squids get an extra use. (The idea came from the Antique Atlas mod; the name
+is ours.)
+
+- **Item:** crafted from a book, an empty map and an ink sac (shapeless); starts with `journalStartInk` (16) ink.
+  Stacks to 1. Losing it (death, dropped, in a chest) loses only the item: **the map is not stored in the item**, a new
+  journal shows it all again.
+- **One map per server**, shared by everyone: an Overworld attachment (`JOURNAL_MAP`), per chunk 16×16 vanilla packed
+  map colours. Everyone who carries a journal draws into it and every journal shows all of it.
+- **Drawing:** every second, for each player in the Overworld who carries a journal (anywhere in the inventory),
+  the loaded chunks within `journalDrawRadius` (2) are drawn, nearest first. A chunk drawn for the first time costs
+  `journalInkPerChunk` (1) ink from the **first** journal in the inventory; chunks someone else drew are free.
+  Redrawing is free: the chunk you stand in every second, plus one other chunk in reach per second, so builds show
+  up. Colours and shading follow vanilla's map at 1 pixel per block. Creative players pay no ink.
+- **Ink:** shown as a blue bar on the item (red when empty) and "Ink: 37 / 128" in the tooltip. Refill by clicking
+  an item onto the journal in your inventory, like a bundle: coal or charcoal +4, ink sac or black dye +16, glow ink
+  sac +32 (`journalInkRefills`), up to `journalMaxInk` (128). Left-click adds as many as fit, right-click one; ink is
+  never wasted (an item that doesn't fit completely stays). Out of ink: one action-bar message until it draws again.
+- **Looking:** right-click opens the journal screen: 128×128 blocks around you on vanilla's map paper, north up,
+  N/E/S/W on the edges, you as a red dot, ink below. The game doesn't pause; the map updates while open (the client
+  asks every second, the server only sends chunks that changed since it last sent them to that player, only near the
+  player and only with a journal). Outside the Overworld it says the journal only works there.
+
 ## UI
 
 Keep it simple and close to vanilla.
@@ -837,22 +862,13 @@ Players can suggest more through the GitHub issue forms.
   have a "Home Sweet Home" milestone.
 
 ### Exploration
-- **Explorer's Journal (2026-11-09, being explored; first called Atlas):** a map item that draws itself as you walk, to help kids learn to navigate
-  (like the Antique Atlas mod, but it costs something). Crafted once (book + empty map + ink sac); while it's in your
-  inventory it draws the chunks around you, and **each new chunk costs ink** (redrawing known chunks is free, so your
-  builds show up). Out of ink = the edge stops growing, what you drew stays. Refill by clicking a drawing item onto it
-  (like a bundle): coal/charcoal ("pencil") a little, ink sac / black dye more, glow ink sac the most, so squid hunting
-  pays off. Drawing is expensive at first; 3 perk tiers make it much cheaper. Held in hand it shows the area around you
-  like a vanilla map; right-click opens a full-screen map (zoom, drag, N/E/S/W, your arrow). No HUD minimap.
-  Markers: your own (name + icon), plus bed, Waypoint Stones, last death; structures only once seen. **The map is not
-  stored in the item**: losing the journal (death, dropped, in a chest) loses only the item; a new one shows the map
-  again. The map is shared for cooperative play (how: still open). Server draws with vanilla map colours.
-  **Overworld only at first**; Nether (and caves) later, e.g. as a perk or with glow ink. Other perk ideas: wider draw
-  radius, elite maps as markers. Milestones: first journal, chunks drawn, markers.
-  **With a compass in your inventory** your marker shows which way you are looking (otherwise just a dot), so you
-  carry one more item for a small bonus. Perks go in the new Exploration category (Steady Hand I/II/III: ink costs
-  25% / 50% / 70% less). First numbers (to tune in playtests): 1 ink per new chunk, radius 2 chunks; coal/charcoal
-  +4, ink sac / black dye +16, glow ink sac +32; holds 128.
+- **Explorer's Journal, next slices (2026-11-09):** slice 1 is built (see pillar 8). Slice 2: full-screen map with zoom
+  and drag; **with a compass in your inventory** your marker shows which way you are looking (otherwise a dot), so you
+  carry one more item for a small bonus; markers (your own with a name + icon, plus bed, Waypoint Stones, last death;
+  structures only once seen); the map shown when held in hand, like a vanilla map. Slice 3: perks in the Exploration
+  category (Steady Hand I/II/III: ink costs 25% / 50% / 70% less; wider draw radius; elite maps as markers) and
+  milestones (first journal, chunks drawn, markers). Later: Nether and caves, drawn as a slice at your height and
+  stored per height band (how Xaero's and JourneyMap do it), e.g. as a perk or with glow ink.
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
   bonus heart.
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
@@ -1130,7 +1146,11 @@ Players can suggest more through the GitHub issue forms.
   make it much cheaper. The Perks tab layout gets revised so long categories (Survival 23, Melee 17, Movement 16) can be split.
 - 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
   item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
-  replaces "kept on death". **Shared map** for cooperative play (model still open). **Overworld only** in the first version.
+  replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
+- 2026-11-09: **Explorer's Journal slice 1 built** (proposal accepted: item, ink, shared map, screen first; compass, markers,
+  zoom, held-in-hand view in slice 2; perks and milestones in slice 3). Right-click opens a screen for now instead of the
+  map in your hand (that's slice 2). Ink starts at 16 (the ink sac in the recipe), only the first journal in your
+  inventory draws and pays, chunks someone else drew are free.
 - 2026-11-09: **Compass shows your facing on the Atlas** (user): only with a compass in your inventory, otherwise a dot. A small
   reason to carry one more item. First ink numbers accepted for playtesting ("feels a lot, that's why there are perks").
 - 2026-11-09: **Perks tab: icon grid** (option A over a Skills/General switch): categories as 20px icon tiles, 2 per row (room for
@@ -1151,6 +1171,13 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
+- **Explorer's Journal (2026-11-09):** craft one (book + empty map + ink sac): 16 ink, blue bar. Walk around: chunks get
+  drawn and ink goes down (about 25 for the first spot); walking back over drawn land costs nothing. Right-click: the map
+  around you, north up, red dot in the middle, updates as you walk; place a block and it shows up within a few seconds.
+  Click ink sacs / glow ink / coal onto it in the inventory: left adds as many as fit, right one; when full it refuses.
+  Empty: one "out of ink" message, the map stops growing. Two players: what one draws shows up in the other's journal.
+  Lose the journal and craft a new one: the map is still there. Nether: "only works in the Overworld". Check the colours
+  look like a vanilla map and the screen size is OK on your monitor.
 - **Screenshots (2026-11-09):** retake the Movement perks screenshot (Perks tab layout changed) and `tough_zombie.jpg` (now "Elite Zombie"; rename the file in README + Modrinth too).
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
@@ -1298,5 +1325,6 @@ override applied, typo warned).
 - **0.5.0 (tag `v0.5.0`, 2026-10-26):** Melee skill (all 4 slices, shield perks in Defense), Fishing skill,
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
+- **Explorer's Journal slice 1 (2026-11-09):** item, ink, shared map drawing, journal screen. Slices 2 and 3 in Ideas.
 - **Next:** milestones/achievements that bridge the gap after Rank 30 (Ideas > Milestones and Rank), the foods eaten
   list (both built 2026-11-09, to playtest), then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).

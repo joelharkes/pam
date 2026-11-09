@@ -31,6 +31,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(OpenWaypointListPayload.TYPE, (payload, context) ->
 				context.client().gui.setScreen(new WaypointListScreen(payload)));
 		BestiaryClient.init();
+		JournalClient.init();
 		AchievementsClient.init();
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> AdventureScreen.onDisconnect());
 

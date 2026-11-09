@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:map",
+    "minecraft:ink_sac"
+  ],
+  "result": {
+    "id": "progressive_adventure:explorers_journal"
+  }
+}

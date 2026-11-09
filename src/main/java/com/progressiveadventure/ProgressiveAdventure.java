@@ -5,6 +5,8 @@ import com.progressiveadventure.bestiary.BestiaryInfo;
 import com.progressiveadventure.command.PamCommand;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
+import com.progressiveadventure.journal.JournalContent;
+import com.progressiveadventure.journal.Journals;
 import com.progressiveadventure.milestone.Progression;
 import com.progressiveadventure.milestone.Trackers;
 import com.progressiveadventure.network.PamNetworking;
@@ -49,6 +51,7 @@ public class ProgressiveAdventure implements ModInitializer {
 	public void onInitialize() {
 		PamConfig.load();
 		WaypointContent.init();
+		JournalContent.init();
 		PamAttachments.init();
 		PamNetworking.init();
 
@@ -65,12 +68,14 @@ public class ProgressiveAdventure implements ModInitializer {
 			DeathPerks.onServerStopped();
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
+			Journals.onServerStopped();
 			BestiaryInfo.clearCache();
 		});
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> BestiaryInfo.clearCache());
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
 			Trackers.onDisconnect(handler.player);
 			Cooldown.onDisconnect(handler.player);
+			Journals.onDisconnect(handler.player);
 		});
 		ServerPlayerEvents.JOIN.register(player -> {
 			Progression.apply(player);
@@ -138,6 +143,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			Melee.tick();
 			MeleeMoves.tick(server);
 			Waypoints.tick(server);
+			Journals.tick(server);
 			// Last, so changes from the handlers above go out in the same packet
 			PamAttachments.flushAllProgress();
 		});
