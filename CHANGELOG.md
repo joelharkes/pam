@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.8.0: Explorer's Journal and Challenges
+
+### New
+
+- **Explorer's Journal:** a book with a map that draws itself as you walk the Overworld. Everyone on the
+  server shares the same map. Drawing new land uses ink: refill it by clicking coal, ink sacs or black dye
+  onto the journal. Open it to zoom, drag and place your own markers. Your bed, Waypoint Stones and your
+  last death show on it too.
+- **Exploration perks** (new category): Steady Hand I/II/III (less ink), Wide View (draws a wider area),
+  Treasure Marks (treasure maps show on your journal). Pathfinder moved here.
+- **Health perks** (new category): Bonus Hearts, healing and Hearty Kill perks moved here from Survival.
+  You keep every perk you own.
+- **Fishing perks:** Campfire Catch (fish come out cooked), Sunken Riches I/II/III (sometimes you fish up
+  something extra, like emeralds, diamonds or even a map) and Sea's Favor (more riches, faster bites).
+- **Challenges tab:** hard tasks for brave players, like Untouchable, Nailed the Landing, Perfect Parry,
+  Trick Shot and Bare Knuckles. They give Adventure Rank.
+- **Skills tab:** advancements for reaching skill levels 15, 30 and 50, and for getting every skill to 10
+  and 25.
+- **More advancements:** walking 5 to 250 km, finding structures (ocean monument, ancient city and woodland
+  mansion give half a heart), Cartographer, Spelunker, Shopping Trip, Master Trader, World Atlas, Grand
+  Network, Long Jump, Elite Hunter and more.
+- **Foods eaten:** the stomach tooltip on the Character tab shows the foods you ate as icons, and how many
+  more you need for the next Gourmet milestone.
+
+### Changes
+
+- **Mining XP by ore:** rare ores give more Mining XP (diamond 12, iron 5, coal 3), deepslate gives 2 and
+  natural obsidian 10. Obsidian you placed yourself gives none.
+- **Elite Slayer for helpers:** everyone who hit an elite gets Elite Slayer and their first Waypoint Shard,
+  not only the player who finished it.
+- **Way Back** also works if you buy it soon after you died.
+- The Achievements tab lists related advancements next to each other.
+- In-game text says "Elite" instead of "Tough".
+
 ## 0.7.0: Keepsakes and faithful friends
 
 ### New

@@ -26,10 +26,11 @@ always shown on screen so it's clear what you've done and what's next.
 
 ### Hearts from milestones
 You start with **5 hearts**. Milestones give you more, up to **20 hearts**. Your first night,
-your first new food, finding a village, beating the Wither: **49 milestones** in total. 29 are
+your first new food, finding a village, beating the Wither: **50 milestones** in total. 30 are
 in PAM's own **Adventure** advancement tab, and 20 are vanilla advancements that now give a reward too.
 The Adventure tab also has an advancement for each kind of structure you can find, from mineshafts
-to woodland mansions.
+to woodland mansions. A **Skills** tab rewards skill levels, and a **Challenges** tab has hard tasks
+for brave players, like Untouchable, Perfect Parry and Trick Shot. These give adventure rank.
 
 ![Milestone toast](docs/screenshots/advancement_first_bite.jpg)
 
@@ -47,7 +48,7 @@ bow draws and faster bites.
 
 ### Adventure rank and perks
 Every advancement raises your **adventure rank**, and every rank is a **perk point**. Spend them
-on **126 perks** in 12 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
+on **131 perks** in 12 categories: Vein Miner, Timber, Replant, Double Jump, Mantle, Whirlwind, Parry, Ore Sense,
 Cat's Eyes, Shadow Step and many more. You can reset your perks at any time.
 
 Press **K** to open the Adventure screen.
