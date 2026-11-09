@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/biomes_15",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:pointed_dripstone"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.spelunker.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.spelunker.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -25,7 +25,8 @@
 		"RaidMixin",
 		"ServerPlayerMixin",
 		"ShovelItemMixin",
-		"ThrownTridentMixin"
+		"ThrownTridentMixin",
+		"TradeTriggerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

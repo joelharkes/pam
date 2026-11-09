@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:hunter/elite",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_sword"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.hunter.elite_types.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.hunter.elite_types.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

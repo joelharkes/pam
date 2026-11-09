@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/find_village",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:emerald"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.five_professions.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.five_professions.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

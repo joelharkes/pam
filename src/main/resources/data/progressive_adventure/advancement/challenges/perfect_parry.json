@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/comeback",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:shield"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.perfect_parry.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.perfect_parry.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

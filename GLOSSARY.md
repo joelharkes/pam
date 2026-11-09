@@ -56,6 +56,7 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Skills tab | `advancement/skills/`, `Skills.checkAdvancements` | Our second advancement tab: a skill at level 15/30/50 (Miner, Expert Miner, Master Miner...) and every skill at 10/25 (Jack of All Trades, All-Rounder). Rank only. |
 | Challenges tab | `advancement/challenges/`, `challenge/Challenges` | Our third advancement tab: doing something well, not often (Untouchable, Ghost, Sharpshooter...). Rank only. |
 | Walking advancements | `explorer/walk_*`, `Trackers.trackWalking` | Distance on foot from vanilla statistics: Stroll, Hiker, Far Walker, Long Road, World Walker. |
+| Sibling order | `Achievements.SIBLING_ORDER` | The K screen's order for advancements with the same parent: earlier first, related together. |
 | Tip, free tip | `BuyTipPayload`, lang `...tip.<id>.<n>` | A hint for an advancement, bought with XP (free once it's done). The Free tip button shows a tip of the day. |
 
 ### Skills

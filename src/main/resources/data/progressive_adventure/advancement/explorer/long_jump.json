@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/first_trip",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:ender_pearl"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.long_jump.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.long_jump.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -99,6 +99,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   The tab counts the keys, no code needed. Check the conditions in the vanilla JSON, not from memory. Simple English.
 - **Bestiary text:** where-to-find hints and tips are lang keys `bestiary.progressive_adventure.where|tip.<namespace>.<mob>`;
   the page hides a missing tip and shows "Nobody knows yet..." for a missing hint.
+- **Any advancement:** if it shares a parent with others, give it a place in `Achievements.SIBLING_ORDER` (K screen
+  order: earlier first, related together). Never let two unlock from the same action (no advancement counting others).
 - **Milestone:** add an entry in `Milestones.java` (reward), an advancement JSON under
   `data/progressive_adventure/advancement/<category>/`, and title + description (ending in
   "Reward: ...") in `lang/en_us.json`. Code-driven ones use the `granted` impossible criterion.
@@ -144,7 +146,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
   `Cooldown` (per-player perk cooldowns, cleared on server stop), `DeathPerks` (Keepsake, Way Back trail, Faithful Friend)
 - `challenge/Challenges`: Challenges tab (per-player state in memory: a night, a fall, an arrow streak, boss fights;
-  creepers defused is a custom statistic registered in `init`)
+  creepers defused and attacks parried are custom statistics registered in `init`)
 - `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`, `JournalMapRequestPayload`, `JournalMarkerEditPayload`; S2C `JournalMapPayload`, `JournalMarkersPayload`, `OpenWaypointNamePayload`,
@@ -157,7 +159,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks, Deflect), ThrownTrident (Loyal Trident), KineticWeapon/PiercingWeapon (spear charge and jab perks),
   LivingEntity also speeds up bow/crossbow/trident use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock),
-  Raid (raid won, Safe and Sound); AbstractArrow also reports block hits (Sharpshooter misses)
+  Raid (raid won, Safe and Sound), TradeTrigger (Shopping Trip, Master Trader); AbstractArrow also reports block hits (Sharpshooter misses)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `BlockSense` (Ore/Treasure/Relic Sense particle trails); `AirMoves`
   (Double Jump, Mantle and Ground Pound: client moves itself, then tells the server); `ShieldBash` (attack click while

@@ -168,7 +168,7 @@ public final class Bestiary {
 		checkCollections(player, progress);
 	}
 
-	/** Collections, first Master and all elite traits. Also checked on join, for kills from before these existed. */
+	/** Collections, first Master, all elite traits and elite types. Also checked on join, for kills from before these existed. */
 	public static void checkCollections(ServerPlayer player, PlayerProgress progress) {
 		for (Collection collection : COLLECTIONS) {
 			if (collection.mobs().stream().allMatch(mob -> progress.killsOf(mob) > 0)) {
@@ -182,6 +182,7 @@ public final class Bestiary {
 		if (traits.containsAll(ALL_TRAIT_IDS)) {
 			Milestones.grant(player, Milestones.ALL_TRAITS);
 		}
+		Milestones.checkThresholds(player, Milestones.ELITE_TYPE_THRESHOLDS, progress.eliteKills().size());
 	}
 
 	public static String formatModifier(double modifier) {

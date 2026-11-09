@@ -58,6 +58,9 @@ public final class Waypoints {
 	private static final double CHARGE_RANGE = 3.0;
 	private static final Map<UUID, Pending> PENDING = new HashMap<>();
 
+	/** Long Jump: one trip at least this far (horizontally, same dimension). */
+	private static final int LONG_JUMP_BLOCKS = 3000;
+
 	private record Pending(ResourceKey<Level> fromDimension, BlockPos from, UUID target, int cost, int ticksLeft) {
 		Pending tick() {
 			return new Pending(fromDimension, from, target, cost, ticksLeft - 1);
@@ -392,12 +395,13 @@ public final class Waypoints {
 				continue;
 			}
 			it.remove();
-			byId(server, pending.target()).ifPresentOrElse(target -> arrive(player, target, pending.cost()),
+			byId(server, pending.target()).ifPresentOrElse(target -> arrive(player, target, pending),
 					() -> player.sendOverlayMessage(Component.translatable("message.progressive_adventure.waypoint.gone").withStyle(ChatFormatting.RED)));
 		}
 	}
 
-	private static void arrive(ServerPlayer player, Waypoint target, int cost) {
+	private static void arrive(ServerPlayer player, Waypoint target, Pending pending) {
+		int cost = pending.cost();
 		if (totalXp(player) < cost) {
 			player.sendOverlayMessage(Component.translatable("message.progressive_adventure.waypoint.needs_xp", cost).withStyle(ChatFormatting.YELLOW));
 			return;
@@ -408,7 +412,15 @@ public final class Waypoints {
 		if (cost > 0) {
 			player.giveExperiencePoints(-cost);
 		}
-		Milestones.grant(player, Milestones.FIRST_TRIP);
+		// Long Jump only from the second trip on, so it never unlocks together with First Trip
+		if (Milestones.isDone(player, Milestones.FIRST_TRIP)) {
+			if (target.dimension().equals(pending.fromDimension())
+					&& Math.hypot(target.pos().getX() - pending.from().getX(), target.pos().getZ() - pending.from().getZ()) >= LONG_JUMP_BLOCKS) {
+				Milestones.grant(player, Milestones.LONG_JUMP);
+			}
+		} else {
+			Milestones.grant(player, Milestones.FIRST_TRIP);
+		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package com.progressiveadventure.perk;
 
+import com.progressiveadventure.challenge.Challenges;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.skill.Targets;
@@ -61,6 +62,7 @@ public final class ShieldPerks {
 		attacker.hurtMarked = true;
 		parryEffects(player, level, attacker.position().add(0, attacker.getBbHeight() * 0.6, 0));
 		Skills.addXp(player, Skill.MELEE, config.parryXp);
+		Challenges.onParry(player);
 	}
 
 	/** Whether the shield started blocking at most parryWindowTicks ago (it only blocks after its block delay). */

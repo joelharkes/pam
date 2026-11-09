@@ -551,7 +551,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), walking 9 and the Challenges tab 23, so ~334. Buying all
+- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), walking 9, the Challenges tab 25 and the other harder ones 19, so ~355. Buying all
   131 perks costs **316**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
@@ -787,8 +787,26 @@ is ours.)
   - **Not a Scratch** (challenge): from your first hit on an Ender Dragon or Wither until it dies, no damage taken.
   - **Safe and Sound** (challenge): you're a hero of a won raid and no villager died within 96 blocks of it (vanilla's
     raid search). A restart during a raid forgets deaths so far.
+  - **Perfect Parry** (goal): 25 melee attacks parried with the Parry perk, over any time (statistic `Attacks Parried`).
+  - **Tree:** one branch per kind, easiest first: Nailed the Landing → Ghost; Defused → Comeback → (Perfect Parry,
+    Untouchable → Brave → Not a Scratch); Sharpshooter; Safe and Sound. More challenges join a branch.
   - Known overlaps with the never-two-at-once rule: a first raid, dragon or Wither won perfectly also gives the vanilla
     or PAM advancement for it at the same moment (accepted for now: different achievements, not one counting the other).
+- **Other harder advancements** (Adventure tab, rank only): **Spelunker** (goal, after Traveler: lush caves, dripstone caves
+  and the deep dark in your visited biomes, so earlier visits count), **Shopping Trip** (normal, after Neighbors: trade
+  with villagers of 5 jobs, stored as `traded_professions`), **Master Trader** (goal, after it: trade with a Master-level
+  villager), **Max Power** (goal, after Shiny!: Sharpness V or Protection IV on an item in your inventory, JSON only),
+  **World Atlas** (challenge, after Cartographer: 5,000 chunks drawn), **Grand Network** (goal, after Network: 10 stones),
+  **Long Jump** (goal, after First Trip: a waypoint trip over 3,000 blocks; not on the very first trip, so it never comes
+  with First Trip), **Elite Hunter** (challenge, after Elite Slayer: elites of 8 mob types; "every type" can't work, cave
+  spiders only come from spawners and those never become elites). 19 rank.
+
+### Advancement order (K screen)
+
+Advancements that share a parent are listed by `Achievements.SIBLING_ORDER`: earlier ones first, related ones together
+(Adventure tab by category: Survivor, Gourmet, Farmer, Explorer, Hunter, Crafter, Angler; Skills in Character tab
+order). Streaks are chains of parents, so they stay together (the list is depth first). Anything not listed (vanilla,
+other mods) goes normal, goal, challenge, then by id. A new advancement with siblings needs a place in that list.
 
 ## UI
 
@@ -886,21 +904,14 @@ Players can suggest more through the GitHub issue forms.
   them. Watch in longer play whether more is needed.
 - **Harder advancements (2026-11-09, picked by the user; rank only, no hearts).** Rank 30 is easy, so these are goals and
   challenges that come later or need skill, never more early tasks. Two advancements must never unlock at the same moment
-  (see decisions log). Built: Skills tab (see 3), walking and the Challenges tab (see 8b). Picked, not built yet:
-  - **Spelunker:** visit a lush cave, a dripstone cave and the deep dark (goal).
-  - **Master Trader:** unlock a villager's master-level trade (goal). **Five Professions:** trade with 5 professions (task).
-  - **Max Power:** own a Sharpness V or Protection IV item (goal).
-  - **World Atlas:** 5,000 journal chunks drawn (challenge).
-  - **Grand Network:** 10 Waypoint Stones on (goal). **Long Jump:** one teleport of over 3,000 blocks (goal).
-  - **Bestiary:** Expert on 10 mob types (goal), Master on 5 (challenge), Elite Veteran 25 elites (goal), an elite of every
-    mob type that can be one (challenge). The user finds these a bit grindy, like the skill perks, but they're in.
-  - **Perfect Parry:** parry 25 attacks (goal).
+  (see decisions log). All built (Skills tab in 3, the rest in 8b) except:
   - **More challenges** for the Challenges tab as they come up.
   - **Later:** Shockwave Combo (3+ mobs with one Ground Pound/Shockwave; needs a mace, so late game anyway).
   - **Rejected:** all structure advancements (each structure already has one), stand high and deep, Home Sweet Home (for
     now), cake/suspicious stew, every fishing treasure (luck), highest stomach level (self-referencing: it would unlock
-    together with the last stomach milestone).
-- More milestones: raise a shield, buried treasure, 5 villager professions. Check first that vanilla
+    together with the last stomach milestone), bestiary Expert on 10 / Master on 5 / 25 elites (the first-discovery
+    counts and Master Hunter already cover it).
+- More milestones: raise a shield, buried treasure. Check first that vanilla
   has no advancement for it (if it does, put the reward on the vanilla one).
 - **Playing together (2026-10-31, still being explored):** a Mentor bonus (a lower-level player earns more skill XP near a higher-level
   one, so kids can catch up) and a few milestones that need two players, e.g. a waypoint trip together. Co-op perks too
@@ -1293,6 +1304,11 @@ Players can suggest more through the GitHub issue forms.
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Advancement order and the last harder advancements (2026-11-10):** the K screen's Advancements tab starts with Made It
+  to Morning, then food, farming, exploring, hunting; Challenges grouped by kind (L screen: branches). Spelunker, Shopping
+  Trip (`/summon villager` with a job, trade 5 jobs), Master Trader, Max Power (anvil two Sharpness IV books), World
+  Atlas (`/pam chunks 5000`), Grand Network, Long Jump (not on a first trip), Elite Hunter (`/pam elite <mob>` for 8
+  types), Perfect Parry ("Attacks Parried" in statistics).
 - **Walking and Challenges (2026-11-10):** walking advancements in the Explorer branch (an old world with lots of walking
   gets several right away; vanilla's statistics screen shows Walk/Sprint distance). Challenges tab in L and in the K
   screen's Advancements list, with tips. Try: jump from 30+ blocks into water (Nailed the Landing; jumping onto land
@@ -1448,6 +1464,12 @@ override applied, typo warned).
   **Nailed the Landing**, Steady Aim → **Sharpshooter**; Clean Sweep → **Safe and Sound** (too close to Careful Sweep).
   Defused dropped "none exploding" (a defeated creeper can't explode) and counts in a statistic so it survives logging out.
   Ghost allows short trips indoors (400 of ~545 seconds outside).
+- 2026-11-10: **Last harder advancements and the order.** Bestiary Expert-on-10, Master-on-5 and 25 elites dropped (the
+  first-discovery counts and Master Hunter cover them); the elite one became 8 mob types (Elite Hunter) because cave
+  spiders never spawn as elites. Five Professions is called Shopping Trip in game. Challenges tab = skill challenges,
+  grouped by kind (branches), not by difficulty; hard non-skill ones stay in their own category (World Atlas in
+  Explorer). Perfect Parry joined the Challenges tab. The K screen lists siblings in a hand-made order (earlier first,
+  related together) instead of alphabetically.
 
 ## Roadmap
 

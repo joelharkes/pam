@@ -8,6 +8,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerData;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -18,6 +22,9 @@ import java.util.UUID;
 
 /** Feeds code-driven milestones: distinct foods, distinct biomes, surviving the first night and distance on foot. */
 public final class Trackers {
+	/** Spelunker: all three cave biomes. */
+	private static final Set<String> CAVE_BIOMES = Set.of("minecraft:lush_caves", "minecraft:dripstone_caves", "minecraft:deep_dark");
+
 	/** On-foot travel; riding, boats and elytra don't count. Climbing and falling neither (they're not travelling). */
 	private static final List<Identifier> ON_FOOT_STATS = List.of(Stats.WALK_ONE_CM, Stats.SPRINT_ONE_CM, Stats.CROUCH_ONE_CM,
 			Stats.SWIM_ONE_CM, Stats.WALK_ON_WATER_ONE_CM, Stats.WALK_UNDER_WATER_ONE_CM);
@@ -48,6 +55,26 @@ public final class Trackers {
 		Milestones.checkThresholds(player, Milestones.FOOD_THRESHOLDS, progress.foodsEaten().size());
 	}
 
+	/** From TradeTriggerMixin. Wandering traders have no profession, so only villagers count. */
+	public static void onTrade(ServerPlayer player, AbstractVillager merchant) {
+		if (!(merchant instanceof Villager villager)) {
+			return;
+		}
+		VillagerData data = villager.getVillagerData();
+		if (data.level() >= VillagerData.MAX_VILLAGER_LEVEL) {
+			Milestones.grant(player, Milestones.MASTER_TRADER);
+		}
+		data.profession().unwrapKey().filter(key -> key != VillagerProfession.NONE && key != VillagerProfession.NITWIT).ifPresent(key -> {
+			PlayerProgress progress = PamAttachments.progress(player);
+			String profession = key.identifier().toString();
+			if (!progress.tradedProfessions().contains(profession)) {
+				progress = progress.withTradedProfession(profession);
+				PamAttachments.setProgress(player, progress);
+				Milestones.checkThresholds(player, Milestones.PROFESSION_THRESHOLDS, progress.tradedProfessions().size());
+			}
+		});
+	}
+
 	public static void onDeath(ServerPlayer player) {
 		SAW_NIGHT.remove(player.getUUID());
 	}
@@ -71,6 +98,10 @@ public final class Trackers {
 				Milestones.checkThresholds(player, Milestones.BIOME_THRESHOLDS, progress.biomes().size());
 			}
 		});
+		// Every second rather than on a new biome, so caves visited before Spelunker existed count
+		if (PamAttachments.progress(player).biomes().containsAll(CAVE_BIOMES)) {
+			Milestones.grant(player, Milestones.SPELUNKER);
+		}
 	}
 
 	/** Vanilla statistics, so distance from before these advancements existed counts too. */

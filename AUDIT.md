@@ -32,6 +32,10 @@ with scripts and the decompiled 26.2 sources. Not playtested. Checked items are 
 
 ## Smaller issues (to discuss)
 
+- [ ] **Cave spider elites (2026-11-10):** cave spiders are in `eliteMobs`, and their bestiary page says they can be elites,
+  but elites only come from natural spawns and cave spiders only from spawners. Elite Hunter needs 8 types for this reason.
+  Drop them from the default list, or let spawner mobs become elites?
+
 - [x] **5.** Revoking an advancement (`/advancement revoke`) doesn't recompute hearts/Rank until the player relogs
   (only `award` is hooked).
   FIXED: `revoke` is hooked too and recomputes right away (recipe unlocks skipped).

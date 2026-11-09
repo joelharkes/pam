@@ -30,6 +30,7 @@ import net.minecraft.world.level.LightLayer;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -37,7 +38,7 @@ import java.util.WeakHashMap;
 
 /**
  * The Challenges tab: advancements for doing something well rather than often. Progress is per player and in memory
- * (a night, a fall, a streak), except creepers defused, which is a statistic so it survives logging out.
+ * (a night, a fall, a streak), except creepers defused and attacks parried, statistics so they survive logging out.
  */
 public final class Challenges {
 	private static final int UNTOUCHABLE_KILLS = 10;
@@ -46,12 +47,14 @@ public final class Challenges {
 	private static final double TELEPORT_DROP = 5;
 	private static final int DEFUSED_CREEPERS = 5;
 	private static final int SHARPSHOOTER_HITS = 10;
+	private static final int PERFECT_PARRIES = 25;
 	/** Seconds outside, of the roughly 545 a night lasts (dark = when beds work): sleeping through it or joining late doesn't count. */
 	private static final int GHOST_SECONDS = 400;
 	/** Sky light at the feet from this level counts as outside: open sky gives 15, under a roof it drops off fast. */
 	private static final int GHOST_SKY_LIGHT = 8;
 
 	public static final Identifier CREEPERS_DEFUSED = ProgressiveAdventure.id("creepers_defused");
+	public static final Identifier ATTACKS_PARRIED = ProgressiveAdventure.id("attacks_parried");
 
 	private static final Map<UUID, State> STATES = new HashMap<>();
 	/** Arrows that hit a mob: a piercing arrow landing in the ground afterwards isn't a miss. */
@@ -80,8 +83,10 @@ public final class Challenges {
 	}
 
 	public static void init() {
-		Registry.register(BuiltInRegistries.CUSTOM_STAT, CREEPERS_DEFUSED, CREEPERS_DEFUSED);
-		Stats.CUSTOM.get(CREEPERS_DEFUSED, StatFormatter.DEFAULT);
+		for (Identifier stat : List.of(CREEPERS_DEFUSED, ATTACKS_PARRIED)) {
+			Registry.register(BuiltInRegistries.CUSTOM_STAT, stat, stat);
+			Stats.CUSTOM.get(stat, StatFormatter.DEFAULT);
+		}
 	}
 
 	public static void onServerStopped() {
@@ -252,6 +257,14 @@ public final class Challenges {
 	public static void onRaidWon(Raid raid, ServerPlayer player) {
 		if (!VILLAGER_DIED.contains(raid) && canEarn(player)) {
 			Milestones.grant(player, Milestones.SAFE_AND_SOUND);
+		}
+	}
+
+	/** From ShieldPerks: a melee attack parried (needs the Parry perk). */
+	public static void onParry(ServerPlayer player) {
+		player.awardStat(ATTACKS_PARRIED);
+		if (player.getStats().getValue(Stats.CUSTOM.get(ATTACKS_PARRIED)) >= PERFECT_PARRIES) {
+			Milestones.grant(player, Milestones.PERFECT_PARRY);
 		}
 	}
 

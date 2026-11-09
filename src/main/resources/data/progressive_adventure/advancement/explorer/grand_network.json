@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/network",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "progressive_adventure:waypoint_shard"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.grand_network.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.grand_network.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

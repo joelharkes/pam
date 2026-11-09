@@ -1,5 +1,5 @@
 {
-  "parent": "progressive_adventure:challenges/root",
+  "parent": "progressive_adventure:challenges/defused",
   "criteria": {
     "granted": {
       "trigger": "minecraft:impossible"

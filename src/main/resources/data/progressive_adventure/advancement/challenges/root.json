@@ -6,7 +6,7 @@
   },
   "display": {
     "icon": {
-      "id": "minecraft:shield"
+      "id": "minecraft:trial_key"
     },
     "title": {
       "translate": "advancements.progressive_adventure.challenges.root.title"

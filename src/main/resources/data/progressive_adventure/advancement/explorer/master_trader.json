@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/five_professions",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:emerald_block"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.master_trader.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.master_trader.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

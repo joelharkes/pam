@@ -1,0 +1,61 @@
+{
+  "parent": "progressive_adventure:crafter/diamond_tools",
+  "criteria": {
+    "sharpness": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:sharpness",
+                  "levels": {
+                    "min": 5
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "protection": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:protection",
+                  "levels": {
+                    "min": 4
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.crafter.max_power.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.crafter.max_power.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "sharpness",
+      "protection"
+    ]
+  ]
+}

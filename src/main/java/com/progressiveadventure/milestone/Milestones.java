@@ -47,6 +47,13 @@ public final class Milestones {
 	public static final Milestone CARTOGRAPHER = pam("explorer/cartographer", 1, 0);
 	public static final Milestone MAPMAKER = pam("explorer/mapmaker", 0, 0);
 	public static final Milestone FIRST_MARKER = pam("explorer/first_marker", 0, 0);
+	// Harder Explorer advancements, rank only
+	public static final Milestone SPELUNKER = pam("explorer/spelunker", 0, 0);
+	public static final Milestone FIVE_PROFESSIONS = pam("explorer/five_professions", 0, 0);
+	public static final Milestone MASTER_TRADER = pam("explorer/master_trader", 0, 0);
+	public static final Milestone WORLD_ATLAS = pam("explorer/world_atlas", 0, 0);
+	public static final Milestone GRAND_NETWORK = pam("explorer/grand_network", 0, 0);
+	public static final Milestone LONG_JUMP = pam("explorer/long_jump", 0, 0);
 
 	public static final Milestone MOB_TYPES_5 = pam("hunter/mob_types_5", 1, 0);
 	public static final Milestone MOB_TYPES_15 = pam("hunter/mob_types_15", 1, 0);
@@ -68,6 +75,7 @@ public final class Milestones {
 	public static final Milestone END_HUNTER = pam("hunter/end_hunter", 0, 0);
 	public static final Milestone FIRST_MASTER = pam("hunter/first_master", 0, 0);
 	public static final Milestone ALL_TRAITS = pam("hunter/all_traits", 0, 0);
+	public static final Milestone ELITE_TYPES = pam("hunter/elite_types", 0, 0);
 
 	// Walking (Explorer): on-foot distance from vanilla statistics, rank only, see WALK_KM_THRESHOLDS
 	public static final Milestone WALK_5 = pam("explorer/walk_5", 0, 0);
@@ -86,6 +94,7 @@ public final class Milestones {
 	public static final Milestone BRAVE = pam("challenges/brave", 0, 0);
 	public static final Milestone NOT_A_SCRATCH = pam("challenges/not_a_scratch", 0, 0);
 	public static final Milestone SAFE_AND_SOUND = pam("challenges/safe_and_sound", 0, 0);
+	public static final Milestone PERFECT_PARRY = pam("challenges/perfect_parry", 0, 0);
 
 	// Skills tab: rank only, like the collections. Per skill "skills/<skill>_<level>" at SKILL_LEVELS, see skillLevel.
 	public static final Milestone ALL_SKILLS_10 = pam("skills/all_10", 0, 0);
@@ -137,7 +146,7 @@ public final class Milestones {
 	public static final List<Threshold> MOB_TYPE_THRESHOLDS = List.of(
 			new Threshold(5, MOB_TYPES_5), new Threshold(15, MOB_TYPES_15), new Threshold(30, MOB_TYPES_30));
 	/** Turned-on stones you own. */
-	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK));
+	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK), new Threshold(10, GRAND_NETWORK));
 	/** Explorer's Journal chunks you drew first. */
 	/** Kilometres on foot. */
 	public static final List<Threshold> WALK_KM_THRESHOLDS = List.of(
@@ -147,7 +156,12 @@ public final class Milestones {
 	public static final List<Integer> SKILL_LEVELS = List.of(15, 30, 50);
 	/** The lowest of all skill levels. */
 	public static final List<Threshold> ALL_SKILLS_THRESHOLDS = List.of(new Threshold(10, ALL_SKILLS_10), new Threshold(25, ALL_SKILLS_25));
-	public static final List<Threshold> CHUNKS_DRAWN_THRESHOLDS = List.of(new Threshold(100, MAPMAKER), new Threshold(1000, CARTOGRAPHER));
+	public static final List<Threshold> CHUNKS_DRAWN_THRESHOLDS = List.of(new Threshold(100, MAPMAKER), new Threshold(1000, CARTOGRAPHER),
+			new Threshold(5000, WORLD_ATLAS));
+	/** Villager professions traded with. */
+	public static final List<Threshold> PROFESSION_THRESHOLDS = List.of(new Threshold(5, FIVE_PROFESSIONS));
+	/** Mob types with an elite defeated. Not all of them: cave spiders are elites only in the config, they never spawn naturally. */
+	public static final List<Threshold> ELITE_TYPE_THRESHOLDS = List.of(new Threshold(8, ELITE_TYPES));
 
 	public record Threshold(int count, Milestone milestone) {
 	}
