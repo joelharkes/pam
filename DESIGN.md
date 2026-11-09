@@ -578,16 +578,16 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Defense     | Fire Guard I/II     | 15% / 30% less damage from fire, lava, burning      | 5 / 10 mob types    | 2/3  |
 | Defense     | Tough Hide I/II     | 10% / 20% less damage from mob hits (melee)         | 5 / 10 mob types    | 2/3  |
 | Defense     | Steady Stance       | 30% knockback resistance                            | 10 mob types        | 2    |
-| Survival    | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 10 / 20 | 3/4/5|
-| Survival    | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
+| Health      | Bonus Heart I/II/III| +1 heart each, on top of milestone hearts (ignores cap) | Rank 5 / 10 / 20 | 3/4/5|
+| Health      | Iron Stomach        | Immune to the Hunger effect (rotten flesh, husks)   | —                   | 1    |
 | Survival    | Long Arms           | +1.5 blocks block reach                             | Rank 10             | 2    |
 | Survival    | Deep Breath I/II/III | ~30s / ~45s / ~60s of air underwater (vanilla 15s) | — / Rank 10 / Rank 25 | 1/2/3 |
 | Survival    | Diver               | Mine underwater at full speed (Aqua Affinity)       | Rank 10             | 2    |
-| Survival    | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
-| Survival    | Steady Healing I/II | Natural healing costs 25% / 50% less hunger (stacks with the stomach) | — / Rank 10 | 2/3 |
-| Survival    | Quick Healing I/II  | Healing without saturation: half a heart every 3s / 2s (vanilla 4s). Same hunger per heart; starving stays at 4s | Rank 5 / 15 | 2/3 |
-| Survival    | Deep Reserves       | Healing without saturation works down to 4 food icons (vanilla 9), so you eat less often and 2 cooked meals fill you up | Rank 10 | 3 |
-| Survival    | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
+| Health      | Second Wind         | Dropping below 3 hearts gives Regeneration II for 5s (2 min cooldown) | — | 2 |
+| Health      | Steady Healing I/II | Natural healing costs 25% / 50% less hunger (stacks with the stomach) | — / Rank 10 | 2/3 |
+| Health      | Quick Healing I/II  | Healing without saturation: half a heart every 3s / 2s (vanilla 4s). Same hunger per heart; starving stays at 4s | Rank 5 / 15 | 2/3 |
+| Health      | Deep Reserves       | Healing without saturation works down to 4 food icons (vanilla 9), so you eat less often and 2 cooked meals fill you up | Rank 10 | 3 |
+| Health      | Hearty Kill I/II/III | Defeating a hostile mob (any weapon) heals ½ / 1 / 1½ hearts, at most once per second | 10 / 20 / 30 mob types | 2/3/4 |
 | Survival    | Keepsake I/II/III   | On death you keep: your armor / also hotbar and offhand / everything, also XP. Curse of Vanishing still destroys items | — / Rank 5 / Rank 10 | 1/2/3 |
 | Survival    | Way Back            | After a death, a red trail (only you see it) points to the spot for 5 minutes, or until you are within 4 blocks. Chat gives the coordinates. Buying it within 5 minutes of a death starts the trail for the time left | — | 1 |
 | Survival    | Faithful Friend     | A tamed pet (wolf, cat, parrot...) that would die gets 2 hearts, Regeneration II and Resistance IV for 10s, teleports to you and sits down. Needs you online in the same dimension. `/kill` still kills. Not horses | — | 1 |
@@ -601,7 +601,7 @@ Melee (by weapon) and the Shield perks (Defense) in 3e.
 | Movement    | Shadow Step II      | Sneak > 8 blocks from a chasing mob: it gives up and can't see you (while sneaking) for 10s, unless you hit it | Rank 25, perk I | 3 |
 | Movement    | Mantle              | Jump against a wall up to 2 blocks high while walking forward: pull yourself up | Rank 15 | 3 |
 | Movement    | Double Jump         | One extra jump in the air (not while wearing an elytra) | Rank 30         | 4    |
-| Movement    | Pathfinder I/II     | Waypoint trips cost 25% / 50% less XP               | Rank 15 / 35        | 2/3  |
+| Exploration | Pathfinder I/II     | Waypoint trips cost 25% / 50% less XP               | Rank 15 / 35        | 2/3  |
 | Movement    | Swimmer I/II        | Water movement efficiency 0.33 / 0.66 (Depth Strider) | Rank 5 / 20       | 2/3  |
 
 Implementation notes:
@@ -680,7 +680,7 @@ places you've been.
   off mounts and boats; they stay behind.
 - **Milestones:** Waypoint (first stone, ½ heart), First Trip (first teleport, stomach),
   Network (5 of your own stones turned on, 1 heart).
-- **Perk:** Pathfinder I/II (Movement, Rank 15/35, 2/3 points): trips cost 25% / 50% less.
+- **Perk:** Pathfinder I/II (Exploration, Rank 15/35, 2/3 points): trips cost 25% / 50% less.
 - **Ops:** `/pam waypoint list`, `/pam waypoint tp <name>` (free, no charge-up),
   `/pam waypoint remove <name>` (turns the stone off, drops its shards there). Creative players
   pay no shards or XP.
@@ -710,25 +710,22 @@ Keep it simple and close to vanilla.
 ```
 ┌──────────────────────────────────────────────────────┐
 │ Perk points: 7                       [Reset perks]   │
-│ ┌──────────┐ ┌────────────────────────────────────┐  │
-│ │ Mining   │ │ ⛏ Sturdy Pickaxe I               ✔ │  │
-│ │ Woodcut. │ │ ⛏ Sturdy Pickaxe II          2 pts │  │
-│ │ Digging  │ │ ⛏ Sturdy Pickaxe III            🔒 │  │
-│ │ Farming  │ │ 💎 Prospector I              2 pts │  │
-│ │ Melee    │ │ 💎 Prospector II                🔒 │  │
-│ │ Archery  │ │                                    │  │
-│ │ Fishing  │ │                                    │  │
-│ │ Defense  │ │                                    │  │
-│ │ Survival │ │                                    │  │
-│ │ Movement │ │                                    │  │
-│ └──────────┘ └────────────────────────────────────┘  │
+│ ┌──┐┌──┐  Mining                                     │
+│ │⛏•││🪓│  ┌────────────────────────────────────────┐ │
+│ └──┘└──┘  │ ⛏ Sturdy Pickaxe I                   ✔ │ │
+│ ┌──┐┌──┐  │ ⛏ Sturdy Pickaxe II              2 pts │ │
+│ │🥄││🌾•│  │ ⛏ Sturdy Pickaxe III                🔒 │ │
+│ └──┘└──┘  │ 💎 Prospector I                  2 pts │ │
+│  ... 12 icon tiles, 2 per row ...                 │ │
+│           └────────────────────────────────────────┘ │
 └──────────────────────────────────────────────────────┘
 ```
 - Tooltips wrap at 200px (`AdventureScreen.wrappedTooltip`): long perk descriptions ran off the screen.
-- The category column holds 10 rows of 19px: an 11th category needs a new layout (16px rows would fit 12).
+- Categories are icon tiles of 20px, 2 per row (room for 16). Hover a tile for its name; the selected category's
+  name is the heading above the list. A small gold dot on a tile means a perk there can be bought now.
 - Perks can have a **group** (Melee: one per weapon); the list then shows a small gold heading above each group,
   so a long category reads as a few short lists.
-- Categories on the left, perks of the selected category on the right (scrolls when a
+- Category tiles on the left, perks of the selected category on the right (scrolls when a
   category has more perks than fit). Hover a perk for its full description.
 - States: owned (✔), buyable (cost in gold, click the row), too expensive (cost in red),
   locked (🔒). What blocks a locked perk is only in the row tooltip: one hover per row,
@@ -840,6 +837,21 @@ Players can suggest more through the GitHub issue forms.
   have a "Home Sweet Home" milestone.
 
 ### Exploration
+- **Atlas (2026-11-09, being explored):** a map item that draws itself as you walk, to help kids learn to navigate
+  (like the Antique Atlas mod, but it costs something). Crafted once (book + empty map + ink sac); while it's in your
+  inventory it draws the chunks around you, and **each new chunk costs ink** (redrawing known chunks is free, so your
+  builds show up). Out of ink = the edge stops growing, what you drew stays. Refill by clicking a drawing item onto it
+  (like a bundle): coal/charcoal ("pencil") a little, ink sac / black dye more, glow ink sac the most, so squid hunting
+  pays off. Drawing is expensive at first; 3 perk tiers make it much cheaper. Held in hand it shows the area around you
+  like a vanilla map; right-click opens a full-screen map (zoom, drag, N/E/S/W, your arrow). No HUD minimap.
+  Markers: your own (name + icon), plus bed, Waypoint Stones, last death; structures only once seen. A copy at a
+  cartography table to share with a sibling. **Kept on death** (option A; the user wants to revisit this later).
+  Server draws with vanilla map colours, stored by atlas id like vanilla maps. Other perk ideas: wider draw radius,
+  cave layer (glow ink), Nether mapping, elite maps as markers. Milestones: first atlas, chunks drawn, markers.
+  **With a compass in your inventory** your marker shows which way you are looking (otherwise just a dot), so you
+  carry one more item for a small bonus. Perks go in the new Exploration category (Steady Hand I/II/III: ink costs
+  25% / 50% / 70% less). First numbers (to tune in playtests): 1 ink per new chunk, radius 2 chunks; coal/charcoal
+  +4, ink sac / black dye +16, glow ink sac +32; holds 128.
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
   bonus heart.
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
@@ -1112,12 +1124,24 @@ Players can suggest more through the GitHub issue forms.
   `structures` predicate: you must stand inside a piece of the structure.
 - 2026-11-09: **Foods eaten list** in the stomach tooltip on the Character tab (user's playtest: hard to keep track). Shows only foods
   already eaten, never the ones still missing (finding them is the fun), plus how many new ones until the next Gourmet milestone.
+- 2026-11-09: **Atlas idea** (see Ideas, Exploration): kept on death for now (to revisit); every drawing item refills it
+  (coal/charcoal, ink sac, glow ink sac), ink worth more so squids get an extra use; expensive at first, 3 perk tiers
+  make it much cheaper. The Perks tab layout gets revised so long categories (Survival 23, Melee 17, Movement 16) can be split.
+- 2026-11-09: **Compass shows your facing on the Atlas** (user): only with a compass in your inventory, otherwise a dot. A small
+  reason to carry one more item. First ink numbers accepted for playtesting ("feels a lot, that's why there are perks").
+- 2026-11-09: **Perks tab: icon grid** (option A over a Skills/General switch): categories as 20px icon tiles, 2 per row (room for
+  16), name as a heading and tooltip, gold dot where a perk can be bought. **Survival split** into Health and Survival;
+  **Exploration** category for Pathfinder and later the Atlas perks. Perk ids don't change, so nobody loses a perk.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
+- **Perks tab icon grid (2026-11-09):** categories are icon tiles, 2 per row, with the name as a heading and in the tile
+  tooltip; the gold dot shows where a perk can be bought (and goes away when you can't afford anything there). Survival is
+  split into Health (hearts, healing, Hearty Kill, Iron Stomach) and Survival (Keepsake, Way Back, Faithful Friend, breath,
+  Diver, Long Arms); Pathfinder moved to the new Exploration category. Owned perks stay owned. Retake the Movement perks screenshot.
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
 - **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail

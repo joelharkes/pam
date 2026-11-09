@@ -163,9 +163,9 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   26.x GUI: `GuiGraphicsExtractor`, `extractRenderState`, `minecraft.gui.setScreen(...)`.
   The scratchpad is cleared between sessions, so re-unzip when needed.
 - The Character tab and perk list are drawn by hand; when adding a skill or many perks, check
-  the layout still fits (Character tab: two columns of 4 skill rows of 26px, so 8 skills fit; Perks tab: category
-  column holds 10 rows of 19px, so an 11th category needs a new layout; one category per skill plus
-  Defense, Survival and Movement; a long category uses perk groups (`register(..., group, ...)` in `Perks`,
+  the layout still fits (Character tab: two columns of 4 skill rows of 26px, so 8 skills fit; Perks tab: categories are
+  icon tiles, 2 per row, room for 16; one category per skill plus
+  Defense, Health, Survival, Movement and Exploration; a long category uses perk groups (`register(..., group, ...)` in `Perks`,
   lang `perk_group.progressive_adventure.<group>`) for headings, like Melee's weapons). A skill's enum name must
   match its `PerkCategory` (the Character tab takes the icon from it).
 

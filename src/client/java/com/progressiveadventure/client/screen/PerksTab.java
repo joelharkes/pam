@@ -26,7 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Categories on the left, the selected category's perks on the right (scrollable). Click a perk to buy it.
+ * Category tiles on the left (icons, two per row; a gold dot means something there can be bought), the selected
+ * category's name and perks on the right (scrollable). Click a perk to buy it.
  * Rows stay short (an icon or the cost); the details, including what blocks a perk, are in the row tooltip.
  * Perks with a group (Melee: one per weapon) get a small heading above each group.
  */
@@ -34,11 +35,14 @@ class PerksTab implements AdventureTab {
 	private static final Identifier LOCK = Identifier.withDefaultNamespace("container/cartography_table/locked");
 	private static final Identifier CHECKMARK = Identifier.withDefaultNamespace("icon/checkmark");
 	private static final int HEADER_HEIGHT = 22;
-	private static final int CATEGORY_WIDTH = 96;
+	private static final int TITLE_HEIGHT = 14;
 	private static final int ROW_HEIGHT = 22;
 	private static final int GROUP_HEIGHT = 12;
-	// Shorter than perk rows so all categories fit next to the list (10 × 19 in the 192px below the header)
-	private static final int CATEGORY_ROW_HEIGHT = 19;
+	// Icon tiles, so up to 16 categories fit in the 192px below the header (8 rows of 2)
+	private static final int TILE_SIZE = 20;
+	private static final int TILE_GAP = 2;
+	private static final int TILE_COLUMNS = 2;
+	private static final int CATEGORY_WIDTH = TILE_COLUMNS * TILE_SIZE + (TILE_COLUMNS - 1) * TILE_GAP;
 
 	private static PerkCategory selectedCategory = PerkCategory.MINING;
 	private static int scroll = 0;
@@ -49,6 +53,7 @@ class PerksTab implements AdventureTab {
 	private int listWidth;
 	private int listHeight;
 	private int categoryLeft;
+	private int categoryTop;
 
 	@Override
 	public void reset() {
@@ -75,10 +80,11 @@ class PerksTab implements AdventureTab {
 				Perks.pointsAvailable(progress, snapshot)), left, top + 5, AdventureScreen.TEXT_PURPLE);
 
 		categoryLeft = left;
+		categoryTop = top + HEADER_HEIGHT;
 		listLeft = left + CATEGORY_WIDTH + 6;
-		listTop = top + HEADER_HEIGHT;
+		listTop = categoryTop + TITLE_HEIGHT;
 		listWidth = width - CATEGORY_WIDTH - 6;
-		listHeight = height - HEADER_HEIGHT;
+		listHeight = height - HEADER_HEIGHT - TITLE_HEIGHT;
 		List<Row> rows = rows(selectedCategory);
 		int maxScroll = maxScroll(rows);
 		scroll = Math.clamp(scroll, 0, maxScroll);
@@ -86,17 +92,28 @@ class PerksTab implements AdventureTab {
 			listWidth -= 5; // room for the scrollbar
 		}
 
+		PerkCategory hoveredCategory = null;
 		PerkCategory[] categories = PerkCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			PerkCategory category = categories[i];
-			int y = listTop + i * CATEGORY_ROW_HEIGHT;
-			boolean hovered = isInside(mouseX, mouseY, categoryLeft, y, CATEGORY_WIDTH, CATEGORY_ROW_HEIGHT - 1);
+			int x = tileX(i);
+			int y = tileY(i);
+			boolean hovered = isInside(mouseX, mouseY, x, y, TILE_SIZE, TILE_SIZE);
+			if (hovered) {
+				hoveredCategory = category;
+			}
 			int background = category == selectedCategory ? 0xFF3C3C5A : hovered ? 0xFF2A2A3A : 0xFF1C1C26;
-			graphics.fill(categoryLeft, y, categoryLeft + CATEGORY_WIDTH, y + CATEGORY_ROW_HEIGHT - 1, background);
-			graphics.item(new ItemStack(category.icon), categoryLeft + 1, y + 1);
-			graphics.text(font, Component.translatable("perk_category.progressive_adventure." + category.id),
-					categoryLeft + 20, y + 5, category == selectedCategory ? AdventureScreen.TEXT_GOLD : AdventureScreen.TEXT);
+			graphics.fill(x, y, x + TILE_SIZE, y + TILE_SIZE, background);
+			if (category == selectedCategory) {
+				graphics.fill(x, y + TILE_SIZE - 1, x + TILE_SIZE, y + TILE_SIZE, AdventureScreen.TEXT_GOLD);
+			}
+			graphics.item(new ItemStack(category.icon), x + 2, y + 2);
+			if (hasBuyable(category, progress, snapshot)) {
+				graphics.fill(x + TILE_SIZE - 5, y, x + TILE_SIZE, y + 5, 0xFF000000);
+				graphics.fill(x + TILE_SIZE - 4, y + 1, x + TILE_SIZE - 1, y + 4, AdventureScreen.TEXT_GOLD);
+			}
 		}
+		graphics.text(font, categoryName(selectedCategory), listLeft + 2, categoryTop + 2, AdventureScreen.TEXT_GOLD);
 
 		boolean mouseInList = isInside(mouseX, mouseY, listLeft, listTop, listWidth, listHeight);
 		graphics.enableScissor(listLeft, listTop, listLeft + listWidth, listTop + listHeight);
@@ -137,6 +154,15 @@ class PerksTab implements AdventureTab {
 		}
 		graphics.disableScissor();
 
+		if (hoveredCategory != null) {
+			List<Component> lines = new ArrayList<>();
+			lines.add(categoryName(hoveredCategory));
+			if (hasBuyable(hoveredCategory, progress, snapshot)) {
+				lines.add(Component.translatable("screen.progressive_adventure.perk_category.buyable").withStyle(ChatFormatting.YELLOW));
+			}
+			AdventureScreen.wrappedTooltip(graphics, font, lines, mouseX, mouseY);
+		}
+
 		if (maxScroll > 0) {
 			int barX = listLeft + listWidth + 2;
 			int thumbHeight = Math.max(12, listHeight * listHeight / (listHeight + maxScroll));
@@ -144,6 +170,27 @@ class PerksTab implements AdventureTab {
 			graphics.fill(barX, listTop, barX + 3, listTop + listHeight, 0xFF1C1C26);
 			graphics.fill(barX, thumbY, barX + 3, thumbY + thumbHeight, 0xFF8888A0);
 		}
+	}
+
+	private int tileX(int index) {
+		return categoryLeft + index % TILE_COLUMNS * (TILE_SIZE + TILE_GAP);
+	}
+
+	private int tileY(int index) {
+		return categoryTop + index / TILE_COLUMNS * (TILE_SIZE + TILE_GAP);
+	}
+
+	private static Component categoryName(PerkCategory category) {
+		return Component.translatable("perk_category.progressive_adventure." + category.id);
+	}
+
+	private static boolean hasBuyable(PerkCategory category, PlayerProgress progress, ProgressionSnapshot snapshot) {
+		for (Perk perk : Perks.inCategory(category)) {
+			if (Perks.status(perk, progress, snapshot) == Perks.Status.BUYABLE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** A perk row, or a group heading when perk is null. y is relative to the top of the list. */
@@ -208,7 +255,7 @@ class PerksTab implements AdventureTab {
 	public boolean mouseClicked(double mouseX, double mouseY) {
 		PerkCategory[] categories = PerkCategory.values();
 		for (int i = 0; i < categories.length; i++) {
-			if (isInside(mouseX, mouseY, categoryLeft, listTop + i * CATEGORY_ROW_HEIGHT, CATEGORY_WIDTH, CATEGORY_ROW_HEIGHT - 1)) {
+			if (isInside(mouseX, mouseY, tileX(i), tileY(i), TILE_SIZE, TILE_SIZE)) {
 				selectedCategory = categories[i];
 				scroll = 0;
 				return true;
