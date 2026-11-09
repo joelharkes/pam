@@ -894,7 +894,8 @@ Players can suggest more through the GitHub issue forms.
   them (left out of slice 2: needs "seen" detection). Other players on the map (not asked for; think about privacy on
   public servers). Revisit losing the journal on death (the user wants to look at it again later).
 - **Journal in hand gets in the way (2026-11-09 playtest, left as is):** looking down shows the map, like a vanilla map.
-  Options if it bothers: only show it in the off-hand, or a smaller map in one hand.
+  Options if it bothers: only show it in the off-hand, or a smaller map in one hand. Already works (vanilla): with
+  something in the other hand (e.g. a shield) the map is smaller and held in one hand; the user likes that.
 - **Heart containers in loot:** rare items in structure chests (dungeons, temples, ancient cities) that grant a
   bonus heart.
 - **Biome bonuses:** first visit to a biome grants a small one-time XP bonus to a related skill.
