@@ -36,6 +36,7 @@ to woodland mansions.
 ### A stomach that grows
 Early on you get hungry quickly and food fills you up less. Eating different foods and growing
 crops levels up your **stomach**, until you're better off than in vanilla.
+Hover your stomach level on the Character tab to see which foods you already ate.
 
 ### Get better by doing
 Seven skills level up as you use them: **Mining**, **Woodcutting**, **Digging**, **Farming**,

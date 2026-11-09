@@ -700,7 +700,8 @@ Keep it simple and close to vanilla.
 #### Character tab
 - **Progress:** Adventure Rank, the next mob unlock ("Next: Creepers at Rank 18"), available perk
   points, hearts (as heart icons) and stomach level. Details (what Rank is, hunger drain %) are in
-  hover tooltips.
+  hover tooltips. The stomach tooltip also lists the foods you ate (sorted by name) and how many new ones until the next
+  Gourmet milestone, never the foods still missing.
 - **Skills:** two columns of 4 rows (room for 8). Each skill: tool icon, name and level, xp bar to
   the next level and the bonus as a number ("+35%", red below vanilla). Hover for the details: the
   bonus in words, how much xp to the next level and the next perk the skill unlocks.
@@ -797,9 +798,6 @@ Players can suggest more through the GitHub issue forms.
   Rewards only (2026-10-31): the earlier "same food gives less" part felt like a penalty on top of the early hunger.
   Teaches kids to farm several crops, fits the Gourmet milestones.
 - Show the stomach level as a small icon next to the hunger bar.
-- **Foods eaten list (2026-11-09 playtest, decided):** it's hard to keep track of which foods you already ate for the Gourmet
-  milestones. Tooltip on the Character tab's stomach line: foods eaten and how many until the next Gourmet milestone.
-  Never list the foods not eaten yet. The data is already synced (`PlayerProgress` foods).
 
 ### Perks
 - A trail home (to bed/spawn), like the Sense perks.
@@ -1112,13 +1110,16 @@ Players can suggest more through the GitHub issue forms.
   woodland mansion. Vanilla Eye Spy and Minecraft: Trial(s) Edition now also give ½ heart. Structures with their own vanilla
   advancement (stronghold, trial chambers, fortress, bastion, end city) get no PAM one. Vanilla `location` trigger with a
   `structures` predicate: you must stand inside a piece of the structure.
-- 2026-11-09: **Foods eaten list:** show only foods already eaten, never the ones still missing (finding them is the fun).
+- 2026-11-09: **Foods eaten list** in the stomach tooltip on the Character tab (user's playtest: hard to keep track). Shows only foods
+  already eaten, never the ones still missing (finding them is the fun), plus how many new ones until the next Gourmet milestone.
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
+- **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
+  the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
 - **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail
   ruin dug into, inside the monument); not too early from far away. Tree in the Adventure tab looks tidy (most hang under Wanderer).
   Tips readable. Eye Spy and Trial(s) Edition show "Reward: +½ heart" and give it.
@@ -1264,4 +1265,4 @@ override applied, typo warned).
   trident Archery, bestiary pages and collections, two-column Character tab. Released with much of it still on
   the playtest checklist (user's call).
 - **Next:** milestones/achievements that bridge the gap after Rank 30 (Ideas > Milestones and Rank), the foods eaten
-  list, then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).
+  list (both built 2026-11-09, to playtest), then the playtest checklist and other [Ideas](#ideas) (e.g. Well Fed).
