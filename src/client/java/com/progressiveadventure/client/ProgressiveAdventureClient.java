@@ -3,6 +3,7 @@ package com.progressiveadventure.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.progressiveadventure.ProgressiveAdventure;
 import com.progressiveadventure.client.screen.AdventureScreen;
+import com.progressiveadventure.client.screen.FoodsTooltip;
 import com.progressiveadventure.client.screen.WaypointListScreen;
 import com.progressiveadventure.client.screen.WaypointNameScreen;
 import com.progressiveadventure.network.OpenWaypointListPayload;
@@ -13,6 +14,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
 
 import net.minecraft.client.KeyMapping;
 
@@ -32,6 +34,7 @@ public class ProgressiveAdventureClient implements ClientModInitializer {
 				context.client().gui.setScreen(new WaypointListScreen(payload)));
 		BestiaryClient.init();
 		JournalClient.init();
+		ClientTooltipComponentCallback.EVENT.register(data -> data instanceof FoodsTooltip foods ? FoodsTooltip.client(foods) : null);
 		AchievementsClient.init();
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> AdventureScreen.onDisconnect());
 

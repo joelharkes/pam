@@ -699,7 +699,7 @@
   "screen.progressive_adventure.stomach": "Stomach level %s",
   "screen.progressive_adventure.stomach.tooltip": "You get hungry at %s%% of the normal speed.",
   "screen.progressive_adventure.foods_next": "New foods until the next Gourmet milestone: %s",
-  "screen.progressive_adventure.foods_eaten": "Foods you ate (%s): %s",
+  "screen.progressive_adventure.foods_eaten": "Foods you ate (%s):",
   "screen.progressive_adventure.skills": "Skills",
   "screen.progressive_adventure.skill_level": "%s  level %s",
   "screen.progressive_adventure.skill_xp": "%s more xp to reach level %s",

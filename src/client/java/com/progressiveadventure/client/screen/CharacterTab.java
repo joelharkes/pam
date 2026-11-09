@@ -26,8 +26,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /** Rank, hearts, stomach, perk points and the skills in two columns (details in a hover tooltip). */
 class CharacterTab implements AdventureTab {
@@ -89,7 +89,7 @@ class CharacterTab implements AdventureTab {
 		Component stomach = Component.translatable("screen.progressive_adventure.stomach", snapshot.stomach());
 		graphics.text(font, stomach, left + 20, y, AdventureScreen.TEXT);
 		if (PerksTab.isInside(mouseX, mouseY, left, y - 4, 20 + font.width(stomach), 16)) {
-			AdventureScreen.wrappedTooltip(graphics, font, stomachTooltip(progress, snapshot), mouseX, mouseY);
+			AdventureScreen.wrappedTooltip(graphics, font, stomachTooltip(progress, snapshot), foodsEaten(progress), mouseX, mouseY);
 		}
 
 		y += 18;
@@ -104,23 +104,28 @@ class CharacterTab implements AdventureTab {
 		}
 	}
 
-	/** Hunger speed, then the foods eaten so far (never the ones still missing: finding them is the fun). */
+	/** Hunger speed and how many new foods until the next Gourmet milestone; the foods eaten go below as icons. */
 	private static List<Component> stomachTooltip(PlayerProgress progress, ProgressionSnapshot snapshot) {
 		List<Component> lines = new ArrayList<>();
 		lines.add(Component.translatable("screen.progressive_adventure.stomach.tooltip", Math.round(snapshot.hungerDrain() * 100)));
 		int eaten = progress.foodsEaten().size();
 		Milestones.FOOD_THRESHOLDS.stream().filter(threshold -> threshold.count() > eaten).findFirst().ifPresent(next ->
 				lines.add(Component.translatable("screen.progressive_adventure.foods_next", next.count() - eaten).withStyle(ChatFormatting.GOLD)));
-		if (eaten > 0) {
-			String names = progress.foodsEaten().stream()
-					.map(Identifier::tryParse)
-					.filter(id -> id != null && BuiltInRegistries.ITEM.containsKey(id))
-					.map(id -> new ItemStack(BuiltInRegistries.ITEM.getValue(id)).getHoverName().getString())
-					.sorted()
-					.collect(Collectors.joining(", "));
-			lines.add(Component.translatable("screen.progressive_adventure.foods_eaten", eaten, names).withStyle(ChatFormatting.GRAY));
-		}
 		return lines;
+	}
+
+	/** The foods eaten so far as icons, sorted by name (never the ones still missing: finding them is the fun). */
+	private static FoodsTooltip foodsEaten(PlayerProgress progress) {
+		if (progress.foodsEaten().isEmpty()) {
+			return null;
+		}
+		List<ItemStack> foods = progress.foodsEaten().stream()
+				.map(Identifier::tryParse)
+				.filter(id -> id != null && BuiltInRegistries.ITEM.containsKey(id))
+				.map(id -> new ItemStack(BuiltInRegistries.ITEM.getValue(id)))
+				.sorted(Comparator.comparing(stack -> stack.getHoverName().getString()))
+				.toList();
+		return new FoodsTooltip(Component.translatable("screen.progressive_adventure.foods_eaten", foods.size()), foods);
 	}
 
 	/** Ten hearts per row, like the HUD. More than two rows overlap (also like the HUD) so they fit in two rows' space. */

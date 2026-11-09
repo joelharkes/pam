@@ -8,11 +8,14 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** The K screen: character overview, perks, bestiary and achievements in one tabbed window. */
 public class AdventureScreen extends Screen {
@@ -47,6 +50,15 @@ public class AdventureScreen extends Screen {
 			wrapped.addAll(font.split(line, TOOLTIP_WIDTH));
 		}
 		graphics.setTooltipForNextFrame(font, wrapped, mouseX, mouseY);
+	}
+
+	/** Same, with an image (e.g. an icon grid) after the first line; image may be null. */
+	static void wrappedTooltip(GuiGraphicsExtractor graphics, Font font, List<Component> lines, TooltipComponent image, int mouseX, int mouseY) {
+		List<FormattedCharSequence> wrapped = new ArrayList<>();
+		for (Component line : lines) {
+			wrapped.addAll(font.split(line, TOOLTIP_WIDTH));
+		}
+		graphics.setTooltipForNextFrame(font, wrapped, Optional.ofNullable(image), DefaultTooltipPositioner.INSTANCE, mouseX, mouseY, false, null);
 	}
 
 	/** Called when leaving a world or server: a mob page from the last world shouldn't stay open in the next. */
