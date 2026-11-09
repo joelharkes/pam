@@ -1315,6 +1315,9 @@ Players can suggest more through the GitHub issue forms.
   Obsidian and crying obsidian 10 (about 9 s each with a diamond pickaxe; placed obsidian is remembered so portals
   you built give nothing). Config `miningXpByBlock` (block id or `#tag`); `oreXp` stays as the fallback for other mods' ores. No
   message per ore (would show too often, and no other skill does it). Level curve unchanged until a playtest says otherwise.
+- 2026-11-10: **0.8.0 released** (tag `v0.8.0`, Alpha): Explorer's Journal and its perks, Health and Exploration perk categories,
+  Campfire Catch, Sunken Riches, Sea's Favor, Challenges and Skills tabs, walking/structure/harder advancements, Mining XP by ore,
+  foods-eaten grid, shared Elite Slayer. Released with parts still on the playtest checklist (user's call: more testing later).
 
 ## Playtest checklist
 
