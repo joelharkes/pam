@@ -551,7 +551,7 @@ Trait elites have ×1.5 bonus loot (and shard) chances. Test: `/pam elite <mob> 
   no display).
 - Points are **derived**, never stored: `available = earned − cost of owned perks`.
   Old worlds get points for advancements they already have, which is fine.
-- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), so ~302. Buying all
+- Budget: vanilla advancements give ~175 points, PAM's 50 advancements (milestones, collections, structures, journal) add 81, so ~255 Rank in total (2026-11-09); the Skills tab adds 47 (late game), walking 9 and the Challenges tab 23, so ~334. Buying all
   131 perks costs **316**, so early on you choose and owning everything is out of reach until more milestones
   come (accepted 2026-10-26). Players can suggest perks and milestones through the GitHub
   issue forms.
@@ -763,6 +763,33 @@ is ours.)
   chunks drawn, goal, ½ heart), X Marks the Spot (first marker, task). Only Cartographer has a reward, like the hard
   structure finds.
 
+### 8b. Walking and Challenges (advancements, rank only)
+
+- **Walking** (Explorer, Adventure tab): distance on foot from vanilla statistics (walk, sprint, crouch, swim, on and under
+  water; no horse, boat, elytra, climbing or falling), checked every second, so distance from before counts. A stuck kid can
+  always earn rank by going on a trip: Stroll 5 km (normal), Hiker 25 km (normal), Far Walker 50 km (goal), Long Road
+  100 km (goal), World Walker 250 km (challenge). 9 rank.
+- **Challenges tab** (its own advancement tab, `challenge/Challenges`): doing something well, not often. 23 rank. Nothing
+  counts in creative or spectator. Progress is in memory per player (gone on logout or restart), except creepers defused,
+  which is a statistic (`Creepers Defused` in vanilla's statistics screen).
+  - **Untouchable** (challenge): 10 kills of monsters (`Enemy`) in the Overworld in one night (dark = when beds work)
+    before you get hurt that night.
+  - **Nailed the Landing** (goal): from the highest point since you last stood, swam, climbed, rode or flew (elytra too),
+    land at least 30 blocks lower on the ground or in water, unhurt. Slow falling spoils it; a drop of more than 5 blocks in
+    one tick counts as a teleport and starts over.
+  - **Defused** (goal): 5 creepers defeated while swelling (hissing), over any time.
+  - **Sharpshooter** (goal): 10 arrow (or thrown trident) hits on mobs in a row; an arrow of yours that hits a block without
+    hitting a mob first resets it. Ricochet's extra arrows don't count as misses.
+  - **Comeback** (goal): defeat a monster with 1 heart (2 health) or less.
+  - **Ghost** (challenge): 400 of the about 545 seconds of a night in the Overworld with sky light 8+ at your feet (outside),
+    awake, not on peaceful; and from dark to morning no damage and no hit on anything.
+  - **Brave** (challenge): the killing blow on an elite with nothing in the four armor slots (a shield is fine).
+  - **Not a Scratch** (challenge): from your first hit on an Ender Dragon or Wither until it dies, no damage taken.
+  - **Safe and Sound** (challenge): you're a hero of a won raid and no villager died within 96 blocks of it (vanilla's
+    raid search). A restart during a raid forgets deaths so far.
+  - Known overlaps with the never-two-at-once rule: a first raid, dragon or Wither won perfectly also gives the vanilla
+    or PAM advancement for it at the same moment (accepted for now: different achievements, not one counting the other).
+
 ## UI
 
 Keep it simple and close to vanilla.
@@ -859,10 +886,7 @@ Players can suggest more through the GitHub issue forms.
   them. Watch in longer play whether more is needed.
 - **Harder advancements (2026-11-09, picked by the user; rank only, no hearts).** Rank 30 is easy, so these are goals and
   challenges that come later or need skill, never more early tasks. Two advancements must never unlock at the same moment
-  (see decisions log). Picked, not built yet:
-  - **Walking** (Explorer): on-foot distance from vanilla stats (walk, sprint, swim, crouch; no horse, boat or elytra), so a
-    stuck kid can always earn rank by going on a trip: Stroll 5 km (task), Hiker 25 km (task), Far Walker 50 km (goal),
-    Long Road 100 km (goal), World Walker 250 km (challenge).
+  (see decisions log). Built: Skills tab (see 3), walking and the Challenges tab (see 8b). Picked, not built yet:
   - **Spelunker:** visit a lush cave, a dripstone cave and the deep dark (goal).
   - **Master Trader:** unlock a villager's master-level trade (goal). **Five Professions:** trade with 5 professions (task).
   - **Max Power:** own a Sharpness V or Protection IV item (goal).
@@ -871,12 +895,7 @@ Players can suggest more through the GitHub issue forms.
   - **Bestiary:** Expert on 10 mob types (goal), Master on 5 (challenge), Elite Veteran 25 elites (goal), an elite of every
     mob type that can be one (challenge). The user finds these a bit grindy, like the skill perks, but they're in.
   - **Perfect Parry:** parry 25 attacks (goal).
-  - **Challenges tab** (its own tab, more can come later): Untouchable (10 hostile kills in one night without taking
-    damage, challenge), Soft Landing (fall 30+ blocks without damage, goal), Defused (kill 5 hissing creepers with none
-    exploding, goal), Steady Aim (10 arrow hits on mobs in a row without a miss, goal), Comeback (defeat a hostile mob on
-    your last heart, goal), Ghost (a whole night outside on the surface without taking damage or attacking, challenge),
-    Brave (defeat an elite wearing no armor, challenge), Not a Scratch (Ender Dragon or Wither without taking damage,
-    challenge), Clean Sweep (win a raid with no villager dying, challenge).
+  - **More challenges** for the Challenges tab as they come up.
   - **Later:** Shockwave Combo (3+ mobs with one Ground Pound/Shockwave; needs a mace, so late game anyway).
   - **Rejected:** all structure advancements (each structure already has one), stand high and deep, Home Sweet Home (for
     now), cake/suspicious stew, every fishing treasure (luck), highest stomach level (self-referencing: it would unlock
@@ -1274,6 +1293,12 @@ Players can suggest more through the GitHub issue forms.
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
+- **Walking and Challenges (2026-11-10):** walking advancements in the Explorer branch (an old world with lots of walking
+  gets several right away; vanilla's statistics screen shows Walk/Sprint distance). Challenges tab in L and in the K
+  screen's Advancements list, with tips. Try: jump from 30+ blocks into water (Nailed the Landing; jumping onto land
+  must not give it), 10 arrow hits in a row and a miss resetting it, `/pam elite zombie` with no armor on (Brave),
+  `/effect give @s instant_damage` until one heart, then defeat a monster (Comeback), hit 5 hissing creepers ("Creepers
+  Defused" in statistics). Untouchable, Ghost, Not a Scratch and Safe and Sound need real nights, bosses and raids.
 - **Skills tab (2026-11-09):** a new "Skills" tab in the advancement screen (L) and a "Skills" heading in the K screen's
   Advancements tab. `/pam skill mining 15` gives "Miner" (normal), 30 "Expert Miner", 50 "Master Miner"; every skill at
   10 gives Jack of All Trades, at 25 All-Rounder. Levels you already had count when you join. Never two toasts at once.
@@ -1419,6 +1444,10 @@ override applied, typo warned).
   that need skill or come late, because Rank 30 is already easy. **Rule: two advancements never unlock at the same
   moment** ("just feels lame"), so no advancement that counts other advancements, and count thresholds must not line up
   with an existing one. Skills and Challenges each get their own advancement tab. Skills tab built first (see 3).
+- 2026-11-10: **Walking and the Challenges tab built** (8b). Names changed where they clashed with perks: Soft Landing →
+  **Nailed the Landing**, Steady Aim → **Sharpshooter**; Clean Sweep → **Safe and Sound** (too close to Careful Sweep).
+  Defused dropped "none exploding" (a defeated creeper can't explode) and counts in a statistic so it survives logging out.
+  Ghost allows short trips indoors (400 of ~545 seconds outside).
 
 ## Roadmap
 

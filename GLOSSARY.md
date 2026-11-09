@@ -54,6 +54,8 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Adventure screen | `AdventureScreen` | The K screen, with the tabs Character, Perks, Bestiary, Achievements. |
 | Advancements tab | `AchievementsTab`, `Achievements` | Our list of every advancement with progress and tips. The code (and older docs) still say "achievements"; game text says advancements. Our own tab's heading there is "Progressive Adventure". |
 | Skills tab | `advancement/skills/`, `Skills.checkAdvancements` | Our second advancement tab: a skill at level 15/30/50 (Miner, Expert Miner, Master Miner...) and every skill at 10/25 (Jack of All Trades, All-Rounder). Rank only. |
+| Challenges tab | `advancement/challenges/`, `challenge/Challenges` | Our third advancement tab: doing something well, not often (Untouchable, Ghost, Sharpshooter...). Rank only. |
+| Walking advancements | `explorer/walk_*`, `Trackers.trackWalking` | Distance on foot from vanilla statistics: Stroll, Hiker, Far Walker, Long Road, World Walker. |
 | Tip, free tip | `BuyTipPayload`, lang `...tip.<id>.<n>` | A hint for an advancement, bought with XP (free once it's done). The Free tip button shows a tip of the day. |
 
 ### Skills

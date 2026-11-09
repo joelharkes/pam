@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:water_bucket"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.nailed_the_landing.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.nailed_the_landing.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

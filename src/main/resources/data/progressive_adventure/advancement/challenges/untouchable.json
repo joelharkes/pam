@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:clock"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.untouchable.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.untouchable.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

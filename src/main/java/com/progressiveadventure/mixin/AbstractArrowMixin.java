@@ -1,6 +1,7 @@
 package com.progressiveadventure.mixin;
 
 import com.progressiveadventure.access.ArrowAccess;
+import com.progressiveadventure.challenge.Challenges;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.perk.ShieldPerks;
 import com.progressiveadventure.skill.Archery;
@@ -8,6 +9,7 @@ import com.progressiveadventure.skill.Archery;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** Piercing Shot and Ricochet (pierce level setter and base damage are private), the in-flight arrow perks (Frost particles, Steady Aim) and Deflect. */
+/** Piercing Shot and Ricochet (pierce level setter and base damage are private), the in-flight arrow perks (Frost particles, Steady Aim), Deflect and misses (Sharpshooter). */
 @Mixin(AbstractArrow.class)
 public abstract class AbstractArrowMixin implements ArrowAccess {
 	@Shadow
@@ -48,6 +50,14 @@ public abstract class AbstractArrowMixin implements ArrowAccess {
 		AbstractArrow self = (AbstractArrow) (Object) this;
 		if (self.hasAttached(PamAttachments.DEFLECTED_ARROW) && hitResult.getEntity() instanceof ServerPlayer player) {
 			ShieldPerks.redirectArrow(self, player);
+		}
+	}
+
+	@Inject(method = "onHitBlock", at = @At("HEAD"))
+	private void pam$hitBlock(BlockHitResult hitResult, CallbackInfo ci) {
+		AbstractArrow self = (AbstractArrow) (Object) this;
+		if (self.level() instanceof ServerLevel) {
+			Challenges.onArrowHitBlock(self);
 		}
 	}
 

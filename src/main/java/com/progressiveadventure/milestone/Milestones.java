@@ -69,6 +69,24 @@ public final class Milestones {
 	public static final Milestone FIRST_MASTER = pam("hunter/first_master", 0, 0);
 	public static final Milestone ALL_TRAITS = pam("hunter/all_traits", 0, 0);
 
+	// Walking (Explorer): on-foot distance from vanilla statistics, rank only, see WALK_KM_THRESHOLDS
+	public static final Milestone WALK_5 = pam("explorer/walk_5", 0, 0);
+	public static final Milestone WALK_25 = pam("explorer/walk_25", 0, 0);
+	public static final Milestone WALK_50 = pam("explorer/walk_50", 0, 0);
+	public static final Milestone WALK_100 = pam("explorer/walk_100", 0, 0);
+	public static final Milestone WALK_250 = pam("explorer/walk_250", 0, 0);
+
+	// Challenges tab: rank only, granted from Challenges
+	public static final Milestone UNTOUCHABLE = pam("challenges/untouchable", 0, 0);
+	public static final Milestone NAILED_THE_LANDING = pam("challenges/nailed_the_landing", 0, 0);
+	public static final Milestone DEFUSED = pam("challenges/defused", 0, 0);
+	public static final Milestone SHARPSHOOTER = pam("challenges/sharpshooter", 0, 0);
+	public static final Milestone COMEBACK = pam("challenges/comeback", 0, 0);
+	public static final Milestone GHOST = pam("challenges/ghost", 0, 0);
+	public static final Milestone BRAVE = pam("challenges/brave", 0, 0);
+	public static final Milestone NOT_A_SCRATCH = pam("challenges/not_a_scratch", 0, 0);
+	public static final Milestone SAFE_AND_SOUND = pam("challenges/safe_and_sound", 0, 0);
+
 	// Skills tab: rank only, like the collections. Per skill "skills/<skill>_<level>" at SKILL_LEVELS, see skillLevel.
 	public static final Milestone ALL_SKILLS_10 = pam("skills/all_10", 0, 0);
 	public static final Milestone ALL_SKILLS_25 = pam("skills/all_25", 0, 0);
@@ -121,6 +139,10 @@ public final class Milestones {
 	/** Turned-on stones you own. */
 	public static final List<Threshold> WAYPOINT_THRESHOLDS = List.of(new Threshold(5, NETWORK));
 	/** Explorer's Journal chunks you drew first. */
+	/** Kilometres on foot. */
+	public static final List<Threshold> WALK_KM_THRESHOLDS = List.of(
+			new Threshold(5, WALK_5), new Threshold(25, WALK_25), new Threshold(50, WALK_50),
+			new Threshold(100, WALK_100), new Threshold(250, WALK_250));
 	/** Per-skill levels. Never the same as an ALL_SKILLS level, so two never unlock at once. */
 	public static final List<Integer> SKILL_LEVELS = List.of(15, 30, 50);
 	/** The lowest of all skill levels. */

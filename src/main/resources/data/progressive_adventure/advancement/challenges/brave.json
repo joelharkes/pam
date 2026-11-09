@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:armor_stand"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.brave.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.brave.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

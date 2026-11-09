@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:dragon_head"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.not_a_scratch.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.not_a_scratch.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

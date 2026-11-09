@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:explorer/walk_50",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_boots"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.explorer.walk_100.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.explorer.walk_100.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

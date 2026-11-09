@@ -35,6 +35,7 @@ public final class Achievements {
 	private static final List<Identifier> TAB_ORDER = List.of(
 			ProgressiveAdventure.id("root"),
 			ProgressiveAdventure.id("skills/root"),
+			ProgressiveAdventure.id("challenges/root"),
 			Identifier.withDefaultNamespace("story/root"),
 			Identifier.withDefaultNamespace("nether/root"),
 			Identifier.withDefaultNamespace("end/root"),

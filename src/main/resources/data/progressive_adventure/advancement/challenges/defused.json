@@ -1,0 +1,25 @@
+{
+  "parent": "progressive_adventure:challenges/root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:creeper_head"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.defused.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.defused.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -22,6 +22,7 @@
 		"PlayerListMixin",
 		"PlayerMixin",
 		"ProjectileWeaponItemMixin",
+		"RaidMixin",
 		"ServerPlayerMixin",
 		"ShovelItemMixin",
 		"ThrownTridentMixin"

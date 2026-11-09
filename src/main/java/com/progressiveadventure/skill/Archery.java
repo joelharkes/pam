@@ -1,6 +1,7 @@
 package com.progressiveadventure.skill;
 
 import com.progressiveadventure.access.ArrowAccess;
+import com.progressiveadventure.challenge.Challenges;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
 import com.progressiveadventure.perk.Perks;
@@ -65,6 +66,7 @@ public final class Archery {
 		}
 		ServerPlayer player = (ServerPlayer) source.getEntity();
 		Skills.addXp(player, Skill.ARCHERY, PamConfig.get().archeryHitXp);
+		Challenges.onArrowHit(player, arrow);
 		if (arrow.hasAttached(PamAttachments.FROST_ARROW)) {
 			victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, PamConfig.get().frostArrowSlownessSeconds * 20, 1));
 		}
@@ -76,6 +78,7 @@ public final class Archery {
 		if (arrow != null && victim instanceof Mob) {
 			ServerPlayer player = (ServerPlayer) source.getEntity();
 			Skills.addXp(player, Skill.ARCHERY, PamConfig.get().archeryHitXp + PamConfig.get().archeryKillXp);
+			Challenges.onArrowHit(player, arrow);
 			tryRicochet(player, arrow, victim);
 		}
 	}

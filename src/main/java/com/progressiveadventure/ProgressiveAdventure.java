@@ -2,6 +2,7 @@ package com.progressiveadventure;
 
 import com.progressiveadventure.bestiary.Bestiary;
 import com.progressiveadventure.bestiary.BestiaryInfo;
+import com.progressiveadventure.challenge.Challenges;
 import com.progressiveadventure.command.PamCommand;
 import com.progressiveadventure.config.PamConfig;
 import com.progressiveadventure.data.PamAttachments;
@@ -54,6 +55,7 @@ public class ProgressiveAdventure implements ModInitializer {
 		JournalContent.init();
 		PamAttachments.init();
 		PamNetworking.init();
+		Challenges.init();
 
 		// After all mods registered their mobs, so modded ids in the config are known
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> MobUnlocks.loadConfig());
@@ -69,6 +71,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			MovementPerks.onServerStopped();
 			Waypoints.onServerStopped();
 			Journals.onServerStopped();
+			Challenges.onServerStopped();
 			BestiaryInfo.clearCache();
 		});
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> BestiaryInfo.clearCache());
@@ -76,6 +79,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			Trackers.onDisconnect(handler.player);
 			Cooldown.onDisconnect(handler.player);
 			Journals.onDisconnect(handler.player);
+			Challenges.onDisconnect(handler.player);
 		});
 		ServerPlayerEvents.JOIN.register(player -> {
 			Progression.apply(player);
@@ -92,13 +96,16 @@ public class ProgressiveAdventure implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof ServerPlayer player) {
 				Trackers.onDeath(player);
+				Challenges.onPlayerHurt(player);
 			} else if (source.getEntity() instanceof ServerPlayer player) {
+				Challenges.onKill(player, entity);
 				Bestiary.onKill(player, entity, source);
 				PerkEffects.onKill(player, entity);
 				Archery.onKill(entity, source);
 				Melee.onKill(entity, source);
 			}
 			Elites.onDeath(entity, source);
+			Challenges.onDeath(entity);
 		});
 
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
@@ -106,7 +113,11 @@ public class ProgressiveAdventure implements ModInitializer {
 				PerkEffects.onDamaged(player);
 				if (damageTaken > 0) {
 					Waypoints.onDamaged(player);
+					Challenges.onPlayerHurt(player);
 				}
+			}
+			if (source.getEntity() instanceof ServerPlayer attacker && attacker != entity) {
+				Challenges.onAttack(attacker, entity);
 			}
 			Elites.onDamage(entity, source, damageTaken);
 			Archery.onDamage(entity, source, damageTaken, blocked);
@@ -145,6 +156,7 @@ public class ProgressiveAdventure implements ModInitializer {
 			MeleeMoves.tick(server);
 			Waypoints.tick(server);
 			Journals.tick(server);
+			Challenges.tick(server);
 			// Last, so changes from the handlers above go out in the same packet
 			PamAttachments.flushAllProgress();
 		});

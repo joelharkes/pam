@@ -117,7 +117,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
 - `data/ProgressionSnapshot`: server-derived values synced for the UI (rank, hearts, stomach, perk points)
 - `data/PamAttachments`: Fabric data attachments (progress + snapshot synced to owner; placed blocks per chunk)
 - `milestone/Milestones`: milestone list + rewards; `Progression`: derives hearts/stomach/rank
-  from advancement progress and applies them; `Trackers`: foods, biomes, first night
+  from advancement progress and applies them; `Trackers`: foods, biomes, first night, walking (vanilla on-foot statistics)
 - `skill/`: `Skills` (levels, bonus curves, xp, Skills tab advancements), tool skills (break speed), `Farming` (harvest/breeding
   xp, extra harvests, Replant/Harvester/Rancher), `Melee` (hand-to-hand hit xp, attack speed, sword/axe perks), `MeleeMoves` (Ground Pound, Shockwave,
   spear perks), `Targets` (hostile/friendly filters shared by the combat perks),
@@ -143,6 +143,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   second wind, defense damage reduction); attribute perks are applied in `Progression`; `MovementPerks`
   (Shadow Step visibility/escape, server side of Double Jump and Mantle), `ShieldPerks` (Parry, Deflect, Shield Bash),
   `Cooldown` (per-player perk cooldowns, cleared on server stop), `DeathPerks` (Keepsake, Way Back trail, Faithful Friend)
+- `challenge/Challenges`: Challenges tab (per-player state in memory: a night, a fall, an arrow streak, boss fights;
+  creepers defused is a custom statistic registered in `init`)
 - `achievement/Achievements`: full advancement list for the Achievements tab (the client only gets ones near what the player did), buying tips
 - `network/`: C2S payloads `AchievementListRequestPayload`, `BuyTipPayload`, `BuyPerkPayload`, `ResetPerksPayload`, `DoubleJumpPayload`, `MantlePayload`,
   `ShieldBashPayload`, `GroundPoundPayload`, `NameWaypointPayload`, `WaypointTeleportPayload`, `BestiaryInfoRequestPayload`, `JournalMapRequestPayload`, `JournalMarkerEditPayload`; S2C `JournalMapPayload`, `JournalMarkersPayload`, `OpenWaypointNamePayload`,
@@ -154,7 +156,8 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   ItemStack (Sturdy durability perks), ShovelItem (Path Maker), FarmlandBlock (Light Step), BoneMealItem (Green Thumb,
   MixinExtras `@WrapMethod`), Animal (breeding hook), FishingHook (bite speed, Keen Eye, catch xp/Double Catch, Treasure Hunter),
   ProjectileWeaponItem (Thrifty Quiver, arrow perks on shoot), AbstractArrow (pierce, in-flight perks, Deflect), ThrownTrident (Loyal Trident), KineticWeapon/PiercingWeapon (spear charge and jab perks),
-  LivingEntity also speeds up bow/crossbow/trident use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock)
+  LivingEntity also speeds up bow/crossbow/trident use ticks (draw speed), NaturalSpawner (mob unlocks after vanilla picks the type; elites/gear just before the mob is added), PatrolSpawner (patrol unlock),
+  Raid (raid won, Safe and Sound); AbstractArrow also reports block hits (Sharpshooter misses)
 - `access/`: duck interfaces for mixins (must live outside the mixin package)
 - Client (`src/client/java/.../client/`): K keybind; `BlockSense` (Ore/Treasure/Relic Sense particle trails); `AirMoves`
   (Double Jump, Mantle and Ground Pound: client moves itself, then tells the server); `ShieldBash` (attack click while
@@ -164,7 +167,7 @@ hearts, faster hunger) and grows stronger through milestones and by doing things
   `BestiaryClient` (info cache per connection, discovery toast `BestiaryToast`);
   `WaypointNameScreen`, `WaypointListScreen`; `JournalClient` (map chunks and markers received this connection, requests, the
   texture for the map in your hand), `JournalScreen` (zoom, drag, markers), `JournalMarkerScreen`; client mixin `ItemInHandRendererMixin` (journal in hand like a map)
-- Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/` (tabs: `root.json` = Adventure tab, `skills/root.json` = Skills tab;
+- Milestone advancements: `src/main/resources/data/progressive_adventure/advancement/` (tabs: `root.json` = Adventure tab, `skills/root.json` = Skills tab, `challenges/root.json` = Challenges tab;
   a new tab's root goes in `Achievements.TAB_ORDER`)
 - Decompiled MC sources: `./gradlew genSources`, then the `-sources.jar` files under
   `.gradle/loom-cache/minecraftMaven/net/minecraft/` (unzip to the scratchpad to grep).

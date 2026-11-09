@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:shield"
+    },
+    "title": {
+      "translate": "advancements.progressive_adventure.challenges.root.title"
+    },
+    "description": {
+      "translate": "advancements.progressive_adventure.challenges.root.description"
+    },
+    "background": "minecraft:gui/advancements/backgrounds/nether",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ]
+}
