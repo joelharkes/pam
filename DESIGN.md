@@ -837,17 +837,18 @@ Players can suggest more through the GitHub issue forms.
   have a "Home Sweet Home" milestone.
 
 ### Exploration
-- **Atlas (2026-11-09, being explored):** a map item that draws itself as you walk, to help kids learn to navigate
+- **Explorer's Journal (2026-11-09, being explored; first called Atlas):** a map item that draws itself as you walk, to help kids learn to navigate
   (like the Antique Atlas mod, but it costs something). Crafted once (book + empty map + ink sac); while it's in your
   inventory it draws the chunks around you, and **each new chunk costs ink** (redrawing known chunks is free, so your
   builds show up). Out of ink = the edge stops growing, what you drew stays. Refill by clicking a drawing item onto it
   (like a bundle): coal/charcoal ("pencil") a little, ink sac / black dye more, glow ink sac the most, so squid hunting
   pays off. Drawing is expensive at first; 3 perk tiers make it much cheaper. Held in hand it shows the area around you
   like a vanilla map; right-click opens a full-screen map (zoom, drag, N/E/S/W, your arrow). No HUD minimap.
-  Markers: your own (name + icon), plus bed, Waypoint Stones, last death; structures only once seen. A copy at a
-  cartography table to share with a sibling. **Kept on death** (option A; the user wants to revisit this later).
-  Server draws with vanilla map colours, stored by atlas id like vanilla maps. Other perk ideas: wider draw radius,
-  cave layer (glow ink), Nether mapping, elite maps as markers. Milestones: first atlas, chunks drawn, markers.
+  Markers: your own (name + icon), plus bed, Waypoint Stones, last death; structures only once seen. **The map is not
+  stored in the item**: losing the journal (death, dropped, in a chest) loses only the item; a new one shows the map
+  again. The map is shared for cooperative play (how: still open). Server draws with vanilla map colours.
+  **Overworld only at first**; Nether (and caves) later, e.g. as a perk or with glow ink. Other perk ideas: wider draw
+  radius, elite maps as markers. Milestones: first journal, chunks drawn, markers.
   **With a compass in your inventory** your marker shows which way you are looking (otherwise just a dot), so you
   carry one more item for a small bonus. Perks go in the new Exploration category (Steady Hand I/II/III: ink costs
   25% / 50% / 70% less). First numbers (to tune in playtests): 1 ink per new chunk, radius 2 chunks; coal/charcoal
@@ -1127,6 +1128,9 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Atlas idea** (see Ideas, Exploration): kept on death for now (to revisit); every drawing item refills it
   (coal/charcoal, ink sac, glow ink sac), ink worth more so squids get an extra use; expensive at first, 3 perk tiers
   make it much cheaper. The Perks tab layout gets revised so long categories (Survival 23, Melee 17, Movement 16) can be split.
+- 2026-11-09: **Atlas renamed Explorer's Journal** (fits the exploring feel, less technical). **The map lives outside the
+  item** (user): losing the journal loses only the item, like dropping any item; a new journal shows your map again. This
+  replaces "kept on death". **Shared map** for cooperative play (model still open). **Overworld only** in the first version.
 - 2026-11-09: **Compass shows your facing on the Atlas** (user): only with a compass in your inventory, otherwise a dot. A small
   reason to carry one more item. First ink numbers accepted for playtesting ("feels a lot, that's why there are perks").
 - 2026-11-09: **Perks tab: icon grid** (option A over a Skills/General switch): categories as 20px icon tiles, 2 per row (room for

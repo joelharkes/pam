@@ -106,14 +106,14 @@ Words Minecraft already uses. We use them the same way and never give them anoth
 | Trip | `WaypointTeleportPayload` | Travelling from one stone to another. Not "teleport" in game text. |
 | Charge-up | waypoint charge | The 2 seconds before a trip; getting hurt cancels it. |
 
-### Planned: Atlas (not built)
+### Planned: Explorer's Journal (not built)
 
 | In game | In code | Meaning |
 |---|---|---|
-| Atlas | - | The map item that draws itself as you walk. |
+| Explorer's Journal, journal | - | The map item that draws itself as you walk. Not "atlas". |
 | Ink | - | What drawing costs; refilled with coal, ink sacs or glow ink sacs. |
-| Drawn chunk | - | A chunk the Atlas has drawn; only new chunks cost ink. |
-| Marker | - | A named icon on the Atlas, placed by you or automatically (bed, Waypoint Stones). |
+| Drawn chunk | - | A chunk the journal has drawn; only new chunks cost ink. |
+| Marker | - | A named icon on the journal map, placed by you or automatically (bed, Waypoint Stones). |
 
 ## Open questions
 
