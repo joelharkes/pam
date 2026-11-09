@@ -1177,6 +1177,7 @@ Players can suggest more through the GitHub issue forms.
   replaces "kept on death". **One shared map per server** (user: "everyone explores the same map", for now); joining maps per player was the alternative. **Overworld only** in the first version.
 - 2026-11-09: **Foods eaten list as icons** (user: works, but plain text is not nice): the stomach tooltip shows the foods
   you ate as an item icon grid, 9 per row like the inventory, still only the foods already eaten.
+  Confirmed in play: looks good, 2-3 rows fit the screen easily.
 - 2026-11-09: **Playtest: journal perks, journal advancements and structure advancements confirmed** ("perks look good",
   the extra advancements and the named structure ones help). Markers: shared, only the owner (or an op) removes one, as built.
 - 2026-11-09: **Journal playtest:** the map looks good and works well; ink cost feels good ("you can't endlessly explore,
@@ -1223,8 +1224,6 @@ Built but not confirmed by the user's playtest yet; don't assume these work or f
   in your hand), without a compass a white dot. Right-click your marker removes it, undrawn land shows a message; bed,
   Waypoint Stones and last death show; hover says "N blocks north-east" in the right direction.
 - **Screenshots (2026-11-09):** retake the Movement perks screenshot (Perks tab layout changed) and `tough_zombie.jpg` (now "Elite Zombie"; rename the file in README + Modrinth too).
-- **Foods eaten tooltip (2026-11-09):** now an icon grid (9 per row, sorted by name) under "Foods you ate (N):"; check
-  it fits the screen with many foods and the icons are recognisable.
 - **Way Back (2026-10-31):** red trail visible and easy to follow, only you see it, stops within 4 blocks or after 5 minutes; death in the Nether: chat says another dimension, trail shows there.
   2026-11-09: die without the perk, respawn, buy it: the trail starts with the minutes left; buying it 5+ minutes after a death does nothing.
 - **Shared Elite Slayer (2026-10-31, needs two players):** both hit a `/pam elite zombie`. The helper gets the toast, Rank, ½ heart and one shard in their inventory; the killer's drops are unchanged. A second elite gives the helper no extra shard.
@@ -1368,5 +1367,5 @@ override applied, typo warned).
   the playtest checklist (user's call).
 - **Explorer's Journal (2026-11-09):** item, ink, shared map drawing, journal screen with zoom and markers, map in
   your hand, compass arrow, Steady Hand / Wide View / Treasure Marks perks, 4 advancements. Nether and caves later.
-- **Next:** the foods eaten icon grid (2026-11-09, to playtest), the rest of the playtest checklist, then other
+- **Next:** the rest of the playtest checklist, then other
   [Ideas](#ideas) (e.g. Well Fed). Structure and journal advancements for the Rank 30 gap are confirmed.
