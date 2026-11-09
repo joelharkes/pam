@@ -1203,8 +1203,8 @@ Players can suggest more through the GitHub issue forms.
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Explorer's Journal (2026-11-09), slice 1:** craft one (book + empty map + ink sac): 16 ink, blue bar, "Dear Diary"
-  advancement. Walk around: chunks get drawn and ink goes down (about 25 for the first spot); walking back over drawn land
+- **Explorer's Journal (2026-11-09), slice 1:** craft one (book + empty map + ink sac; shows in the recipe book once you
+  hold a map, book or ink sac): 16 ink, blue bar, "Dear Diary" advancement. Walk around: chunks get drawn and ink goes down (about 25 for the first spot); walking back over drawn land
   costs nothing. Place a block: it shows up within a few seconds. Click ink sacs / glow ink / coal onto it in the
   inventory: left adds as many as fit, right one; when full it refuses. Empty: one "out of ink" message, the map stops
   growing. Two players: what one draws shows up in the other's journal. Lose the journal and craft a new one: the map is

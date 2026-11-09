@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "progressive_adventure:explorers_journal"
+      }
+    },
+    "has_map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:map"
+          }
+        ]
+      }
+    },
+    "has_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:book"
+          }
+        ]
+      }
+    },
+    "has_ink_sac": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:ink_sac"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_map",
+      "has_book",
+      "has_ink_sac"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "progressive_adventure:explorers_journal"
+    ]
+  }
+}
