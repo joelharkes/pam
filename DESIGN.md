@@ -1132,16 +1132,14 @@ Players can suggest more through the GitHub issue forms.
 - 2026-11-09: **Perks tab: icon grid** (option A over a Skills/General switch): categories as 20px icon tiles, 2 per row (room for
   16), name as a heading and tooltip, gold dot where a perk can be bought. **Survival split** into Health and Survival;
   **Exploration** category for Pathfinder and later the Atlas perks. Perk ids don't change, so nobody loses a perk.
+- 2026-11-09: **Perks tab icon grid confirmed** in the user's playtest ("the perks and icons look really good").
 
 ## Playtest checklist
 
 Built but not confirmed by the user's playtest yet; don't assume these work or feel right:
 - **Keepsake (2026-10-31):** die at each tier: I keeps armor, II also hotbar and offhand, III everything and XP (no orbs drop). Everything else drops as usual. Log out on the death
   screen, log back in, respawn: kept items are still there. Dying with `keepInventory` on doesn't duplicate anything. Leaving the End through its portal keeps everything.
-- **Perks tab icon grid (2026-11-09):** categories are icon tiles, 2 per row, with the name as a heading and in the tile
-  tooltip; the gold dot shows where a perk can be bought (and goes away when you can't afford anything there). Survival is
-  split into Health (hearts, healing, Hearty Kill, Iron Stomach) and Survival (Keepsake, Way Back, Faithful Friend, breath,
-  Diver, Long Arms); Pathfinder moved to the new Exploration category. Owned perks stay owned. Retake the Movement perks screenshot.
+- **Screenshots (2026-11-09):** retake the Movement perks screenshot (README + Modrinth), the Perks tab layout changed.
 - **Foods eaten tooltip (2026-11-09):** hover the stomach line on the Character tab: the list of foods you ate and "New foods until
   the next Gourmet milestone" show; a long list wraps neatly and fits the screen; no line about the next milestone after 25 foods.
 - **Structure achievements (2026-11-09):** each one triggers when you walk into the structure (mineshaft tunnels, a buried trail
